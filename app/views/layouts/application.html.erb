@@ -7,7 +7,7 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "default/application", "data-turbo-track": "reload" %>
-    <% if cookies['theme'] != nil || cookies['theme'] != "default" %>
+    <% if cookies['theme'] != nil && cookies['theme'] != "default" && Rails.application.config.themes.include?(cookies['theme']) %>
       <%= stylesheet_link_tag  cookies['theme'] + "/application", "data-turbo-track": "reload" %>
     <% end %>
     <%= javascript_importmap_tags %>
