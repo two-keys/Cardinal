@@ -8,7 +8,7 @@
 
 .announcement {
     text-align: center;
-    background-color: #803434;
+    background-color: var(--card-bg-color);
     border-radius: 10px;
     box-shadow: 0 1px 2px #bbb;
     box-sizing: border-box;
