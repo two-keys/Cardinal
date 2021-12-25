@@ -5,6 +5,8 @@
     --main-bg-color: #401a1a;
     --header-bg-color: #c04e4e;
     --card-bg-color: #803434;
+
+    --nav-bg-color: var(--card-bg-color);
 }
 
  body {

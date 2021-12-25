@@ -1,5 +1,5 @@
 #nav {
-    background-color: #803434;
+    background-color: var(--nav-bg-color);
     border-radius: 0 0 10px 10px;
     color: #fff;
     padding: 5px 0;
@@ -21,7 +21,7 @@
 }
 
 #nav a, select, form {
-    background-color: #401a1a;
+    background-color: var(--main-bg-color);
     border-radius: 10px;
     color: #fff;
     display: inline-block;
