@@ -6,11 +6,22 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "default/application", "data-turbo-track": "reload" %>
+    <% if cookies['theme'] != nil && cookies['theme'] != "default" && Rails.application.config.themes.include?(cookies['theme']) %>
+      <%= stylesheet_link_tag  cookies['theme'] + "/application", "data-turbo-track": "reload" %>
+    <% end %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div>
+      <header id="header">
+        <a href="/">
+          <%= image_tag 'titlebar.png' %>
+        </a>
+      </header>
+      <%= render 'navbar' %>
+      <%= yield %>
+    </div>
   </body>
 </html>

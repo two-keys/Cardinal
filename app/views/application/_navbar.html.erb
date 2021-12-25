@@ -1,0 +1,16 @@
+<nav id="nav">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/">Directory</a></li>
+    <li><a href="/">Your Chats</a></li>
+    <li><a href="/">Username</a></li>
+    <li><a href="/">Donate</a></li>
+    <li><a href="/">Site Use</a></li>
+    <li><a href="/">Discord</a></li>
+    <li>
+      <%= form_with url: url_for(theme_path), method: :post, format: "js", id: "theme_selector" do |form| %>
+        <%= form.select :theme, options_for_select(Rails.application.config.themes, cookies['theme'] || 'default'), {}, {onchange: 'this.form.submit();' }%>
+      <% end %>
+    </li>
+  </ul>
+</nav>
