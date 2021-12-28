@@ -59,6 +59,7 @@ group :development, :test do
 
   gem 'brakeman', require: false
   gem 'bundler-audit', require: false
+  gem 'faker'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
 end

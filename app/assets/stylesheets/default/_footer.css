@@ -1,0 +1,43 @@
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--nav-bg-color);
+    color: var(--main-text-color);
+    margin-top: 1em;
+    height: 3em;
+    border-radius: 10px 10px 0 0;
+}
+
+footer #render_time {
+    position: absolute;
+    right: 1em;
+    display: block;
+    margin: 0 auto;
+    color: var(--main-bg-color);
+    font-weight: bold;
+}
+
+footer #theme_selector {
+    position: absolute;
+    left: 2.5em;
+    display: block;
+    font-weight: bold;
+    margin-bottom: -0.5em;
+}
+
+footer #theme_selector,#form {
+    background-color: var(--nav-bg-color);
+}
+
+#theme_icon {
+    position: absolute;
+    left: -25px;
+    height: 24px;
+    width: 24px;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    -webkit-mask: url(theme.svg) no-repeat center;
+    mask: url(theme.svg) no-repeat center;
+    mask-size: 24px;
+}
