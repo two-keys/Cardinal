@@ -1,7 +1,10 @@
 # Put this in the file: .github/workflows/verify.yml
 
 name: Verify
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   linters:
