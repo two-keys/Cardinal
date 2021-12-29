@@ -2,13 +2,13 @@
 
 class AddFieldsToUser < ActiveRecord::Migration[7.0]
   def change
-    change_table :table, bulk: true do |t|
-      t.string :username, :string, null: false, default: '', unique: true
-      t.boolean :admin, :boolean, default: false
-      t.boolean :verified, :boolean, default: false
-      t.datetime :unban_at, :datetime, default: nil
-      t.string :ban_reason, :string, default: nil
-      t.datetime :delete_at, :datetime, default: nil
+    change_table :users, bulk: true do |t|
+      t.string :username, null: false, default: '', unique: true
+      t.boolean :admin, default: false
+      t.boolean :verified, default: false
+      t.datetime :unban_at, default: nil
+      t.string :ban_reason, default: nil
+      t.datetime :delete_at, default: nil
     end
   end
 end
