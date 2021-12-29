@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2021_12_29_060218) do
     t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "username", null: false
+    t.string "username", null: false, unique: true
     t.boolean "admin", default: false
     t.boolean "verified", default: false
     t.datetime "unban_at", precision: 6

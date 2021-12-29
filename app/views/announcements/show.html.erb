@@ -1,7 +1,7 @@
 <%= render @announcement %>
 
 <div>
-  <% if is_admin? %>
+  <% if admin? %>
     <%= link_to "Edit this announcement", edit_announcement_path(@announcement) %> |
     <%= link_to "Back to announcements", announcements_path %>
 

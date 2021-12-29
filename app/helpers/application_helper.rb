@@ -12,7 +12,7 @@ module ApplicationHelper
     end
   end
 
-  def is_admin?
+  def admin?
     user_signed_in? && current_user.admin?
   end
 end
