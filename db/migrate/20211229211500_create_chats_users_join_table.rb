@@ -7,8 +7,6 @@ class CreateChatsUsersJoinTable < ActiveRecord::Migration[7.0]
       t.string :title
       t.text :description
       t.integer :status, default: 0 # 0: ongoing, 1: unanswered, 2: unread, 3: ended
-
-      t.boolean :active, default: true
     end
   end
 end
