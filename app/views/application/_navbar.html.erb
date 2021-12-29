@@ -4,7 +4,7 @@
     <% if user_signed_in? %>
       <li><a href="/">Directory</a></li>
       <li><a href="/">Your Chats</a></li>
-      <li><a href="/"> <%= current_user.username %> </a></li>
+      <li> <%= link_to current_user.username, edit_user_registration_path %> </li>
     <% else %>
       <li><a href= <%= new_user_session_path %>>Sign In</a></li>
       <li><a href= <%= new_user_registration_path %>>Sign Up</a></li>
@@ -12,6 +12,9 @@
     <li><a href="/">Donate</a></li>
     <li><a href="/">Site Use</a></li>
     <li><a href="/">Discord</a></li>
+    <% if user_signed_in? %>
+      <li><%= button_to "Log Out", destroy_user_session_path, method: :delete %></li>
+    <% end %>
     <li>
       <%= form_with url: url_for(theme_path), method: :post, format: "js", id: "theme_selector" do |form| %>
         <%= form.select :theme, options_for_select(Rails.application.config.themes, cookies['theme'] || 'default'), {}, {onchange: 'this.form.submit();' }%>

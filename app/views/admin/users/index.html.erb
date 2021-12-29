@@ -1,0 +1,12 @@
+<div id="users">
+
+  <h1>Users</h1>
+
+  <div id="users">
+    <% @users.each do |user| %>
+      <%= render user %>
+    <% end %>
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+</div>
+

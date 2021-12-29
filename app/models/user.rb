@@ -6,4 +6,8 @@ class User < ApplicationRecord
          :confirmable, :trackable
 
   validates :username, presence: true, uniqueness: true
+
+  def active_for_authentication?
+    super && !delete_at
+  end
 end
