@@ -1,6 +1,8 @@
-class Message < ApplicationRecord
-    belongs_to :chat
-    belongs_to :user, optional: true
+# frozen_string_literal: true
 
-    validates :content, presence: true, length: { minimum: 10, maximum: 10000 }
+class Message < ApplicationRecord
+  belongs_to :chat
+  belongs_to :user, optional: true
+
+  validates :content, presence: true, length: { minimum: 10, maximum: 10_000 }
 end

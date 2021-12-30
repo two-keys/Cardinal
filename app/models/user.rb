@@ -18,7 +18,7 @@ class User < ApplicationRecord
     super && !delete_at
   end
 
-  def has_joined?(chat)
-    chats.where(id: chat.id).exists?
+  def joined?(chat)
+    chats.exists?(id: chat.id)
   end
 end

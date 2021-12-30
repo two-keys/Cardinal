@@ -1,4 +1,4 @@
-<div id="<%= dom_id announcement %>" class="announcement">
+<div id="<%= dom_id announcement %>" class="card">
   <strong><%= link_to announcement.title, announcement %></strong>
   <br />
   <span><%= announcement.created_at.strftime("%l:%M %p %b %d %Y") %></span>
@@ -8,5 +8,4 @@
   <p>
     <%= simple_format h(announcement.content) %>
   </p>
-
 </div>

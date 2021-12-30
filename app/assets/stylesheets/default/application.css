@@ -24,8 +24,17 @@ body {
     line-height: 1.5em;
     margin: 0;
     overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
+#main {
+    color: var(--main-text-color);
+    text-align: center;
+}
 
 #header {
     display: flex;
@@ -38,6 +47,7 @@ body {
 #header a, #header img {
     display: block;
     margin: 0 auto;
+    padding: 10px;
 }
 
 #main {

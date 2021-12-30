@@ -1,0 +1,7 @@
+<footer>
+    <%= form_with url: url_for(theme_path), method: :post, format: "js", id: "theme_selector" do |form| %>
+        <div id="theme_icon"></div>
+        <%= form.select :theme, options_for_select(Rails.application.config.themes, cookies['theme'] || 'default'), {}, {onchange: 'this.form.submit();' }%>
+    <% end %>
+    <span id="render_time"><%= sprintf('%.3f', (Time.now.to_f - @start_time) ) %> s</span>
+</footer> 

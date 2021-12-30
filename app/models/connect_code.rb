@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class ConnectCode < ApplicationRecord
-    belongs_to :user
-    belongs_to :chat
+  belongs_to :user
+  belongs_to :chat
 
-    validates :remaining_uses, numericality: { only_integer: true, less_than_or_equal_to: 10 }
+  validates :remaining_uses, numericality: { only_integer: true, less_than_or_equal_to: 10 }
 
-    def use(user)
-        if self.remaining_uses > 0
-            self.remaining_uses -= 1
-            self.chat.users << user
-            self.save
-            return true
-        else
-            return false
-        end
+  def use(user)
+    if remaining_uses.positive?
+      self.remaining_uses -= 1
+      chat.users << user
+      save
+      true
+    else
+      false
     end
+  end
 end

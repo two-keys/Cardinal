@@ -34,7 +34,7 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
       post announcements_url, params: { announcement: { content: @announcement.content, title: @announcement.title } }
     end
 
-    assert_redirected_to announcement_url(Announcement.last)
+    assert_redirected_to announcement_url(Announcement.first)
   end
 
   test 'should not create announcement' do
