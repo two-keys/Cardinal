@@ -3,8 +3,17 @@
 
 :root {
     --main-bg-color: #1d0c0c;
+    --main-text-color: #fff;
     --header-bg-color: #581c1c;
     --card-bg-color: #3f1919;
+    --card-text-color: #fff;
+    --card-bg-color-secondary: #424242;
+    --card-text-color-secondary: #bebebe;
+
+    --ongoing-color: rgb(43, 43, 43);
+    --unread-color: rgb(103, 133, 189);
+    --unanswered-color: #8da164;
+    --ended-color: rgb(105, 26, 26);
 
     --nav-bg-color: #5a2424;
 }

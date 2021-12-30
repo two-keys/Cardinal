@@ -1,0 +1,29 @@
+<div id="chats">
+  <h1>Chats</h1>
+  <% @chats.each do |chat| %>
+    <% settings = chat.get_user_info(current_user) %>
+    <% if settings.status %>
+    <div class="card secondary <%= settings.status %>">
+    <% else %>
+    <div class="card secondary">
+    <% end %>
+      <% if settings.title %>
+        <%= link_to settings.title + " (" + settings.status + ")", chat_path(chat.uuid) %>
+      <% else %>
+        <%= link_to chat.uuid + " (" + settings.status + ")", chat_path(chat.uuid) %>
+      <% end %>
+      <% if settings.description %>
+        <p><%= settings.description %></p>
+      <% end %>
+      <hr />
+      <% if chat.messages.last %>
+        <p><%= chat.messages.last.content %></p>
+      <% else %>
+        <i>No messages yet.</i>
+      <% end %>
+    </div>
+  <% end %>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+</div>
+
+<%= button_to "New chat", chats_path, method: :post %>

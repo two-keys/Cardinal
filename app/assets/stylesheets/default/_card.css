@@ -1,0 +1,53 @@
+.card {
+    text-align: center;
+    background-color: var(--card-bg-color);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px #bbb;
+    box-sizing: border-box;
+    margin: 20px auto;
+    max-width: 650px;
+    width: 100%;
+    padding: 20px 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.card.secondary {
+    background-color: var(--card-bg-color-secondary);
+}
+
+.card a {
+    color: var(--card-text-color);
+    text-decoration: dotted underline;
+}
+
+.card.secondary a {
+    color: var(--card-text-color-secondary);
+    text-decoration: dotted underline;
+}
+
+.card span {
+    color: var(--card-text-color);
+}
+
+.card.secondary span {
+    color: var(--card-text-color-secondary);
+}
+
+.card p {
+    color: var(--card-text-color);
+    text-align: left;
+}
+
+.card.secondary p {
+    color: var(--card-text-color-secondary);
+    text-align: left;
+}
+
+.card i {
+    color: var(--card-text-color);
+}
+
+.card.secondary i {
+    color: var(--card-text-color-secondary);
+}

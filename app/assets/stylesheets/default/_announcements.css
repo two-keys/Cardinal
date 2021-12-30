@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #fff;
+    color: var(--main-text-color);
     width: 100%;
 }
 
@@ -21,16 +21,16 @@
 }
 
 .announcement a {
-    color: #fff;
+    color: var(--card-text-color);
     text-decoration: dotted underline;
 }
 
 .announcement span {
-    color: #fff;
+    color: var(--card-text-color);
 }
 
 .announcement p {
-    color: #fff;
+    color: var(--card-text-color);
     text-align: left;
 }
 

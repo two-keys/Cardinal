@@ -3,7 +3,7 @@
     <li><a href="/">Home</a></li>
     <% if user_signed_in? %>
       <li><a href="/">Directory</a></li>
-      <li><a href="/">Your Chats</a></li>
+      <li> <%= link_to "Your Chats", chats_path %> </li>
       <li> <%= link_to current_user.username, edit_user_registration_path %> </li>
     <% else %>
       <li><a href= <%= new_user_session_path %>>Sign In</a></li>

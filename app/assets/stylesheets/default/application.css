@@ -3,8 +3,17 @@
 
 :root {
     --main-bg-color: #401a1a;
+    --main-text-color: #fff;
     --header-bg-color: #c04e4e;
     --card-bg-color: #803434;
+    --card-text-color: #fff;
+    --card-bg-color-secondary: #d1d1d1;
+    --card-text-color-secondary: #000;
+
+    --ongoing-color: grey;
+    --unread-color: cornflowerblue;
+    --unanswered-color: #9acd32;
+    --ended-color: firebrick;
 
     --nav-bg-color: var(--card-bg-color);
 }
@@ -23,10 +32,23 @@ body {
     justify-content: center;
     align-items: center;
     background-color: var(--header-bg-color);
-    color: #fff;
+    color: var(--main-text-color);
 }
 
 #header a, #header img {
     display: block;
     margin: 0 auto;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--main-text-color);
+    width: 100%;
+    text-align: center;
+}
+
+#main > * {
+    color: var(--main-text-color);
 }

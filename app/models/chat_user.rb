@@ -1,4 +1,4 @@
-class ChatsUser < ApplicationRecord
+class ChatUser < ApplicationRecord
     belongs_to :user
     belongs_to :chat
 
@@ -8,4 +8,6 @@ class ChatsUser < ApplicationRecord
         unread: 2,
         ended: 3
     }
+
+    validates_uniqueness_of :user_id, scope: :chat_id
 end

@@ -1,0 +1,12 @@
+<div id="<%= dom_id chat %>">
+    <p><%= chat.uuid %></p>
+    <p><%= chat.created_at %></p>
+    <% if @chat_info %>
+        <p><%= @chat_info.title %></p>
+        <p><%= @chat_info.description %></p>
+        <p><%= @chat_info.status %></p>
+    <% end %>
+    <% for message in chat.messages %>
+        <%= render 'message', message: message %>
+    <% end %>
+</div>

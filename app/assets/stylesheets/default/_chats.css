@@ -1,0 +1,28 @@
+.card.chat { 
+  background: linear-gradient(to top right,transparent 50%,rgb(155, 155, 155) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+}
+#chats .card.ongoing {
+  border-right: 6px solid var(--ongoing-color); 
+  background: linear-gradient(to top right,transparent 50%,var(--ongoing-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.unread {
+  border-right: 6px solid var(--unread-color);
+  background: linear-gradient(to top right,transparent 50%,var(--unread-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.unanswered {
+  border-right: 6px solid var(--unanswered-color);
+  border-left: #eee;
+  background: linear-gradient(to top right,transparent 50%,var(--unanswered-color) 0) 100% 0/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.ended {
+  border-right: 6px solid var(--ended-color);
+  background: linear-gradient(to top right,transparent 50%,var(--ended-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}

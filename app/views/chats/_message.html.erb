@@ -1,0 +1,6 @@
+<div class="message">
+    <%= message.content %>
+    <% if message.updated_at > message.created_at %>
+        <span class="edited-at">(edited at <%= message.updated_at %>)</span>
+    <% end %>
+</div>
