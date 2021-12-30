@@ -50,4 +50,5 @@
     padding: 0!important;
     color: var(--main-text-color);
     font-size: 16px;
+    cursor: pointer;
 }
