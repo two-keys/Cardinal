@@ -21,7 +21,10 @@
         </a>
       </header>
       <%= render 'navbar' %>
-      <%= yield %>
+      <div id="main">
+        <%= yield %>
+      </div>
+      <%= render 'footer' %>
     </div>
   </body>
 </html>

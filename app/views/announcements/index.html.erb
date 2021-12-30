@@ -1,15 +1,3 @@
-<p style="color: green"><%= notice %></p>
+<h1>News</h1>
 
-<div id="announcements">
-
-  <h1>News</h1>
-
-  <div id="announcements">
-    <% @announcements.each do |announcement| %>
-      <%= render announcement %>
-    <% end %>
-    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
-  </div>
-</div>
-
-<%= link_to "New announcement", new_announcement_path %>
+<%= render partial: 'announcements/announcements', locals: {announcements: @announcements} %>
