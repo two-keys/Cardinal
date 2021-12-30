@@ -5,6 +5,7 @@ AllCops:
     - 'bin/**/*'
     - 'config/environments/development.rb'
     - 'config/initializers/devise.rb'
+    - 'vendor/bundle/**/*'
 Style/Documentation:
   Enabled: false
 
