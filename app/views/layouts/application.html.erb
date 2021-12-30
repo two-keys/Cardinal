@@ -21,11 +21,10 @@
         </a>
       </header>
       <%= render 'navbar' %>
-      <div class="site-alert">
-        <%= notice %>
-        <%= alert %>
+      <div id="main">
+        <%= yield %>
       </div>
-      <%= yield %>
+      <%= render 'footer' %>
     </div>
   </body>
 </html>
