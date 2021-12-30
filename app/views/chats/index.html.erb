@@ -1,5 +1,8 @@
 <div id="chats">
   <h1>Chats</h1>
+  <div class="card">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
   <% @chats.each do |chat| %>
     <% settings = chat.get_user_info(current_user) %>
     <% if settings.status %>
@@ -23,7 +26,9 @@
       <% end %>
     </div>
   <% end %>
-  <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  <div class="card">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
 </div>
 
 <%= button_to "New chat", chats_path, method: :post %>
