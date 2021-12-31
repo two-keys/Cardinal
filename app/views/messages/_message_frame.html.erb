@@ -1,1 +1,9 @@
-<%= turbo_frame_tag message, src: message_path(message, frame: true), class: "pending_message" %>
+<%= turbo_frame_tag message, src: message_path(message, frame: true), class: "pending_message" do %>
+    <div class="message">
+      <p>. . .</p>
+      <span class="message_created_at">
+        Sent <%= DateTime.now.strftime("%Y-%m-%d %k:%M:%S") %>
+      </span>
+      <hr class="message_break"/>
+  </div>
+<% end %>

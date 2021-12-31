@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
+  before_action :viewed, only: %i[ show ]
   before_action :authenticate_user!
 
   # GET /messages or /messages.json
@@ -30,6 +31,11 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
+        @message.chat.notify_all_except(current_user)
+        Chat.record_timestamps = false
+        @message.chat.updated_at = Time.now
+        @message.chat.save
+        Chat.record_timestamps = true
         format.html { head :ok }
         format.json { render :show, status: :created, location: @message }
       else
@@ -62,6 +68,12 @@ class MessagesController < ApplicationController
     end
   end
 
+  def viewed
+    if @message == @message.chat.messages.last
+      @message.chat.set_viewed(current_user)
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_message
@@ -70,6 +82,6 @@ class MessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:content, :ooc, :user_id, :chat_id).merge(:current_acting_user_id => current_user.id)
+      params.require(:message).permit(:content, :ooc, :user_id, :chat_id)
     end
 end

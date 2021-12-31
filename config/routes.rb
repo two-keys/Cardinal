@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   }
 
   post 'theme' => 'theme_preference#update'
+
+  post 'connect_code' => 'connect_code#create'
+  patch 'connect_code' => 'connect_code#update'
+
+  get 'notifications' => 'notifications#index'
   resources :announcements
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_013928) do
+ActiveRecord::Schema.define(version: 2021_12_31_142329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2021_12_30_013928) do
     t.string "title"
     t.text "description"
     t.integer "status", default: 0
+    t.string "icon"
     t.index ["chat_id"], name: "index_chat_users_on_chat_id"
     t.index ["user_id", "chat_id"], name: "index_chat_users_on_user_id_and_chat_id", unique: true
     t.index ["user_id"], name: "index_chat_users_on_user_id"
@@ -60,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_12_30_013928) do
     t.boolean "ooc", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "icon"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end

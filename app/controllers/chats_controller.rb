@@ -4,18 +4,22 @@ class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy]
+  before_action :set_chat, only: %i[show edit update destroy read]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[show edit update destroy]
+  before_action :authorized?, only: %i[show edit update destroy read]
 
   # GET /chats or /chats.json
   def index
-    @pagy, @chats = pagy(current_user.chats, items: 20)
+    @pagy, @chats = pagy(current_user.chats.order('updated_at DESC'), items: 20)
   end
 
   # GET /chats/1 or /chats/1.json
-  def show; end
+  def show
+    if @chat_info.unread? || @chat_info.ended?
+      @chat_info.ongoing!
+    end
+  end
 
   # GET /chats/new
   def new
@@ -31,6 +35,10 @@ class ChatsController < ApplicationController
     @chat.users << current_user
     respond_to do |format|
       if @chat.save
+        @connect_code = ConnectCode.new(chat_id: @chat.id, user: current_user, remaining_uses: 9)
+        @connect_code.save!
+        @chat.messages << Message.new(content: "Chat created by #{current_user.chat_users.find_by(chat: @chat).icon}  \nConnect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left.")
+        @chat.notify_all_except(current_user)
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully created.' }
         format.json { render :show, status: :created, location: @chat.uuid }
       else
@@ -57,7 +65,11 @@ class ChatsController < ApplicationController
   def destroy
     @chat.users.delete(current_user)
     @chat.messages << Message.new(content: 'User left the chat.')
+    Chat.record_timestamps = false
+    chat.updated_at = Time.now
+    Chat.record_timestamps = true
     @chat.save
+    @chat.notify_all
     if @chat.users.empty?
       @chat.destroy
     elsif @chat.users.count == 1
@@ -77,6 +89,7 @@ class ChatsController < ApplicationController
   def set_chat
     @chat = Chat.find_by(uuid: params[:id])
     @chat_info = @chat.get_user_info(current_user)
+    @format = params[:format]
   end
 
   # Only allow a list of trusted parameters through.

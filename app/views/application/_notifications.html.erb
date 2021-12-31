@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "notifications" do %>
+    <% if notifications.count > 0 %>
+        <%= link_to "Your Chats (#{notifications.count})", chats_path, :"data-turbo" => false %>
+    <% else %>
+        <%= link_to "Your Chats", chats_path, :"data-turbo" => false %>
+    <% end %>
+<% end %>

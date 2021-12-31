@@ -3,7 +3,10 @@
     <li><a href="/">Home</a></li>
     <% if user_signed_in? %>
       <li><a href="/">Directory</a></li>
-      <li> <%= link_to "Your Chats", chats_path %> </li>
+      <li>
+        <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
+        <%= render 'notifications_frame' %>
+      </li>
       <li> <%= link_to current_user.username, edit_user_registration_path %> </li>
     <% else %>
       <li><a href= <%= new_user_session_path %>>Sign In</a></li>

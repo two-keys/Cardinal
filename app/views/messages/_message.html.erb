@@ -4,6 +4,15 @@
   <% else %>
     <div class="message ooc">
   <% end %>
+      <span class="user_icon"><%= locals[:message].icon %></span>
+      <span class="type_notif <%= locals[:message].type %><%= locals[:message].ooc ? " ooc" : nil %>">
+        <% if locals[:message].type == 'system' %>
+          SYS
+        <% end %>
+        <% if locals[:message].ooc %>
+          OOC
+        <% end %>
+      </span>
       <%= locals[:message].markdown %>
       <span class="message_created_at">
         <!-- Display the date and time of the message -->

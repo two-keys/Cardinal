@@ -1,6 +1,5 @@
 .card {
     text-align: center;
-    background-color: var(--card-bg-color);
     border-radius: 10px;
     box-shadow: 0 1px 2px #bbb;
     box-sizing: border-box;
@@ -12,11 +11,15 @@
     z-index: 2;
 }
 
+.card.primary {
+    background-color: var(--card-bg-color);
+}
+
 .card.secondary {
     background-color: var(--card-bg-color-secondary);
 }
 
-.card a {
+.card.primary a {
     color: var(--card-text-color);
     text-decoration: dotted underline;
 }
@@ -26,21 +29,13 @@
     text-decoration: dotted underline;
 }
 
-.card span {
-    color: var(--card-text-color);
-}
-
-.card.secondary span {
-    color: var(--card-text-color-secondary);
-}
-
-.card p {
+.card.primary p {
     color: var(--card-text-color);
     text-align: left;
 }
 
-.card h1, h2, h3, h4, h5, h6, li {
-    color: var(--card-text-color);
+.card.primary h1,h2,h3,h4,h5,h6,li,pre,td,th,i {
+    color: var(--card-text-color) !important;
 }
 
 .card.secondary p {
@@ -48,19 +43,35 @@
     text-align: left;
 }
 
-.card.secondary h1, h2, h3, h4, h5, h6, li {
-    color: var(--card-text-color-secondary);
-}
-
-.card i {
-    color: var(--card-text-color);
-}
-
-.card.secondary i {
+.card.secondary h1,h2,h3,h4,h5,h6,li,pre,td,th,i {
     color: var(--card-text-color-secondary);
 }
 
 .card.secondary form {
     background-color: var(--card-bg-color-secondary);
     color: var(--card-text-color-secondary);
+}
+
+.card.secondary form input {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+}
+
+.card.primary form {
+    background-color: var(--card-bg-color);
+    color: var(--card-text-color);
+}
+
+.card.primary form input {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: 1px solid var(--card-textarea-text-color);
+    border-radius: 5px;
+}
+
+.card.primary button {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: 1px solid var(--card-textarea-text-color);
+    border-radius: 5px;
 }
