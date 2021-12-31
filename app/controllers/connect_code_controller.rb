@@ -6,7 +6,7 @@ class ConnectCodeController < ApplicationController
 
   def update
     respond_to do |format|
-      if !@connect_code.nil? && connect_code.use(current_user)
+      if !@connect_code.nil? && @connect_code.use(current_user)
         format.html { redirect_to chat_path(@connect_code.chat.uuid) }
         format.json { render :show, status: :ok, location: @connect_code.chat.uuid }
       else
