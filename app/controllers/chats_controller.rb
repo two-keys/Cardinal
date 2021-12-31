@@ -66,7 +66,7 @@ class ChatsController < ApplicationController
     @chat.users.delete(current_user)
     @chat.messages << Message.new(content: 'User left the chat.')
     Chat.record_timestamps = false
-    chat.updated_at = Time.now
+    @chat.updated_at = Time.now
     Chat.record_timestamps = true
     @chat.save
     @chat.notify_all
