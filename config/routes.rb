@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :messages, only: %i[show create destroy update edit]
   resources :chats
   devise_for :users, controllers: {
     sessions: 'users/sessions',

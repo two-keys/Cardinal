@@ -7,6 +7,7 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: %i[show edit update destroy]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
+  before_action :authorized?, only: %i[show edit update destroy]
 
   # GET /chats or /chats.json
   def index
@@ -85,5 +86,10 @@ class ChatsController < ApplicationController
 
   def edit_chat_params
     params.require(:chat).permit(:title, :description)
+  end
+
+  def authorized?
+    return if @chat.users.include?(current_user)
+    redirect_to chats_path
   end
 end

@@ -9,6 +9,8 @@
     --card-text-color: #fff;
     --card-bg-color-secondary: #d1d1d1;
     --card-text-color-secondary: #000;
+    --card-textarea-bg-color: rgb(228, 228, 228);
+    --card-textarea-text-color: #333;
 
     --ongoing-color: grey;
     --unread-color: cornflowerblue;
@@ -31,9 +33,19 @@ body {
     bottom: 0;
 }
 
+#site_container {
+    display: grid;
+    grid-template-areas: "sidebar_left main_content sidebar_right";
+    grid-template-columns: 1fr 1000px 1fr;
+}
+
 #main {
     color: var(--main-text-color);
     text-align: center;
+    width: 100%;
+    padding-bottom: 100px;
+    text-align: center;
+    grid-area: main_content;
 }
 
 #header {
@@ -48,16 +60,6 @@ body {
     display: block;
     margin: 0 auto;
     padding: 10px;
-}
-
-#main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--main-text-color);
-    width: 100%;
-    padding-bottom: 100px;
-    text-align: center;
 }
 
 #main > * {

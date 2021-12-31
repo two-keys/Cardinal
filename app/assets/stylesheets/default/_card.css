@@ -39,9 +39,17 @@
     text-align: left;
 }
 
+.card h1, h2, h3, h4, h5, h6, li {
+    color: var(--card-text-color);
+}
+
 .card.secondary p {
     color: var(--card-text-color-secondary);
     text-align: left;
+}
+
+.card.secondary h1, h2, h3, h4, h5, h6, li {
+    color: var(--card-text-color-secondary);
 }
 
 .card i {
@@ -49,5 +57,10 @@
 }
 
 .card.secondary i {
+    color: var(--card-text-color-secondary);
+}
+
+.card.secondary form {
+    background-color: var(--card-bg-color-secondary);
     color: var(--card-text-color-secondary);
 }

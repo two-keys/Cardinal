@@ -1,12 +1,23 @@
-<div id="<%= dom_id chat %>">
+
+<div id="<%= dom_id chat %>_container">
     <p><%= chat.uuid %></p>
     <p><%= chat.created_at %></p>
     <% if @chat_info %>
-        <p><%= @chat_info.title %></p>
-        <p><%= @chat_info.description %></p>
-        <p><%= @chat_info.status %></p>
+        <div class="card secondary">
+            <p><%= @chat_info.title %></p>
+            <p><%= @chat_info.description %></p>
+            <p><%= @chat_info.status %></p>
+        </div>
     <% end %>
-    <% for message in chat.messages %>
-        <%= render 'message', message: message %>
-    <% end %>
+    <div class="card secondary">
+        <%= turbo_stream_from(dom_id chat) %>
+        <div id="messages_container">
+            <% for message in chat.messages %>
+                <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
+            <% end %>
+        </div>
+    </div>
+    <div class="card secondary">
+        <%= render 'messages/form', locals: {message: Message.new, chat_id: chat.id} %>
+    </div>
 </div>

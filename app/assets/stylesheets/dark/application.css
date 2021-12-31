@@ -9,6 +9,8 @@
     --card-text-color: #fff;
     --card-bg-color-secondary: #424242;
     --card-text-color-secondary: #bebebe;
+    --card-textarea-bg-color: #333;
+    --card-textarea-text-color: #bbb;
 
     --ongoing-color: rgb(43, 43, 43);
     --unread-color: rgb(103, 133, 189);
