@@ -20,7 +20,7 @@
       <% end %>
       <hr />
       <% if chat.messages.last %>
-        <p><%= chat.messages.last.content %></p>
+        <%= render 'message', message: chat.messages.last %>
       <% else %>
         <i>No messages yet.</i>
       <% end %>

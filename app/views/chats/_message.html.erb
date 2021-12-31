@@ -1,6 +1,6 @@
 <div class="message">
-    <%= message.content %>
+    <%= message.markdown %>
     <% if message.updated_at > message.created_at %>
-        <span class="edited-at">(edited at <%= message.updated_at %>)</span>
+        <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
     <% end %>
 </div>
