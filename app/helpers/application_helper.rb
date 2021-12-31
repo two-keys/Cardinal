@@ -4,7 +4,7 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def require_admin
-    return if user_signed_in? && current_user.admin?
+    return if admin?
 
     respond_to do |format|
       format.html { redirect_to root_url, notice: 'You are not authorized to perform this action.' }

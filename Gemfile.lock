@@ -164,6 +164,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.0.0)
     rake (13.0.6)
+    redcarpet (3.5.1)
     redis (4.5.1)
     regexp_parser (2.2.0)
     reline (0.3.0)
@@ -244,6 +245,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.0)
+  redcarpet
   redis (~> 4.0)
   rubocop
   rubocop-rails
