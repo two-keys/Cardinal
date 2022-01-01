@@ -15,11 +15,14 @@ class ChatUser < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 1 }
-  
-  after_commit :update_chat_status
 
-  def update_chat_status
-    broadcast_replace_later_to("user_" + self.user.id.to_s + "_notifications", target: "notifications", partial: 'notifications_frame')
+  after_update_commit :broadcast_status
+
+  def broadcast_status
+    redis = ActionCable.server.pubsub.send(:redis_connection)
+    if redis.pubsub("channels", "user_#{self.user.id}_chat_#{self.chat.id}").empty?
+      broadcast_update_to("user_" + self.user.id.to_s + "_notifications", target: "notifications", partial: 'notifications_frame')
+    end
   end
 
   private

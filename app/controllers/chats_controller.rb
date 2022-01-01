@@ -12,13 +12,16 @@ class ChatsController < ApplicationController
   # GET /chats or /chats.json
   def index
     @pagy, @chats = pagy(current_user.chats.order('updated_at DESC'), items: 20)
+    respond_to do |format|
+      format.html
+      format.json { render json: @chats }
+      format.turbo_stream { render redirect_to chats_path }
+    end
   end
 
   # GET /chats/1 or /chats/1.json
   def show
-    if @chat_info.unread? || @chat_info.ended?
-      @chat_info.ongoing!
-    end
+    @chat.set_viewed(current_user)
   end
 
   # GET /chats/new
@@ -38,7 +41,6 @@ class ChatsController < ApplicationController
         @connect_code = ConnectCode.new(chat_id: @chat.id, user: current_user, remaining_uses: 9)
         @connect_code.save!
         @chat.messages << Message.new(content: "Chat created by #{current_user.chat_users.find_by(chat: @chat).icon}  \nConnect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left.")
-        @chat.notify_all_except(current_user)
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully created.' }
         format.json { render :show, status: :created, location: @chat.uuid }
       else
@@ -65,11 +67,6 @@ class ChatsController < ApplicationController
   def destroy
     @chat.users.delete(current_user)
     @chat.messages << Message.new(content: 'User left the chat.')
-    Chat.record_timestamps = false
-    @chat.updated_at = Time.now
-    Chat.record_timestamps = true
-    @chat.save
-    @chat.notify_all
     if @chat.users.empty?
       @chat.destroy
     elsif @chat.users.count == 1

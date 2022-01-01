@@ -1,29 +1,31 @@
-<%= form_with(model: locals[:message], id: "message_form") do |form| %>
-  <% if locals[:message].errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(locals[:message].errors.count, "error") %> prohibited this message from being saved:</h2>
+<%= turbo_frame_tag "message_form_frame" do %>
+  <%= form_with(model: locals[:message], id: "message_form") do |form| %>
+    <% if locals[:message].errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(locals[:message].errors.count, "error") %> prohibited this message from being saved:</h2>
 
-      <ul>
-        <% locals[:message].errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% locals[:message].errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div id="new_message_content">
+      <%= form.text_area :content %>
+    </div>
+    <div>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <%= form.hidden_field :chat_id, value: locals[:chat_id] %>
+    </div>
+    <div id="new_message_ooc">
+      <%= form.label :ooc, 'OOC' %>
+      <%= form.check_box :ooc %>
+    </div>
+
+    <div id="new_message_submit">
+      <%= form.submit value: 'Submit' %>
     </div>
   <% end %>
-
-  <div id="new_message_content">
-    <%= form.text_area :content %>
-  </div>
-  <div>
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :chat_id, value: locals[:chat_id] %>
-  </div>
-  <div id="new_message_ooc">
-    <%= form.label :ooc, 'OOC' %>
-    <%= form.check_box :ooc %>
-  </div>
-
-  <div id="new_message_submit">
-    <%= form.submit value: 'Submit' %>
-  </div>
 <% end %>

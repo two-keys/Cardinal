@@ -21,4 +21,8 @@ class User < ApplicationRecord
   def joined?(chat)
     chats.exists?(id: chat.id)
   end
+
+  def notifications
+    chat_users.where(status: :unread).count
+  end
 end

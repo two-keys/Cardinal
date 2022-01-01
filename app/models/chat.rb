@@ -15,25 +15,13 @@ class Chat < ApplicationRecord
     chat_users.find_by(user: user)
   end
 
-  def notify_all
-    chat_users.each do |chat_user|
-      chat_user.unread!
-    end
-  end
-
-  def notify_all_except(user)
-    chat_users.each do |chat_user|
-      chat_user.unread! unless chat_user.user == user
-    end
-  end
-
   def set_viewed(user)
     chat_info = chat_users.find_by(user: user)
-    if chat_info.unread? && self.messages.last.user != user && !self.messages.last.user.nil?
+    if messages.last.user != user && chat_info.status == 'unread'
       chat_info.unanswered!
-    else
-      chat_info.ongoing!
+      return
     end
+    chat_info.ongoing! if chat_info.status == 'ended'
   end
 
   private

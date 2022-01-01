@@ -2,7 +2,6 @@
 
 class Message < ApplicationRecord
   include Markdownable
-  include ActionView::RecordIdentifier
 
   belongs_to :chat
   belongs_to :user, optional: true
@@ -13,15 +12,37 @@ class Message < ApplicationRecord
 
   default_scope { order('created_at ASC') }
 
+  after_create :update_timestamp
+  after_create_commit :set_unreads
   after_create_commit :broadcast_to_chat
   after_update_commit :broadcast_to_chat_update
 
+  def update_timestamp
+    Chat.record_timestamps = false
+    chat.updated_at = Time.now
+    Chat.record_timestamps = true
+    chat.save!
+  end
+
+  def set_unreads
+    redis = ActionCable.server.pubsub.send(:redis_connection)
+    for chat_user in self.chat.chat_users do
+      if redis.pubsub("channels", "user_#{chat_user.id}_chat_#{self.chat.id}").empty?
+        chat_user.unread!
+      end
+    end
+  end
+
   def broadcast_to_chat
-    broadcast_append_later_to(dom_id(self.chat), target: 'messages_container', partial:'messages/message_frame', locals: { locals: { message: self }})
+    for chat_user in self.chat.chat_users do
+      broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}", target: 'messages_container', partial:'messages/message_frame', locals: { locals: { message: self }})
+    end
   end
 
   def broadcast_to_chat_update
-    broadcast_replace_later_to(dom_id(self.chat), target: dom_id(self), partial:'messages/message_frame', locals: { locals: { message: self }})
+    for chat_user in self.chat.chat_users do
+      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}", target: "message_#{id}", partial:'messages/message_frame', locals: { locals: { message: self }})
+    end
   end
 
   def markdown

@@ -31,11 +31,6 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        @message.chat.notify_all_except(current_user)
-        Chat.record_timestamps = false
-        @message.chat.updated_at = Time.now
-        @message.chat.save
-        Chat.record_timestamps = true
         format.html { head :ok }
         format.json { render :show, status: :created, location: @message }
       else

@@ -9,7 +9,7 @@
         </div>
     <% end %>
     <div class="card secondary">
-        <%= turbo_stream_from(dom_id chat) %>
+        <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(chat)) %>
         <div id="messages_container">
             <% if msg_type == 'ic' %>
                 <% for message in chat.messages.where(ooc: false) %>

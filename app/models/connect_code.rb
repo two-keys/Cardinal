@@ -15,7 +15,6 @@ class ConnectCode < ApplicationRecord
       self.remaining_uses -= 1
       self.chat.users << user
       self.chat.messages << Message.new(content: "#{chat.chat_users.find_by(user: user).icon} has joined the chat. #{remaining_uses} uses remaining.")
-      self.chat.notify_all_except(user)
       save
       true
     else
