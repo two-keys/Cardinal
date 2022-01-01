@@ -15,7 +15,6 @@ class ChatsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @chats }
-      format.turbo_stream { redirect_to chats_path }
     end
   end
 
