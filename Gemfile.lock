@@ -99,6 +99,7 @@ GEM
     gemoji (3.0.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    hiredis (0.6.3)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.0.1)
@@ -241,6 +242,7 @@ DEPENDENCIES
   devise
   faker
   gemoji
+  hiredis
   importmap-rails
   jbuilder
   pagy (~> 5.6)
