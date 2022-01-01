@@ -14,14 +14,17 @@ class ChatUser < ApplicationRecord
   before_validation :generate_icon, on: :create
 
   validates :user_id, uniqueness: { scope: :chat_id }
-  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 1 }
+  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }
 
   after_update_commit :broadcast_status
 
   def broadcast_status
-    redis = ActionCable.server.pubsub.send(:redis_connection)
-    if redis.pubsub("channels", "user_#{self.user.id}_chat_#{self.chat.id}").empty?
-      broadcast_update_to("user_" + self.user.id.to_s + "_notifications", target: "notifications", partial: 'notifications_frame')
+    # Rails tests do NOT support this
+    if !Rails.env.test?
+      redis = ActionCable.server.pubsub.send(:redis_connection)
+      if redis.pubsub("channels", "user_#{self.user.id}_chat_#{self.chat.id}").empty?
+        broadcast_update_to("user_" + self.user.id.to_s + "_notifications", target: "notifications", partial: 'notifications_frame')
+      end
     end
   end
 

@@ -18,6 +18,8 @@
     <% if user_signed_in? %>
       <li><%= button_to "Log Out", destroy_user_session_path, method: :delete %></li>
     <% end %>
-    <li><a href="#">Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %></a></li>
+    <% if Rails.env.development? %>
+      <li><a href="#">Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %></a></li>
+    <% end %>
   </ul>
 </nav>

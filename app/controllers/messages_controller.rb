@@ -2,6 +2,8 @@ class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
   before_action :viewed, only: %i[ show ]
   before_action :authenticate_user!
+  before_action :authorized?, only: [:edit, :update, :destroy]
+  before_action :authorized_create?, only: [:create]
 
   # GET /messages or /messages.json
   def index
@@ -27,8 +29,6 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = Message.new(message_params)
-
     respond_to do |format|
       if @message.save
         format.html { render partial: 'messages/form', locals: { locals: { message: Message.new, chat_id: @message.chat.id } } }
@@ -78,5 +78,19 @@ class MessagesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def message_params
       params.require(:message).permit(:content, :ooc, :user_id, :chat_id)
+    end
+
+    def authorized?
+      if @message.user_id != current_user.id || !current_user.joined?(@message.chat)
+        redirect_to root_path, alert: "You are not authorized to edit this message."
+      end
+    end
+
+    def authorized_create?
+      @message = Message.new(message_params)
+
+      if !current_user.joined?(@message.chat)
+        redirect_to root_path, alert: "You are not authorized to create a message in this chat."
+      end
     end
 end

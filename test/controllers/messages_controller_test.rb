@@ -1,48 +1,64 @@
 require "test_helper"
 
 class MessagesControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
-    @message = messages(:one)
-  end
-
-  test "should get index" do
-    get messages_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_message_url
-    assert_response :success
+    @message = messages(:user)
+    @user = users(:user)
+    @user2 = users(:user_two)
+    @chat = chats(:chat_one)
+    @chat.users << @user
   end
 
   test "should create message" do
+    sign_in(@user)
     assert_difference("Message.count") do
-      post messages_url, params: { message: { content: @message.content, ooc: @message.ooc } }
+      post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     end
 
-    assert_redirected_to message_url(Message.last)
+    assert :success
   end
 
-  test "should show message" do
-    get message_url(@message)
-    assert_response :success
+  test "unauthorized user should not create message" do
+    sign_in(@user2)
+    assert_no_difference("Message.count") do
+      post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
+    end
+
+    assert_redirected_to root_url
   end
 
-  test "should get edit" do
-    get edit_message_url(@message)
-    assert_response :success
+  test "not logged in should not create message" do
+    assert_no_difference("Message.count") do
+      post messages_url, params: { message: { content: 'test', ooc: 'false', chat_id: @chat.id} }
+    end
+
+    assert_redirected_to new_user_session_url
   end
 
   test "should update message" do
-    patch message_url(@message), params: { message: { content: @message.content, ooc: @message.ooc } }
-    assert_redirected_to message_url(@message)
+    sign_in(@user)
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+    assert :success
   end
 
-  test "should destroy message" do
-    assert_difference("Message.count", -1) do
-      delete message_url(@message)
-    end
+  test "unauthorized user should not update message" do
+    sign_in(@user2)
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+    assert_redirected_to root_url
+  end
 
-    assert_redirected_to messages_url
+  test "previously sent message should not update if user left chat" do
+    sign_in(@user)
+    post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
+    @chat.users.delete(@user)
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+    assert_redirected_to root_url
+  end
+
+  test "not logged in should not update message" do
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+    assert_redirected_to new_user_session_url
   end
 end

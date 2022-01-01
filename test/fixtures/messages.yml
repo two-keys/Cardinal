@@ -8,6 +8,7 @@ user:
   content: 'Lorem Ipsum ...... '
   user: user
   chat: chat_one
+
 system:
   content: 'Lorem Ipsum 2 Electric Boogaloo.'
   chat: chat_one

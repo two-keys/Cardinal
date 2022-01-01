@@ -7,6 +7,9 @@ class Message < ApplicationRecord
   belongs_to :user, optional: true
 
   validates :content, presence: true, length: { maximum: 50_000 }
+  validates :icon, presence: true, length: { maximum: 1 }
+  validate :authorization, on: :create
+  validate :authorization, on: :update
 
   before_validation :set_icon, on: :create
 
@@ -25,10 +28,13 @@ class Message < ApplicationRecord
   end
 
   def set_unreads
-    redis = ActionCable.server.pubsub.send(:redis_connection)
-    for chat_user in self.chat.chat_users do
-      if redis.pubsub("channels", "user_#{chat_user.id}_chat_#{self.chat.id}").empty?
-        chat_user.unread!
+    # Rails tests do NOT support this
+    if !Rails.env.test?
+      redis = ActionCable.server.pubsub.send(:redis_connection)
+      for chat_user in self.chat.chat_users do
+        if redis.pubsub("channels", "user_#{chat_user.id}_chat_#{self.chat.id}").empty?
+          chat_user.unread!
+        end
       end
     end
   end
@@ -63,6 +69,18 @@ class Message < ApplicationRecord
         self.icon = '🐦'
       else
         self.icon = self.user.chat_users.find_by(chat_id: self.chat_id).icon
+      end
+    end
+
+    def authorization
+      return if self.user_id.nil?
+      if !self.chat.users.include?(self.user)
+        errors.add("You are not authorized to do that.")
+        return
+      end
+      if user_id_changed? || chat_id_changed? && self.persisted?
+        errors.add("You are not authorized to do that.")
+        return
       end
     end
 end
