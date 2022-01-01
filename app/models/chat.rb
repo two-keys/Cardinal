@@ -17,11 +17,11 @@ class Chat < ApplicationRecord
 
   def set_viewed(user)
     chat_info = chat_users.find_by(user: user)
-    if messages.last.user != user && chat_info.status == 'unread'
+    if messages.last.user != user && chat_info.status.unread?
       chat_info.unanswered!
       return
     end
-    chat_info.ongoing! if chat_info.status == 'ended'
+    chat_info.ongoing! if chat_info.status.ended? || chat_info.status.unanswered? || chat_info.status.unread?
   end
 
   private
