@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'bin/**/*'
-    - 'config/environments/development.rb'
+    - 'config/environments/*'
     - 'config/initializers/devise.rb'
     - 'vendor/bundle/**/*'
 Style/Documentation:
@@ -16,9 +16,9 @@ Rails/UniqueValidationWithoutIndex:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 15
+  Enabled: false
 
 Metrics/AbcSize:
-  Max: 25
+  Enabled: false
 
 require: rubocop-rails

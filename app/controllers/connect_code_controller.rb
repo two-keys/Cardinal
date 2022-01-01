@@ -21,11 +21,13 @@ class ConnectCodeController < ApplicationController
     @chat.save
     @connect_code = ConnectCode.new(chat: @chat, user: current_user, remaining_uses: 8)
     @connect_code.save!
-    @chat.messages << Message.new(content: "Chat created.  \nConnect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left.")
+    creation_message = "Chat created.  \n"\
+                       "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+    @chat.messages << Message.new(content: creation_message)
     @connect_code.use(current_user)
     respond_to do |format|
-        format.html { redirect_to chat_path(@chat.uuid) }
-        format.json { render :show, status: :created, location: @chat.uuid }
+      format.html { redirect_to chat_path(@chat.uuid) }
+      format.json { render :show, status: :created, location: @chat.uuid }
     end
   end
 

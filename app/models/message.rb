@@ -22,32 +22,34 @@ class Message < ApplicationRecord
 
   def update_timestamp
     Chat.record_timestamps = false
-    chat.updated_at = Time.now
+    chat.updated_at = Time.zone.now
     Chat.record_timestamps = true
     chat.save!
   end
 
   def set_unreads
     # Rails tests do NOT support this
-    if !Rails.env.test?
-      redis = ActionCable.server.pubsub.send(:redis_connection)
-      for chat_user in self.chat.chat_users do
-        if redis.pubsub("channels", "user_#{chat_user.id}_chat_#{self.chat.id}").empty?
-          chat_user.unread!
-        end
-      end
+    return if Rails.env.test?
+
+    redis = ActionCable.server.pubsub.send(:redis_connection)
+    chat.chat_users.each do |chat_user|
+      chat_user.unread! if redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}").empty?
     end
   end
 
   def broadcast_to_chat
-    for chat_user in self.chat.chat_users do
-      broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}", target: 'messages_container', partial:'messages/message_frame', locals: { locals: { message: self }})
+    chat.chat_users.each do |chat_user|
+      broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
+                                target: 'messages_container',
+                                partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
 
   def broadcast_to_chat_update
-    for chat_user in self.chat.chat_users do
-      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}", target: "message_#{id}", partial:'messages/message_frame', locals: { locals: { message: self }})
+    chat.chat_users.each do |chat_user|
+      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
+                                 target: "message_#{id}",
+                                 partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
 
@@ -56,7 +58,7 @@ class Message < ApplicationRecord
   end
 
   def type
-    if self.user_id.nil?
+    if user_id.nil?
       'system'
     else
       'user'
@@ -64,23 +66,20 @@ class Message < ApplicationRecord
   end
 
   private
-    def set_icon
-      if self.user_id.nil?
-        self.icon = '🐦'
-      else
-        self.icon = self.user.chat_users.find_by(chat_id: self.chat_id).icon
-      end
-    end
 
-    def authorization
-      return if self.user_id.nil?
-      if !self.chat.users.include?(self.user)
-        errors.add("You are not authorized to do that.")
-        return
-      end
-      if user_id_changed? || chat_id_changed? && self.persisted?
-        errors.add("You are not authorized to do that.")
-        return
-      end
-    end
+  def set_icon
+    self.icon = if user_id.nil?
+                  '🐦'
+                else
+                  user.chat_users.find_by(chat_id: chat_id).icon
+                end
+  end
+
+  def authorization
+    return if user_id.nil?
+    return unless chat.users.include?(user)
+    return unless user_id_changed? || (chat_id_changed? && persisted?)
+
+    errors.add('You are not authorized to do that.')
+  end
 end

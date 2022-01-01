@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class MessagesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -11,45 +13,45 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     @chat.users << @user
   end
 
-  test "should create message" do
+  test 'should create message' do
     sign_in(@user)
-    assert_difference("Message.count") do
+    assert_difference('Message.count') do
       post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     end
 
     assert :success
   end
 
-  test "unauthorized user should not create message" do
+  test 'unauthorized user should not create message' do
     sign_in(@user2)
-    assert_no_difference("Message.count") do
+    assert_no_difference('Message.count') do
       post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     end
 
     assert_redirected_to root_url
   end
 
-  test "not logged in should not create message" do
-    assert_no_difference("Message.count") do
-      post messages_url, params: { message: { content: 'test', ooc: 'false', chat_id: @chat.id} }
+  test 'not logged in should not create message' do
+    assert_no_difference('Message.count') do
+      post messages_url, params: { message: { content: 'test', ooc: 'false', chat_id: @chat.id } }
     end
 
     assert_redirected_to new_user_session_url
   end
 
-  test "should update message" do
+  test 'should update message' do
     sign_in(@user)
     patch message_url(@message), params: { message: { content: 'test', ooc: true } }
     assert :success
   end
 
-  test "unauthorized user should not update message" do
+  test 'unauthorized user should not update message' do
     sign_in(@user2)
     patch message_url(@message), params: { message: { content: 'test', ooc: true } }
     assert_redirected_to root_url
   end
 
-  test "previously sent message should not update if user left chat" do
+  test 'previously sent message should not update if user left chat' do
     sign_in(@user)
     post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     @chat.users.delete(@user)
@@ -57,7 +59,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test "not logged in should not update message" do
+  test 'not logged in should not update message' do
     patch message_url(@message), params: { message: { content: 'test', ooc: true } }
     assert_redirected_to new_user_session_url
   end

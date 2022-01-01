@@ -20,21 +20,24 @@ class ChatUser < ApplicationRecord
 
   def broadcast_status
     # Rails tests do NOT support this
-    if !Rails.env.test?
-      redis = ActionCable.server.pubsub.send(:redis_connection)
-      if redis.pubsub("channels", "user_#{self.user.id}_chat_#{self.chat.id}").empty?
-        broadcast_update_to("user_" + self.user.id.to_s + "_notifications", target: "notifications", partial: 'notifications_frame')
-      end
-    end
+    return if Rails.env.test?
+
+    redis = ActionCable.server.pubsub.send(:redis_connection)
+
+    return unless redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").empty?
+
+    broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
+                                                         partial: 'notifications_frame')
   end
 
   private
-    def generate_icon
-      emojis = Emoji.all
-      emojis.delete '🐦' # System-only emoji
-      self.chat.chat_users.each do |chat_user|
-        emojis.delete(chat_user.icon)
-      end
-      self.icon = emojis.sample.raw
+
+  def generate_icon
+    emojis = Emoji.all
+    emojis.delete '🐦' # System-only emoji
+    chat.chat_users.each do |chat_user|
+      emojis.delete(chat_user.icon)
     end
+    self.icon = emojis.sample.raw
+  end
 end

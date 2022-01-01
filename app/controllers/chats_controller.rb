@@ -21,7 +21,7 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
-    @chat.set_viewed(current_user)
+    @chat.viewed(current_user)
   end
 
   # GET /chats/new
@@ -40,7 +40,9 @@ class ChatsController < ApplicationController
       if @chat.save
         @connect_code = ConnectCode.new(chat_id: @chat.id, user: current_user, remaining_uses: 9)
         @connect_code.save!
-        @chat.messages << Message.new(content: "Chat created by #{current_user.chat_users.find_by(chat: @chat).icon}  \nConnect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left.")
+        creation_message = "Chat created by #{current_user.chat_users.find_by(chat: @chat).icon}  \n"\
+                           "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+        @chat.messages << Message.new(content: creation_message)
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully created.' }
         format.json { render :show, status: :created, location: @chat.uuid }
       else
@@ -100,6 +102,7 @@ class ChatsController < ApplicationController
 
   def authorized?
     return if @chat.users.include?(current_user)
+
     redirect_to chats_path
   end
 end

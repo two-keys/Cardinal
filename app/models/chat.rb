@@ -15,7 +15,7 @@ class Chat < ApplicationRecord
     chat_users.find_by(user: user)
   end
 
-  def set_viewed(user)
+  def viewed(user)
     chat_info = chat_users.find_by(user: user)
     if messages.last.user != user && chat_info.unread?
       chat_info.unanswered!
@@ -29,5 +29,4 @@ class Chat < ApplicationRecord
   def generate_uuid
     self.uuid = SecureRandom.uuid
   end
-
 end
