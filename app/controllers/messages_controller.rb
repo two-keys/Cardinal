@@ -31,10 +31,10 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.html { head :ok }
+        format.html { render partial: 'messages/form', locals: { locals: { message: Message.new, chat_id: @message.chat.id } } }
         format.json { render :show, status: :created, location: @message }
       else
-        format.html { redirect_to chat_url(@message.chat.uuid), status: :unprocessable_entity }
+        format.html { render partial: 'messages/form', locals: { locals: { message: @message, chat_id: @message.chat.id } } }
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
     end
@@ -47,7 +47,7 @@ class MessagesController < ApplicationController
         format.html { head :ok }
         format.json { render :show, status: :ok, location: @message }
       else
-        format.html { redirect_to chat_url(@message.chat.uuid), status: :unprocessable_entity }
+        format.html { render partial: 'messages/form', locals: { locals: { message: @message, chat_id: @message.chat.id } } }
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
     end

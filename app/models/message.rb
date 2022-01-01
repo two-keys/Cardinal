@@ -6,7 +6,7 @@ class Message < ApplicationRecord
   belongs_to :chat
   belongs_to :user, optional: true
 
-  validates :content, presence: true, length: { minimum: 1, maximum: 50_000 }
+  validates :content, presence: true, length: { maximum: 50_000 }
 
   before_validation :set_icon, on: :create
 

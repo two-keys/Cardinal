@@ -27,6 +27,8 @@
         </div>
     </div>
     <div class="card secondary">
-        <%= render 'messages/form', locals: {message: Message.new, chat_id: chat.id} %>
+        <%= turbo_frame_tag "message_form_frame" do %>
+            <%= render 'messages/form', locals: {message: Message.new, chat_id: chat.id} %>
+        <% end %>
     </div>
 </div>
