@@ -1,11 +1,19 @@
 <nav id="nav">
   <ul>
     <li><a href="/">Home</a></li>
-    <li><a href="/">Directory</a></li>
-    <li><a href="/">Your Chats</a></li>
-    <li><a href="/">Username</a></li>
+    <% if user_signed_in? %>
+      <li><a href="/">Directory</a></li>
+      <li><a href="/">Your Chats</a></li>
+      <li> <%= link_to current_user.username, edit_user_registration_path %> </li>
+    <% else %>
+      <li><a href= <%= new_user_session_path %>>Sign In</a></li>
+      <li><a href= <%= new_user_registration_path %>>Sign Up</a></li>
+    <% end %>
     <li><a href="/">Donate</a></li>
     <li><a href="/">Site Use</a></li>
     <li><a href="/">Discord</a></li>
+    <% if user_signed_in? %>
+      <li><%= button_to "Log Out", destroy_user_session_path, method: :delete %></li>
+    <% end %>
   </ul>
 </nav>

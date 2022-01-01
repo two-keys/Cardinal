@@ -2,7 +2,9 @@
 
 class AnnouncementsController < ApplicationController
   include Pagy::Backend
+  include ApplicationHelper
 
+  before_action :require_admin, only: %i[new edit create update destroy]
   before_action :set_announcement, only: %i[show edit update destroy]
 
   # GET /announcements or /announcements.json

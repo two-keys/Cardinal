@@ -1,0 +1,22 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the "{}" from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+admin:
+  username: admin
+  email: admin@cardinal.cc
+  encrypted_password: <%= User.new.send(:password_digest, '123456') %>
+  admin: true
+
+user:
+  username: user
+  email: user@cardinal.cc
+  encrypted_password: <%= User.new.send(:password_digest, '123456') %>
+  verified: true
+
+unverified:
+  username: unverified
+  email: unverified@cardinal.cc
+  encrypted_password: <%= User.new.send(:password_digest, '123456') %>

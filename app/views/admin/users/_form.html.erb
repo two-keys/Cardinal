@@ -1,0 +1,52 @@
+<%= form_with scope: :user, method: :patch, url: admin_user_path do |f| %>
+  <% if user.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="username">
+    <%= f.label :username %><br />
+    <%= f.text_field :username, autocomplete: "username" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :verified %><br />
+    <%= f.check_box :verified %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin %><br />
+    <%= f.check_box :admin, disabled: true %>
+  <div>
+
+  <div class="field">
+    <%= f.label :unban_at %><br />
+    <%= f.text_field :unban_at, class: "datepicker" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ban_reason %><br />
+    <%= f.text_field :ban_reason %>
+  </div>
+
+  <div class="field">
+    <%= f.label :delete_at %><br />
+    <%= f.text_field :delete_at, class: "datepicker" %>
+  </div>
+
+  <%= button_to "Delete account", admin_user_path(@user), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+  <%= f.submit %>
+<% end %>

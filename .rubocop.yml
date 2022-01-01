@@ -1,5 +1,17 @@
-require: rubocop-rails
 AllCops:
-    NewCops: enable
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'bin/**/*'
+    - 'config/environments/development.rb'
+    - 'config/initializers/devise.rb'
 Style/Documentation:
   Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+require: rubocop-rails
