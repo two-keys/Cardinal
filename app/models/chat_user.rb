@@ -16,9 +16,10 @@ class ChatUser < ApplicationRecord
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }
 
-  after_update_commit :broadcast_status
+  after_update_commit :broadcast_status_to_users
+  after_commit :broadcast_status_to_chat
 
-  def broadcast_status
+  def broadcast_status_to_users
     # Rails tests do NOT support this
     return if Rails.env.test?
 
@@ -28,6 +29,12 @@ class ChatUser < ApplicationRecord
 
     broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
                                                          partial: 'notifications_frame')
+  end
+
+  def broadcast_status_to_chat
+    broadcast_replace_later_to("chat_#{chat.id}_userlist", target: "chat_#{chat.id}_userlist",
+                                                           partial: 'chats/chat_sidebar',
+                                                           locals: { locals: { chat: chat } })
   end
 
   private

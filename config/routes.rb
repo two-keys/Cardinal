@@ -2,7 +2,9 @@
 
 Rails.application.routes.draw do
   resources :messages, only: %i[show create destroy update edit]
-  resources :chats
+  resources :chats, except: :show
+  get 'chats/:id', to: 'chats#show'
+  get 'chats/:id/:page', to: 'chats#show'
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'

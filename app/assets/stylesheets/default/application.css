@@ -34,18 +34,51 @@ body {
 }
 
 #site_container {
-    display: grid;
-    grid-template-areas: "sidebar_left main_content sidebar_right";
-    grid-template-columns: 1fr 1000px 1fr;
-}
+    display: grid; 
+    grid-auto-flow: row dense; 
+    grid-template-columns: 0.8fr 1fr 1fr 0.8fr; 
+    gap: 1px 1px; 
+    grid-template-areas: 
+      "top_1 info_top info_top top_2"
+      "sidebar_left main_content main_content sidebar_right"
+      "bottom_1 info_bottom info_bottom bottom_2"; 
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 
 #main {
     color: var(--main-text-color);
     text-align: center;
     width: 100%;
-    padding-bottom: 100px;
     text-align: center;
     grid-area: main_content;
+}
+
+#left_sidebar {
+    grid-area: sidebar_left;
+    position: -webkit-sticky;
+    position: sticky;
+    align-self: start;
+    top: 50px;
+    left: 0;
+}
+
+#right_sidebar {
+    grid-area: sidebar_right;
+    position: -webkit-sticky;
+    position: sticky;
+    align-self: start;
+    top: 50px;
+    right: 0;
+}
+
+#info_top {
+    grid-area: info_top;
+}
+
+#info_bottom {
+    grid-area: info_bottom;
+    padding-bottom: 100px;
 }
 
 #header {

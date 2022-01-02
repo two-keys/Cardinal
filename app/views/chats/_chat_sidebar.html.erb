@@ -1,0 +1,20 @@
+<%= turbo_stream_from(dom_id(locals[:chat]) + "_userlist") %>
+<%= turbo_frame_tag dom_id(locals[:chat]) +"_userlist" do %>
+    <div id="<%= dom_id locals[:chat] %>_users" class="chat_left_sidebar">
+        <div class="card primary">
+            <div>
+                <%= link_to "Edit this chat", edit_chat_path(locals[:chat].uuid) %> |
+                <%= link_to "Back to chats", chats_path %>
+
+                <%= button_to "Delete", chat_path(locals[:chat].uuid), method: :delete, data: {turbo_frame: '_top' }  %>
+            </div>
+            <ul id="sidebar_users">
+                <% for user in locals[:chat].users %>
+                    <% icon = user.chat_users.find_by(chat: locals[:chat]).icon %>
+                    <% name = Emoji.find_by_unicode(icon).name.capitalize().gsub("_", " ") %>
+                    <li><div class="sidebar_user_icon"><span><%= icon %></span></div><%= name %></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>

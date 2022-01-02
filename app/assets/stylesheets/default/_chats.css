@@ -155,3 +155,26 @@ code {
   border: 2px solid var(--card-textarea-bg-color);
   border-right: 0;
 }
+
+#sidebar_users {
+  list-style: none;
+  text-decoration: none;
+  color: var(--card-text-color-secondary);
+}
+
+#sidebar_users>li {
+  margin-bottom: 10px;
+}
+
+.sidebar_user_icon {
+  display: inline-block;
+  text-align: center;
+  line-height: 34px;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: var(--main-bg-color);
+}

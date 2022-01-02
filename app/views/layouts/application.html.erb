@@ -26,8 +26,20 @@
         <%= alert %>
       </div>
       <div id="site_container">
+        <div id="left_sidebar">
+          <%= yield :left_sidebar %>
+        </div>
+        <div id="info_top">
+          <%= yield :info_top %>
+        </div>
+        <div id="info_bottom">
+          <%= yield :info_bottom %>
+        </div>
         <div id="main">
           <%= yield %>
+        </div>
+        <div id="right_sidebar">
+          <%= yield :right_sidebar %>
         </div>
       </div>
       <%= render 'footer' %>

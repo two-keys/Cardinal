@@ -50,6 +50,9 @@ class Message < ApplicationRecord
       broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
                                  target: "message_#{id}",
                                  partial: 'messages/message_frame', locals: { locals: { message: self } })
+      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}_history",
+                                 target: "message_#{id}",
+                                 partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
 
