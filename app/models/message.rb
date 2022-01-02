@@ -13,7 +13,7 @@ class Message < ApplicationRecord
 
   before_validation :set_icon, on: :create
 
-  default_scope { order('created_at ASC') }
+  default_scope { order('created_at DESC') }
 
   after_create :update_timestamp
   after_create_commit :set_unreads

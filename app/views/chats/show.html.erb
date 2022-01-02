@@ -16,7 +16,7 @@
             <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat) + "_history") %>
         <% end %>
         <div id="messages_container">
-            <% for message in @messages %>
+            <% for message in @messages.reverse %>
                 <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
             <% end %>
         </div>
