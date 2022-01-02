@@ -17,7 +17,7 @@ class Chat < ApplicationRecord
 
   def viewed(user)
     chat_info = chat_users.find_by(user: user)
-    if messages.last.user != user && chat_info.unread?
+    if messages.first.user != user && chat_info.unread?
       chat_info.unanswered!
       return
     end
