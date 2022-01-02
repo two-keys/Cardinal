@@ -18,7 +18,7 @@ class ChatUser < ApplicationRecord
 
   after_update_commit :broadcast_status_to_users
   after_destroy :broadcast_status_to_chat
-  after_create :broadcast_to_chat
+  after_create :broadcast_status_to_chat
 
   def broadcast_status_to_users
     # Rails tests do NOT support this
