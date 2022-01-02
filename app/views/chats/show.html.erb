@@ -10,12 +10,12 @@
 
 <div id="<%= dom_id @chat %>_container">
     <div class="card secondary">
-        <% if @pagy.page == 1 %>
-            <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat)) %>
-        <% else %>
-            <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat) + "_history") %>
-        <% end %>
         <div id="messages_container">
+            <% if @pagy.page == 1 %>
+                <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat)) %>
+            <% else %>
+                <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat) + "_history") %>
+            <% end %>
             <% for message in @messages.reverse %>
                 <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
             <% end %>

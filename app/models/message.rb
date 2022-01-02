@@ -39,6 +39,10 @@ class Message < ApplicationRecord
 
   def broadcast_to_chat
     chat.chat_users.each do |chat_user|
+      if chat.messages.count > 20
+        broadcast_remove_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
+                             target: "message_#{chat.messages.reverse[-20].id}")
+      end
       broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
                                 target: 'messages_container',
                                 partial: 'messages/message_frame', locals: { locals: { message: self } })
