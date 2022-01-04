@@ -95,7 +95,7 @@
 #sidebar_users {
     list-style: none;
     text-decoration: none;
-    color: var(--card-text-color-secondary);
+    color: var(--card-text-color);
 }
   
 #sidebar_users>li {
