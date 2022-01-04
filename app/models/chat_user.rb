@@ -8,7 +8,8 @@ class ChatUser < ApplicationRecord
     ongoing: 0,
     unanswered: 1,
     unread: 2,
-    ended: 3
+    ended: 3,
+    ended_viewed: 4
   }
 
   before_validation :generate_icon, on: :create

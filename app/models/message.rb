@@ -33,7 +33,11 @@ class Message < ApplicationRecord
 
     redis = ActionCable.server.pubsub.send(:redis_connection)
     chat.chat_users.each do |chat_user|
-      chat_user.unread! if redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}").empty?
+      redis_result = redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}")
+      chat_user.unread! if chat_user.user != user && chat.messages.count > 0 && redis_result.empty?
+      if redis_result
+        chat_user.chat.viewed(chat_user.user)
+      end
     end
   end
 

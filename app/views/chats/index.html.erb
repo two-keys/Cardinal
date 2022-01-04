@@ -12,14 +12,14 @@
   <% @chats.each do |chat| %>
     <% settings = chat.get_user_info(current_user) %>
     <% if settings.status %>
-    <div class="card secondary <%= settings.status %>">
+      <div class="card secondary <%= (settings.status == "ended_viewed" ? "ended" : settings.status) %>">
     <% else %>
     <div class="card secondary">
     <% end %>
       <% if settings.title %>
-        <%= link_to settings.title + " (" + settings.status + ")", chat_path(chat.uuid) %>
+        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
       <% else %>
-        <%= link_to chat.uuid + " (" + settings.status + ")", chat_path(chat.uuid) %>
+        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
       <% end %>
       <% if settings.description %>
         <p><%= settings.description %></p>
