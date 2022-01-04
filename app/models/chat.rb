@@ -15,9 +15,9 @@ class Chat < ApplicationRecord
     chat_users.find_by(user: user)
   end
 
-  def message_sent(message)
+  def message_sent
     chat_users.each do |chat_user|
-      chat_user.message_sent(message)
+      chat_user.message_sent
     end
   end
 

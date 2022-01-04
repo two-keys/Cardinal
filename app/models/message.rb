@@ -28,7 +28,7 @@ class Message < ApplicationRecord
   end
 
   def update_chat
-    chat.message_sent(self)
+    chat.message_sent
   end
 
   def broadcast_create

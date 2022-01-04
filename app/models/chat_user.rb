@@ -34,7 +34,7 @@ class ChatUser < ApplicationRecord
                                                            locals: { locals: { chat: chat } })
   end
 
-  def message_sent(_message)
+  def message_sent
     dynamic_notify unless Rails.env.test?
   end
 
