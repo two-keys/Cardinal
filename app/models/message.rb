@@ -34,10 +34,8 @@ class Message < ApplicationRecord
     redis = ActionCable.server.pubsub.send(:redis_connection)
     chat.chat_users.each do |chat_user|
       redis_result = redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}")
-      chat_user.unread! if chat_user.user != user && chat.messages.count > 0 && redis_result.empty?
-      if !redis_result.empty?
-        chat_user.chat.viewed(chat_user.user)
-      end
+      chat_user.unread! if chat_user.user != user && chat.messages.count.positive? && redis_result.empty?
+      chat_user.chat.viewed(chat_user.user) unless redis_result.empty?
     end
   end
 
@@ -45,7 +43,7 @@ class Message < ApplicationRecord
     chat.chat_users.each do |chat_user|
       if chat.messages.count > 20
         broadcast_remove_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
-                             target: "message_#{chat.messages.reverse[-20].id}")
+                            target: "message_#{chat.messages.reverse[-20].id}")
       end
       broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
                                 target: 'messages_container',

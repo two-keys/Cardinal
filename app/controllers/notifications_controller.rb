@@ -11,7 +11,7 @@ class NotificationsController < ApplicationController
   end
 
   def notification_count
-    notifications = ChatUser.where(user: current_user, status: [:unread, :unanswered, :ended])
+    notifications = ChatUser.where(user: current_user, status: %i[unread unanswered ended])
     unread_count = notifications.where(status: :unread).count
     unanswered_count = notifications.where(status: :unanswered).count
     ended_count = notifications.where(status: :ended).count

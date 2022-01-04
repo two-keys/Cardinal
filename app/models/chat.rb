@@ -19,13 +19,13 @@ class Chat < ApplicationRecord
     chat_info = chat_users.find_by(user: user)
 
     return if chat_info.ongoing?
-    
+
     if messages.count == 1
-      chat_info.ongoing! 
+      chat_info.ongoing!
       return
     end
-    if messages.first.user != user && messages.first.user != nil
-      chat_info.unanswered! 
+    if messages.first.user != user && !messages.first.user.nil?
+      chat_info.unanswered!
       return
     end
     if chat_info.ended?
