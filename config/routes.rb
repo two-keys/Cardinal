@@ -10,8 +10,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  post 'theme' => 'theme_preference#update'
-
   post 'connect_code' => 'connect_code#create'
   patch 'connect_code' => 'connect_code#update'
 

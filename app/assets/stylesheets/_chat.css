@@ -1,0 +1,180 @@
+#new_message_ooc {
+    display: inline-block;
+}
+
+#new_message_submit {
+    display: inline;
+    float: right;
+}
+
+#messages_container>*>.message {
+    border: 2px solid var(--card-textarea-bg-color);
+    border-radius: 10px;
+    background-color: var(--card-textarea-bg-color);
+}
+
+#messages_container > * > .message.ooc {
+  background-color: var(--card-bg-color-secondary);
+  border: 2px solid var(--card-textarea-bg-color);
+}
+
+.type_notif {
+  position: relative;
+  right: 0px;
+}
+
+.message_edited_at {
+  font-size: 0.8em;
+  position: relative;
+  bottom: -25px;
+  left: 0;
+  opacity: 75%;
+}
+
+.message_created_at {
+  font-size: 0.8em;
+  position: relative;
+  bottom: -25px;
+  right: 0;
+  opacity: 75%;
+}
+
+.message_break {
+  position: relative;
+  bottom: 10px;
+  width: 100%;
+  opacity: 50%;
+}
+
+.message_edit_link {
+  position: relative;
+  float: right;
+  bottom: -25px;
+  opacity: 75%;
+}
+
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.pending_message {
+  height: 116px;
+}
+
+.card.chat { 
+  background: linear-gradient(to top right,transparent 50%,rgb(155, 155, 155) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+}
+
+#chats .card.ongoing {
+  border-right: 6px solid var(--ongoing-color); 
+  background: linear-gradient(to top right,transparent 50%,var(--ongoing-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.unread {
+  border-right: 6px solid var(--unread-color);
+  background: linear-gradient(to top right,transparent 50%,var(--unread-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.unanswered {
+  border-right: 6px solid var(--unanswered-color);
+  border-left: #eee;
+  background: linear-gradient(to top right,transparent 50%,var(--unanswered-color) 0) 100% 0/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+#chats .card.ended {
+  border-right: 6px solid var(--ended-color);
+  background: linear-gradient(to top right,transparent 50%,var(--ended-color) 0) top right/40px 40px no-repeat, var(--card-bg-color-secondary);
+  background-clip: border-box;
+  background-position-x: calc(100% + 6px);
+}
+
+#sidebar_users {
+    list-style: none;
+    text-decoration: none;
+    color: var(--card-text-color-secondary);
+}
+  
+#sidebar_users>li {
+    margin-bottom: 10px;
+}
+  
+.sidebar_user_icon {
+    display: inline-block;
+    text-align: center;
+    line-height: 34px;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: var(--main-bg-color);
+}
+
+
+.chat-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Style button like a link */
+.chat-actions button {
+    background: none;
+    color: var(--main-text-color);
+    text-decoration: underline;
+    border: none;
+    padding: 0;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+
+
+@media only screen and (min-width: 841px) {
+    #chats .card .message>.user_icon {
+        right: -160px;
+        border-radius: 50%;
+        padding: 30px;
+        padding-top: 35px;
+        padding-bottom: 35px;
+    
+    }
+
+    .user_icon {
+        position: relative;
+        display: inline;
+        float: right;
+        right: -108px;
+        border-radius: 0 50% 50% 0;
+        padding: 30px;
+        padding-right: 23px;
+        background-color: var(--card-bg-color-secondary);
+        font-size: 2.5em;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .message_edit_link {
+        position: relative;
+        right: -95px;
+        bottom: -25px;
+        float: right;
+        opacity: 75%;
+    }
+
+    #messages_container > * > .message.ooc > .user_icon {
+        background-color: var(--card-bg-color-secondary);
+        border: 2px solid var(--card-textarea-bg-color);
+        border-left: 0;
+    }
+
+
+    #messages_container>*>.message>.user_icon {
+        background-color: var(--card-textarea-bg-color);
+    }
+}

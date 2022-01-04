@@ -6,15 +6,61 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "default/application", "data-turbo-track": "reload" %>
-    <% if cookies['theme'] != nil && cookies['theme'] != "default" && Rails.application.config.themes.include?(cookies['theme']) %>
-      <%= stylesheet_link_tag cookies['theme'] + "/application", "data-turbo-track": "reload" %>
-    <% end %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script>
+      function checkLocalStorage() {
+          var mod = 'test';
+          try {
+              localStorage.setItem(mod, mod);
+              localStorage.removeItem(mod);
+              return true;
+          } catch(e) {
+              return false;
+          }
+      }
+
+      function checkTheme() {
+        const theme = localStorage.getItem('theme');
+        if (theme) {
+          document.documentElement.className = theme;
+        } else {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.className = 'dark-cardinal';
+          } else {
+            document.documentElement.className = 'light-cardinal';
+          }
+        }
+      }
+      checkTheme();
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        const newColorScheme = e.matches ? "dark" : "light";
+        if (document.documentElement.className.startsWith("dark-") && newColorScheme === "light") {
+          document.documentElement.className = document.documentElement.className.replace("dark-", "light-");
+        } else if (document.documentElement.className.startsWith("light-") && newColorScheme === "dark") {
+          document.documentElement.className = document.documentElement.className.replace("light-", "dark-");
+        }
+      });
+
+      function changeTheme(theme) {
+        document.documentElement.className = theme;
+        if (checkLocalStorage()) {
+          localStorage.setItem('theme', theme);
+        }
+      }
+
+      function toggleDarkMode() {
+        if (document.documentElement.className.startsWith("dark-")) {
+          changeTheme(document.documentElement.className.replace("dark-", "light-"));
+        } else if (document.documentElement.className.startsWith("light-")) {
+          changeTheme(document.documentElement.className.replace("light-", "dark-"));
+        }
+      }
+    </script>
   </head>
 
   <body>
-    <div>
+    <div id="site">
       <header id="header">
         <a href="/">
           <%= image_tag 'titlebar.png' %>
@@ -44,5 +90,20 @@
       </div>
       <%= render 'footer' %>
     </div>
+  <script>
+    // Textarea auto-grow
+    var tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+      tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+      tx[i].addEventListener("input", OnInput, false);
+    }
+    function OnInput() {
+      this.style.height = "auto";
+      this.style.height = (this.scrollHeight) + "px";
+    }
+    
+    // Toggle dark mode
+    document.getElementById('theme_button').addEventListener('click', toggleDarkMode);
+  </script>
   </body>
 </html>

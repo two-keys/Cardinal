@@ -1,12 +1,16 @@
 <div id="announcements_container">
     <div class="card primary">
-        <%= link_to "New announcement", new_announcement_path %>
-        <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+        <div class="pagination">
+            <%= link_to "New announcement", new_announcement_path %>
+            <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+        </div>
     </div>
     <% @announcements.each do |announcement| %>
         <%= render announcement %>
     <% end %>
     <div class="card primary">
-        <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+        <div class="pagination">
+            <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+        </div>
     </div>
 </div>

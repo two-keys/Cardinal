@@ -2,7 +2,7 @@
   <ul>
     <li><a href="/">Home</a></li>
     <% if user_signed_in? %>
-      <li><a href="/">Directory</a></li>
+      <li class="disabled"><a href="/">Directory</a></li>
       <li>
         <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
         <%= render 'notifications_frame' %>
@@ -12,14 +12,16 @@
       <li><a href= <%= new_user_session_path %>>Sign In</a></li>
       <li><a href= <%= new_user_registration_path %>>Sign Up</a></li>
     <% end %>
-    <li><a href="/">Donate</a></li>
-    <li><a href="/">Site Use</a></li>
-    <li><a href="/">Discord</a></li>
+    <li class="disabled"><a href="/">Donate</a></li>
+    <li class="disabled"><a href="/">Site Use</a></li>
+    <li class="disabled"><a href="/">Discord</a></li>
     <% if user_signed_in? %>
       <li><%= button_to "Log Out", destroy_user_session_path, method: :delete %></li>
     <% end %>
     <% if Rails.env.development? %>
-      <li><a href="#">Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %></a></li>
+      <li id="online_count">
+        <span><a href="#">Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %></a></span>
+      </li>
     <% end %>
   </ul>
 </nav>
