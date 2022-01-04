@@ -35,7 +35,7 @@ class Message < ApplicationRecord
     chat.chat_users.each do |chat_user|
       redis_result = redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}")
       chat_user.unread! if chat_user.user != user && chat.messages.count > 0 && redis_result.empty?
-      if redis_result
+      if !redis_result.empty?
         chat_user.chat.viewed(chat_user.user)
       end
     end

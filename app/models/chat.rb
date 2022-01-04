@@ -18,6 +18,8 @@ class Chat < ApplicationRecord
   def viewed(user)
     chat_info = chat_users.find_by(user: user)
 
+    return if chat_info.ongoing?
+    
     if messages.count == 1
       chat_info.ongoing! 
       return

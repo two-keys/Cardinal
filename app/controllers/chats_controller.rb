@@ -4,10 +4,10 @@ class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy read]
+  before_action :set_chat, only: %i[show edit update destroy read forceongoing]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[show edit update destroy read]
+  before_action :authorized?, only: %i[show edit update destroy read forceongoing]
 
   # GET /chats or /chats.json
   def index
@@ -77,6 +77,16 @@ class ChatsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to chats_url, notice: 'Chat was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /chats/1/forceongoing
+  def forceongoing
+    chat_user = @chat.chat_users.find_by(user: current_user)
+    chat_user.ongoing!
+    respond_to do |format|
+      format.html { redirect_to edit_chat_path(@chat.uuid), notice: 'Chat was successfully updated.' }
+      format.json { render :show, status: :ok, location: @chat.uuid }
     end
   end
 

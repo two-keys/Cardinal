@@ -1,7 +1,29 @@
 <%= turbo_frame_tag "notifications" do %>
-    <% if notifications.count > 0 %>
-        <%= link_to "Your Chats (#{notifications.count})", chats_path, data: {turbo_frame: '_top' } %>
-    <% else %>
-        <%= link_to "Your Chats", chats_path, data: {turbo_frame: '_top' }  %>
+    <%= link_to "Your Chats", chats_path, data: {turbo_frame: '_top' } %>
+    <% if notifications[:unread] > 0 || notifications[:unanswered] > 0 || notifications[:ended] > 0 %>
+        <span id="notif-values">
+            <% if notifications[:unread] > 0 %>
+                <% unread_class = "alone" if notifications[:unanswered] == 0 && notifications[:ended] == 0 %>
+                <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
+                <span id="notif-unread" class="notif-value <%= unread_class %>">
+                    <%= notifications[:unread] %>
+                </span>
+            <% end %>
+            <% if notifications[:unanswered] > 0 %>
+                <% unanswered_class = "alone" if notifications[:unread] == 0 && notifications[:ended] == 0 %>
+                <% unanswered_class = "rightmost" if notifications[:unread] > 0 && notifications[:ended] == 0 %>
+                <% unanswered_class = "leftmost" if notifications[:unread] == 0 && notifications[:ended] > 0 %>
+                <span id="notif-unanswered" class="notif-value <%= unanswered_class %>">
+                    <%= notifications[:unanswered] %>
+                </span>
+            <% end %>
+            <% if notifications[:ended] > 0 %>
+                <% ended_class = "alone" if notifications[:unread] == 0 && notifications[:unanswered] == 0 %>
+                <% ended_class = "rightmost" if notifications[:unread] > 0 || notifications[:unanswered] > 0 %>
+                <span id="notif-ended" class="notif-value <%= ended_class %>">
+                    <%= notifications[:ended] %>
+                </span>
+            <% end %>
+        </span>
     <% end %>
 <% end %>

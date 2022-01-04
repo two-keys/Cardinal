@@ -21,3 +21,5 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<%= button_to "Force Ongoing", chats_path + "/" + chat.uuid + "/forceongoing", method: :post %>

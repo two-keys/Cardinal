@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   post 'connect_code' => 'connect_code#create'
   patch 'connect_code' => 'connect_code#update'
 
+  post 'chats/:id/forceongoing' => 'chats#forceongoing'
+
   get 'notifications' => 'notifications#index'
   resources :announcements
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
