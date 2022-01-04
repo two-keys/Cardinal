@@ -39,6 +39,7 @@ class ChatUser < ApplicationRecord
   end
 
   def dynamic_notify
+    redis = ActionCable.server.pubsub.send(:redis_connection)
     if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").count.zero?
       notify!
     else
