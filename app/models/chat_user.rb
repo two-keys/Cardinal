@@ -17,17 +17,12 @@ class ChatUser < ApplicationRecord
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }
 
-  after_update_commit :broadcast_status_to_users
   after_create :broadcast_status_to_chat
   after_destroy :broadcast_status_to_chat
+  after_save :broadcast_status_to_user
 
-  def broadcast_status_to_users
-    # Rails tests do NOT support this
-    return if Rails.env.test?
-
-    redis = ActionCable.server.pubsub.send(:redis_connection)
-
-    return unless redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").empty?
+  def broadcast_status_to_user
+    return unless saved_change_to_status?
 
     broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
                                                          partial: 'notifications_frame')
@@ -37,6 +32,50 @@ class ChatUser < ApplicationRecord
     broadcast_replace_later_to("chat_#{chat.id}_userlist", target: "chat_#{chat.id}_userlist",
                                                            partial: 'chats/chat_sidebar',
                                                            locals: { locals: { chat: chat } })
+  end
+
+  def message_sent(_message)
+    dynamic_notify unless Rails.env.test?
+  end
+
+  def dynamic_notify
+    if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").count.zero?
+      notify!
+    else
+      viewed!
+    end
+  end
+
+  ## This is kind of forced to have high complexity, there's a lot that
+  ## goes into determining the user's notification status.
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def viewed!
+    return if ended_viewed?
+
+    if ended?
+      self.status = 'ended_viewed'
+    elsif unread?
+      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
+      self.status = 'unanswered' if chat.messages.last.user != user
+    elsif unanswered?
+      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
+    else
+      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
+      self.status = 'unanswered' if chat.messages.last.user != user && !chat.messages.last.user.nil?
+    end
+    save!
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+
+  def notify!
+    return if ended?
+    return if ended_viewed?
+    return if chat.messages.count == 1
+
+    self.status = 'unread'
+    save!
   end
 
   private

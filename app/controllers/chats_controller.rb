@@ -20,8 +20,8 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
-    @pagy, @messages = pagy(@chat.messages, items: 20)
-    @chat.viewed(current_user) if @pagy.page == 1
+    @pagy, @messages = pagy(@chat.messages.display, items: 20)
+    @chat.viewed!(current_user) if @pagy.page == 1
   end
 
   # GET /chats/new

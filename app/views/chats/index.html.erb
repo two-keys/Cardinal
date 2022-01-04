@@ -25,8 +25,8 @@
         <p><%= settings.description %></p>
       <% end %>
       <hr />
-      <% if chat.messages.first %>
-        <%= render 'messages/message', locals: { message: chat.messages.first, current_user_id: current_user.id } %>
+      <% if chat.messages.last %>
+        <%= render 'messages/message', locals: { message: chat.messages.last, current_user_id: current_user.id } %>
       <% else %>
         <i>No messages yet.</i>
       <% end %>

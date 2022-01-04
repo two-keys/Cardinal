@@ -2,7 +2,6 @@
 
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[show edit update destroy]
-  before_action :viewed, only: %i[show]
   before_action :authenticate_user!
   before_action :authorized?, only: %i[edit update destroy]
   before_action :authorized_create?, only: [:create]
@@ -68,10 +67,6 @@ class MessagesController < ApplicationController
       format.html { redirect_to messages_url, notice: 'Message was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
-  def viewed
-    @message.chat.viewed(current_user) if @message == @message.chat.messages.last
   end
 
   private

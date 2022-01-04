@@ -15,25 +15,14 @@ class Chat < ApplicationRecord
     chat_users.find_by(user: user)
   end
 
-  def viewed(user)
-    chat_info = chat_users.find_by(user: user)
-
-    return if chat_info.ongoing?
-
-    if messages.count == 1
-      chat_info.ongoing!
-      return
+  def message_sent(message)
+    chat_users.each do |chat_user|
+      chat_user.message_sent(message)
     end
-    if messages.first.user != user && !messages.first.user.nil?
-      chat_info.unanswered!
-      return
-    end
-    if chat_info.ended?
-      chat_info.ended_viewed!
-      return
-    end
+  end
 
-    chat_info.ongoing!
+  def viewed!(user)
+    chat_users.find_by(user: user).viewed!
   end
 
   private

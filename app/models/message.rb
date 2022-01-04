@@ -13,12 +13,12 @@ class Message < ApplicationRecord
 
   before_validation :set_icon, on: :create
 
-  default_scope { order('created_at DESC') }
+  scope :display, -> { order('created_at DESC') }
 
   after_create :update_timestamp
-  after_create_commit :set_unreads
-  after_create_commit :broadcast_to_chat
-  after_update_commit :broadcast_to_chat_update
+  after_create_commit :update_chat
+  after_create_commit :broadcast_create
+  after_update_commit :broadcast_update
 
   def update_timestamp
     Chat.record_timestamps = false
@@ -27,19 +27,11 @@ class Message < ApplicationRecord
     chat.save!
   end
 
-  def set_unreads
-    # Rails tests do NOT support this
-    return if Rails.env.test?
-
-    redis = ActionCable.server.pubsub.send(:redis_connection)
-    chat.chat_users.each do |chat_user|
-      redis_result = redis.pubsub('channels', "user_#{chat_user.id}_chat_#{chat.id}")
-      chat_user.unread! if chat_user.user != user && chat.messages.count.positive? && redis_result.empty?
-      chat_user.chat.viewed(chat_user.user) unless redis_result.empty?
-    end
+  def update_chat
+    chat.message_sent(self)
   end
 
-  def broadcast_to_chat
+  def broadcast_create
     chat.chat_users.each do |chat_user|
       if chat.messages.count > 20
         broadcast_remove_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
@@ -51,7 +43,7 @@ class Message < ApplicationRecord
     end
   end
 
-  def broadcast_to_chat_update
+  def broadcast_update
     chat.chat_users.each do |chat_user|
       broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
                                  target: "message_#{id}",
