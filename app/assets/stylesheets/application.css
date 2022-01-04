@@ -132,6 +132,10 @@ body {
     padding-bottom: 100px;
 }
 
+.site-alert {
+    text-align: center;
+}
+
 @media only screen and (max-width: 840px) {
     #site_container {
         display: grid; 
