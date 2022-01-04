@@ -5,7 +5,12 @@
       <li class="disabled"><a href="/">Directory</a></li>
       <li>
         <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
-        <%= render 'notifications_frame' %>
+        <% notifications = ChatUser.where(user: current_user, status: %i[unread unanswered ended]) %>
+        <% unread_count = notifications.where(status: :unread).count %>
+        <% unanswered_count = notifications.where(status: :unanswered).count %>
+        <% ended_count = notifications.where(status: :ended).count %>
+        <% notification_counts = { unread: unread_count, unanswered: unanswered_count, ended: ended_count } %>
+        <%= render 'notifications', notifications: notification_counts %>
       </li>
       <li> <%= link_to current_user.username, edit_user_registration_path %> </li>
     <% else %>

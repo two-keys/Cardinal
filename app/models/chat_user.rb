@@ -23,9 +23,13 @@ class ChatUser < ApplicationRecord
 
   def broadcast_status_to_user
     return unless saved_change_to_status?
-
+    notifications = ChatUser.where(user: user, status: %i[unread unanswered ended])
+    unread_count = notifications.where(status: :unread).count
+    unanswered_count = notifications.where(status: :unanswered).count
+    ended_count = notifications.where(status: :ended).count
+    notification_counts = { unread: unread_count, unanswered: unanswered_count, ended: ended_count }
     broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
-                                                         partial: 'notifications_frame')
+                                                         partial: 'notifications', locals: { notifications: notification_counts })
   end
 
   def broadcast_status_to_chat
