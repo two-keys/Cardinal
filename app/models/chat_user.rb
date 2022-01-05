@@ -1,0 +1,79 @@
+# frozen_string_literal: true
+
+class ChatUser < ApplicationRecord
+  belongs_to :user
+  belongs_to :chat
+
+  enum status: {
+    ongoing: 0,
+    unanswered: 1,
+    unread: 2,
+    ended: 3,
+    ended_viewed: 4
+  }
+
+  before_validation :generate_icon, on: :create
+
+  validates :user_id, uniqueness: { scope: :chat_id }
+  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
+
+  after_save :broadcast_status_to_user
+
+  def broadcast_status_to_user
+    return unless saved_change_to_status?
+
+    broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
+                                                         partial: 'notifications',
+                                                         locals: { notifications: user.notifications })
+  end
+
+  def message_sent
+    dynamic_notify unless Rails.env.test?
+  end
+
+  def dynamic_notify
+    redis = ActionCable.server.pubsub.send(:redis_connection)
+    if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").empty?
+      notify!
+    else
+      viewed!
+    end
+  end
+
+  ## This is kind of forced to have high complexity, there's a lot that
+  ## goes into determining the user's notification status.
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def viewed!
+    return if ended_viewed?
+
+    if ended?
+      self.status = 'ended_viewed'
+    elsif unanswered?
+      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
+    else
+      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
+      self.status = 'unanswered' if chat.messages.last.user != user && !chat.messages.last.user.nil?
+    end
+    save!
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+
+  def notify!
+    return if ended?
+    return if ended_viewed?
+    return if chat.messages.count == 1
+
+    self.status = 'unread'
+    save!
+  end
+
+  private
+
+  def generate_icon
+    emojis = Emoji.all
+    emojis.delete '🐦' # System-only emoji
+    self.icon = emojis.sample.raw while icon.nil? || chat.chat_users.find_by(icon: icon)
+  end
+end

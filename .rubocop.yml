@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'bin/**/*'
-    - 'config/environments/development.rb'
+    - 'config/environments/*'
     - 'config/initializers/devise.rb'
     - 'vendor/bundle/**/*'
 Style/Documentation:
@@ -13,6 +13,12 @@ Rails/LexicallyScopedActionFilter:
   Enabled: false
 
 Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
   Enabled: false
 
 require: rubocop-rails

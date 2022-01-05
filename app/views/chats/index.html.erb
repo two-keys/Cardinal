@@ -1,0 +1,39 @@
+<div id="chats">
+  <h1>Chats</h1>
+  <div class="card primary">
+    <%= form_with url: url_for(connect_code_path), method: :patch, id: "connect_code_form" do |f| %>
+      <%= f.label :connect_code %>
+      <%= f.text_field :connect_code, class: "form-control" %>
+      <%= f.submit 'Use' %>
+    <% end %>
+    <%= button_to "New", chats_path, method: :post %>
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+  <% @chats.each do |chat| %>
+    <% settings = chat.get_user_info(current_user) %>
+    <% if settings.status %>
+      <div class="card secondary <%= (settings.status == "ended_viewed" ? "ended" : settings.status) %>">
+    <% else %>
+    <div class="card secondary">
+    <% end %>
+      <% if settings.title %>
+        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+      <% else %>
+        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+      <% end %>
+      <% if settings.description %>
+        <p><%= settings.description %></p>
+      <% end %>
+      <hr />
+      <% if chat.messages.last %>
+        <%= render 'messages/message', locals: { message: chat.messages.last, current_user_id: current_user.id } %>
+      <% else %>
+        <i>No messages yet.</i>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="card primary">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+</div>
+

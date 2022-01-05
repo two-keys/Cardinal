@@ -1,0 +1,12 @@
+<h1>Editing chat</h1>
+
+<div class="card">
+  <%= render "form", chat: @chat, chat_info: @chat_info %>
+
+  <br />
+
+  <div>
+    <%= link_to "Show this chat", chat_path(@chat.uuid) %> |
+    <%= link_to "Back to chats", chats_path %>
+  </div>
+</div>

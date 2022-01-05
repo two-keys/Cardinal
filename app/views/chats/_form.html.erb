@@ -1,0 +1,25 @@
+<%= form_with(model: chat, url: chat_path(chat.uuid), :as => :chat, method: :patch) do |form| %>
+  <% if chat.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(chat.errors.count, "error") %> prohibited this chat from being saved:</h2>
+
+      <ul>
+        <% chat.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.label :title %>
+  <%= form.text_field :title, value: chat_info.title %>
+
+  <%= form.label :description %>
+  <%= form.text_area :description, value: chat_info.description %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<%= button_to "Force Ongoing", chats_path + "/" + chat.uuid + "/forceongoing", method: :post %>

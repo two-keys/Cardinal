@@ -1,0 +1,42 @@
+<% content_for :info_top do %>
+    <div id="chat_info_top" class="card secondary">
+        <% if @chat_info %>
+            <p><%= @chat_info.title %></p>
+            <p><%= @chat_info.description %></p>
+        <% end %>
+        <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
+    </div>
+<% end %>
+
+<div id="<%= dom_id @chat %>_container">
+    <div class="card secondary">
+        <div id="messages_container">
+            <% if @pagy.page == 1 %>
+                <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat)) %>
+            <% else %>
+                <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat) + "_history") %>
+            <% end %>
+            <% for message in @messages.reverse %>
+                <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<% content_for(:left_sidebar) do %>
+    <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
+    <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
+<% end %>
+
+<% content_for :info_bottom do %>
+    <div class="card secondary">
+        <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
+    </div>
+    <% if @pagy.page == 1 %>
+        <div class="card secondary">
+            <%= turbo_frame_tag "message_form_frame" do %>
+                <%= render 'messages/form', locals: {message: Message.new, chat_id: @chat.id} %>
+            <% end %>
+        </div>
+    <% end %>
+<% end %>

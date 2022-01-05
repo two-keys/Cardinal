@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "chat_#{locals[:chat_id]}_user_#{locals[:user].id}_userlist" do %>
+    <div id="<%= "chat_#{locals[:chat_id]}_users"%>" class="chat_left_sidebar">
+        <div class="card primary">
+            <div class="chat-actions">
+                <%= link_to "Edit", edit_chat_path(locals[:chat_uuid]), data: {turbo_frame: '_top' } %>
+                <%= button_to "Delete", chat_path(locals[:chat_uuid]), method: :delete, data: {turbo_frame: '_top' }  %>
+            </div>
+            <ul id="sidebar_users">
+                <% for user_data in locals[:users_data] %>
+                    <% name = Emoji.find_by_unicode(user_data[:icon]).name.capitalize().gsub("_", " ") %>
+                    <li><div class="sidebar_user_icon"><span><%= user_data[:icon] %></span></div><%= name  + (locals[:user].id == user_data[:id] ? " (you)" : "") %></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
