@@ -67,13 +67,14 @@ class ChatsController < ApplicationController
 
   # DELETE /chats/1 or /chats/1.json
   def destroy
-    @chat.messages << Message.new(content: "#{@chat.chat_users.find_by(user: current_user).icon} has left the chat.")
+    user_icon = current_user.chat_users.find_by(chat: @chat).icon
     @chat.users.delete(current_user)
     if @chat.users.empty?
       @chat.destroy
     elsif @chat.users.count == 1
       @chat.chat_users.each(&:ended!)
     end
+    @chat.messages << Message.new(content: "#{user_icon} has left the chat.")
     respond_to do |format|
       format.html { redirect_to chats_url, notice: 'Chat was successfully destroyed.' }
       format.json { head :no_content }

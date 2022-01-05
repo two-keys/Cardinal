@@ -23,6 +23,10 @@ class User < ApplicationRecord
   end
 
   def notifications
-    chat_users.where(status: :unread).count
+    notifications = ChatUser.where(user: self, status: %i[unread unanswered ended])
+    unread_count = notifications.where(status: :unread).count
+    unanswered_count = notifications.where(status: :unanswered).count
+    ended_count = notifications.where(status: :ended).count
+    { unread: unread_count, unanswered: unanswered_count, ended: ended_count }
   end
 end

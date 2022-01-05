@@ -15,27 +15,16 @@ class ChatUser < ApplicationRecord
   before_validation :generate_icon, on: :create
 
   validates :user_id, uniqueness: { scope: :chat_id }
-  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }
+  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
 
-  after_create :broadcast_status_to_chat
-  after_destroy :broadcast_status_to_chat
   after_save :broadcast_status_to_user
 
   def broadcast_status_to_user
     return unless saved_change_to_status?
-    notifications = ChatUser.where(user: user, status: %i[unread unanswered ended])
-    unread_count = notifications.where(status: :unread).count
-    unanswered_count = notifications.where(status: :unanswered).count
-    ended_count = notifications.where(status: :ended).count
-    notification_counts = { unread: unread_count, unanswered: unanswered_count, ended: ended_count }
-    broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
-                                                         partial: 'notifications', locals: { notifications: notification_counts })
-  end
 
-  def broadcast_status_to_chat
-    broadcast_replace_later_to("chat_#{chat.id}_userlist", target: "chat_#{chat.id}_userlist",
-                                                           partial: 'chats/chat_sidebar',
-                                                           locals: { locals: { chat: chat } })
+    broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
+                                                         partial: 'notifications',
+                                                         locals: { notifications: user.notifications })
   end
 
   def message_sent
@@ -44,7 +33,7 @@ class ChatUser < ApplicationRecord
 
   def dynamic_notify
     redis = ActionCable.server.pubsub.send(:redis_connection)
-    if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").count.zero?
+    if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").empty?
       notify!
     else
       viewed!
@@ -60,9 +49,6 @@ class ChatUser < ApplicationRecord
 
     if ended?
       self.status = 'ended_viewed'
-    elsif unread?
-      self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
-      self.status = 'unanswered' if chat.messages.last.user != user
     elsif unanswered?
       self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
     else
@@ -88,9 +74,6 @@ class ChatUser < ApplicationRecord
   def generate_icon
     emojis = Emoji.all
     emojis.delete '🐦' # System-only emoji
-    chat.chat_users.each do |chat_user|
-      emojis.delete(chat_user.icon)
-    end
-    self.icon = emojis.sample.raw
+    self.icon = emojis.sample.raw while icon.nil? || chat.chat_users.find_by(icon: icon)
   end
 end
