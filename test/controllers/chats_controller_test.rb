@@ -45,9 +45,21 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to chat_path(@chat.uuid)
   end
 
-  test 'should destroy chat' do
+  test 'should remove from chat' do
     sign_in(@user)
     assert_difference('ChatUser.count', -1) do
+      delete chat_path(@chat.uuid)
+    end
+
+    assert_redirected_to chats_url
+  end
+
+  test 'should actually destroy chat' do
+    sign_in(@user2)
+    delete chat_path(@chat.uuid)
+
+    sign_in(@user)
+    assert_difference('Chat.count', -1) do
       delete chat_path(@chat.uuid)
     end
 

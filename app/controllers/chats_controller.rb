@@ -96,7 +96,7 @@ class ChatsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_chat
     @chat = Chat.find_by(uuid: params[:id])
-    @chat_info = @chat.get_user_info(current_user)
+    @chat_info = @chat.get_user_info(current_user) unless @chat.nil?
     @format = params[:format]
   end
 
@@ -110,7 +110,7 @@ class ChatsController < ApplicationController
   end
 
   def authorized?
-    return if @chat.users.include?(current_user)
+    return if !@chat.nil? && @chat.users.include?(current_user)
 
     redirect_to chats_path
   end

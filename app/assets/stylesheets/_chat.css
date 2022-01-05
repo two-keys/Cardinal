@@ -95,6 +95,8 @@
 #sidebar_users {
     list-style: none;
     text-decoration: none;
+    position: relative;
+    left: -40px;
     color: var(--card-text-color);
 }
   
@@ -104,7 +106,7 @@
   
 .sidebar_user_icon {
     display: inline-block;
-    text-align: center;
+    text-align: left;
     line-height: 34px;
     font-size: 30px;
     width: 30px;
@@ -136,41 +138,47 @@
 
 
 @media only screen and (min-width: 841px) {
-    #chats .card .message>.user_icon {
-        right: -160px;
-        border-radius: 50%;
-        padding: 30px;
-        padding-top: 35px;
-        padding-bottom: 35px;
-    
-    }
 
     .user_icon {
         position: relative;
         display: inline;
-        float: right;
-        right: -108px;
-        border-radius: 0 50% 50% 0;
+        float: left;
+        left: -70px;
+        top: 45px;
+        border-radius: 50% 0 0 50%;
         padding: 30px;
         padding-right: 23px;
+        margin: -40px;
         background-color: var(--card-bg-color-secondary);
         font-size: 2.5em;
-        text-align: left;
+        text-align: middle;
         vertical-align: middle;
+        border-right: 0;
     }
 
     .message_edit_link {
         position: relative;
-        right: -95px;
         bottom: -25px;
         float: right;
         opacity: 75%;
     }
 
+    .message_created_at {
+        position: relative;
+        bottom: -25px;
+        left: 0;
+        opacity: 75%;
+    }
+
+    .type_notif {
+        position: relative;
+        right: 0px;
+    }
+
     #messages_container > * > .message.ooc > .user_icon {
         background-color: var(--card-bg-color-secondary);
         border: 2px solid var(--card-textarea-bg-color);
-        border-left: 0;
+        border-right: 0;
     }
 
 

@@ -143,10 +143,10 @@ body {
         grid-template-columns: 1fr 1fr; 
         gap: 1px 1px; 
         grid-template-areas: 
+          "sidebar_right sidebar_right"
           "sidebar_left sidebar_left"
           "info_top info_top"
           "main_content main_content"
-          "sidebar_right sidebar_right"
           "info_bottom info_bottom"; 
         margin-left: 10px;
         margin-right: -20px;
