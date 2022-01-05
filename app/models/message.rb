@@ -21,8 +21,10 @@ class Message < ApplicationRecord
   after_update_commit :broadcast_update
 
   def update_timestamp
+    return if chat.frozen?
+
     Chat.record_timestamps = false
-    chat.updated_at = Time.zone.now unless chat.frozen?
+    chat.updated_at = Time.zone.now
     Chat.record_timestamps = true
     chat.save!
   end
