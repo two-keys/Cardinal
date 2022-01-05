@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<% content_for(:left_sidebar) do %>
+<% content_for :right_sidebar do %>
     <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
     <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
 <% end %>

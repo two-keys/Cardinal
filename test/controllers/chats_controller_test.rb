@@ -57,7 +57,7 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
   test 'should actually destroy chat' do
     sign_in(@user2)
     delete chat_path(@chat.uuid)
-    
+
     sign_in(@user)
     assert_difference('Chat.count', -1) do
       delete chat_path(@chat.uuid)
