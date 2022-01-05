@@ -22,7 +22,7 @@ class Message < ApplicationRecord
 
   def update_timestamp
     Chat.record_timestamps = false
-    chat.updated_at = Time.zone.now
+    chat.updated_at = Time.zone.now unless chat.frozen?
     Chat.record_timestamps = true
     chat.save!
   end
