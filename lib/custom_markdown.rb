@@ -19,4 +19,22 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
   def color_div(color, text)
     content_tag(:span, text, style: "color: ##{color}")
   end
+
+  # rubocop:disable Rails/OutputSafety
+
+  # A generic class method for site-wide, safe markdown.
+  def self.generic_render(text)
+    renderer = CardinalMarkdownRenderer.new(hard_wrap: true, filter_html: true,
+                                            link_attributes: { target: '_blank' })
+    options = {
+      autolink: true,
+      fenced_code_blocks: true,
+      lax_spacing: true,
+      no_intra_emphasis: true,
+      strikethrough: true,
+      superscript: true
+    }
+    Redcarpet::Markdown.new(renderer, options).render(text).html_safe
+  end
+  # rubocop:enable Rails/OutputSafety
 end
