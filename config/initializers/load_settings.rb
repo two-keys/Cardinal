@@ -15,8 +15,7 @@ module CardinalSettings
   if ENV.fetch('RAILS_ENV', 'development') == 'development'
     logger = Logger.new($stdout)
 
-    logger.debug "settings hash: #{SETTINGS_HASH.keys}"
-    logger.debug "Rules have entries: #{SETTINGS_HASH['use']['pages']['rules'].key?('entries')}"
+    logger.debug "#{SETTINGS_HASH['type']} settings hash v#{SETTINGS_HASH['version']} with keys: #{SETTINGS_HASH.keys}"
   end
 
   # A collection of methods simplifying access to the tags hash within SETTINGS_HASH
