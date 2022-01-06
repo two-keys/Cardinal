@@ -1,4 +1,19 @@
-<div id="page_<%= params[:page] %>" class="card">
+<% content_for :left_sidebar do %>
+  <div class="card">
+    Site Use pages
+    <ul>
+      <% @links.each do |link| %>
+        <li>
+          <%= link_to use_page_path link do %>
+            <strong><%= link %></strong>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div id="page_<%= params[:page] %>" class="card primary">
   <br />
   <p>
     <%= @markdown %>

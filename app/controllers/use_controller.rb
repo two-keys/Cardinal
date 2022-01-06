@@ -13,6 +13,8 @@ class UseController < ApplicationController
     end
 
     page = Use.get_page(params[:page])
+
+    @links = Use.pages.keys
     @markdown = CardinalMarkdownRenderer.generic_render(page['markdown'])
     @entries = []
 
