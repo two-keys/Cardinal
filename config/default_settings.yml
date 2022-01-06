@@ -1,0 +1,96 @@
+---
+  type: default # 'default' or 'dynamic'
+  version: 1.0.0 # change every time this file is updated
+  tags:
+    types:
+      maturity:
+        polarities: # determines which cards this goes into on the directory
+          - meta
+        fill_in: False # determines if users can define tags
+        entries: # default tags to display in the prompt creation screen. if entries is missing, no defaults are displayed
+          - "Safe for work"
+          - "NSFW Violent"
+      type:
+        polarities:
+          - meta
+        fill_in: False
+      fandom:
+        polarities:
+          - playing
+          - seeking
+        fill_in: True
+      character:
+        polarities:
+          - playing
+          - seeking
+        fill_in: True
+      gender:
+        polarities:
+          - playing
+          - seeking
+        fill_in: False
+      characteristic:
+        polarities:
+          - playing
+          - seeking
+        fill_in: True
+      misc:
+        polarities:
+          - misc
+        fill_in: True
+        entries:
+          - "Some Content Optional(Check OOC Notes)"
+          - "Willing to play multiple characters"
+          - "Short Paragraph"
+          - "2-3 Paragraphs"
+          - "4+ paragraphs"
+          - "Original Characters Only"
+          - "OCs Accepted"
+          - "OCs Not Accepted"
+          - "Alternate Universe (specified in OOC Notes)"
+  use:
+    pages:
+      index: 
+        markdown: |+ # generic details on a page, rendered through redcarpet
+          **Last updated: 1/5/2022**
+          
+          This is the ***index*** page.
+        entries: # jsonable entries. Items are displayed in a list on the respective use page if this is set.
+          - "See the **sidebar** for other, more useful pages."
+          - "Note the **last updated** date at the top of each page."
+      rules:
+        markdown: |+
+          **Last updated: 1/5/2022**
+
+          **Crime and Punishment**
+
+          This site operates on a tiered punishment system, with more serious offences or repeat violations earning a harsher punishment. The punishment tiers are as follows:
+          
+          - Tier 1 - Warning
+          - Tier 2 - 1 Day Ban
+          - Tier 3 - (Up to) 7 Day Ban
+          - Tier 4 - Account Permaban
+          - Tier 5 - IP Ban
+          - Tier 6 - IP info turned over to authorities. Reserved for explicit illegal activities OOC.
+        entries: 
+          - Be kind. Tier 1.
+          - Be mindful. Tier 1.
+          - Be patient. Tier 1.
+      formatting:
+        markdown: |+
+          **Last updated: 1/5/2022**
+          
+          Among other things, you can *italicize* words like `*this*`. 
+      tagging:
+        markdown: |+
+          **Last updated: 1/5/2022**
+          
+          Some tags in the Directory will be automatically wrangled.
+      faq:
+        markdown: |+
+          **Last updated: 1/5/2022**
+        entries:
+          - |+ 
+            What is this?
+
+            An rp site.

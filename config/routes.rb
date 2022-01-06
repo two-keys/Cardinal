@@ -24,4 +24,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users, only: %i[index edit update destroy]
   end
+
+  scope 'use' do
+    get '(/:page)', to: 'use#show', defaults: { page: 'index' }, as: :use_page
+  end
 end
