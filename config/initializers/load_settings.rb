@@ -4,7 +4,7 @@ require 'yaml'
 
 # A collection of static classes which allow access to the SETTINGS_HASH
 module CardinalSettings
-  default_hash = Rails.root.join('config/default_settings.yml')
+  default_hash = YAML.load_file(Rails.root.join('config/default_settings.yml'))
 
   # A hash storing implementation-specific settings, such as tag categories and the site use pages.
   use_dynamic = Rails.root.join('config/dynamic_settings.yml').exist?
