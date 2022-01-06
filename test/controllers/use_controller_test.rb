@@ -27,4 +27,14 @@ class UseControllerTest < ActionDispatch::IntegrationTest
     get use_page_path 'not_in_use_page_path'
     assert_redirected_to use_page_path
   end
+
+  test 'should get json array for each page with the entries key in SETTINGS_HASH' do
+    CardinalSettings::Use.pages.each do |key, page_hash|
+      next unless page_hash.key?('entries')
+
+      get use_page_path(key, format: :json)
+      assert_response :success
+      assert_equal 'application/json', @response.media_type
+    end
+  end
 end
