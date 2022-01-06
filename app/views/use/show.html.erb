@@ -1,0 +1,11 @@
+<div id="page_<%= params[:page] %>" class="card">
+  <br />
+  <p>
+    <%= @markdown %>
+    <ol>
+      <% @entries.each do |entry| %>
+        <li><%= entry %></li>
+      <% end %>
+    </ol>
+  </p>
+</div>
