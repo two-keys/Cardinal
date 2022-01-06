@@ -34,24 +34,20 @@ class Message < ApplicationRecord
   end
 
   def broadcast_create
-    chat.chat_users.each do |chat_user|
+    chat.active_chat_users.each do |active_user|
       if chat.messages.count > 20
-        broadcast_remove_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
-                            target: "message_#{chat.messages.reverse[-20].id}")
+        broadcast_remove_to("user_#{active_user.id}_chat_#{chat.id}", target: "message_#{chat.messages[-21].id}")
       end
-      broadcast_append_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
+      broadcast_append_later_to("user_#{active_user.id}_chat_#{chat.id}",
                                 target: 'messages_container',
                                 partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
 
   def broadcast_update
-    chat.chat_users.each do |chat_user|
-      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}",
-                                 target: "message_#{id}",
-                                 partial: 'messages/message_frame', locals: { locals: { message: self } })
-      broadcast_replace_later_to("user_#{chat_user.user.id}_chat_#{chat_user.chat.id}_history",
-                                 target: "message_#{id}",
+    chat.active_chat_users.each do |active_user|
+      broadcast_replace_later_to("user_#{active_user.id}_chat_#{chat.id}",
+                                 target: 'messages_container',
                                  partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
@@ -72,7 +68,7 @@ class Message < ApplicationRecord
 
   def set_icon
     self.icon = if user_id.nil?
-                  '🐦'
+                  CardinalSettings::Icons.system_icon
                 else
                   user.chat_users.find_by(chat_id: chat_id).icon
                 end

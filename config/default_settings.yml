@@ -1,6 +1,9 @@
 ---
   type: default # 'default' or 'dynamic'
-  version: 1.0.0 # change every time this file is updated
+  version: 1.1.0 # change every time this file is updated
+  icons:
+    icon_blacklist: ["🐦"] 
+    system_icon: "🐦"
   tags:
     types:
       maturity:

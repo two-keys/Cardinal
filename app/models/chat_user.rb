@@ -17,29 +17,6 @@ class ChatUser < ApplicationRecord
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
 
-  after_save :broadcast_status_to_user
-
-  def broadcast_status_to_user
-    return unless saved_change_to_status?
-
-    broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',
-                                                         partial: 'notifications',
-                                                         locals: { notifications: user.notifications })
-  end
-
-  def message_sent
-    dynamic_notify unless Rails.env.test?
-  end
-
-  def dynamic_notify
-    redis = ActionCable.server.pubsub.send(:redis_connection)
-    if redis.pubsub('channels', "user_#{user.id}_chat_#{chat.id}").empty?
-      notify!
-    else
-      viewed!
-    end
-  end
-
   ## This is kind of forced to have high complexity, there's a lot that
   ## goes into determining the user's notification status.
   # rubocop:disable Metrics/CyclomaticComplexity
@@ -60,20 +37,18 @@ class ChatUser < ApplicationRecord
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
 
-  def notify!
-    return if ended?
-    return if ended_viewed?
-    return if chat.messages.count == 1
-
-    self.status = 'unread'
-    save!
-  end
-
   private
 
   def generate_icon
-    emojis = Emoji.all
-    emojis.delete '🐦' # System-only emoji
-    self.icon = emojis.sample.raw while icon.nil? || chat.chat_users.find_by(icon: icon)
+    used_emoji = chat.chat_users.map(&:icon).compact
+    all_emoji = []
+    # rubocop:disable Rails/FindEach
+    Emoji.all.each do |e|
+      all_emoji << e.raw if !e.nil? && !e.raw.nil? && e.raw.length == 1 && used_emoji.exclude?(e.raw)
+    end
+    # rubocop:enable Rails/FindEach
+    blacklisted_emoji = CardinalSettings::Icons.icon_blacklist
+    available_emoji = all_emoji - blacklisted_emoji
+    self.icon = available_emoji.sample
   end
 end

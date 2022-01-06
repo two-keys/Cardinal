@@ -18,6 +18,21 @@ module CardinalSettings
 
   logger.debug "#{SETTINGS_HASH['type']} settings hash v#{SETTINGS_HASH['version']} with keys: #{SETTINGS_HASH.keys}"
 
+  # A collection of of methods simplifying access to the icons hash within SETTINGS_HASH
+  class Icons
+    def self.icons_hash
+      SETTINGS_HASH['icons']
+    end
+
+    def self.icon_blacklist
+      icons_hash['icon_blacklist']
+    end
+
+    def self.system_icon
+      icons_hash['system_icon']
+    end
+  end
+
   # A collection of methods simplifying access to the tags hash within SETTINGS_HASH
   class Tags
     def self.tags_hash

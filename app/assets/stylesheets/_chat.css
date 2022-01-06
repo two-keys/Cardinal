@@ -102,15 +102,15 @@
   
 #sidebar_users>li {
     margin-bottom: 10px;
+    white-space: nowrap;
 }
   
 .sidebar_user_icon {
     display: inline-block;
     text-align: left;
-    line-height: 34px;
-    font-size: 30px;
-    width: 30px;
-    height: 30px;
+    font-size: 1.5em;
+    min-width: 1em;
+    min-width: 1em;
     margin-right: 10px;
     padding: 10px;
     border-radius: 50%;
@@ -140,20 +140,20 @@
 @media only screen and (min-width: 841px) {
 
     .user_icon {
-        position: relative;
-        display: inline;
-        float: left;
-        left: -70px;
-        top: 45px;
-        border-radius: 50% 0 0 50%;
-        padding: 30px;
-        padding-right: 23px;
-        margin: -40px;
-        background-color: var(--card-bg-color-secondary);
-        font-size: 2.5em;
-        text-align: middle;
-        vertical-align: middle;
-        border-right: 0;
+      position: relative;
+      float: left;
+      left: -70px;
+      top: 45px;
+      border-radius: 50% 0 0 50%;
+      padding: 0.8em;
+      padding-right: 23px;
+      margin: -40px;
+      background-color: var(--card-bg-color-secondary);
+      font-size: 2.5em;
+      text-align: right;
+      border-right: 0;
+      max-width: 95px;
+      min-width: 95px;
     }
 
     .message_edit_link {

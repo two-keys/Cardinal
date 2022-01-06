@@ -1,5 +1,5 @@
-/*= require_tree . */
 /*= require_self */
+/*= require_tree . */
 
 :root {
     --main-bg-color: #d6d6d6;
@@ -56,6 +56,12 @@
     --ended-color: rgb(105, 26, 26);
 
     --nav-bg-color: #5a2424;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -149,11 +155,7 @@ body {
           "main_content main_content"
           "info_bottom info_bottom"; 
         margin-left: 10px;
-        margin-right: -20px;
-    }
-
-    #main {
-        margin-right: 5px;
+        margin-right: 10px;
     }
 
     #right_sidebar {
