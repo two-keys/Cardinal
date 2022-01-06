@@ -47,7 +47,7 @@ class Message < ApplicationRecord
   def broadcast_update
     chat.active_chat_users.each do |active_user|
       broadcast_replace_later_to("user_#{active_user.id}_chat_#{chat.id}",
-                                 target: 'messages_container',
+                                 target: "message_#{id}",
                                  partial: 'messages/message_frame', locals: { locals: { message: self } })
     end
   end
