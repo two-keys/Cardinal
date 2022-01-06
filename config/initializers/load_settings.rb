@@ -12,11 +12,9 @@ module CardinalSettings
   # storing this as a constant. we should avoid directly referencing it unless strictly necessary, though, since method
   # getters are more human readable
   SETTINGS_HASH = (use_dynamic ? YAML.load_file(Rails.root.join('config/dynamic_settings.yml')) : default_hash)
-  if ENV.fetch('RAILS_ENV', 'development') == 'development'
-    logger = Logger.new($stdout)
+  logger = Logger.new($stdout)
 
-    logger.debug "#{SETTINGS_HASH['type']} settings hash v#{SETTINGS_HASH['version']} with keys: #{SETTINGS_HASH.keys}"
-  end
+  logger.debug "#{SETTINGS_HASH['type']} settings hash v#{SETTINGS_HASH['version']} with keys: #{SETTINGS_HASH.keys}"
 
   # A collection of methods simplifying access to the tags hash within SETTINGS_HASH
   class Tags
