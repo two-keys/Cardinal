@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'announcements#index'
 
+  get '500', to: 'errors#internal_server_error'
   namespace :admin do
     resources :users, only: %i[index edit update destroy]
   end

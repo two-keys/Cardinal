@@ -30,7 +30,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
@@ -98,6 +98,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Disable action mailer delivery temporarily
+  config.action_mailer.delivery_method = :test
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.hosts << 'cardinal.roleply.site'
+  config.hosts << "127.0.0.1"
 end

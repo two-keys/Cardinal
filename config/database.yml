@@ -82,5 +82,4 @@ test:
 production:
   <<: *default
   database: Cardinal_production
-  username: Cardinal
-  password: <%= ENV["CARDINAL_DATABASE_PASSWORD"] %>
+

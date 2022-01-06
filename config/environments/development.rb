@@ -67,6 +67,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  config.hosts << '.ngrok.io'
-  config.hosts << "cardinal.roleply.site"
+  # This is terribly hacky, but it's the only way to get the dev environment
+  # to use the same host as the production environment without it crashing.
+  config.hosts.clear
 end

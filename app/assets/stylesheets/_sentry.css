@@ -1,0 +1,65 @@
+.sentry-error-embed {
+    background-color: var(--card-bg-color) !important;
+    color: var(--card-text-color) !important;
+    padding: 10px;
+    margin: 10px;
+    border: var(--header-bg-color) solid 1px !important;
+    border-radius: 10px !important;
+    max-width: 400px !important;
+}
+
+.sentry-error-embed header {
+    margin-right: 10px;
+    border: 0 !important;
+}
+
+.sentry-error-embed .close {
+    float: right !important;
+}
+
+.sentry-error-embed form {
+    padding-left: 20px;
+    padding-right: 20px;
+    background: var(--card-bg-color-secondary) !important;
+    color: var(--card-text-color-secondary) !important;
+    display: table;
+    border: 0 !important;
+    margin: 0 auto !important;
+}
+
+.sentry-error-embed form input,textarea {
+    color: var(--card-textarea-text-color) !important;
+    background: var(--card-textarea-bg-color) !important;
+    border: var(--main-bg-color) solid 1px !important;
+    border-radius: 5px;
+}
+
+.sentry-error-embed button {
+    background: var(--header-bg-color) !important;
+    color: var(--card-text-color-secondary) !important;
+    border: var(--main-bg-color) solid 1px !important;
+    border-radius: 5px;
+    padding: 10px !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.sentry-error-embed h2 {
+    font-size: 1.4em !important;
+    text-align: center;
+}
+
+.sentry-error-embed .powered-by {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+.sentry-error-embed .message-success {
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.sentry-error-embed .form-content {
+    background: transparent;
+    border: 0 !important;
+}

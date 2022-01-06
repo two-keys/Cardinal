@@ -10,7 +10,6 @@
 <% if pagy.next                -%>  <span class="page prev"><%== link.call(pagy.next, pagy_t('pagy.nav.prev'), 'aria-label="previous"') %></span>
 <% else                        -%>  <span class="page prev disabled"><%== pagy_t('pagy.nav.prev') %></span>
 <% end                         -%>
-<% pagy.series[0] = "Live"      %>
 <% pagy.series.reverse.each do |item| # series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36] -%>
 <%   if    item.is_a?(Integer) -%>  <span class="page"><%== item == 1 ? link.call(item, "Live") : link.call(item) %></span>
 <%   elsif item.is_a?(String)  -%>  <span class="page current">[<%= item == "1" ? "Live" : item %>]</span>
