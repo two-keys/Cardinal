@@ -26,6 +26,6 @@ Rails.application.routes.draw do
   end
 
   scope 'use' do
-    get '(/:page)', to: 'use#show', defaults: { page: 'index' }
+    get '(/:page)', to: 'use#show', defaults: { page: 'index' }, as: :use_page
   end
 end
