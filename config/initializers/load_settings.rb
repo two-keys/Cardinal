@@ -6,9 +6,11 @@ require 'yaml'
 module CardinalSettings
   default_hash = YAML.load_file(Rails.root.join('config/default_settings.yml'))
 
-  # A hash storing implementation-specific settings, such as tag categories and the site use pages.
+  # if FORCE_DEFAULT is set, rails will load default settings
   use_dynamic = Rails.root.join('config/dynamic_settings.yml').exist?
+  use_dynamic = false if ENV['FORCE_DEFAULT'].present?
 
+  # A hash storing implementation-specific settings, such as tag categories and the site use pages.
   # storing this as a constant. we should avoid directly referencing it unless strictly necessary, though, since method
   # getters are more human readable
   SETTINGS_HASH = (use_dynamic ? YAML.load_file(Rails.root.join('config/dynamic_settings.yml')) : default_hash)
