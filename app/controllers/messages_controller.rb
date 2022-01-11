@@ -78,7 +78,7 @@ class MessagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def message_params
-    params.require(:message).permit(:content, :ooc, :user_id, :chat_id)
+    params.require(:message).permit(:content, :ooc, :chat_id)
   end
 
   def authorized?
@@ -89,6 +89,7 @@ class MessagesController < ApplicationController
 
   def authorized_create?
     @message = Message.new(message_params)
+    @message.user_id = current_user.id
 
     return if current_user.joined?(@message.chat)
 
