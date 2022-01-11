@@ -9,8 +9,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     @message = messages(:user)
     @user = users(:user)
     @user2 = users(:user_two)
+    @user3 = users(:user_three)
     @chat = chats(:chat_one)
     @chat.users << @user
+    @chat.users << @user3
   end
 
   test 'should create message' do
@@ -29,6 +31,13 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to root_url
+  end
+
+  test 'user cannot create message as another user' do
+    sign_in(@user3)
+    assert_no_difference('Message.where(user_id: @user.id).count') do
+      post messages_url, params: { message: { content: 'test', ooc: false, user_id: @user.id, chat_id: @chat.id } }
+    end
   end
 
   test 'not logged in should not create message' do

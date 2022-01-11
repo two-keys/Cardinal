@@ -16,7 +16,6 @@
       <%= form.text_area :content %>
     </div>
     <div>
-      <%= form.hidden_field :user_id, value: current_user.id %>
       <%= form.hidden_field :chat_id, value: locals[:chat_id] %>
     </div>
     <div id="new_message_ooc">
