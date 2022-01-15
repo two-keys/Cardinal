@@ -21,4 +21,8 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Enabled: false
 
+Metrics/ClassLength:
+  Exclude:
+    - '**/*test.rb'
+
 require: rubocop-rails

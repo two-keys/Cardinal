@@ -2,7 +2,6 @@
 
 require 'test_helper'
 
-# rubocop:disable Metrics/ClassLength
 class TagsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
@@ -188,4 +187,3 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 end
-# rubocop:enable Metrics/ClassLength
