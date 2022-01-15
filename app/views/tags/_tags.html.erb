@@ -1,0 +1,16 @@
+<div id="tags_container">
+  <div class="card primary">
+    <div class="pagination">    
+      <% if admin? %>  
+        <%= link_to "New tag", new_tag_path %>
+      <% end %>
+      <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+  <%= render partial: 'tags/mini', collection: @tags, as: :tag %>
+  <div class="card primary">
+    <div class="pagination">
+      <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+</div>

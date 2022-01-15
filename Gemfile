@@ -65,6 +65,9 @@ gem 'redcarpet'
 # Emoji
 gem 'gemoji'
 
+# Ancestry (self-referential, node-based tree traversal)
+gem 'ancestry'
+
 # Sentry error reporting
 gem 'sentry-rails'
 gem 'sentry-ruby'

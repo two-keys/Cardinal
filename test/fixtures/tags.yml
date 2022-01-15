@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+son:
+  name: son
+  tag_type: misc
+
+dad:
+  name: dad
+  tag_type: misc
+
+capital:
+  name: CAPITAL
+  tag_type: misc
+
+generic:
+  name: Generic tag
+  tag_type: misc

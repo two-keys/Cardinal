@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_142329) do
+ActiveRecord::Schema.define(version: 2022_01_13_175011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,6 +66,16 @@ ActiveRecord::Schema.define(version: 2021_12_31_142329) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name", limit: 25, null: false
+    t.string "tag_type", limit: 25, null: false
+    t.bigint "synonym_id"
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_tags_on_ancestry", opclass: :text_pattern_ops
+    t.index ["name", "tag_type"], name: "index_tags_on_name_and_tag_type", unique: true
+    t.index ["synonym_id"], name: "index_tags_on_synonym_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -86,9 +96,9 @@ ActiveRecord::Schema.define(version: 2021_12_31_142329) do
     t.string "username", default: "", null: false
     t.boolean "admin", default: false
     t.boolean "verified", default: false
-    t.datetime "unban_at"
+    t.datetime "unban_at", precision: 6
     t.string "ban_reason"
-    t.datetime "delete_at"
+    t.datetime "delete_at", precision: 6
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -96,4 +106,5 @@ ActiveRecord::Schema.define(version: 2021_12_31_142329) do
 
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
+  add_foreign_key "tags", "tags", column: "synonym_id"
 end
