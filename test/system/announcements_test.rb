@@ -4,15 +4,21 @@ require 'application_system_test_case'
 
 class AnnouncementsTest < ApplicationSystemTestCase
   setup do
+    @admin = users(:admin)
     @announcement = announcements(:one)
   end
 
   test 'visiting the index' do
     visit announcements_url
-    assert_selector 'h1', text: 'Announcements'
+    assert_selector 'h1', text: 'News'
   end
 
   test 'should create announcement' do
+    visit new_user_session_url
+    fill_in 'Username', with: @admin.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
+
     visit announcements_url
     click_on 'New announcement'
 
@@ -25,6 +31,11 @@ class AnnouncementsTest < ApplicationSystemTestCase
   end
 
   test 'should update Announcement' do
+    visit new_user_session_url
+    fill_in 'Username', with: @admin.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
+
     visit announcement_url(@announcement)
     click_on 'Edit this announcement', match: :first
 
@@ -37,6 +48,11 @@ class AnnouncementsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy Announcement' do
+    visit new_user_session_url
+    fill_in 'Username', with: @admin.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
+
     visit announcement_url(@announcement)
     click_on 'Destroy this announcement', match: :first
 

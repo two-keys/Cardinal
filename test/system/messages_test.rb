@@ -4,42 +4,50 @@ require 'application_system_test_case'
 
 class MessagesTest < ApplicationSystemTestCase
   setup do
-    @message = messages(:one)
-  end
+    @user = users(:user)
+    @chat = chats(:chat_one)
+    @chat.users << @user
 
-  test 'visiting the index' do
-    visit messages_url
-    assert_selector 'h1', text: 'Messages'
+    @message = messages(:user)
   end
 
   test 'should create message' do
-    visit messages_url
-    click_on 'New message'
+    visit new_user_session_url
+    fill_in 'Username', with: @user.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
 
-    fill_in 'Content', with: @message.content
-    check 'Ooc' if @message.ooc
-    click_on 'Create Message'
+    visit chat_path(@chat.uuid)
+    assert_difference('all(:css, ".message").size') do
+      new_frame = find('turbo-frame#message_form_frame', match: :first, wait: 5)
+      new_frame.fill_in 'message_content', with: 'Totally definitely new text'
+      new_frame.check 'OOC'
+      new_frame.click_on('Submit')
 
-    assert_text 'Message was successfully created'
-    click_on 'Back'
+      refresh # turboframe wont reload unless we refresh ????
+    end
+
+    assert_text 'Totally definitely new text'
   end
 
-  test 'should update Message' do
-    visit message_url(@message)
-    click_on 'Edit this message', match: :first
+  test 'should update message' do
+    visit new_user_session_url
+    fill_in 'Username', with: @user.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
 
-    fill_in 'Content', with: @message.content
-    check 'Ooc' if @message.ooc
-    click_on 'Update Message'
+    visit chat_path(@chat.uuid)
 
-    assert_text 'Message was successfully updated'
-    click_on 'Back'
-  end
+    container = find('#messages_container')
+    container.click_on 'Edit', match: :first
 
-  test 'should destroy Message' do
-    visit message_url(@message)
-    click_on 'Destroy this message', match: :first
+    pending = find("turbo-frame#message_#{@message.id}", wait: 5)
+    pending.fill_in 'message_content', with: 'Totally definitely new text'
+    pending.check 'OOC' if @message.ooc
+    pending.click_on('Submit')
 
-    assert_text 'Message was successfully destroyed'
+    refresh # turboframe wont reload unless we refresh ????
+
+    assert_text 'edited less than a minute ago'
   end
 end

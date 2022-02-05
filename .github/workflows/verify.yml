@@ -77,6 +77,11 @@ jobs:
           bundler-cache: true
           cache-version: 2
 
+      - name: Install chrome headless
+        run: |
+          sudo apt-get update
+          sudo apt-get install google-chrome-stable
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -106,4 +111,6 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
-        run: bin/rails test
+        run: |
+          bin/rails test 
+          bin/rails test:system
