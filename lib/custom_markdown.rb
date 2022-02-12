@@ -10,7 +10,7 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
   def process_custom_tags(document)
     # scans for multiple ?!color|text| tags and replaces them with a span tag
     # e.g. ?!ff0000|testing|
-    document.gsub! /\?!([a-zA-Z0-9]{6})\|([^|]+)\|/ do |_match|
+    document.gsub!(/\?!([a-zA-Z0-9]{6})\|([^|]+)\|/) do |_match|
       color_div(Regexp.last_match(1), Regexp.last_match(2))
     end
     document
