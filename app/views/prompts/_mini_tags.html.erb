@@ -1,0 +1,14 @@
+<% CardinalSettings::Tags.polarities.each do |polarity| %>
+  <div id="<%= polarity %>" class="polarity">  
+    <h4><%= polarity.upcase %></h4>
+    <ul>
+      <% prompt.tags_for(polarity).each do |tag_type, tags| %>
+        <% tags.each do |tag| %>
+          <li id="<%= tag.id %>" class="<%= tag_type %> tag">
+            <%= link_to tag.name, tag_url(tag) %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

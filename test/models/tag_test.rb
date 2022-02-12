@@ -22,7 +22,8 @@ class TagTest < ActiveSupport::TestCase
   test 'can get children from parent tag' do
     parent_tag = Tag.create(
       name: 'parent',
-      tag_type: 'misc'
+      tag_type: 'misc',
+      polarity: 'misc'
     )
 
     children = []
@@ -30,6 +31,7 @@ class TagTest < ActiveSupport::TestCase
       temp_child = Tag.create(
         name: "#{parent_tag.name} child ##{n}",
         tag_type: 'misc',
+        polarity: 'misc',
         parent: parent_tag
       )
 
@@ -47,26 +49,26 @@ class TagTest < ActiveSupport::TestCase
 
   test 'can\'t create tags with ridiculously long fields' do
     really_long_string = ''
-    (1..30).each do |n|
-      really_long_string += n.to_s
-    end
+    really_long_string += ('a'.to_s * 300)
 
     test_tag = Tag.new(
       name: really_long_string,
       tag_type: 'misc',
+      polarity: 'misc',
       synonym: nil,
       parent: nil
     )
 
     test_tag.validate
 
-    assert_includes test_tag.errors[:name], 'is too long (maximum is 25 characters)'
+    assert_includes test_tag.errors[:name], 'is too long (maximum is 254 characters)'
   end
 
   test 'can\t create tags with types not in CardinalSettings' do
     test_tag = Tag.new(
       name: 'Some Uniquely Generic tag',
       tag_type: 'definitely invalid type',
+      polarity: 'misc',
       synonym: nil,
       parent: nil
     )

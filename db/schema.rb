@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_13_175011) do
+ActiveRecord::Schema.define(version: 2022_02_01_083900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,13 +66,34 @@ ActiveRecord::Schema.define(version: 2022_01_13_175011) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "prompt_tags", force: :cascade do |t|
+    t.bigint "prompt_id"
+    t.bigint "tag_id"
+    t.index ["prompt_id", "tag_id"], name: "index_prompt_tags_on_prompt_id_and_tag_id", unique: true
+    t.index ["prompt_id"], name: "index_prompt_tags_on_prompt_id"
+    t.index ["tag_id"], name: "index_prompt_tags_on_tag_id"
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "starter"
+    t.text "ooc"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "bumped_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_prompts_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
-    t.string "name", limit: 25, null: false
+    t.string "name", limit: 254, null: false
     t.string "tag_type", limit: 25, null: false
     t.bigint "synonym_id"
     t.string "ancestry"
+    t.string "polarity", limit: 25
+    t.boolean "enabled", default: true, null: false
     t.index ["ancestry"], name: "index_tags_on_ancestry", opclass: :text_pattern_ops
-    t.index ["name", "tag_type"], name: "index_tags_on_name_and_tag_type", unique: true
+    t.index ["name", "tag_type", "polarity"], name: "index_tags_on_name_and_tag_type_and_polarity", unique: true
     t.index ["synonym_id"], name: "index_tags_on_synonym_id"
   end
 
@@ -106,5 +127,7 @@ ActiveRecord::Schema.define(version: 2022_01_13_175011) do
 
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
+  add_foreign_key "prompt_tags", "prompts"
+  add_foreign_key "prompt_tags", "tags"
   add_foreign_key "tags", "tags", column: "synonym_id"
 end

@@ -35,12 +35,61 @@ module CardinalSettings
 
   # A collection of methods simplifying access to the tags hash within SETTINGS_HASH
   class Tags
+    # rubocop:disable Style/ClassVars
+
+    # Better to do thsi once instead of every time we call polarities in Tags
+    # Since we aren't going to inherit this class anywhere, it's fine to use class variables here.
+    @@calculated_polarities = []
+    # rubocop:enable Style/ClassVars
+    SETTINGS_HASH['tags']['types'].each_key do |key|
+      type = SETTINGS_HASH['tags']['types'][key]
+      type['polarities'].each do |polarity|
+        @@calculated_polarities << polarity unless @@calculated_polarities.include?(polarity)
+      end
+    end
+
     def self.tags_hash
       SETTINGS_HASH['tags']
     end
 
     def self.types
       tags_hash['types']
+    end
+
+    # This generates a hash of symbols to arrays based on the keys in CardinalSettings::Tags.types
+    # Using the double splat operator through params, this allows us to limit tag input to
+    # 1. in keys in types hash and 2. an array of PERMITTED_SCALAR_TYPES see https://api.rubyonrails.org/classes/ActionController/Parameters.html
+    # Anything else fails.
+    def self.allowed_type_params
+      atp = {}
+      polarities.each do |polarity|
+        allowed_polarities = {}
+        types.each do |key, value|
+          allowed_polarities[key] = [] if value['polarities'].include?(polarity)
+        end
+        atp[polarity] = allowed_polarities.symbolize_keys
+      end
+      atp.symbolize_keys
+    end
+
+    def self.polarities
+      @@calculated_polarities
+    end
+
+    def self.polarities_for(tag_type)
+      return [] unless types.key? tag_type
+
+      types[tag_type]['polarities']
+    end
+
+    def self.null_tag
+      null_hash = tags_hash['nullify_tag']
+      Tag.create_or_find_by(
+        name: null_hash['name'],
+        tag_type: null_hash['type'],
+        polarity: null_hash['polarity'],
+        enabled: false
+      )
     end
   end
 

@@ -1,0 +1,18 @@
+<div class="card">
+  <h1>Editing starter/ooc</h1>
+
+  <%= render "form", prompt: @prompt, with_tags: false %>
+</div>
+
+<div class="card">
+  <h1>Editing tags</h1>
+
+  <%= render "form_tags", prompt: @prompt %>
+
+  <br>
+
+  <div>
+    <%= link_to "Show this prompt", @prompt %> |
+    <%= link_to "Back to prompts", prompts_path %>
+  </div>
+</div>

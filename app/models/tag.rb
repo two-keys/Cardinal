@@ -10,8 +10,18 @@ class Tag < ApplicationRecord
   belongs_to :synonym, class_name: 'Tag', optional: true
   before_save :fix_synonym
 
-  validates :name, presence: true, length: { maximum: 25 }
+  has_many :prompt_tags, dependent: :destroy
+  has_many :prompts, through: :prompt_tags
+
+  scope :with_public, -> { where(enabled: true) }
+
+  validates :name, presence: true, length: { maximum: 254 }
   validates :tag_type, presence: true, length: { maximum: 25 }, inclusion: CardinalSettings::Tags.types.keys
+
+  validates :polarity, presence: true
+  validate :polarity_must_match_tag_type
+
+  validates :enabled, inclusion: [true, false]
 
   # Compares two tags by comparing their lowercase versions
   def identical?(other)
@@ -46,5 +56,13 @@ class Tag < ApplicationRecord
 
     depth += 1
     chain_synonym next_syn, depth
+  end
+
+  private
+
+  def polarity_must_match_tag_type
+    return if CardinalSettings::Tags.polarities_for(tag_type).include? polarity
+
+    errors.add(:polarity, 'Must be a valid polarity for the given tag type')
   end
 end

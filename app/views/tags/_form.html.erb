@@ -12,28 +12,41 @@
   <% end %>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.label :polarity, style: "display: block" %>
+    <%= form.select :polarity, CardinalSettings::Tags.polarities %>
   </div>
 
   <div>
     <%= form.label :tag_type, style: "display: block" %>
     <%= form.select :tag_type, CardinalSettings::Tags.types.keys %>
   </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :enabled %><br />
+    <%= form.check_box :enabled %>
+  </div>
+
   <br />
   <div>
     <%= form.label :synonym, style: "display: block" %>
     <%= fields_for :synonym, tag.synonym do |synonym_form| %>
-      <%= synonym_form.text_field :tag_type %>
-      <%= synonym_form.text_field :name %>
+      <%= form.label :polarity %> <%= synonym_form.text_field :polarity %>
+      <%= form.label :tag_type %> <%= synonym_form.text_field :tag_type %>
+      <%= form.label :name %>     <%= synonym_form.text_field :name %>
     <% end %>
   </div>
-
+  <br />
   <div>
     <%= form.label :parent, style: "display: block" %>
     <%= fields_for :parent, tag.parent do |parent_form| %>
-      <%= parent_form.text_field :tag_type %>
-      <%= parent_form.text_field :name %>
+      <%= form.label :polarity %> <%= parent_form.text_field :polarity %>
+      <%= form.label :tag_type %> <%= parent_form.text_field :tag_type %>
+      <%= form.label :name %>     <%= parent_form.text_field :name %>
     <% end %>
   </div>
 

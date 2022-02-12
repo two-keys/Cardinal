@@ -1,0 +1,47 @@
+<div id="<%= dom_id prompt %>" class="card primary prompt mini">
+  <div class="prompt_info">
+    <% if admin? %>
+      <%= link_to prompt.user.username, edit_admin_user_path(prompt.user) %>
+    <% end %>
+    <span class="type_notif <% prompt.status %>">
+      <% if prompt.draft? %>
+        DRAFT
+      <% end %>
+      <% if prompt.locked? %>
+        LOCKED
+      <% end %>
+    </span>
+    <div class="tags">
+      <%= render partial: 'prompts/mini_tags', locals: { prompt: prompt} %>
+    </div>
+  </div>
+
+  <% if prompt.ooc.present? %>
+    <div>
+      <%= prompt.mark_ooc %>
+    </div>
+  <% end %>
+
+  <% if prompt.ooc.present? && prompt.starter.present? %>
+    <hr />
+  <% end %>
+
+  <% if prompt.starter.present? %>
+    <div>
+      <%= prompt.mark_starter %>
+    </div>
+  <% end %>
+  
+  <hr />
+
+  <span class="prompt_date_time">
+    <!-- Display the date and time of the prompt  -->
+    <%= link_to (prompt.bumped_at || prompt.created_at).strftime("%Y-%m-%d %k:%M:%S"), prompt %>
+  </span>
+  <% if can_edit?(prompt) %>
+    <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
+    <% if prompt.bumpable? %>
+      <%= button_to "Bump", prompt_bump_path(prompt), method: :put %></p>
+    <% end %>
+  <% end %>
+</div>

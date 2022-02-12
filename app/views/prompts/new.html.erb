@@ -1,0 +1,11 @@
+<div class="card">
+  <h1>New prompt</h1>
+
+  <%= render "form", prompt: @prompt, with_tags: true %>
+
+  <br>
+
+  <div>
+    <%= link_to "Back to prompts", prompts_path %>
+  </div>
+</div>

@@ -17,7 +17,8 @@ class TagSynonymTest < ActiveSupport::TestCase
       # Generate a copy so as to not mutate original
       new_tag = Tag.new(
         name: "#{temp.name} with rank #{n}",
-        tag_type: temp.tag_type
+        tag_type: temp.tag_type,
+        polarity: temp.polarity
       )
       new_tag.save
 
@@ -67,7 +68,8 @@ class TagSynonymTest < ActiveSupport::TestCase
   test 'can get duplicates from real tag' do
     real_tag = Tag.create(
       name: 'real',
-      tag_type: 'misc'
+      tag_type: 'misc',
+      polarity: 'misc'
     )
 
     duplicates = []
@@ -75,6 +77,7 @@ class TagSynonymTest < ActiveSupport::TestCase
       temp_dupe = Tag.create(
         name: "#{real_tag.name} dupe ##{n}",
         tag_type: 'misc',
+        polarity: 'misc',
         synonym: real_tag
       )
 

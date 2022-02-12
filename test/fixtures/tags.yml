@@ -3,15 +3,51 @@
 son:
   name: son
   tag_type: misc
+  polarity: misc
 
 dad:
   name: dad
   tag_type: misc
+  polarity: misc
 
 capital:
   name: CAPITAL
   tag_type: misc
+  polarity: misc
 
 generic:
   name: Generic tag
   tag_type: misc
+  polarity: misc
+
+modernfan:
+  name: Modern Fantasy
+  tag_type: misc
+  polarity: misc
+
+twentiethcentury:
+  name: 20th Century
+  tag_type: misc
+  polarity: misc
+
+twentiethcenturyfantasy:
+  name: 20th century Fantasy
+  tag_type: misc
+  polarity: misc
+  synonym: modernfan
+
+nofandom:
+  name: No Fandom
+  tag_type: fandom
+  polarity: playing
+
+originalcharacter:
+  name: Original Character
+  tag_type: character
+  polarity: playing
+
+disabled:
+  name: Disabled tag
+  tag_type: misc
+  polarity: misc
+  enabled: false

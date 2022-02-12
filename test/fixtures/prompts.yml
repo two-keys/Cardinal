@@ -1,0 +1,32 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  starter: This is a starter of at least ten characters
+  ooc: This is an ooc of at least ten characters
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+two:
+  starter: Some starter text
+  ooc: Some ooc text
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+just_ooc:
+  ooc: This prompt only has ooc text.
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+just_starter:
+  starter: This prompt only has starter text.
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+no_tags:
+  ooc: this prompt shouldn't have any tags
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00

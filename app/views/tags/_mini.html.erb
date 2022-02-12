@@ -1,6 +1,13 @@
 <div id="<%= dom_id tag %>" class="card primary tag mini">
   <div class="tag_info">
-    <strong><%= link_to tag.name, tag %></strong>
+    <strong><%= link_to tag.name, tag %></strong>:
+    <span class="type_notif">
+      <% if tag.enabled? %>
+        ENABLED
+      <% else %>
+        DISABLED
+      <% end %>
+    </span>
   </div>
   <p>Type: <%= tag.tag_type %></p>
   

@@ -1,0 +1,27 @@
+<% if prompt.errors.any? %>
+  <div style="color: red">
+    <h2><%= pluralize(prompt.errors.count, "error") %> prohibited this prompt from being saved:</h2>
+
+    <ul>
+      <% prompt.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div>
+  <%= form.label :starter, style: "display: block" %>
+  <%= form.text_area :starter %>
+</div>
+
+<div>
+  <%= form.label :ooc, style: "display: block" %>
+  <%= form.text_area :ooc %>
+</div>
+
+<div>
+  <%= form.label :status, style: "display: block" %>
+  <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
+  <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>
+</div>

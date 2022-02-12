@@ -1,0 +1,29 @@
+<%= fields_for :tags do |tag_form| %>
+  <p>Note, the enter key does not submit the form on tags. Instead, hitting enter will delete empty tags or add a new tag for full tags.</p>
+  <!-- Prevent implicit submission of the form -->
+  <button type="submit" disabled style="display: none" aria-hidden="true"></button>
+  <!-- ... --> 
+  <% CardinalSettings::Tags.polarities.each do |polarity| %>
+    
+    <h3><%= tag_form.label polarity, "#{polarity.upcase} TAGS:" %></h3><br />
+    <% CardinalSettings::Tags.types.each do |tag_type, tag_hash| %>
+      
+      <% if tag_hash['polarities'].include?(polarity) %>
+        <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
+          <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
+
+          <% if tag_hash.key? 'entries' %>
+            <%= render partial: 'prompts/form_tags/entries', locals: { entries: prompt.entries_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+          <% end %>
+          <% if tag_hash['fill_in'] %>
+            <%= render partial: 'prompts/form_tags/fill_ins', locals: { entries: prompt.fill_ins_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+          <% end %>
+
+        <% end %>
+        <br />
+      <% end %>
+    
+    <% end %>
+  
+  <% end %>
+<% end %>

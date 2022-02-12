@@ -1,0 +1,19 @@
+<%= form_with(model: prompt, url: prompt_tags_path(prompt)) do |form| %>
+  <% if prompt.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(prompt.errors.count, "error") %> prohibited this prompt from being saved:</h2>
+
+      <ul>
+        <% prompt.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= render partial: 'prompts/form_tags/tag_fields', locals: { prompt: prompt} %>
+
+  <div>
+    <%= form.submit 'Submit Tags' %>
+  </div>
+<% end %>

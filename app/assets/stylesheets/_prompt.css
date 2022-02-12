@@ -1,0 +1,19 @@
+form .fill_ins {
+  padding-left: 20px;
+}
+
+.polarity {
+  margin-bottom: 1em;
+}
+
+.polarity h4, .polarity ul {
+  margin: 0;
+}
+
+.polarity h4 {
+  text-align: left;
+}
+
+.polarity li.tag {
+  display: inline;
+}

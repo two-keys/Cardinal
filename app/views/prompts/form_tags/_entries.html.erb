@@ -1,0 +1,6 @@
+<div class="entries">
+  <% entries.each do |entry| %>
+    <%= check_box_tag "tags[#{polarity}][#{tag_type}][]", entry[:name], entry[:checked], multiple: true %>
+    <%= p_form.label entry[:name] %>
+  <% end %> 
+</div>

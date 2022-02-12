@@ -4,15 +4,22 @@ class TagsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
+  before_action :authenticate_user!
   before_action :require_admin, only: %i[new edit create update destroy]
   before_action :set_tag, only: %i[show edit update destroy]
+
+  before_action :visible?, only: %i[show]
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
 
   # GET /tags
   # GET /tags.json
   def index
-    @pagy, @tags = pagy(Tag.all, items: 5)
+    if admin?
+      @pagy, @tags = pagy(Tag.all, items: 5)
+    else
+      @pagy, @tags = pagy(Tag.with_public.all, items: 5)
+    end
   end
 
   # GET /tags/1
@@ -49,8 +56,9 @@ class TagsController < ApplicationController
   # PATCH/PUT /tags/1
   # PATCH/PUT /tags/1.json
   def update
-    @tag.name = tag_params[:name]
-    @tag.tag_type = tag_params[:tag_type]
+    @tag.name = tag_params[:name] || @tag.name
+    @tag.tag_type = tag_params[:tag_type] || @tag.tag_type
+    @tag.enabled = tag_params[:enabled] || @tag.enabled
 
     @tag.synonym = @synonym
     @tag.parent = @parent
@@ -87,7 +95,10 @@ class TagsController < ApplicationController
   def set_parent
     @parent = nil
 
-    return if parent_params.empty? || parent_params[:name].empty? || parent_params[:tag_type].empty?
+    missing_something = parent_params.empty? || (
+      %w[name tag_type polarity].any? { |key| parent_params[key].blank? }
+    )
+    return if missing_something
 
     @parent = Tag.find_or_create_by!(parent_params)
   end
@@ -98,20 +109,29 @@ class TagsController < ApplicationController
     # A tag cannot have both a synonym and a parent.
     return unless @parent.nil?
 
-    return if synonym_params.empty? || synonym_params[:name].empty? || synonym_params[:tag_type].empty?
+    missing_something = synonym_params.empty? || (
+      %w[name tag_type polarity].any? { |key| synonym_params[key].blank? }
+    )
+    return if missing_something
 
     @synonym = Tag.find_or_create_by!(synonym_params)
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :tag_type)
+    params.require(:tag).permit(:name, :tag_type, :polarity, :enabled)
   end
 
   def parent_params
-    params.require(:parent).permit(:name, :tag_type)
+    params.require(:parent).permit(:name, :tag_type, :polarity)
   end
 
   def synonym_params
-    params.require(:synonym).permit(:name, :tag_type)
+    params.require(:synonym).permit(:name, :tag_type, :polarity)
+  end
+
+  def visible?
+    return if @tag.enabled? || admin?
+
+    raise ActiveRecord::RecordNotFound.new, "Couldn't find Tag with 'id'=#{@tag.id}"
   end
 end

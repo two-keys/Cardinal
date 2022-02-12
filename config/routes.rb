@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :prompts do
+    match 'tags', action: 'update_tags', via: %i[put patch]
+    match 'bump', action: 'bump', via: %i[put patch]
+  end
   resources :tags
   resources :messages, only: %i[show create destroy update edit]
   resources :chats, except: :show
