@@ -112,5 +112,5 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
         run: |
-          bin/rails test 
-          bin/rails test:system
+          bin/rails test -v
+          bin/rails test:system -v
