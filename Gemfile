@@ -72,6 +72,9 @@ gem 'ancestry'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 
+# Unleash feature flags
+gem 'unleash', '~> 4.0.0'
+
 gem 'debug', platforms: %i[mri mingw x64_mingw]
 
 group :development, :test do
