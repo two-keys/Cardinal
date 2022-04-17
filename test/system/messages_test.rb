@@ -18,14 +18,13 @@ class MessagesTest < ApplicationSystemTestCase
     click_button 'Log in'
 
     visit chat_path(@chat.uuid)
-    assert_difference('all(:css, ".message").size') do
-      new_frame = find('turbo-frame#message_form_frame', match: :first, wait: 5)
-      new_frame.fill_in 'message_content', with: 'Totally definitely new text'
-      new_frame.check 'OOC'
-      new_frame.click_on('Submit')
 
-      refresh # turboframe wont reload unless we refresh ????
-    end
+    new_frame = find('turbo-frame#message_form_frame', match: :first, wait: 5)
+    new_frame.fill_in 'message_content', with: 'Totally definitely new text'
+    new_frame.check 'OOC'
+    new_frame.click_on('Submit')
+
+    refresh # turboframe wont reload unless we refresh ????
 
     assert_text 'Totally definitely new text'
   end

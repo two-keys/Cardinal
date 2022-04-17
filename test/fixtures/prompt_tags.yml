@@ -8,14 +8,14 @@ one_suite2:
   prompt: one
   tag: modernfan
 
-one_suite2:
+one_suite3:
   prompt: one
-  tag: 20thcentury
+  tag: twentiethcentury
 
-one_suite2:
+one_suite4:
   prompt: one
   tag: nofandom
 
-one_suite2:
+one_suite5:
   prompt: one
   tag: originalcharacter

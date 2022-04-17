@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_01_083900) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_18_192056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -51,6 +51,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_01_083900) do
     t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_connect_codes_on_chat_id"
     t.index ["user_id"], name: "index_connect_codes_on_user_id"
+  end
+
+  create_table "filters", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "tag_id"
+    t.string "group", default: "default", null: false
+    t.string "filter_type", limit: 25, null: false
+    t.integer "priority", default: 0, null: false
+    t.index ["tag_id"], name: "index_filters_on_tag_id"
+    t.index ["user_id", "tag_id"], name: "index_filters_on_user_id_and_tag_id", unique: true
+    t.index ["user_id"], name: "index_filters_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -126,6 +137,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_01_083900) do
 
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
+  add_foreign_key "filters", "tags"
+  add_foreign_key "filters", "users"
   add_foreign_key "prompt_tags", "prompts"
   add_foreign_key "prompt_tags", "tags"
   add_foreign_key "tags", "tags", column: "synonym_id"

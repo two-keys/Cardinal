@@ -30,3 +30,10 @@ no_tags:
   user: user
   created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
   bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+ancient:
+  ooc: this prompt is ancient
+  user: user
+  created_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
+  status: 2 # posted

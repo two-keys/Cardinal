@@ -11,16 +11,17 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :polarity, style: "display: block" %>
-    <%= form.select :polarity, CardinalSettings::Tags.polarities %>
+  <div data-controller="polaritytype">
+    <div>
+      <%= form.label :polarity, style: "display: block" %>
+      <%= form.select :polarity, CardinalSettings::Tags.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
+    </div>
+  
+    <div>
+      <%= form.label :tag_type, style: "display: block" %>
+      <%= form.select :tag_type, CardinalSettings::Tags.types, {}, data: { "polaritytype-target": "tagType" } %>
+    </div>
   </div>
-
-  <div>
-    <%= form.label :tag_type, style: "display: block" %>
-    <%= form.select :tag_type, CardinalSettings::Tags.types.keys %>
-  </div>
-
   <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>

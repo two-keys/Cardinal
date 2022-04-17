@@ -1,0 +1,23 @@
+<div class="directory_left_sidebar">
+  <div class="card primary">
+    <%= link_to '(Advanced Search)', search_path %>
+    <div class="directory-actions">
+      <div data-controller="tagactions">
+        <div data-controller="polaritytype">
+          <%= select 'tag', 'polarity', CardinalSettings::Tags.polarities, {}, data: { 
+            "tagactions-target": "polarity",
+            "polaritytype-target": "polarity", action: "polaritytype#changePolarity"
+          } %>
+          <%= select 'tag', 'type', CardinalSettings::Tags.types.keys, {}, data: {
+            "tagactions-target": "tagType",
+            "polaritytype-target": "tagType"
+          } %>
+        </div>
+        <input data-tagactions-target="name" type="text">
+        <button data-action="click->tagactions#add">Add Tag</button>
+      </div>
+      <br />
+      <%= link_to 'Update timestamp', params.permit(:before, :tags, :page).merge(before: 1.second.from_now) %>
+    </div>
+  </div>
+</div>

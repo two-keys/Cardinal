@@ -2,18 +2,38 @@ form .fill_ins {
   padding-left: 20px;
 }
 
+
+@media screen and (max-width: 840px) {
+  #form .fill_ins {
+    padding-right: 20px;
+  }
+}
+
+.fill_ins input {
+  width: 100%;
+}
+
 .polarity {
-  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
-.polarity h4, .polarity ul {
+form .polarity {
+  margin-bottom: 2em;
+}
+
+.polarity h3, .polarity h4, .polarity ul {
   margin: 0;
+  margin-bottom: 10px;
 }
 
-.polarity h4 {
+.polarity h3, .polarity h4 {
   text-align: left;
 }
 
 .polarity li.tag {
   display: inline;
+}
+
+.prompt li {
+  word-wrap: break-word;
 }

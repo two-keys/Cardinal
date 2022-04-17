@@ -1,7 +1,8 @@
-<%= fields_for :tags do |tag_form| %>
+<%= form_with do |form| %>
+
   <% CardinalSettings::Tags.polarities.each do |polarity| %>
     <div class="polarity">
-      <h3><%= tag_form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
+      <h3><%= form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
       <% CardinalSettings::Tags.types.each do |tag_type, tag_hash| %>
         
         <% if tag_hash['polarities'].include?(polarity) %>
@@ -9,10 +10,10 @@
             <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
 
             <% if tag_hash.key? 'entries' %>
-              <%= render partial: 'prompts/form_tags/entries', locals: { entries: prompt.entries_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+              <%= render partial: 'prompts/form_tags/entries', locals: { entries: default_entries_for(tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
             <% end %>
             <% if tag_hash['fill_in'] %>
-              <%= render partial: 'prompts/form_tags/fill_ins', locals: { entries: prompt.fill_ins_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+              <%= render partial: 'prompts/form_tags/fill_ins', locals: { entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
             <% end %>
 
           <% end %>
@@ -21,4 +22,8 @@
       <% end %>
     </div>
   <% end %>
+
+  <div>
+    <%= form.submit 'Submit Tags' %>
+  </div>
 <% end %>

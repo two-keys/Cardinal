@@ -58,16 +58,18 @@ module CardinalSettings
 
     # This generates a hash of symbols to arrays based on the keys in CardinalSettings::Tags.types
     # Using the double splat operator through params, this allows us to limit tag input to
-    # 1. in keys in types hash and 2. an array of PERMITTED_SCALAR_TYPES see https://api.rubyonrails.org/classes/ActionController/Parameters.html
+    # 1. in keys in types hash and 2. one of PERMITTED_SCALAR_TYPES see https://api.rubyonrails.org/classes/ActionController/Parameters.html
     # Anything else fails.
     def self.allowed_type_params
       atp = {}
       polarities.each do |polarity|
-        allowed_polarities = {}
-        types.each do |key, value|
-          allowed_polarities[key] = [] if value['polarities'].include?(polarity)
+        allowed_types = {}
+
+        types.each do |key, type_hash|
+          # Add each tag_type to polarity
+          allowed_types[key.to_sym] = [] if type_hash['polarities'].include?(polarity)
         end
-        atp[polarity] = allowed_polarities.symbolize_keys
+        atp[polarity] = allowed_types
       end
       atp.symbolize_keys
     end

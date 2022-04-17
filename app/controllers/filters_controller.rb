@@ -1,0 +1,97 @@
+# frozen_string_literal: true
+
+class FiltersController < ApplicationController
+  include Pagy::Backend
+  before_action :set_filter, only: %i[show edit update destroy]
+  before_action :authenticate_user!
+  before_action :visible?, only: %i[show edit update destroy]
+
+  # GET /filters or /filters.json
+  def index
+    query = Filter.where(user: current_user).order(group: :asc, priority: :desc)
+
+    # GET /filters?group=default
+    query = query.where(group: search_params[:group]) if search_params.key?(:group)
+
+    @pagy, @filters = pagy(query, items: 5)
+  end
+
+  # GET /filters/1 or /filters/1.json
+  def show; end
+
+  # GET /filters/new
+  def new
+    @filter = Filter.new
+  end
+
+  # GET /filters/1/edit
+  def edit; end
+
+  # POST /filters or /filters.json
+  def create
+    @filter = Filter.new(filter_params)
+    @filter.user_id = current_user.id
+    @filter.tag = Tag.find_or_create_by!(tag_params)
+
+    respond_to do |format|
+      if @filter.save
+        format.html { redirect_to filter_url(@filter), notice: 'Filter was successfully created.' }
+        format.json { render :show, status: :created, location: @filter }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @filter.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /filters/1 or /filters/1.json
+  def update
+    @filter.assign_attributes(filter_params)
+    @filter.tag = Tag.find_or_create_by!(tag_params)
+
+    respond_to do |format|
+      if @filter.save
+        format.html { redirect_to filter_url(@filter), notice: 'Filter was successfully updated.' }
+        format.json { render :show, status: :ok, location: @filter }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @filter.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /filters/1 or /filters/1.json
+  def destroy
+    @filter.destroy
+
+    respond_to do |format|
+      format.html { redirect_to filters_url, notice: 'Filter was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_filter
+    @filter = Filter.find(params[:id])
+  end
+
+  def filter_params
+    params.require(:filter).permit(:group, :filter_type, :priority)
+  end
+
+  def tag_params
+    params.require(:tag).permit(:polarity, :tag_type, :name)
+  end
+
+  def search_params
+    params.permit(:group)
+  end
+
+  def visible?
+    return if @filter.user_id == current_user.id
+
+    raise ActiveRecord::RecordNotFound.new, "Couldn't find Filter with 'id'=#{@filter.id}"
+  end
+end

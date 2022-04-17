@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+## Prompts controller is inevitably going to have a lot that goes into it
+## tag searching, prompts, updates, etc
+# rubocop:disable Metrics/ClassLength
 class PromptsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
@@ -11,7 +14,75 @@ class PromptsController < ApplicationController
 
   # GET /prompts
   def index
-    @pagy, @prompts = pagy(Prompt.where(status: 'posted').or(Prompt.where(user_id: current_user.id)), items: 5)
+    query = Prompt.where(status: 'posted').or(Prompt.where(user_id: current_user.id))
+
+    # GET /prompts?before=2022-02-17
+    query = query.where(bumped_at: ..search_params[:before]) if search_params.key?(:before)
+
+    # GET /prompts?tags=meta:type:Violent,polarity:tag_type:name,...
+    if search_params.key?(:tags)
+      # logger.debug search_params[:tags]
+      query_tags = Tag.from_search_params(search_params[:tags])
+      query_tag_ids = query_tags.map(&:id)
+      # logger.debug query_tag_ids
+      query = query.where(
+        'ARRAY[?]::bigint[] <@ array(?)',
+        query_tag_ids, PromptTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+      )
+    end
+
+    # GET /prompts
+    # This is the ugliest code I've ever written,
+    # but it should be fine as long we don't do string interpolation anywhere
+    if Filter.exists?(user: current_user)
+      f2 = Filter.arel_table.alias
+      query = query.where.not(
+        # We want prompts that don't have a tag mathcing a Rejection filter
+        Filter.where(
+          # Do any of the prompt's tags hit the rejection filter?
+          '"filters"."tag_id" IN (?)', PromptTag.where('"prompt_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+        ).where(
+          # We could theoretically let people specify the specific filters they want to match,
+          # but that sounds like a pain
+          # `group: ['default', etc...]`
+          filter_type: 'Rejection',
+          user: current_user
+        ).where.not(
+          # If a prompt DOES have a tag matching a Rejection filter,
+          # we can let that slide IF an Exception filter in the same group overrides that
+          Filter.from(f2).select('"filters_2".*').where(
+            # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
+            '"filters_2"."tag_id" IN (?)', PromptTag.where('"prompt_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+          ).where(
+            '"filters_2"."filter_type" = ?', 'Exception'
+          ).where(
+            # as above so below
+            '"filters_2"."group" = "filters"."group"',
+            '"filters_2"."user_id" = "filters"."user_id"'
+          ).where(
+            # An exception filter with a higher priority always wins within a filter group
+            '"filters_2"."priority" >= "filters"."priority"'
+          ).arel.exists
+        ).arel.exists
+      )
+    end
+
+    @pagy, @prompts = pagy(query, items: 5)
+  end
+
+  # GET /prompts/search
+  def search; end
+
+  # POST /prompts/search
+  def generate_search
+    tags = Tag.from_tag_params(tag_params)
+    tag_strings = tags.map do |tag|
+      "#{tag[:polarity]}:#{tag[:tag_type]}:#{tag[:name]}"
+    end
+
+    previous_tag_param_string = search_params.key?('tags') ? "#{search_params[:tags]}," : ''
+
+    redirect_to prompts_url search_params.merge(tags: "#{previous_tag_param_string}#{tag_strings.join(',')}")
   end
 
   # GET /prompts/1
@@ -110,6 +181,10 @@ class PromptsController < ApplicationController
     params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
   end
 
+  def search_params
+    params.permit(:before, :tags)
+  end
+
   def visible?
     return if @prompt.posted? || @prompt.user_id == current_user.id || admin?
 
@@ -122,3 +197,4 @@ class PromptsController < ApplicationController
     redirect_to root_path, alert: 'You are not authorized to edit this prompt.'
   end
 end
+# rubocop:enable Metrics/ClassLength

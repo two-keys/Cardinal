@@ -1,0 +1,14 @@
+<div id="filters_container">
+  <div class="card primary">
+    <div class="pagination">
+      <%= link_to "New filter", new_filter_path %>
+      <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+  <%= render partial: 'filters/filter', collection: @filters, as: :filter %>
+  <div class="card primary">
+    <div class="pagination">
+      <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+</div>

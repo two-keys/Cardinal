@@ -58,6 +58,57 @@ class Tag < ApplicationRecord
     chain_synonym next_syn, depth
   end
 
+  # @return [Array<Tag>]
+  def self.from_search_params(search_params)
+    search_tags = []
+
+    tag_strings = search_params.split(',')
+    tag_strings.each do |tag_string|
+      pieces = tag_string.split(':', 3)
+
+      polarity = pieces[0]
+      tag_type = pieces[1]
+      name = pieces[2].strip
+
+      search_tags << Tag.find_or_create_by!(name: name, tag_type: tag_type, polarity: polarity)
+    end
+
+    # Let @prompt.save handle the bulk of processing/validating tags
+    # The only thing we should worry about here is not passing duplicate tags
+    search_tags.uniq(&:id)
+  end
+
+  # @return [Array<Tag>]
+  def self.from_tag_params(tag_params)
+    new_tags = []
+    tag_params.each do |polarity, polarity_hash|
+      # for each polarity
+      polarity_hash.each do |type, type_tags_array|
+        # for each tag_type under each polarity
+
+        # We want to assume every entry in type_tags_array CAN be a comma delimited list of tags
+        # This means we use the same processing strategy for checklist tags as we do for fill_ins
+        type_tags_array.each do |tag_string|
+          list_from_split = tag_string.gsub("\n", ',').split(',')
+          list_from_split.map! do |raw_tag|
+            # strip handles \t, \n, \r, and spaces AROUND a string
+            processed_tag = raw_tag.strip
+
+            processed_tag
+          end
+          list_from_split.compact_blank! # strip might've resulted in empty tags
+
+          list_from_split.each do |tag_name|
+            temp_tag = Tag.find_or_create_by!(name: tag_name, tag_type: type, polarity: polarity)
+            new_tags << temp_tag
+          end
+        end
+      end
+    end
+
+    new_tags.uniq(&:id)
+  end
+
   private
 
   def polarity_must_match_tag_type

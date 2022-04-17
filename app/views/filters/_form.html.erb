@@ -1,0 +1,53 @@
+<%= form_with(model: filter) do |form| %>
+  <% if filter.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(filter.errors.count, "error") %> prohibited this filter from being saved:</h2>
+
+      <ul>
+        <% filter.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :group, style: "display: block" %>
+    <%= form.text_field :group %>
+  </div>
+
+  <div>
+    <%= form.label :filter_type, style: "display: block" %>
+    <%= form.select(:filter_type, options_for_select(
+      [
+        ['Rejection', 'Rejection'], 
+        ['Exception', 'Exception']
+      ]
+    )) %>
+  </div>
+
+  <div>
+    <%= form.label :priority, style: "display: block" %>
+    <%= form.number_field :priority, within: -999..999 %>
+  </div>
+  <br />
+  <div>
+    <%= fields_for :tag, filter.tag do |tag_form| %>
+      <div data-controller="polaritytype">
+        <div>
+          <%= tag_form.label :polarity, style: "display: block"  %>
+          <%= tag_form.select :polarity, CardinalSettings::Tags.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
+        </div>
+        <div>
+          <%= tag_form.label :tag_type, style: "display: block"  %>
+          <%= tag_form.select :tag_type, CardinalSettings::Tags.types, {}, data: { "polaritytype-target": "tagType" } %>
+        </div>
+      </div>
+      <%= tag_form.label :name %>     <%= tag_form.text_field :name %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

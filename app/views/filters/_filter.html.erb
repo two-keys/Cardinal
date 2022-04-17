@@ -1,0 +1,21 @@
+<div id="<%= dom_id filter %>" class="card primary filter">
+  <%= link_to filter.id, filter %>
+
+  <p>
+    <strong>Group:</strong>
+    <%= filter.group %>
+  </p>
+
+  <p>
+    <strong>Filter type:</strong>
+    <%= filter.filter_type %>
+  </p>
+
+  <p>
+    <strong>Priority:</strong>
+    <%= filter.priority %>
+  </p>
+
+  <%= render partial: 'tags/mini', locals: { tag: filter.tag } %>
+  <%= link_to "Edit", edit_filter_path(filter), class: "prompt_edit_link" %>
+</div>

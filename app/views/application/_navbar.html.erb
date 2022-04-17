@@ -2,7 +2,7 @@
   <ul>
     <li><a href="/">Home</a></li>
     <% if user_signed_in? %>
-      <li class="disabled"><a href="/">Directory</a></li>
+      <li> <%= link_to "Directory", prompts_path %> </li>
       <li>
         <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
         <%= render 'notifications', notifications: current_user.notifications %>

@@ -19,6 +19,20 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get index with tag search' do
+    sign_in(@user)
+    get prompts_url, params: {
+      tags: 'playing:fandom:No Fandom,playing:character:Original Character,playing:characteristic:Tall'
+    }
+    assert_response :success
+  end
+
+  test 'should get search page' do
+    sign_in(@user)
+    get search_path
+    assert_response :success
+  end
+
   test 'should get new' do
     sign_in(@user)
     get new_prompt_url
@@ -30,7 +44,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       {
         tags: {
           meta: {
-            type: ['Some generic type tag', 'Another type tag']
+            type: ['Some generic type tag, Another type tag']
           },
           playing: {
             fandom: ['A piece of media'],

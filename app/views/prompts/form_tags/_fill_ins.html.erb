@@ -1,9 +1,3 @@
-<div class="fill_ins" data-polarity="<%= polarity %>" data-tag_type="<%= tag_type %>" data-controller="fillins">
-  <% actions = 'input->fillins#tidyInputEvent keypress->fillins#tidyKeypressEvent paste->fillins#tidyPasteEvent' %>
-  <% entries.each do |entry| %>
-    <%= p_form.text_field "#{tag_type}", value: entry, multiple: true, data: { action: actions } %>
-  <% end %>
-  <%= p_form.text_field "#{tag_type}", multiple: true, data: { action: actions } %>
-  <button type="button" data-fillins-target="grow" data-action="click->fillins#tidyButton">+</button>
-  <button type="button" data-action="click->fillins#tidyButton">-</button>
+<div class="fill_ins">
+  <%= p_form.text_field "#{tag_type}", value: entries.join(', '), multiple: true %>
 </div>

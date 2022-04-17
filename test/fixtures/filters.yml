@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group: default
+  filter_type: 'Rejection'
+  priority: 1
+  user: user
+  tag: generic
+
+two:
+  group: default
+  filter_type: 'Exception'
+  priority: 2
+  user: user
+  tag: nofandom
