@@ -8,6 +8,7 @@ class UsersTest < ApplicationSystemTestCase
     @banned = users(:user_banned)
     @deleted = users(:user_deleted)
     @banned_deleted = users(:user_banned_deleted)
+    @expired = users(:user_ban_expired)
   end
 
   test 'unbanned and undeleted user can log in' do
@@ -44,5 +45,14 @@ class UsersTest < ApplicationSystemTestCase
     click_button 'Log in'
 
     assert_text 'This account is pending for deletion.'
+  end
+
+  test 'expired ban can log in' do
+    visit new_user_session_url
+    fill_in 'Username', with: @expired.username
+    fill_in 'Password', with: 123_456
+    click_button 'Log in'
+
+    assert_text 'Signed in successfully.'
   end
 end

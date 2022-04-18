@@ -52,6 +52,14 @@ user_banned_deleted:
   ban_reason: Test Ban
   verified: true
 
+user_ban_expired:
+  username: user7
+  email: user7@cardinal.cc
+  encrypted_password: <%= User.new.send(:password_digest, '123456') %>
+  unban_at: <%= -2.days.from_now %>
+  ban_reason: Test Ban
+  verified: true
+
 unverified:
   username: unverified
   email: unverified@cardinal.cc
