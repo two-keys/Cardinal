@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= f.label :unban_at %><br />
-    <%= f.text_field :unban_at, class: "datepicker" %>
+    <%= f.datetime_select :unban_at, :include_blank => true, class: "datepicker" %>
   </div>
 
   <div class="field">
@@ -43,10 +43,9 @@
 
   <div class="field">
     <%= f.label :delete_at %><br />
-    <%= f.text_field :delete_at, class: "datepicker" %>
+    <%= f.datetime_select :delete_at, :include_blank => true, class: "datepicker" %>
   </div>
-
-  <%= button_to "Delete account", admin_user_path(@user), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
   <%= f.submit %>
 <% end %>
+<%= button_to "Delete account", admin_user_path(@user), data: { confirm: "Are you sure?" }, method: :delete %></p>
+

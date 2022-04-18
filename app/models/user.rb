@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :connect_codes, dependent: :destroy
 
   def active_for_authentication?
-    super && !delete_at
+    super && !delete_at && !unban_at
   end
 
   def joined?(chat)

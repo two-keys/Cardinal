@@ -19,11 +19,7 @@ module Users
 
     # GET /resource/edit
     def edit
-      if admin?
-        redirect_to edit_admin_user_path(current_user)
-      else
-        render :edit
-      end
+      render :edit
     end
 
     # PUT /resource
