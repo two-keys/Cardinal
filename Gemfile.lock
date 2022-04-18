@@ -290,7 +290,7 @@ DEPENDENCIES
   sentry-ruby
   sprockets-rails
   stimulus-rails
-  turbo-rails
+  turbo-rails (~> 1.0)
   tzinfo-data
   unleash (~> 4.0.0)
   webdrivers
