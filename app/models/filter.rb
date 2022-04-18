@@ -4,7 +4,7 @@ class Filter < ApplicationRecord
   belongs_to :user
   belongs_to :tag
 
-  validates :tag_id, uniqueness: { scope: :user_id }
+  validates :tag_id, uniqueness: { scope: %i[user_id group] }
 
   validates :group, presence: true
   validates :filter_type, inclusion: { in: %w[Rejection Exception] }
