@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_18_192056) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_18_205432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_18_192056) do
     t.string "filter_type", limit: 25, null: false
     t.integer "priority", default: 0, null: false
     t.index ["tag_id"], name: "index_filters_on_tag_id"
-    t.index ["user_id", "tag_id"], name: "index_filters_on_user_id_and_tag_id", unique: true
+    t.index ["user_id", "tag_id", "group"], name: "index_filters_on_user_id_and_tag_id_and_group", unique: true
     t.index ["user_id"], name: "index_filters_on_user_id"
   end
 
@@ -127,9 +127,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_18_192056) do
     t.string "username", default: "", null: false
     t.boolean "admin", default: false
     t.boolean "verified", default: false
-    t.datetime "unban_at", precision: nil
+    t.datetime "unban_at"
     t.string "ban_reason"
-    t.datetime "delete_at", precision: nil
+    t.datetime "delete_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
