@@ -16,15 +16,16 @@ class User < ApplicationRecord
 
   def after_database_authentication
     return unless unbannable?
+
     unban
-  end 
+  end
 
   def active_for_authentication?
-    super && !delete_at && (unbannable?)
+    super && !delete_at && unbannable?
   end
 
   def unbannable?
-    return (unban_at.to_i < DateTime.now.to_i)
+    (unban_at.to_i < DateTime.now.to_i)
   end
 
   def unban
