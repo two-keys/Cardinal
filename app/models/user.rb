@@ -18,6 +18,11 @@ class User < ApplicationRecord
     super && !delete_at && !unban_at
   end
 
+  def inactive_message
+    return "This account is pending for deletion." if delete_at
+    return "You are banned for the following: '#{ban_reason}', and your ban lasts until #{unban_at.to_s(:long_ordinal)}" if unban_at
+  end
+
   def joined?(chat)
     chats.exists?(id: chat.id)
   end
