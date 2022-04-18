@@ -32,7 +32,7 @@ user_banned:
   username: user4
   email: user4@cardinal.cc
   encrypted_password: <%= User.new.send(:password_digest, '123456') %>
-  unban_at: 2024-04-05 07:00:00 UTC
+  unban_at: <%= 30.days.from_now %>
   ban_reason: Test Ban
   verified: true
 
@@ -40,15 +40,15 @@ user_deleted:
   username: user5
   email: user5@cardinal.cc
   encrypted_password: <%= User.new.send(:password_digest, '123456') %>
-  delete_at: 2024-04-05 07:00:00 UTC
+  delete_at: <%= 30.days.from_now %>
   verified: true
 
 user_banned_deleted:
   username: user6
   email: user6@cardinal.cc
   encrypted_password: <%= User.new.send(:password_digest, '123456') %>
-  unban_at: 2024-04-05 07:00:00 UTC
-  delete_at: 2024-04-05 07:00:00 UTC
+  unban_at: <%= 30.days.from_now %>
+  delete_at: <%= 30.days.from_now %>
   ban_reason: Test Ban
   verified: true
 
