@@ -76,12 +76,6 @@ jobs:
         with:
           bundler-cache: true
           cache-version: 2
-
-      - name: Install chrome headless
-        run: |
-          sudo apt-get update
-          sudo apt-get install google-chrome-stable
-
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -113,4 +107,69 @@ jobs:
           DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
         run: |
           bin/rails test -v
+
+  system_tests:
+    name: System Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: Cardinal
+          POSTGRES_DB: Cardinal_test
+          POSTGRES_PASSWORD: cardinal
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: wodby/redis:6-3.10.0
+        ports:
+          - 6379:6379
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          cache-version: 2
+
+      - name: Install chrome headless
+        run: |
+          sudo apt-get update
+          sudo apt-get install google-chrome-stable
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.13.0
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
+        run: |
+          bin/rails db:setup
+
+      - name: Run System tests
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
+        run: |
           bin/rails test:system -v
