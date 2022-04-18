@@ -51,3 +51,8 @@ disabled:
   tag_type: misc
   polarity: misc
   enabled: false
+
+tagfordupefilters:
+  name: Tag dupefilters
+  tag_type: misc
+  polarity: misc
