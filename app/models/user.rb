@@ -14,8 +14,23 @@ class User < ApplicationRecord
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy
 
+  def after_database_authentication
+    return unless unbannable?
+    unban
+  end 
+
   def active_for_authentication?
-    super && !delete_at && !unban_at
+    super && !delete_at && (unbannable?)
+  end
+
+  def unbannable?
+    return (unban_at.to_i < DateTime.now.to_i)
+  end
+
+  def unban
+    self.unban_at = nil
+    self.ban_reason = nil
+    save
   end
 
   def inactive_message
