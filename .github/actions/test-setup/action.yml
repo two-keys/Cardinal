@@ -1,0 +1,36 @@
+# Put this in the file: .github/workflows/test-setup.yml
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Ruby and install gems
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        cache-version: 2
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.13.0
+    - name: Find yarn cache location
+      id: yarn-cache
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+      shell: bash
+    - name: JS package cache
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.yarn-cache.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install packages
+      run: |
+        yarn install --pure-lockfile
+      shell: bash
+    - name: Setup test database
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
+      run: |
+        bin/rails db:setup
+      shell: bash
