@@ -108,3 +108,9 @@ jobs:
           DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
         run: |
           bin/rails test:system -v
+      - name: Archive System tests output
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: capybara-screenshots
+          path: tmp/screenshots

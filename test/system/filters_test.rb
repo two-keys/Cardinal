@@ -16,6 +16,8 @@ class FiltersTest < ApplicationSystemTestCase
 
     visit filters_url
     assert_selector 'h1', text: 'Filters'
+
+    flunk
   end
 
   test 'should create filter' do
