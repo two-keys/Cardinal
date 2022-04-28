@@ -3,18 +3,17 @@
 require 'application_system_test_case'
 
 class ChatsTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @user = users(:user)
     @chat = chats(:chat_one)
     @chat.users << @user
+
+    sign_in(@user)
   end
 
   test 'visiting the index' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit chats_url
     assert_selector 'h1', text: 'Chats'
   end
@@ -31,11 +30,6 @@ class ChatsTest < ApplicationSystemTestCase
   #  end
 
   test 'should update Chat' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit chat_path(@chat.uuid)
     find('.chat-actions').click_on 'Edit', match: :first
 
@@ -45,11 +39,6 @@ class ChatsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy Chat' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit chat_path(@chat.uuid)
     find('.chat-actions').click_on 'Delete', match: :first
 

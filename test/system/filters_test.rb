@@ -3,27 +3,21 @@
 require 'application_system_test_case'
 
 class FiltersTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @user = users(:user)
     @filter = filters(:one)
+
+    sign_in(@user)
   end
 
   test 'visiting the index' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit filters_url
     assert_selector 'h1', text: 'Filters'
   end
 
   test 'should create filter' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit filters_url
     click_on 'New filter'
 
@@ -42,11 +36,6 @@ class FiltersTest < ApplicationSystemTestCase
   end
 
   test 'should update Filter' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit filter_url(@filter)
     click_on 'Edit this filter', match: :first
 
@@ -65,11 +54,6 @@ class FiltersTest < ApplicationSystemTestCase
   end
 
   test 'should destroy Filter' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit filter_url(@filter)
     click_on 'Destroy this filter', match: :first
 

@@ -3,9 +3,13 @@
 require 'application_system_test_case'
 
 class AnnouncementsTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @admin = users(:admin)
     @announcement = announcements(:one)
+
+    sign_in(@admin)
   end
 
   test 'visiting the index' do
@@ -14,11 +18,6 @@ class AnnouncementsTest < ApplicationSystemTestCase
   end
 
   test 'should create announcement' do
-    visit new_user_session_url
-    fill_in 'Username', with: @admin.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit announcements_url
     click_on 'New announcement'
 
@@ -31,11 +30,6 @@ class AnnouncementsTest < ApplicationSystemTestCase
   end
 
   test 'should update Announcement' do
-    visit new_user_session_url
-    fill_in 'Username', with: @admin.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit announcement_url(@announcement)
     click_on 'Edit this announcement', match: :first
 
@@ -48,11 +42,6 @@ class AnnouncementsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy Announcement' do
-    visit new_user_session_url
-    fill_in 'Username', with: @admin.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit announcement_url(@announcement)
     click_on 'Destroy this announcement', match: :first
 
