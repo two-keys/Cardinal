@@ -3,20 +3,19 @@
 require 'application_system_test_case'
 
 class MessagesTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @user = users(:user)
     @chat = chats(:chat_one)
     @chat.users << @user
 
     @message = messages(:user)
+
+    sign_in(@user)
   end
 
   test 'should create message' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit chat_path(@chat.uuid)
 
     new_frame = find('turbo-frame#message_form_frame', match: :first, wait: 5)
@@ -30,11 +29,6 @@ class MessagesTest < ApplicationSystemTestCase
   end
 
   test 'should update message' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit chat_path(@chat.uuid)
 
     container = find('#messages_container')

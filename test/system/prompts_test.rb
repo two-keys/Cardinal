@@ -3,6 +3,8 @@
 require 'application_system_test_case'
 
 class PromptsTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @user = users(:user)
     @prompt = prompts(:one)
@@ -11,14 +13,11 @@ class PromptsTest < ApplicationSystemTestCase
 
     @tag_generic = tags(:generic)
     @tag_modern_fantasy = tags(:modernfan)
+
+    sign_in(@user)
   end
 
   test 'visiting the index' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     assert_selector 'h1', text: 'Prompts'
   end
@@ -42,11 +41,6 @@ class PromptsTest < ApplicationSystemTestCase
     end
     tag_list = tag_params.join(',')
 
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit "#{prompts_url}?tags=#{tag_list}"
     assert_selector 'h1', text: 'Prompts'
 
@@ -62,11 +56,6 @@ class PromptsTest < ApplicationSystemTestCase
     tag_array = Tag.from_search_params(tag_list)
     @no_tags.tags = tag_array
 
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit "#{prompts_url}?tags=#{tag_list}"
     assert_selector 'h1', text: 'Prompts'
 
@@ -76,11 +65,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'visiting the index with ?before url parameter' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit "#{prompts_url}?before=1999-12-01"
     assert_selector 'h1', text: 'Prompts'
 
@@ -88,11 +72,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should be able to use advanced search' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit search_url
 
     tags_to_look_for = []
@@ -119,11 +98,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should create prompt' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     click_on 'New Prompt'
 
@@ -136,11 +110,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should create prompt with tags' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     click_on 'New Prompt'
 
@@ -169,11 +138,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should create prompt with multiple tags in one polarity->tag_type input' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     click_on 'New Prompt'
 
@@ -202,11 +166,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should create prompt with just ooc' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     click_on 'New Prompt'
 
@@ -218,11 +177,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should create prompt with just starter' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompts_url
     click_on 'New Prompt'
 
@@ -234,11 +188,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should update Prompt starter and ooc' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompt_url(@prompt)
     click_on 'Edit this prompt', match: :first
 
@@ -251,11 +200,6 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy Prompt' do
-    visit new_user_session_url
-    fill_in 'Username', with: @user.username
-    fill_in 'Password', with: 123_456
-    click_button 'Log in'
-
     visit prompt_url(@prompt)
     click_on 'Destroy this prompt', match: :first
 
