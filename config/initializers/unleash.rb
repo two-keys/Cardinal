@@ -6,7 +6,7 @@ Unleash.configure do |config|
   # config.instance_id = "#{Socket.gethostname}"
   config.logger   = Rails.logger
   config.environment = Rails.env
-  config.custom_http_headers = { Authorization: ENV['UNLEASH_API_TOKEN'] }
+  config.custom_http_headers = { Authorization: ENV.fetch('UNLEASH_API_TOKEN', nil) }
 end
 
 UNLEASH = Unleash::Client.new
