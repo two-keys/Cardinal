@@ -1,12 +1,14 @@
 <div id="chats">
   <h1>Chats</h1>
   <div class="card primary">
-    <%= form_with url: url_for(connect_code_path), method: :patch, id: "connect_code_form" do |f| %>
-      <%= f.label :connect_code %>
-      <%= f.text_field :connect_code, class: "form-control" %>
-      <%= f.submit 'Use' %>
+    <% if (can? :create, Chat) && (can? :create, ConnectCode) %>
+      <%= form_with url: url_for(connect_code_path), method: :patch, id: "connect_code_form" do |f| %>
+        <%= f.label :connect_code %>
+        <%= f.text_field :connect_code, class: "form-control" %>
+        <%= f.submit 'Use' %>
+      <% end %>
+      <%= button_to "New", chats_path, method: :post %>
     <% end %>
-    <%= button_to "New", chats_path, method: :post %>
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>
   <% @chats.each do |chat| %>

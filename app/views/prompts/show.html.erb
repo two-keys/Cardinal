@@ -3,8 +3,12 @@
 <%= render @prompt %>
 
 <div>
-  <%= link_to "Edit this prompt", edit_prompt_path(@prompt) %> |
+  <% if can? :update, @prompt %>
+    <%= link_to "Edit this prompt", edit_prompt_path(@prompt) %> |
+  <% end %>
   <%= link_to "Back to prompts", prompts_path %>
 
-  <%= button_to "Destroy this prompt", @prompt, method: :delete %>
+  <% if can? :destroy, @prompt %>
+    <%= button_to "Destroy this prompt", @prompt, method: :delete %>
+  <% end %>
 </div>

@@ -1,7 +1,9 @@
 <div id="filters_container">
   <div class="card primary">
     <div class="pagination">
-      <%= link_to "New filter", new_filter_path %>
+      <% if can? :create, Filter %>
+        <%= link_to "New filter", new_filter_path %>
+      <% end %>
       <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
     </div>
   </div>

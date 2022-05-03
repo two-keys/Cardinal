@@ -1,7 +1,9 @@
 <div id="announcements_container">
     <div class="card primary">
         <div class="pagination">
-            <%= link_to "New announcement", new_announcement_path %>
+            <% if can? :create, Announcement %>
+                <%= link_to "New announcement", new_announcement_path %>
+            <% end %>
             <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <div id="<%= dom_id prompt %>" class="card primary prompt mini">
   <div class="prompt_info">
-    <% if admin? %>
-      <%= link_to prompt.user.username, edit_admin_user_path(prompt.user) %>
+    <% if can? :view_users, prompt %>
+      <%= link_to "PROFILE", edit_admin_user_path(prompt.user) %> |
     <% end %>
     <span class="type_notif <% prompt.status %>">
       <% if prompt.draft? %>

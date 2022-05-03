@@ -6,9 +6,11 @@ class FiltersController < ApplicationController
   before_action :authenticate_user!
   before_action :visible?, only: %i[show edit update destroy]
 
+  load_and_authorize_resource
+
   # GET /filters or /filters.json
   def index
-    query = Filter.where(user: current_user).order(group: :asc, priority: :desc)
+    query = Filter.accessible_by(current_ability).order(group: :asc, priority: :desc)
 
     # GET /filters?group=default
     query = query.where(group: search_params[:group]) if search_params.key?(:group)

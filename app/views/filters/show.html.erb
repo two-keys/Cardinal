@@ -3,8 +3,12 @@
 <%= render @filter %>
 
 <div>
-  <%= link_to "Edit this filter", edit_filter_path(@filter) %> |
+  <% if can? :update, @filter %>
+    <%= link_to "Edit this filter", edit_filter_path(@filter) %> |
+  <% end %>
   <%= link_to "Back to filters", filters_path %>
 
-  <%= button_to "Destroy this filter", @filter, method: :delete %>
+  <% if can? :destroy, @filter %>
+    <%= button_to "Destroy this filter", @filter, method: :delete %>
+  <% end %>
 </div>

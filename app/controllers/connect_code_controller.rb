@@ -4,6 +4,8 @@ class ConnectCodeController < ApplicationController
   before_action :authenticate_user!
   before_action :set_connect_code, only: [:update]
 
+  load_and_authorize_resource
+
   def update
     respond_to do |format|
       if !@connect_code.nil? && @connect_code.use(current_user)

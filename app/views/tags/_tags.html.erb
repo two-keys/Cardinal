@@ -1,7 +1,7 @@
 <div id="tags_container">
   <div class="card primary">
     <div class="pagination">    
-      <% if admin? %>  
+      <% if can? :create, Tag %>  
         <%= link_to "New tag", new_tag_path %>
       <% end %>
       <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>

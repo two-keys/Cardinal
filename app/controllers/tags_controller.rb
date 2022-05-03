@@ -5,21 +5,18 @@ class TagsController < ApplicationController
   include ApplicationHelper
 
   before_action :authenticate_user!
-  before_action :require_admin, only: %i[new edit create update destroy]
   before_action :set_tag, only: %i[show edit update destroy]
 
   before_action :visible?, only: %i[show]
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
 
+  authorize_resource
+
   # GET /tags
   # GET /tags.json
   def index
-    if admin?
-      @pagy, @tags = pagy(Tag.all, items: 5)
-    else
-      @pagy, @tags = pagy(Tag.with_public.all, items: 5)
-    end
+    @pagy, @tags = pagy(Tag.accessible_by(current_ability), items: 5)
   end
 
   # GET /tags/1
@@ -95,6 +92,8 @@ class TagsController < ApplicationController
   def set_parent
     @parent = nil
 
+    return unless params.key?(:parent)
+
     missing_something = parent_params.empty? || (
       %w[name tag_type polarity].any? { |key| parent_params[key].blank? }
     )
@@ -109,6 +108,8 @@ class TagsController < ApplicationController
     # A tag cannot have both a synonym and a parent.
     return unless @parent.nil?
 
+    return unless params.key?(:synonym)
+
     missing_something = synonym_params.empty? || (
       %w[name tag_type polarity].any? { |key| synonym_params[key].blank? }
     )
@@ -122,11 +123,11 @@ class TagsController < ApplicationController
   end
 
   def parent_params
-    params.require(:parent).permit(:name, :tag_type, :polarity)
+    params.require(:parent).permit(:name, :tag_type, :polarity) if params.key?(:parent)
   end
 
   def synonym_params
-    params.require(:synonym).permit(:name, :tag_type, :polarity)
+    params.require(:synonym).permit(:name, :tag_type, :polarity) if params.key?(:synonym)
   end
 
   def visible?

@@ -9,6 +9,8 @@ class ChatsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorized?, only: %i[show edit update destroy read forceongoing]
 
+  authorize_resource
+
   # GET /chats or /chats.json
   def index
     @pagy, @chats = pagy(current_user.chats.order('updated_at DESC'), items: 20)

@@ -7,6 +7,8 @@ module Users
     before_action :configure_sign_up_params, only: [:create]
     before_action :configure_account_update_params, only: [:update]
 
+    load_and_authorize_resource
+
     # GET /resource/sign_up
     # def new
     #   super

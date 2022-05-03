@@ -75,6 +75,9 @@ gem 'sentry-ruby'
 # Unleash feature flags
 gem 'unleash', '~> 4.0.0'
 
+# CanCanCan Authorization
+gem 'cancancan'
+
 gem 'debug', platforms: %i[mri mingw x64_mingw]
 
 group :development, :test do

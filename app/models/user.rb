@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy
 
+  delegate :can?, :cannot?, to: :ability
+
   def after_database_authentication
     return unless unbannable?
 
@@ -52,5 +54,9 @@ class User < ApplicationRecord
     unanswered_count = notifications.where(status: :unanswered).count
     ended_count = notifications.where(status: :ended).count
     { unread: unread_count, unanswered: unanswered_count, ended: ended_count }
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
   end
 end

@@ -1,8 +1,12 @@
 <%= render @tag %>
 
 <div>
-  <%= link_to "Edit this tag", edit_tag_path(@tag) %> |
+  <% if can? :update, @tag %>
+    <%= link_to "Edit this tag", edit_tag_path(@tag) %> |
+  <% end %>
   <%= link_to "Back to tags", tags_path %>
 
-  <%= button_to "Destroy this tag", @tag, method: :delete %>
+  <% if can? :destroy, @tag %>
+    <%= button_to "Destroy this tag", @tag, method: :delete %>
+  <% end %>
 </div>

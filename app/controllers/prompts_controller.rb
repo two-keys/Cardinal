@@ -12,9 +12,11 @@ class PromptsController < ApplicationController
   before_action :authorized?, only: %i[edit bump update update_tags destroy]
   before_action :visible?, only: %i[show]
 
+  authorize_resource
+
   # GET /prompts
   def index
-    query = Prompt.where(status: 'posted').or(Prompt.where(user_id: current_user.id))
+    query = Prompt.accessible_by(current_ability)
 
     # GET /prompts?before=2022-02-17
     query = query.where(bumped_at: ..search_params[:before]) if search_params.key?(:before)

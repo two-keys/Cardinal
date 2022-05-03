@@ -24,8 +24,9 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not get new' do
     sign_in(@user)
-    get new_announcement_url
-    assert_redirected_to root_url
+    assert_raise CanCan::AccessDenied do
+      get new_announcement_url
+    end
   end
 
   test 'should create announcement' do
@@ -40,10 +41,10 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   test 'should not create announcement' do
     sign_in(@user)
     assert_no_difference('Announcement.count') do
-      post announcements_url, params: { announcement: { content: @announcement.content, title: @announcement.title } }
+      assert_raise CanCan::AccessDenied do
+        post announcements_url, params: { announcement: { content: @announcement.content, title: @announcement.title } }
+      end
     end
-
-    assert_redirected_to root_url
   end
 
   test 'should show announcement' do
@@ -59,8 +60,9 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not get edit' do
     sign_in(@user)
-    get edit_announcement_url(@announcement)
-    assert_redirected_to root_url
+    assert_raise CanCan::AccessDenied do
+      get edit_announcement_url(@announcement)
+    end
   end
 
   test 'should update announcement' do
@@ -72,9 +74,10 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not update announcement' do
     sign_in(@user)
-    patch announcement_url(@announcement),
-          params: { announcement: { content: @announcement.content, title: @announcement.title } }
-    assert_redirected_to root_url
+    assert_raise CanCan::AccessDenied do
+      patch announcement_url(@announcement),
+            params: { announcement: { content: @announcement.content, title: @announcement.title } }
+    end
   end
 
   test 'should destroy announcement' do
@@ -89,9 +92,9 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   test 'should not destroy announcement' do
     sign_in(@user)
     assert_no_difference('Announcement.count') do
-      delete announcement_url(@announcement)
+      assert_raise CanCan::AccessDenied do
+        delete announcement_url(@announcement)
+      end
     end
-
-    assert_redirected_to root_url
   end
 end
