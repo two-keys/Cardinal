@@ -37,3 +37,10 @@ ancient:
   created_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
   bumped_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
   status: 2 # posted
+
+johns:
+  ooc: this is johns prompt
+  user: john
+  created_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
+  bumped_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
+  status: 2 # posted
