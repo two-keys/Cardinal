@@ -21,6 +21,25 @@ class PromptTest < ActiveSupport::TestCase
     @no_tags = prompts(:no_tags)
   end
 
+  test "can only create #{Ticket::MAX_PER_DAY}" do
+    (1..Ticket::MAX_PER_DAY).each do |n|
+      assert_nothing_raised do
+        Prompt.create!(
+          starter: "Some ic text part #{n}",
+          status: 'posted',
+          user: @user
+        )
+      end
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      Prompt.create!(
+        starter: "Lorem ipsum #{'filler' * 5}",
+        user: @user
+      )
+    end
+  end
+
   test 'deleting a prompt should delete prompt tags' do
     assert_nothing_raised do
       @first_tag_for_prompt.reload

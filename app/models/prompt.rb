@@ -3,6 +3,7 @@
 class Prompt < ApplicationRecord
   include Markdownable
   include Taggable
+  include Ticketable
   include Moderatable
   MIN_CONTENT_LENGTH = 10
 
@@ -22,6 +23,9 @@ class Prompt < ApplicationRecord
   validates_with PromptContentValidator
   validates :status, inclusion: { in: Prompt.statuses }
   validate :can_bump, on: :update
+  validate :can_spend, on: %i[create update]
+
+  after_create :spend_ticket
 
   default_scope { order(bumped_at: :desc) }
 
@@ -43,7 +47,10 @@ class Prompt < ApplicationRecord
 
   def bump!
     self.bumped_at = DateTime.now
-    save
+
+    return false unless save
+
+    spend_ticket
   end
 
   # Should really only be called from controller
@@ -83,8 +90,12 @@ class Prompt < ApplicationRecord
 
   # For validation
   def can_bump
-    return unless bumped_at_changed? && !bumpable?
+    return unless bumped_at_changed?
 
-    errors.add(:bump, "You must wait until #{bumped_at + 1.day} to bump this prompt.")
+    errors.add(:bump, "You must wait until #{bumped_at + 1.day} to bump this prompt.") unless bumpable?
+  end
+
+  def spend_ticket
+    Ticket.spend(self)
   end
 end
