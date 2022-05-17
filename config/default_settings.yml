@@ -1,6 +1,6 @@
 ---
   type: default # 'default' or 'dynamic'
-  version: 1.3.2 # change every time this file is updated
+  version: 1.3.3 # change every time this file is updated
   icons:
     icon_blacklist: ["🐦"] 
     system_icon: "🐦"
@@ -48,6 +48,56 @@
           - "OCs Accepted"
           - "OCs Not Accepted"
           - "Alternate Universe (specified in OOC Notes)"
+  donation:
+    prices:
+      - cost: 5
+        once: null # key for one-time price
+        monthly: null # key for monthly price
+      - cost: 10
+        once: null
+        monthly: null
+      - cost: 20
+        once: null
+        monthly: null
+      - cost: 50
+        once: null
+        monthly: null
+      - cost: 100
+        once: null
+        monthly: null
+    goals:
+      - name: Subscriber Perks
+        cost: 400
+        markdown: |
+          We'll add on-site benefits to sponsors, account-holders with recurring donations, that will not impact the directory meta-game(We will explicitly not give sponsors reduced bump timers, post timers, or prompt priority). 
+      - name: Extra Themes
+        cost: 500
+        markdown: |
+          The site will have semi-customizable themes, including but not limited to options for site-layout(background, header, post, and text) colors and chat-list(unread, ended, answered) colors.
+      - name: Archive Checkbox
+        cost: 600
+        markdown: |
+          A checkbox will be placed in the Chat Info screen which, when every participant of a chat has it checked, will allow the chat to be viewable by non participants.
+      - name: Site Statistics
+        cost: 680
+        markdown: |
+          You'll have access to a monthly post containing curated data regarding the popularity of fandoms, various tags, and other assorted site statistics.
+      - name: Push Notifications
+        cost: 720
+        markdown: |
+          You'll have the option to enable notifications to be sent to your device or browser when you've got new unread replies, regardless of whether you're currently on the site or not.
+      - name: Logical Blacklisting
+        cost: 850
+        markdown: |
+          The blacklist will be upgraded with logical operators and priority setting, allowing for combinations (i.e. - if this tag is present, allow this other tag to be shown. Otherwise, hide it) so that you can have more control than a tag either showing or not.
+      - name: Desktop App
+        cost: 1100
+        markdown: |
+          We'll give creating a desktop client a go. If that doesn't work out - CherpBot on Discord.
+      - name: Mobile App
+        cost: 1500
+        markdown: |
+          We'll give creating a mobile(except for Apple devices) client a go.
   use:
     pages:
       index: 
