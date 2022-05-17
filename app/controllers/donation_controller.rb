@@ -2,7 +2,7 @@
 
 class DonationController < ApplicationController
   def index
-    subscriptions = Stripe::Subscription.list({ limit: 3 })
+    subscriptions = Stripe::Subscription.list({ limit: 100 })
 
     our_prices = CardinalSettings::Donation.prices.pluck('monthly')
 
