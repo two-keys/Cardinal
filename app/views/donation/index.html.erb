@@ -10,7 +10,7 @@
     <table class="prices">
       <tr>
         <% @prices.each do |price| %>
-          <th><%= price['cost'] %></th>
+          <th align="center">$<%= price['cost'] %></th>
         <% end %>
       </tr>
       <tr>
