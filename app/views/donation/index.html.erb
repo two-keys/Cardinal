@@ -15,7 +15,11 @@
       </tr>
       <tr>
         <% @prices.each do |price| %>
-          <td>One-time</td>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{price['once']}&mode=payment", data: { turbo: false } do %>
+              One-time
+            <% end %>
+          </td>
         <% end %>
       </tr>
       <tr>

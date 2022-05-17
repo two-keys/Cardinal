@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   root 'announcements#index'
 
   get 'donation', to: 'donation#index'
+  post 'create_stripe_session', to: 'donation#create_stripe_session'
 
   get '500', to: 'errors#internal_server_error'
   namespace :admin do
