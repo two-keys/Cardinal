@@ -4,6 +4,26 @@
   </div>
   <div class="card primary">
     <h1>SUPPORT THE SITE</h1>
+    <p>If you like what we're doing, you can fund the development of extra features and help us pay the bills here.</p>
+
+    <p>Every donation is appreciated, whether it's a one off or a monthly pledge. If you subscribe with a recurring donation, that gets counted towards the total for the goals for developing extra features, and will help unlock improvements to the site for everyone!</p>
+    <table class="prices">
+      <tr>
+        <% @prices.each do |price| %>
+          <th><%= price['cost'] %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <% @prices.each do |price| %>
+          <td>One-time</td>
+        <% end %>
+      </tr>
+      <tr>
+        <% @prices.each do |price| %>
+          <td>Monthly</td>
+        <% end %>
+      </tr>
+    </table>
   </div>
   <div class="card primary">
     <h1>ALL GOALS</h1>
