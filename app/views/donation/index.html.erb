@@ -1,0 +1,14 @@
+<div id="donation_container">
+  <div class="card primary">
+    <h1>CURRENT GOAL</h1>
+  </div>
+  <div class="card primary">
+    <h1>SUPPORT THE SITE</h1>
+  </div>
+  <div class="card primary">
+    <h1>ALL GOALS</h1>
+    <ul>
+      <%= render partial: 'donation/goal', collection: @goals, as: :goal %>
+    </ul>
+  </div>
+</div>
