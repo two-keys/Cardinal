@@ -1,0 +1,46 @@
+<div id="donation_container">
+  <div class="card primary">
+    <h1>CURRENT GOAL</h1>
+    <div class="status">$<%= @total %> / $<%= @current_goal['cost'] %> </div>
+    <p>The next goal is <strong><%= @current_goal['name'] %></strong></p>
+    <p><%= @current_goal['markdown'] %></p>
+  </div>
+  <div class="card primary">
+    <h1>SUPPORT THE SITE</h1>
+    <p>If you like what we're doing, you can fund the development of extra features and help us pay the bills here.</p>
+
+    <p>Every donation is appreciated, whether it's a one off or a monthly pledge. If you subscribe with a recurring donation, that gets counted towards the total for the goals for developing extra features, and will help unlock improvements to the site for everyone!</p>
+    <p>If you run into issues, please contact cherpadmin@protonmail.com</p>
+    <table class="prices">
+      <tr>
+        <% @prices.each do |price| %>
+          <th align="center">$<%= price['cost'] %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <% @prices.each do |price| %>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{price['once']}&mode=payment", data: { turbo: false } do %>
+              One-time
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <% @prices.each do |price| %>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{price['monthly']}&mode=subscription", data: { turbo: false } do %>
+              Monthly
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    </table>
+  </div>
+  <div class="card primary">
+    <h1>ALL GOALS</h1>
+    <ul>
+      <%= render partial: 'donation/goal', collection: @goals, as: :goal %>
+    </ul>
+  </div>
+</div>

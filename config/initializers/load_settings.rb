@@ -95,6 +95,21 @@ module CardinalSettings
     end
   end
 
+  # A collection of methods simplifying access to the donation hash within SETTINGS_HASH
+  class Donation
+    def self.donation_hash
+      SETTINGS_HASH['donation']
+    end
+
+    def self.prices
+      donation_hash['prices']
+    end
+
+    def self.goals
+      donation_hash['goals']
+    end
+  end
+
   # A collection of methods simplifying access to the use hash within SETTINGS_HASH
   class Use
     def self.use_hash
