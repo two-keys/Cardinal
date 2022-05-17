@@ -24,7 +24,11 @@
       </tr>
       <tr>
         <% @prices.each do |price| %>
-          <td>Monthly</td>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{price['monthly']}&mode=subscription", data: { turbo: false } do %>
+              Monthly
+            <% end %>
+          </td>
         <% end %>
       </tr>
     </table>
