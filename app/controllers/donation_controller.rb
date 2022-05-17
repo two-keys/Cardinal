@@ -2,6 +2,18 @@
 
 class DonationController < ApplicationController
   def index
+    subscriptions = Stripe::Subscription.list({ limit: 3 })
+
+    our_prices = CardinalSettings::Donation.prices.pluck('monthly')
+
+    @total = 0
+    subscriptions.each do |sub|
+      plan_id = sub['items']['data'][0]['plan']['id']
+
+      @total += sub['items']['data'][0]['plan']['amount'] if our_prices.includes? plan_id
+    end
+    @current_goal = CardinalSettings::Donation.goals.find { |goal| @total < goal['cost'] }
+
     @prices = CardinalSettings::Donation.prices
     @goals = CardinalSettings::Donation.goals
   end

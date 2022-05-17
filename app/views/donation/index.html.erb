@@ -1,6 +1,9 @@
 <div id="donation_container">
   <div class="card primary">
     <h1>CURRENT GOAL</h1>
+    <div class="status">$<%= @total %> / $<%= @current_goal['cost'] %> </div>
+    <p>The next goal is <strong><%= @current_goal['name'] %></strong></p>
+    <p><%= @current_goal['markdown'] %></p>
   </div>
   <div class="card primary">
     <h1>SUPPORT THE SITE</h1>
