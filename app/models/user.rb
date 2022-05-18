@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :chats, through: :chat_users
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy
+  has_many :tickets, dependent: :delete_all
 
   delegate :can?, :cannot?, to: :ability
 
