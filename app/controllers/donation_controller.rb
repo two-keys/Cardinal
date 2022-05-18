@@ -8,9 +8,9 @@ class DonationController < ApplicationController
 
     @total = 0
     subscriptions.each do |sub|
-      plan_id = sub['items']['data'][0]['plan']['id']
+      plan = sub['items']['data'][0]['plan']
 
-      @total += sub['items']['data'][0]['plan']['amount'] if our_prices.includes? plan_id
+      @total += (plan['amount'] / 100) if our_prices.include? plan['id']
     end
     @current_goal = CardinalSettings::Donation.goals.find { |goal| @total < goal['cost'] }
 
