@@ -7,10 +7,6 @@ class DonationTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:user)
-    @chat = chats(:chat_one)
-    @chat.users << @user
-
     @stripe_mock = [
       {
         'items' => {
