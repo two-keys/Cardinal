@@ -3,6 +3,8 @@
 require 'application_system_test_case'
 
 class UsersTest < ApplicationSystemTestCase
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @unbanned = users(:user)
     @banned = users(:user_banned)
@@ -54,5 +56,23 @@ class UsersTest < ApplicationSystemTestCase
     click_button 'Log in'
 
     assert_text 'Signed in successfully.'
+  end
+
+  test 'guest can register' do
+    visit new_user_registration_path
+    fill_in 'Email', with: 'nonexistent@example.com'
+    fill_in 'Username', with: 'nonexistent'
+    fill_in 'Password', with: 123_456
+    fill_in 'Password confirmation', with: 123_456
+    click_button 'Sign up'
+
+    assert_text 'Welcome! You have signed up successfully.'
+  end
+
+  test 'user can reach edit profile' do
+    sign_in(@unbanned)
+    visit edit_user_registration_path
+
+    assert_text 'Edit User'
   end
 end

@@ -32,10 +32,4 @@ module ApplicationHelper
   def deleted?
     user_signed_in? && !current_user.delete_at.nil?
   end
-
-  # User can update given model
-  # Some models shouldn't be editable even if a user is an admin (See, messages)
-  def can_edit?(model)
-    model.user_id == current_user.id || (model.moderatable && admin?)
-  end
 end

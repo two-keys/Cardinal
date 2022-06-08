@@ -57,6 +57,11 @@ class User < ApplicationRecord
     { unread: unread_count, unanswered: unanswered_count, ended: ended_count }
   end
 
+  # cancancan hack to make it stop screaming because of Devise's weird and shitty controller names.
+  def user
+    self
+  end
+
   def ability
     @ability ||= Ability.new(self)
   end

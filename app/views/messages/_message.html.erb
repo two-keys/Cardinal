@@ -18,7 +18,7 @@
         <!-- Display the date and time of the message -->
         Sent <%= locals[:message].created_at.strftime("%Y-%m-%d %k:%M:%S") %>
       </span>
-      <% if can_edit? locals[:message] %>
+      <% if can? :edit, locals[:message] %>
           <%= link_to "Edit", edit_message_path(locals[:message]), class: "message_edit_link" %>
       <% end %>
       <% if locals[:message].updated_at > locals[:message].created_at %>

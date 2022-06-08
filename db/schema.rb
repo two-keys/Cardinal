@@ -136,9 +136,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_11_035212) do
     t.string "username", default: "", null: false
     t.boolean "admin", default: false
     t.boolean "verified", default: false
-    t.datetime "unban_at"
+    t.datetime "unban_at", precision: nil
     t.string "ban_reason"
-    t.datetime "delete_at"
+    t.datetime "delete_at", precision: nil
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

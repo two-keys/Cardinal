@@ -32,7 +32,7 @@
     </div>
   <% end %>
 
-  <% if can_edit?(prompt) %>
+  <% if can? :edit, prompt %>
     <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
     <% if prompt.bumpable? %>
       <%= button_to "Bump", prompt_bump_path(prompt), method: :put %></p>
