@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       post :autocomplete
     end
   end
-  
+
   resources :messages, only: %i[show create destroy update edit]
   resources :chats, except: :show
   get 'chats/:id', to: 'chats#show'

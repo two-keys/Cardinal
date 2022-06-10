@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class TagsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
@@ -86,33 +87,31 @@ class TagsController < ApplicationController
   # POST /tags/autocomplete
   # POST /tags/autocomplete.json
   def autocomplete
-    if params.dig(:tag_search).present?
+    if params[:tag_search].present?
       @tags_string = params[:tag_search].split(',')
       @search_string = @tags_string.last
       @tags = Tag.where('name ILIKE ?', "%#{@search_string}%")
-               .where(enabled: true, 
-                      tag_type: params[:tag_type], 
-                      polarity: params[:polarity])
+                 .where(enabled: true,
+                        tag_type: params[:tag_type],
+                        polarity: params[:polarity])
     else
       @tags_string = []
-      @search_string = ""
+      @search_string = ''
       @tags = []
     end
 
     # Exclude things we make checkboxes for
-    if not CardinalSettings::Tags.types[params[:tag_type]]['entries'].nil?
-      CardinalSettings::Tags.types[params[:tag_type]]['entries'].map do |entry|
-        @tags = @tags.where.not(name: entry)
-      end
+    CardinalSettings::Tags.types[params[:tag_type]]['entries']&.map do |entry|
+      @tags = @tags.where.not(name: entry)
     end
 
     respond_to do |format|
       format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update("autocomplete_results",
-            partial: "tags/autocomplete_results",
-            locals: { tags: @tags, search_string: @search_string })
-          ]
+        render turbo_stream: [
+          turbo_stream.update('autocomplete_results',
+                              partial: 'tags/autocomplete_results',
+                              locals: { tags: @tags, search_string: @search_string })
+        ]
       end
       format.json { render json: @tags.as_json }
     end
@@ -177,3 +176,4 @@ class TagsController < ApplicationController
     raise ActiveRecord::RecordNotFound.new, "Couldn't find Tag with 'id'=#{@tag.id}"
   end
 end
+# rubocop:enable Metrics/ClassLength

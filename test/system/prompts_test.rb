@@ -105,7 +105,7 @@ class PromptsTest < ApplicationSystemTestCase
     fill_in 'Starter', with: '1234929adwjwo totally unique prompt starter'
     click_on 'Submit'
 
-    assert_text 'Prompt was successfully created'
+    assert_text 'Edit this prompt'
     click_on 'Back'
   end
 

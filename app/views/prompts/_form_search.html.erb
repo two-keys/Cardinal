@@ -1,5 +1,5 @@
 <%= form_with do |form| %>
-
+  <% @autocomplete = UNLEASH.is_enabled? "TagAutocomplete", @unleash_context %>
   <% CardinalSettings::Tags.polarities.each do |polarity| %>
     <div class="polarity">
       <h3><%= form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
@@ -13,7 +13,7 @@
               <%= render partial: 'prompts/form_tags/entries', locals: { entries: default_entries_for(tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
             <% end %>
             <% if tag_hash['fill_in'] %>
-              <%= render partial: 'prompts/form_tags/fill_ins', locals: { entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+              <%= render partial: 'prompts/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
             <% end %>
 
           <% end %>
