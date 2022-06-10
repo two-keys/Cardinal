@@ -10,7 +10,7 @@ class Prompt < ApplicationRecord
   belongs_to :user
 
   has_many :prompt_tags, dependent: :destroy
-  has_many :tags, through: :prompt_tags, :counter_cache => true
+  has_many :tags, through: :prompt_tags
 
   enum status: {
     draft: 0,

@@ -87,21 +87,23 @@ class TagsController < ApplicationController
   # POST /tags/autocomplete
   # POST /tags/autocomplete.json
   def autocomplete
-    if params[:tag] == "prefetch"
-      @tags = Tag.where(tag_type: params[:tag_type], polarity: params[:polarity]).left_joins(:prompt_tags).group(:id).order('COUNT(prompt_tags.id) DESC').limit(50)
+    if params[:tag] == 'prefetch'
+      @tags = Tag.where(tag_type: params[:tag_type],
+                        polarity: params[:polarity])
+                 .left_joins(:prompt_tags)
+                 .group(:id).order('COUNT(prompt_tags.id) DESC')
+                 .limit(50)
+    elsif params[:tag_search].present?
+      @tags_string = params[:tag_search].split(',')
+      @search_string = @tags_string.last
+      @tags = Tag.where('name ILIKE ?', "%#{@search_string}%")
+                 .where(enabled: true,
+                        tag_type: params[:tag_type],
+                        polarity: params[:polarity])
     else
-      if params[:tag_search].present?
-        @tags_string = params[:tag_search].split(',')
-        @search_string = @tags_string.last
-        @tags = Tag.where('name ILIKE ?', "%#{@search_string}%")
-                  .where(enabled: true,
-                          tag_type: params[:tag_type],
-                          polarity: params[:polarity])
-      else
-        @tags_string = []
-        @search_string = ''
-        @tags = []
-      end
+      @tags_string = []
+      @search_string = ''
+      @tags = []
     end
 
     # Exclude things we make checkboxes for

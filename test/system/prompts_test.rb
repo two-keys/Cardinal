@@ -195,7 +195,7 @@ class PromptsTest < ApplicationSystemTestCase
     fill_in 'Starter', with: @prompt.starter
     click_on 'Submit', match: :first
 
-    assert_text 'Prompt was successfully updated'
+    assert_text 'Edit this prompt'
     click_on 'Back'
   end
 

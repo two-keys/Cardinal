@@ -11,7 +11,7 @@ class Tag < ApplicationRecord
   before_save :fix_synonym
 
   has_many :prompt_tags, dependent: :destroy
-  has_many :prompts, through: :prompt_tags, :counter_cache => true
+  has_many :prompts, through: :prompt_tags
 
   scope :with_public, -> { where(enabled: true) }
 

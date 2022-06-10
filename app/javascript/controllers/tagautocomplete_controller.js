@@ -5,6 +5,7 @@ export default class extends Controller {
     initialize() {
       let text_input = this.element.children[1];
       let current_element = this.element;
+      let $form = $('#prompt_tags_form')
       let $select = $(text_input).selectize({
         plugins: ["remove_button"],
         delimiter: ",",
