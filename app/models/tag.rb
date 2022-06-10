@@ -11,7 +11,7 @@ class Tag < ApplicationRecord
   before_save :fix_synonym
 
   has_many :prompt_tags, dependent: :destroy
-  has_many :prompts, through: :prompt_tags
+  has_many :prompts, through: :prompt_tags, :counter_cache => true
 
   scope :with_public, -> { where(enabled: true) }
 
@@ -22,6 +22,10 @@ class Tag < ApplicationRecord
   validate :polarity_must_match_tag_type
 
   validates :enabled, inclusion: [true, false]
+
+  def useage_count
+    prompt_tags.count
+  end
 
   # Compares two tags by comparing their lowercase versions
   def identical?(other)
