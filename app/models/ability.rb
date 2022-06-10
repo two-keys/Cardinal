@@ -65,6 +65,7 @@ class Ability
     can :update_tags, Prompt, user: user
     can :search, Prompt
     can :generate_search, Prompt
+    can :autocomplete, Tag
 
     unless user.active_for_authentication?
       # Things which banned users cannot do

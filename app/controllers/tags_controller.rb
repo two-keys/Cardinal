@@ -11,6 +11,8 @@ class TagsController < ApplicationController
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
 
+  skip_before_action :verify_authenticity_token, raise: false, only: %i[autocomplete]
+
   authorize_resource
 
   # GET /tags
@@ -81,6 +83,41 @@ class TagsController < ApplicationController
     end
   end
 
+  # POST /tags/autocomplete
+  # POST /tags/autocomplete.json
+  def autocomplete
+    if params.dig(:tag_search).present?
+      @tags_string = params[:tag_search].split(',')
+      @search_string = @tags_string.last
+      @tags = Tag.where('name ILIKE ?', "%#{@search_string}%")
+               .where(enabled: true, 
+                      tag_type: params[:tag_type], 
+                      polarity: params[:polarity])
+    else
+      @tags_string = []
+      @search_string = ""
+      @tags = []
+    end
+
+    # Exclude things we make checkboxes for
+    if not CardinalSettings::Tags.types[params[:tag_type]]['entries'].nil?
+      CardinalSettings::Tags.types[params[:tag_type]]['entries'].map do |entry|
+        @tags = @tags.where.not(name: entry)
+      end
+    end
+
+    respond_to do |format|
+      format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update("autocomplete_results",
+            partial: "tags/autocomplete_results",
+            locals: { tags: @tags, search_string: @search_string })
+          ]
+      end
+      format.json { render json: @tags.as_json }
+    end
+  end
+
   private
 
   # Saves us having to find tag by route params
@@ -128,6 +165,10 @@ class TagsController < ApplicationController
 
   def synonym_params
     params.require(:synonym).permit(:name, :tag_type, :polarity) if params.key?(:synonym)
+  end
+
+  def autocomplete_params
+    params.require(:tag).permit(:tag_search, :tag_type, :polarity)
   end
 
   def visible?

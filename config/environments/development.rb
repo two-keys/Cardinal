@@ -70,4 +70,6 @@ Rails.application.configure do
   # This is terribly hacky, but it's the only way to get the dev environment
   # to use the same host as the production environment without it crashing.
   config.hosts.clear
+
+  config.public_file_server.enabled = true
 end

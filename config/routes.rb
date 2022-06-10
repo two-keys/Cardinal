@@ -12,7 +12,12 @@ Rails.application.routes.draw do
     match 'bump', action: 'bump', via: %i[put patch]
   end
 
-  resources :tags
+  resources :tags do
+    collection do
+      post :autocomplete
+    end
+  end
+  
   resources :messages, only: %i[show create destroy update edit]
   resources :chats, except: :show
   get 'chats/:id', to: 'chats#show'

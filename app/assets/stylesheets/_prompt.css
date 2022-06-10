@@ -2,15 +2,78 @@ form .fill_ins {
   padding-left: 20px;
 }
 
+form .tt-menu {
+  background: var(--card-bg-color-secondary);
+  color: var(--card-text-color-secondary);
+  margin: 0 20px 5px 20px;
+  padding: 3px 0;
+  box-shadow: 0 1px 2px var(--card-text-color-secondary);
+  display: block;
+  overflow-x:visible;
+  width: auto;
+  z-index: 100;
+  margin: 12px 0;
+  padding: 8px 0;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+form .tt-menu::before {
+  content: "Tag Autocomplete";
+  white-space: nowrap;
+  display: inline-block;
+  font-weight: bold;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 99;
+  left: 0px;
+}
+
+form .tt-menu::after {
+  display: inline-block;
+  content: "";
+  height: 15px;
+	width: 15px;
+  color: var(--card-bg-color-secondary);
+  background: var(--card-bg-color-secondary);
+	margin: 0 auto;
+	transform: rotate(45deg);
+	border-radius: 0 0 0 0;
+	margin-top: -22px;
+	position: absolute;
+	left: 50%;
+  top: 15px;
+}
+
+form .tt-suggestion {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+form .tt-suggestion:hover {
+  background: var(--card-bg-color);
+  color: var(--card-text-color);
+}
+
+.fill_ins .twitter-typeahead {
+  width: 100%;
+}
+
+.fill_ins input {
+  width: 100%;
+}
 
 @media screen and (max-width: 840px) {
   #form .fill_ins {
     padding-right: 20px;
   }
-}
-
-.fill_ins input {
-  width: 100%;
 }
 
 .polarity {

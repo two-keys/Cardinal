@@ -103,4 +103,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.hosts << 'cardinal.roleply.site'
   config.hosts << "127.0.0.1"
+
+  # Serve local files
+  config.public_file_server.enabled = true
 end
