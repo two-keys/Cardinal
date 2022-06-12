@@ -3,7 +3,7 @@
 begin
   require 'rubocop/rake_task'
 rescue LoadError => e
-  raise e unless ENV.fetch('RAILS_ENV') == 'production'
+  raise e unless ENV.fetch('RAILS_ENV', nil) == 'production'
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|
