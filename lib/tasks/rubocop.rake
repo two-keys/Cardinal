@@ -3,5 +3,5 @@
 require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ['-A', '--display-cop-names']
+  t.options = ['-A', '--display-cop-names'].concat ARGV.drop(1)
 end
