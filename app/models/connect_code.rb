@@ -14,7 +14,7 @@ class ConnectCode < ApplicationRecord
     if remaining_uses.positive?
       self.remaining_uses -= 1
       chat.users << user
-      use_message = "#{chat.chat_users.find_by(user: user).icon} has joined the chat. #{remaining_uses} uses remaining."
+      use_message = "#{chat.chat_users.find_by(user:).icon} has joined the chat. #{remaining_uses} uses remaining."
       chat.messages << Message.new(content: use_message)
       save
       true

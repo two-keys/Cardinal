@@ -70,7 +70,7 @@ class Message < ApplicationRecord
     self.icon = if user_id.nil?
                   CardinalSettings::Icons.system_icon
                 else
-                  user.chat_users.find_by(chat_id: chat_id).icon
+                  user.chat_users.find_by(chat_id:).icon
                 end
   end
 

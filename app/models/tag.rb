@@ -74,7 +74,7 @@ class Tag < ApplicationRecord
       tag_type = pieces[1]
       name = pieces[2].strip
 
-      search_tags << Tag.find_or_create_by!(name: name, tag_type: tag_type, polarity: polarity)
+      search_tags << Tag.find_or_create_by!(name:, tag_type:, polarity:)
     end
 
     # Let @prompt.save handle the bulk of processing/validating tags
@@ -103,7 +103,7 @@ class Tag < ApplicationRecord
           list_from_split.compact_blank! # strip might've resulted in empty tags
 
           list_from_split.each do |tag_name|
-            temp_tag = Tag.find_or_create_by!(name: tag_name, tag_type: type, polarity: polarity)
+            temp_tag = Tag.find_or_create_by!(name: tag_name, tag_type: type, polarity:)
             new_tags << temp_tag
           end
         end

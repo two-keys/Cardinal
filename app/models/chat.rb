@@ -29,7 +29,7 @@ class Chat < ApplicationRecord
                                  target: "chat_#{id}_user_#{user.id}_userlist",
                                  partial: 'chats/chat_sidebar',
                                  locals: { locals: { chat_id: id, users_data: all_users_display_data,
-                                                     chat_uuid: uuid, user: user } })
+                                                     chat_uuid: uuid, user: } })
     end
     reenable_chat if users.count > 1
   end
@@ -44,7 +44,7 @@ class Chat < ApplicationRecord
   end
 
   def get_user_info(user)
-    chat_users.find_by(user: user)
+    chat_users.find_by(user:)
   end
 
   def get_user_display_data(user)
@@ -76,7 +76,7 @@ class Chat < ApplicationRecord
   end
 
   def viewed!(user)
-    chat_users.find_by(user: user).viewed!
+    chat_users.find_by(user:).viewed!
   end
 
   def active_chat_users

@@ -6,7 +6,7 @@ module Taggable
   def tags_for(polarity)
     polarity_tags = {}
     raw_polarity_tags = tags.where(
-      polarity: polarity
+      polarity:
     )
 
     CardinalSettings::Tags.types.each do |tag_type, tag_hash|
@@ -25,7 +25,7 @@ module Taggable
     checked_entries = tags.where(
       name: CardinalSettings::Tags.types[tag_type]['entries']
     ).where(
-      polarity: polarity, tag_type: tag_type
+      polarity:, tag_type:
     ).pluck(:name)
     CardinalSettings::Tags.types[tag_type]['entries'].map do |entry|
       {
@@ -39,7 +39,7 @@ module Taggable
     tags.where.not(
       name: CardinalSettings::Tags.types[tag_type]['entries']
     ).where(
-      polarity: polarity, tag_type: tag_type
+      polarity:, tag_type:
     ).pluck(:name)
   end
 

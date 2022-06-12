@@ -8,7 +8,7 @@ class PromptContentValidator < ActiveModel::Validator
       local_errors << "Content must be greater than #{Prompt::MIN_CONTENT_LENGTH} characters"
     end
 
-    matches_found = Prompt.where.not(id: id).and(
+    matches_found = Prompt.where.not(id:).and(
       Prompt.where(ooc: content).or(
         Prompt.where(starter: content)
       )

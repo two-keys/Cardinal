@@ -21,7 +21,7 @@ class Ability
     can :create, Chat
     can :create, ConnectCode
     can :create, Filter
-    can :create, PromptTag, prompt: { user: user }
+    can :create, PromptTag, prompt: { user: }
     can :create, Prompt
 
     ## Reading
@@ -33,7 +33,7 @@ class Ability
     end
     can :read, ConnectCode, user: user
     can :read, Filter, user: user
-    can :read, PromptTag, prompt: { user: user }
+    can :read, PromptTag, prompt: { user: }
     can :read, Prompt, status: 'posted'
     can :read, Prompt, user: user
     can :read, Tag, enabled: true
@@ -47,7 +47,7 @@ class Ability
       chat.users.include?(user)
     end
     can :update, Filter, user: user
-    can :update, PromptTag, prompt: { user: user }
+    can :update, PromptTag, prompt: { user: }
     can :update, Prompt, user: user
     can :update, User, user: user
 
@@ -56,7 +56,7 @@ class Ability
       chat.users.include?(user)
     end
     can :destroy, Filter, user: user
-    can :destroy, PromptTag, prompt: { user: user }
+    can :destroy, PromptTag, prompt: { user: }
     can :destroy, Prompt, user: user
     can :destroy, User, user: user
 
