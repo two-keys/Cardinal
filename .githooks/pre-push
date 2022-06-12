@@ -11,7 +11,7 @@ if @test_status !=0
 end
 
 system("bundle exec bundler-audit --update")
-system("bundle exec brakeman -q -w2")
+system("bundle exec brakeman -q -w2 --summary --no-pager")
 @brakeman_status = $CHILD_STATUS.exitstatus
 
 if @brakeman_status !=0
