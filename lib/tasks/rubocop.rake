@@ -2,10 +2,10 @@
 
 begin
   require 'rubocop/rake_task'
-rescue LoadError => e
-  raise e unless ENV.fetch('RAILS_ENV', nil) == 'production'
+  RuboCop::RakeTask.new(:rubocop) do |t|
+    t.options = ['-A', '--display-cop-names'].concat ARGV.drop(1)
+  end
+rescue LoadError
 end
 
-RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ['-A', '--display-cop-names'].concat ARGV.drop(1)
-end
+
