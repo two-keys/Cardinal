@@ -3,6 +3,7 @@
     <div class="pagination">
       <%= link_to "New Prompt", new_prompt_path %>
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+      Your search has <strong><%= @pagy.count %></strong> total prompts!
     </div>
   </div>
   <%= render partial: 'prompts/mini', collection: @prompts, as: :prompt %>
