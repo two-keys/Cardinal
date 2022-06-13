@@ -7,7 +7,11 @@ export default class extends Controller {
     // console.log("Hello, Stimulus!", this.element);
   }
 
-  add() {
+  /**
+   * Adds a tag to the given search key
+   * @param {string} searchKey 
+   */
+  appendToKey(searchKey) {
     let newTag = {
       polarity: this.polarityTarget.value,
       tagType: this.tagTypeTarget.value,
@@ -21,10 +25,10 @@ export default class extends Controller {
     let searchParams = new URLSearchParams(paramsString);
 
     let tags = [];
-    if (searchParams.has('tags')) {
-      tags = searchParams.get('tags').split(',');
+    if (searchParams.has(searchKey)) {
+      tags = searchParams.get(searchKey).split(',');
     } else {
-      searchParams.append('tags', '');
+      searchParams.append(searchKey, '');
     }
 
     // console.log(`Tags: ${tags}`);
@@ -35,10 +39,18 @@ export default class extends Controller {
       tags.push(`${polarity}:${tagType}:${name}`);
 
       // no in-depth string processing here, HTTP controller handles that
-      searchParams.set('tags', tags.join(','));
+      searchParams.set(searchKey, tags.join(','));
 
       // redirect, might break on some browsers
       document.location.search = '?' + searchParams.toString();
     };
+  }
+
+  add() {
+    this.appendToKey('tags');
+  }
+
+  exclude() {
+    this.appendToKey('nottags');
   }
 }
