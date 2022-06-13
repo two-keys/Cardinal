@@ -64,6 +64,18 @@ class PromptsTest < ApplicationSystemTestCase
     end
   end
 
+  test 'visiting the index with NOT search' do
+    tag_list = 'playing:fandom:No Fandom'
+
+    tag_array = Tag.from_search_params(tag_list)
+    @no_tags.tags = tag_array
+
+    visit "#{prompts_url}?tags=#{tag_list}&nottags=#{tag_list}"
+    assert_selector 'h1', text: 'Prompts'
+
+    find 'strong', exact_text: 0
+  end
+
   test 'visiting the index with ?before url parameter' do
     visit "#{prompts_url}?before=1999-12-01"
     assert_selector 'h1', text: 'Prompts'
