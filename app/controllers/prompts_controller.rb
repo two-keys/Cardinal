@@ -21,7 +21,22 @@ class PromptsController < ApplicationController
     # GET /prompts?before=2022-02-17
     query = query.where(bumped_at: ..search_params[:before]) if search_params.key?(:before)
 
+    # GET /prompts?nottags=meta:type:Violent,polarity:tag_type:name,...
+    # NOT search, should run before general AND
+    # this ensures you won't see prompts with ANY of the tags in nottags
+    if search_params.key?(:nottags)
+      # logger.debug search_params[:nottags]
+      query_tags = Tag.from_search_params(search_params[:nottags])
+      query_tag_ids = query_tags.map(&:id)
+      # logger.debug query_tag_ids
+      query = query.where(
+        'NOT(ARRAY[?]::bigint[] && array(?))', # no overlap
+        query_tag_ids, PromptTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+      )
+    end
+
     # GET /prompts?tags=meta:type:Violent,polarity:tag_type:name,...
+    # AND search
     if search_params.key?(:tags)
       # logger.debug search_params[:tags]
       query_tags = Tag.from_search_params(search_params[:tags])
@@ -184,7 +199,7 @@ class PromptsController < ApplicationController
   end
 
   def search_params
-    params.permit(:before, :tags)
+    params.permit(:before, :tags, :nottags)
   end
 
   def visible?

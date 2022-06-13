@@ -27,6 +27,14 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get index with NOT tag search' do
+    sign_in(@user)
+    get prompts_url, params: {
+      nottags: 'playing:fandom:No Fandom,playing:character:Original Character,playing:characteristic:Tall'
+    }
+    assert_response :success
+  end
+
   test 'should get search page' do
     sign_in(@user)
     get search_path
