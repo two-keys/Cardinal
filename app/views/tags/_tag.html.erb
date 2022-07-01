@@ -20,4 +20,12 @@
       Lower: <%= tag.name.downcase %>
     </p>
   </div>
+  
+  <% if tag.synonym.present? %>
+    Synonym
+    <%= render partial: 'tags/mini', locals: {tag: tag.synonym} %>
+  <% elsif tag.parent.present? %>
+    Parent
+    <%= render partial: 'tags/mini', locals: {tag: tag.parent} %>
+  <% end %>
 </div>
