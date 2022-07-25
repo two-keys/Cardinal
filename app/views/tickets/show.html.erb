@@ -1,0 +1,9 @@
+<%= render partial: 'tickets/mini', locals: { ticket: @ticket} %>
+
+<div>
+  <%= link_to "Back to tickets", tickets_path %>
+
+  <% if can? :destroy, @ticket %>
+    <%= button_to "Destroy this ticket", @ticket, method: :delete %>
+  <% end %>
+</div>

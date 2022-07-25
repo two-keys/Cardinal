@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     get 'search', to: 'prompts#search'
     post 'search', to: 'prompts#generate_search'
   end
+
+  resources :tickets, only: %i[index show destroy]
+
   resources :prompts do
     match 'tags', action: 'update_tags', via: %i[put patch]
     match 'bump', action: 'bump', via: %i[put patch]

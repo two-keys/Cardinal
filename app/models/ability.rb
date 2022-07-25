@@ -37,6 +37,7 @@ class Ability
     can :read, Prompt, status: 'posted'
     can :read, Prompt, user: user
     can :read, Tag, enabled: true
+    can :read, Ticket, user: user
     can :read, User, user: user
 
     ## Updating
@@ -58,6 +59,7 @@ class Ability
     can :destroy, Filter, user: user
     can :destroy, PromptTag, prompt: { user: }
     can :destroy, Prompt, user: user
+    can :destroy, Ticket, user: user
     can :destroy, User, user: user
 
     ## Non-CRUD Actions
