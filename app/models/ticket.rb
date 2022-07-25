@@ -6,7 +6,7 @@ class Ticket < ApplicationRecord
   belongs_to :item, polymorphic: true
   belongs_to :user
 
-  validates :item_type, inclusion: { in: %w[Prompt], message: `%<value> is not a valid Ticket type` }, allow_nil: true
+  validates :item_type, inclusion: { in: %w[Prompt] }, allow_nil: true
 
   validate :can_spend, on: :create
   validate :owns_item, on: %i[create update]
