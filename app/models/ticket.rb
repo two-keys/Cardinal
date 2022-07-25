@@ -19,6 +19,23 @@ class Ticket < ApplicationRecord
     Ticket.create(user: spend_item.user, item: spend_item)
   end
 
+  def destroyable?
+    diff_in_seconds = Time.zone.at(DateTime.now) - created_at
+    diff_in_seconds += 1.second # a surprise tool to help us later
+    seconds_in_a_day = 24 * 60 * 60
+
+    diff_in_seconds / seconds_in_a_day >= 1
+  end
+
+  def destroy!
+    unless destroyable?
+      errors.add(:destroy, 'Cannot destroy ticket until 24 hours have passed')
+      return false
+    end
+
+    super
+  end
+
   private
 
   def can_spend
