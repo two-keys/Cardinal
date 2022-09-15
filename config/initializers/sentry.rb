@@ -14,8 +14,8 @@ Sentry.init do |config|
   end
 
   config.before_send = lambda do |event, _hint|
-    Redis.current.set(event.tags[:request_id], event.event_id)
-    Redis.current.expire(event.tags[:request_id], 15.seconds)
+    Redis.new(url: ENV.fetch('REDIS_URL')).set(event.tags[:request_id], event.event_id)
+    Redis.new(url: ENV.fetch('REDIS_URL')).expire(event.tags[:request_id], 15.seconds)
 
     event
   end
