@@ -14,8 +14,8 @@ Sentry.init do |config|
   end
 
   config.before_send = lambda do |event, _hint|
-    Redis.current.set(event.tags[:request_id], event.event_id)
-    Redis.current.expire(event.tags[:request_id], 15.seconds)
+    ReadCache.redis.set(event.tags[:request_id], event.event_id)
+    ReadCache.redis.expire(event.tags[:request_id], 15.seconds)
 
     event
   end
