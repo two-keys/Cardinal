@@ -11,6 +11,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
     @admin = users(:admin)
+    @banned = users(:user_banned)
   end
 
   test 'should get index' do
@@ -271,6 +272,36 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'not logged in should not bump prompt' do
     patch prompt_bump_path(@prompt)
     assert_redirected_to new_user_session_url
+  end
+
+  test 'should answer prompt' do
+    sign_in(@user2)
+    post prompt_answer_path(@prompt)
+
+    assert_response :redirect
+
+    reg_exp_for_url = %r{http://www\.example\.com/chats/(.*)}
+    assert_match reg_exp_for_url, @response.redirect_url
+
+    matches = %r{http://www\.example\.com/chats/(?<uuid>.*)}.match(@response.redirect_url)
+    chat = Chat.find_by(uuid: matches['uuid'])
+
+    assert_includes chat.messages.pluck(:content), @prompt.ooc
+    assert_includes chat.messages.pluck(:content), @prompt.starter
+  end
+
+  test 'should not answer own prompt' do
+    sign_in(@user)
+    post prompt_answer_path(@prompt)
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'banned should not answer prompt' do
+    sign_in(@banned)
+    post prompt_answer_path(@prompt)
+
+    assert_redirected_to new_user_session_path
   end
 
   test 'should destroy prompt' do

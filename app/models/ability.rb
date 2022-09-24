@@ -65,6 +65,8 @@ class Ability
     ## Non-CRUD Actions
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
+    can :answer, Prompt
+    cannot :answer, Prompt, user: user
     can :search, Prompt
     can :generate_search, Prompt
     can :autocomplete, Tag
@@ -79,6 +81,7 @@ class Ability
       ## Non-CRUD Actions
       cannot :bump, Prompt
       cannot :update_tags, Prompt
+      cannot :answer, Prompt
     end
 
     return unless user.admin?
