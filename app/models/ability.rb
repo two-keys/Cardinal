@@ -81,6 +81,7 @@ class Ability
       ## Non-CRUD Actions
       cannot :bump, Prompt
       cannot :update_tags, Prompt
+      cannot :answer, Prompt
     end
 
     return unless user.admin?

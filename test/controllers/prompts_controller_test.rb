@@ -11,6 +11,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
     @admin = users(:admin)
+    @banned = users(:user_banned)
   end
 
   test 'should get index' do
@@ -294,6 +295,13 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     post prompt_answer_path(@prompt)
 
     assert_response :unprocessable_entity
+  end
+
+  test 'banned should not answer prompt' do
+    sign_in(@banned)
+    post prompt_answer_path(@prompt)
+
+    assert_redirected_to new_user_session_path
   end
 
   test 'should destroy prompt' do
