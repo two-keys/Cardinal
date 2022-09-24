@@ -66,6 +66,7 @@ class Ability
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
     can :answer, Prompt
+    cannot :answer, Prompt, user: user
     can :search, Prompt
     can :generate_search, Prompt
     can :autocomplete, Tag

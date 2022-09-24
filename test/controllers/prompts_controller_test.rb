@@ -289,6 +289,13 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_includes chat.messages.pluck(:content), @prompt.starter
   end
 
+  test 'should not answer own prompt' do
+    sign_in(@user)
+    post prompt_answer_path(@prompt)
+
+    assert_response :unprocessable_entity
+  end
+
   test 'should destroy prompt' do
     sign_in(@user)
     assert_difference('Prompt.count', -1) do

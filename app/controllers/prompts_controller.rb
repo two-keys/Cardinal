@@ -176,7 +176,7 @@ class PromptsController < ApplicationController
   def answer
     respond_to do |format|
       @chat = @prompt.answer(current_user)
-      if @chat.save!
+      if @chat.save
         @connect_code = ConnectCode.new(chat_id: @chat.id, user: @prompt.user, remaining_uses: 8)
         @connect_code.save!
         creation_message = "Chat created.  \n" \

@@ -32,12 +32,13 @@
     </div>
   <% end %>
 
-  <% if can? :answer, prompt %>
-    <%= button_to "Answer", prompt_answer_path(prompt), method: :post %>
-  <% elsif can? :edit, prompt %>
+  <% if can? :edit, prompt %>
     <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
     <% if prompt.bumpable? %>
-      <%= button_to "Bump", prompt_bump_path(prompt), method: :put %></p>
+      <%= button_to "Bump", prompt_bump_path(prompt), method: :put %>
     <% end %>
+  <% end %>
+  <% if can?(:answer, prompt) && prompt.user != current_user %>
+    <%= button_to "Answer", prompt_answer_path(prompt), method: :post %>
   <% end %>
 </div>
