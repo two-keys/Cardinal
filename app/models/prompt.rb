@@ -37,6 +37,18 @@ class Prompt < ApplicationRecord
     markdown_concern(ooc)
   end
 
+  # Answers a prompt, creating a new chat
+  def answer(as_user)
+    @chat = Chat.new
+    @chat.users << user
+    @chat.users << as_user
+
+    @chat.messages << Message.new(content: ooc) if ooc.present?
+    @chat.messages << Message.new(content: starter) if starter.present?
+
+    @chat
+  end
+
   def bumpable?
     diff_in_seconds = Time.zone.at(DateTime.now) - bumped_at_was
     diff_in_seconds += 1.second # a surprise tool to help us later

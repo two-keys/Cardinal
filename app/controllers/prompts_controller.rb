@@ -7,7 +7,7 @@ class PromptsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_prompt, only: %i[show edit bump update update_tags destroy]
+  before_action :set_prompt, only: %i[show edit bump update update_tags answer destroy]
   before_action :authenticate_user!
   before_action :authorized?, only: %i[edit bump update update_tags destroy]
   before_action :visible?, only: %i[show]
@@ -168,6 +168,26 @@ class PromptsController < ApplicationController
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @prompt.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /prompts/1/answer
+  def answer
+    respond_to do |format|
+      @chat = @prompt.answer(current_user)
+      if @chat.save!
+        @connect_code = ConnectCode.new(chat_id: @chat.id, user: @prompt.user, remaining_uses: 8)
+        @connect_code.save!
+        creation_message = "Chat created.  \n" \
+                           "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+        @chat.messages << Message.new(content: creation_message)
+
+        format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully created.' }
+        format.json { render :show, status: :created, location: @chat.uuid }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @chat.errors, status: :unprocessable_entity }
       end
     end
   end

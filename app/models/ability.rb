@@ -65,6 +65,7 @@ class Ability
     ## Non-CRUD Actions
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
+    can :answer, Prompt
     can :search, Prompt
     can :generate_search, Prompt
     can :autocomplete, Tag
