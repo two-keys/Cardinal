@@ -44,3 +44,18 @@ form .polarity {
 .prompt li {
   word-wrap: break-word;
 }
+
+.prompt_edit_link {
+  position: relative;
+  float: right;
+  opacity: 75%;
+}
+
+.prompt_actions {
+  list-style-type: none;
+  margin-bottom: 0;
+}
+
+.prompt_actions li, .prompt_actions button, .prompt_actions form {
+  display: inline;
+}

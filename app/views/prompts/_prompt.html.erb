@@ -34,11 +34,14 @@
 
   <% if can? :edit, prompt %>
     <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
-    <% if prompt.bumpable? %>
-      <%= button_to "Bump", prompt_bump_path(prompt), method: :put %>
+  <% end %>
+
+  <ul class="prompt_actions">
+    <% if can?(:edit, prompt) && prompt.bumpable? %>
+      <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
     <% end %>
-  <% end %>
-  <% if can?(:answer, prompt) && prompt.user != current_user %>
-    <%= button_to "Answer", prompt_answer_path(prompt), method: :post %>
-  <% end %>
+    <% if can?(:answer, prompt) %>
+      <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post %></li>
+    <% end %>
+  </ul>
 </div>
