@@ -22,6 +22,7 @@ class Prompt < ApplicationRecord
 
   validates_with PromptContentValidator
   validates :status, inclusion: { in: Prompt.statuses }
+  validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validate :can_bump, on: :update
   validate :can_spend, on: %i[create update]
 

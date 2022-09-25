@@ -177,7 +177,11 @@ class PromptsController < ApplicationController
     respond_to do |format|
       @chat = @prompt.answer(current_user)
       if @chat.save
-        @connect_code = ConnectCode.new(chat_id: @chat.id, user: @prompt.user, remaining_uses: 8)
+        @connect_code = ConnectCode.new(
+          chat_id: @chat.id,
+          user: @prompt.user,
+          remaining_uses: @prompt.default_slots - 2
+        )
         @connect_code.save!
         creation_message = "Chat created.  \n" \
                            "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
@@ -211,7 +215,7 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:starter, :ooc, :status)
+    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots)
   end
 
   def tag_params
