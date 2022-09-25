@@ -14,6 +14,9 @@
     <div class="tags">
       <%= render partial: 'prompts/mini_tags', locals: { prompt: prompt} %>
     </div>
+    <span class="slots">
+      <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
+    </span>
   </div>
 
   <% if prompt.ooc.present? %>
