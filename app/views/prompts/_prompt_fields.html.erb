@@ -25,3 +25,8 @@
   <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
   <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>
 </div>
+
+<div>
+  <%= form.label :default_slots, style: "display: block" %>
+  <%= form.number_field :default_slots, min: 2, step: 1 %>
+</div>

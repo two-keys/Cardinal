@@ -173,6 +173,42 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'shoud create prompt with two slots' do
+    sign_in(@user)
+    assert_difference('Prompt.count') do
+      post prompts_url, params: {
+        prompt: {
+          starter: 'Some unique starter text',
+          default_slots: 2
+        },
+        tags: {
+          misc: {
+            misc: ['This is a misc tag']
+          }
+        }
+      }
+    end
+
+    assert_redirected_to prompt_url(Prompt.find_by(starter: 'Some unique starter text'))
+  end
+
+  test 'should not create prompt with just one slot' do
+    sign_in(@user)
+    post prompts_url, params: {
+      prompt: {
+        starter: 'Some unique starter text',
+        default_slots: 1
+      },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    assert_response :unprocessable_entity
+  end
+
   test 'should show prompt' do
     sign_in(@user)
     get prompt_url(@prompt)
