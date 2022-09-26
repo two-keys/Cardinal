@@ -6,6 +6,11 @@ class ConnectCode < ApplicationRecord
   belongs_to :user
   belongs_to :chat
 
+  enum status: {
+    unlisted: 0,
+    listed: 1
+  }
+
   before_validation :generate_code, on: :create
 
   validates :remaining_uses, numericality: { only_integer: true, less_than: 10 }

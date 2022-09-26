@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_25_003632) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -58,7 +58,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_003632) do
     t.text "description"
     t.integer "status", default: 0
     t.string "icon"
+    t.integer "role", default: 0
     t.index ["chat_id"], name: "index_chat_users_on_chat_id"
+    t.index ["role"], name: "index_chat_users_on_role"
     t.index ["user_id", "chat_id"], name: "index_chat_users_on_user_id_and_chat_id", unique: true
     t.index ["user_id"], name: "index_chat_users_on_user_id"
   end
@@ -67,6 +69,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_003632) do
     t.uuid "uuid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "prompt_id"
+    t.index ["prompt_id"], name: "index_chats_on_prompt_id"
     t.index ["uuid"], name: "index_chats_on_uuid"
   end
 
@@ -77,7 +81,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_003632) do
     t.integer "remaining_uses", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
     t.index ["chat_id"], name: "index_connect_codes_on_chat_id"
+    t.index ["status"], name: "index_connect_codes_on_status"
     t.index ["user_id"], name: "index_connect_codes_on_user_id"
   end
 
@@ -176,6 +182,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_003632) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "prompts"
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "tags"
