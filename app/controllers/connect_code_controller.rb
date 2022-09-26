@@ -9,7 +9,12 @@ class ConnectCodeController < ApplicationController
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
     respond_to do |format|
-      if @connect_code.update({ remaining_uses: update_connect_code_params[:remaining_uses] })
+      if @connect_code.update(
+        {
+          remaining_uses: update_connect_code_params[:remaining_uses],
+          status: update_connect_code_params[:status]
+        }
+      )
         format.html { redirect_to edit_chat_path(@connect_code.chat.uuid), notice: 'Code was successfully updated.' }
         format.json { render :show, status: :ok, location: @connect_code.chat.uuid }
       else
@@ -58,6 +63,6 @@ class ConnectCodeController < ApplicationController
   private
 
   def update_connect_code_params
-    params.permit(:connect_code, :remaining_uses)
+    params.permit(:connect_code, :remaining_uses, :status)
   end
 end
