@@ -2,7 +2,7 @@
   <h1>Chats</h1>
   <div class="card primary">
     <% if (can? :create, Chat) && (can? :create, ConnectCode) %>
-      <%= form_with url: url_for(connect_code_path), method: :patch, id: "connect_code_form" do |f| %>
+      <%= form_with url: url_for(connect_code_consume_path), method: :patch, id: "connect_code_form" do |f| %>
         <%= f.label :connect_code %>
         <%= f.text_field :connect_code, class: "form-control" %>
         <%= f.submit 'Use' %>

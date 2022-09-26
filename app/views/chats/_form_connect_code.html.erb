@@ -1,0 +1,24 @@
+<%= form_with url: url_for(connect_code_path), method: :patch, id: "connect_code_form" do |f| %>
+  <% if connect_code.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(connect_code.errors.count, "error") %> prohibited this connect_code from being saved:</h2>
+
+      <ul>
+        <% connect_code.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h2>Connect Code <u><%= connect_code.code %></u></h2> 
+
+  <%= f.hidden_field :connect_code, value: connect_code.code %>
+
+  <%= f.label :remaining_uses, style: "display: inline" %>
+  <%= f.number_field :remaining_uses, within: 0..10, value: connect_code.remaining_uses %>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>

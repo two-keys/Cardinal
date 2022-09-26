@@ -104,7 +104,7 @@ class PromptsController < ApplicationController
 
   # GET /prompts/1
   def show
-    @chats = @prompt.chats.where(ConnectCode.where(status: 'listed'))
+    @chats = @prompt.chats.where(ConnectCode.where(status: 'listed').arel.exists)
   end
 
   # GET /prompts/new
