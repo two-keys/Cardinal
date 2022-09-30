@@ -7,7 +7,7 @@ class PromptsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_prompt, only: %i[show edit bump update update_tags destroy]
+  before_action :set_prompt, only: %i[show edit bump update update_tags answer destroy]
   before_action :authenticate_user!
   before_action :authorized?, only: %i[edit bump update update_tags destroy]
   before_action :visible?, only: %i[show]
@@ -103,7 +103,19 @@ class PromptsController < ApplicationController
   end
 
   # GET /prompts/1
-  def show; end
+  def show
+    query = @prompt.chats
+
+    query = query.where(
+      connect_code: ConnectCode.where(
+        status: 'listed',
+        remaining_uses: 1..
+      )
+    )
+    # We could add more qualifiers here later, if we think we need to. For now, it should be fine.
+
+    @chats = query
+  end
 
   # GET /prompts/new
   def new
@@ -172,6 +184,30 @@ class PromptsController < ApplicationController
     end
   end
 
+  # POST /prompts/1/answer
+  def answer
+    respond_to do |format|
+      @chat = @prompt.answer(current_user)
+      if @chat.save
+        @connect_code = ConnectCode.new(
+          chat_id: @chat.id,
+          user: @prompt.user,
+          remaining_uses: @prompt.default_slots - 2
+        )
+        @connect_code.save!
+        creation_message = "Chat created.  \n" \
+                           "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+        @chat.messages << Message.new(content: creation_message)
+
+        format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully created.' }
+        format.json { render :show, status: :created, location: @chat.uuid }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @chat.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /prompts/1
   def destroy
     @prompt.destroy
@@ -191,7 +227,7 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:starter, :ooc, :status)
+    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots)
   end
 
   def tag_params

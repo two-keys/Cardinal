@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :prompts do
     match 'tags', action: 'update_tags', via: %i[put patch]
+    post 'answer', to: 'prompts#answer'
     match 'bump', action: 'bump', via: %i[put patch]
   end
 
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
 
   post 'connect_code' => 'connect_code#create'
   patch 'connect_code' => 'connect_code#update'
+  patch 'connect_code/consume' => 'connect_code#consume'
 
   post 'chats/:id/forceongoing' => 'chats#forceongoing'
 

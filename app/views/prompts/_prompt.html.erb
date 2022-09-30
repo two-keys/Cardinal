@@ -14,6 +14,9 @@
     <div class="tags">
       <%= render partial: 'prompts/tags', locals: { prompt: prompt} %>
     </div>
+    <span class="slots">
+      <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
+    </span>
   </div>
 
   <% if prompt.ooc.present? %>
@@ -34,8 +37,28 @@
 
   <% if can? :edit, prompt %>
     <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
-    <% if prompt.bumpable? %>
-      <%= button_to "Bump", prompt_bump_path(prompt), method: :put %></p>
-    <% end %>
   <% end %>
+
+  <ul class="prompt_actions">
+    <% if can?(:edit, prompt) && prompt.bumpable? %>
+      <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
+    <% end %>
+    <% if can?(:answer, prompt) %>
+      <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post %></li>
+    <% end %>
+  </ul>
 </div>
+<% @chats.each do |chat| %>
+    <% connect_code = chat.connect_code %>
+    <div class="card secondary">
+      <%= link_to 'No title set', chat_path(chat.uuid) %>
+      <hr />
+      <p><strong>CONNECT CODE</strong> <%= connect_code.code %></p>
+      <p><strong>OPEN SLOTS <u><%= connect_code.remaining_uses %></u></strong></p>
+      <% if false && connect_code.description.present? %>
+        <%= connect_code.description %>
+      <% else %>
+        <i>No description set.</i>
+      <% end %>
+    </div>
+  <% end %>

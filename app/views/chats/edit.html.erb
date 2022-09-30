@@ -10,3 +10,7 @@
     <%= link_to "Back to chats", chats_path %>
   </div>
 </div>
+
+<div class="card secondary">
+  <%= render "form_connect_code", connect_code: @chat.connect_code %>
+</div>

@@ -10,6 +10,7 @@ class PromptsTest < ApplicationSystemTestCase
     @prompt = prompts(:one)
     @no_tags = prompts(:no_tags)
     @old_prompt = prompts(:ancient)
+    @johns = prompts(:johns)
 
     @tag_generic = tags(:generic)
     @tag_modern_fantasy = tags(:modernfan)
@@ -208,6 +209,14 @@ class PromptsTest < ApplicationSystemTestCase
     click_on 'Submit', match: :first
 
     assert_text 'Edit this prompt'
+    click_on 'Back'
+  end
+
+  test 'should answer prompt' do
+    visit prompt_url(@johns)
+    click_on 'Answer', match: :first
+
+    assert_text @johns.ooc
     click_on 'Back'
   end
 

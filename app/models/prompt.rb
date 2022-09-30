@@ -12,6 +12,8 @@ class Prompt < ApplicationRecord
   has_many :prompt_tags, dependent: :destroy
   has_many :tags, through: :prompt_tags
 
+  has_many :chats, dependent: :nullify
+
   enum status: {
     draft: 0,
     locked: 1,
@@ -22,6 +24,7 @@ class Prompt < ApplicationRecord
 
   validates_with PromptContentValidator
   validates :status, inclusion: { in: Prompt.statuses }
+  validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validate :can_bump, on: :update
   validate :can_spend, on: %i[create update]
 
@@ -35,6 +38,19 @@ class Prompt < ApplicationRecord
 
   def mark_ooc
     markdown_concern(ooc)
+  end
+
+  # Answers a prompt, creating a new chat
+  def answer(as_user)
+    @chat = Chat.new
+    @chat.prompt = self
+    @chat.users << user
+    @chat.users << as_user
+
+    @chat.messages << Message.new(content: ooc) if ooc.present?
+    @chat.messages << Message.new(content: starter) if starter.present?
+
+    @chat
   end
 
   def bumpable?

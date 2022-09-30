@@ -11,6 +11,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
     @admin = users(:admin)
+    @banned = users(:user_banned)
   end
 
   test 'should get index' do
@@ -172,6 +173,42 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'shoud create prompt with two slots' do
+    sign_in(@user)
+    assert_difference('Prompt.count') do
+      post prompts_url, params: {
+        prompt: {
+          starter: 'Some unique starter text',
+          default_slots: 2
+        },
+        tags: {
+          misc: {
+            misc: ['This is a misc tag']
+          }
+        }
+      }
+    end
+
+    assert_redirected_to prompt_url(Prompt.find_by(starter: 'Some unique starter text'))
+  end
+
+  test 'should not create prompt with just one slot' do
+    sign_in(@user)
+    post prompts_url, params: {
+      prompt: {
+        starter: 'Some unique starter text',
+        default_slots: 1
+      },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    assert_response :unprocessable_entity
+  end
+
   test 'should show prompt' do
     sign_in(@user)
     get prompt_url(@prompt)
@@ -271,6 +308,36 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'not logged in should not bump prompt' do
     patch prompt_bump_path(@prompt)
     assert_redirected_to new_user_session_url
+  end
+
+  test 'should answer prompt' do
+    sign_in(@user2)
+    post prompt_answer_path(@prompt)
+
+    assert_response :redirect
+
+    reg_exp_for_url = %r{http://www\.example\.com/chats/(.*)}
+    assert_match reg_exp_for_url, @response.redirect_url
+
+    matches = %r{http://www\.example\.com/chats/(?<uuid>.*)}.match(@response.redirect_url)
+    chat = Chat.find_by(uuid: matches['uuid'])
+
+    assert_includes chat.messages.pluck(:content), @prompt.ooc
+    assert_includes chat.messages.pluck(:content), @prompt.starter
+  end
+
+  test 'should not answer own prompt' do
+    sign_in(@user)
+    post prompt_answer_path(@prompt)
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'banned should not answer prompt' do
+    sign_in(@banned)
+    post prompt_answer_path(@prompt)
+
+    assert_redirected_to new_user_session_path
   end
 
   test 'should destroy prompt' do

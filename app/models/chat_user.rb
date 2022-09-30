@@ -12,6 +12,12 @@ class ChatUser < ApplicationRecord
     ended_viewed: 4
   }
 
+  enum role: {
+    chat_user: 0,
+    chat_moderator: 1,
+    chat_admin: 2
+  }
+
   before_validation :generate_icon, on: :create
 
   validates :user_id, uniqueness: { scope: :chat_id }
