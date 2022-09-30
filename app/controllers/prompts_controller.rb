@@ -103,7 +103,19 @@ class PromptsController < ApplicationController
   end
 
   # GET /prompts/1
-  def show; end
+  def show
+    query = @prompt.chats
+
+    query = query.where(
+      connect_code: ConnectCode.where(
+        status: 'listed',
+        remaining_uses: 1..
+      )
+    )
+    # We could add more qualifiers here later, if we think we need to. For now, it should be fine.
+
+    @chats = query
+  end
 
   # GET /prompts/new
   def new

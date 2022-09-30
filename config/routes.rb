@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   post 'connect_code' => 'connect_code#create'
   patch 'connect_code' => 'connect_code#update'
+  patch 'connect_code/consume' => 'connect_code#consume'
 
   post 'chats/:id/forceongoing' => 'chats#forceongoing'
 

@@ -2,11 +2,29 @@
 
 class ConnectCodeController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_connect_code, only: [:update]
+  before_action :set_connect_code, only: %i[update consume]
 
   load_and_authorize_resource
 
+  # PATCH/PUT /chats/1 or /chats/1.json
   def update
+    respond_to do |format|
+      if @connect_code.update(
+        {
+          remaining_uses: update_connect_code_params[:remaining_uses],
+          status: update_connect_code_params[:status]
+        }
+      )
+        format.html { redirect_to edit_chat_path(@connect_code.chat.uuid), notice: 'Code was successfully updated.' }
+        format.json { render :show, status: :ok, location: @connect_code.chat.uuid }
+      else
+        format.html { redirect_to edit_chat_path(@connect_code.chat.uuid), status: :unprocessable_entity }
+        format.json { render json: @connect_code.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def consume
     respond_to do |format|
       if !@connect_code.nil? && @connect_code.use(current_user)
         format.html { redirect_to chat_path(@connect_code.chat.uuid) }
@@ -40,5 +58,11 @@ class ConnectCodeController < ApplicationController
 
   def set_connect_code
     @connect_code = ConnectCode.find_by(code: params[:connect_code])
+  end
+
+  private
+
+  def update_connect_code_params
+    params.permit(:connect_code, :remaining_uses, :status)
   end
 end

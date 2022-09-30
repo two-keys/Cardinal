@@ -48,3 +48,17 @@
     <% end %>
   </ul>
 </div>
+<% @chats.each do |chat| %>
+    <% connect_code = chat.connect_code %>
+    <div class="card secondary">
+      <%= link_to 'No title set', chat_path(chat.uuid) %>
+      <hr />
+      <p><strong>CONNECT CODE</strong> <%= connect_code.code %></p>
+      <p><strong>OPEN SLOTS <u><%= connect_code.remaining_uses %></u></strong></p>
+      <% if false && connect_code.description.present? %>
+        <%= connect_code.description %>
+      <% else %>
+        <i>No description set.</i>
+      <% end %>
+    </div>
+  <% end %>

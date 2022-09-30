@@ -4,3 +4,13 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+chat_one:
+  chat: chat_one
+  code: vVTs2Vv9zu
+  user: user
+
+chat_two:
+  chat: chat_two
+  code: uuTs2Vv9zg
+  user: user
+  remaining_uses: 0

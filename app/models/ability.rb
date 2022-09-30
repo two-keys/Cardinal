@@ -47,6 +47,11 @@ class Ability
     can :update, Chat do |chat|
       chat.users.include?(user)
     end
+    can :update, ConnectCode do |connect_code|
+      ChatUser.where(
+        chat: connect_code.chat, user:, role: [ChatUser.roles[:chat_admin]]
+      ).arel.exists
+    end
     can :update, Filter, user: user
     can :update, PromptTag, prompt: { user: }
     can :update, Prompt, user: user
@@ -63,6 +68,7 @@ class Ability
     can :destroy, User, user: user
 
     ## Non-CRUD Actions
+    can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
     can :answer, Prompt
