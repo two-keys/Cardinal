@@ -106,7 +106,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
 
     assert_not permitted[:meta].key?(:bad_value)
-    assert permitted[:playing].length.zero?
+    assert permitted[:playing].empty?
     assert_not permitted[:seeking][0].key?(:tag)
     assert_not permitted[:misc].key?(:fandom)
   end
