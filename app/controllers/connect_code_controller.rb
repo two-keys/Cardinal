@@ -6,6 +6,22 @@ class ConnectCodeController < ApplicationController
 
   load_and_authorize_resource
 
+  def create
+    @chat = Chat.new
+    @chat.save
+    @connect_code = ConnectCode.new(chat: @chat, user: current_user, remaining_uses: 8)
+    @connect_code.save!
+    creation_message = "Chat created.  \n" \
+                       "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+    @chat.messages << Message.new(content: creation_message)
+    @connect_code.use(current_user)
+    current_user.chat_users.find_by(chat: @chat).ongoing!
+    respond_to do |format|
+      format.html { redirect_to chat_path(@chat.uuid) }
+      format.json { render :show, status: :created, location: @chat.uuid }
+    end
+  end
+
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
     respond_to do |format|
@@ -33,22 +49,6 @@ class ConnectCodeController < ApplicationController
         format.html { redirect_to chats_path }
         format.json { render :show, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def create
-    @chat = Chat.new
-    @chat.save
-    @connect_code = ConnectCode.new(chat: @chat, user: current_user, remaining_uses: 8)
-    @connect_code.save!
-    creation_message = "Chat created.  \n" \
-                       "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
-    @chat.messages << Message.new(content: creation_message)
-    @connect_code.use(current_user)
-    current_user.chat_users.find_by(chat: @chat).ongoing!
-    respond_to do |format|
-      format.html { redirect_to chat_path(@chat.uuid) }
-      format.json { render :show, status: :created, location: @chat.uuid }
     end
   end
 
