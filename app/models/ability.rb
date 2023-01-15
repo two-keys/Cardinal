@@ -49,9 +49,9 @@ class Ability
       chat.users.include?(user)
     end
     can :update, ConnectCode do |connect_code|
-      ChatUser.where(
+      ChatUser.exists?(
         chat: connect_code.chat, user:, role: [ChatUser.roles[:chat_admin]]
-      ).arel.exists
+      )
     end
     can :update, Filter, user: user
     can :update, PromptTag, prompt: { user: }

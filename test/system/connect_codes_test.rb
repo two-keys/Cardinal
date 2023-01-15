@@ -15,7 +15,8 @@ class ConnectCodesTest < ApplicationSystemTestCase
     @connect_code = connect_codes(:chat_one)
     @connect_code2 = connect_codes(:chat_two)
 
-    @chat.users << @user << @user2
+    @chat.chat_users << ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << ChatUser.new(user: @user2)
   end
 
   test 'should see connect code form' do

@@ -15,7 +15,8 @@ class ConnectCodeControllerTest < ActionDispatch::IntegrationTest
     @connect_code = connect_codes(:chat_one)
     @connect_code2 = connect_codes(:chat_two)
 
-    @chat.users << @user << @user2
+    @chat.chat_users << ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << ChatUser.new(user: @user2)
   end
 
   test 'should use connect code' do
@@ -73,23 +74,25 @@ class ConnectCodeControllerTest < ActionDispatch::IntegrationTest
   test 'should update connect code' do
     sign_in(@user)
 
-    assert_difference('@connect_code2.reload.remaining_uses', 1) do
+    assert_difference('@connect_code.reload.remaining_uses', 1) do
       patch connect_code_path, params: {
-        connect_code: @connect_code2.code,
-        remaining_uses: 1
+        connect_code: @connect_code.code,
+        remaining_uses: @connect_code.remaining_uses + 1
       }
     end
 
-    assert_redirected_to edit_chat_url(@chat2.uuid)
+    assert_redirected_to edit_chat_url(@chat.uuid)
   end
 
   test 'should not update connect code unless chat admin' do
     sign_in(@user3)
 
-    assert_difference('@connect_code.reload.remaining_uses', 0) do
+    assert_not_equal(@connect_code.user, @user3)
+
+    assert_no_difference '@connect_code.reload.remaining_uses' do
       patch connect_code_path, params: {
         connect_code: @connect_code.code,
-        remaining_uses: 1
+        remaining_uses: @connect_code.remaining_uses + 1
       }
     end
 

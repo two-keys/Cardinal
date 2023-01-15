@@ -44,8 +44,8 @@ class Prompt < ApplicationRecord
   def answer(as_user)
     @chat = Chat.new
     @chat.prompt = self
-    @chat.users << user
-    @chat.users << as_user
+    @chat.chat_users << ChatUser.new(user:, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << ChatUser.new(user: as_user)
 
     @chat.messages << Message.new(content: ooc) if ooc.present?
     @chat.messages << Message.new(content: starter) if starter.present?
