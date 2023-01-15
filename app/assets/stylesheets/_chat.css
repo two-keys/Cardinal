@@ -124,8 +124,12 @@
     align-items: center;
 }
 
+.chat-admin-actions, .chat-admin-actions form {
+  display: inline;
+}
+
 /* Style button like a link */
-.chat-actions button {
+.chat-actions button, .chat-admin-actions button {
     background: none;
     color: var(--main-text-color);
     text-decoration: underline;

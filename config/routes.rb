@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   patch 'connect_code/consume' => 'connect_code#consume'
 
   post 'chats/:id/forceongoing' => 'chats#forceongoing'
+  delete 'chats/:id/:icon', to: 'chats#chat_kick', as: 'chat_kick'
 
   resources :announcements
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

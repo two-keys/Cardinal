@@ -8,7 +8,18 @@
             <ul id="sidebar_users">
                 <% for user_data in locals[:users_data] %>
                     <% name = Emoji.find_by_unicode(user_data[:icon]).name.capitalize().gsub("_", " ") %>
-                    <li><div class="sidebar_user_icon"><span><%= user_data[:icon] %></span></div><%= name  + (locals[:user].id == user_data[:id] ? " (you)" : "") %></li>
+                    <% is_loc_user =  locals[:user].id == user_data[:id] %>
+                    <li>
+                        <div class="sidebar_user_icon">
+                            <span><%= user_data[:icon] %></span>
+                        </div>
+                        <%= name  + (is_loc_user ? " (you)" : "") %>
+                        <div class="chat-admin-actions">
+                            <% if !is_loc_user && can?(:chat_kick, @chat) %>
+                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, data: {turbo_frame: '_top' }  %>
+                            <% end %>
+                        </div>
+                    </li>
                 <% end %>
             </ul>
         </div>

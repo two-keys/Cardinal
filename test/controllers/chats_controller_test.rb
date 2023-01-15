@@ -9,7 +9,9 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     @chat = chats(:chat_one)
     @user = users(:user)
     @user2 = users(:user_two)
-    @chat.users << @user << @user2
+
+    @chat.chat_users << ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << ChatUser.new(user: @user2)
   end
 
   test 'should get index' do
@@ -64,5 +66,25 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to chats_url
+  end
+
+  test 'should kick user if chat admin' do
+    sign_in(@user)
+
+    chat_user2 = @chat.chat_users.find_by(user: @user2)
+    assert_difference('ChatUser.count', -1) do
+      delete chat_kick_path(@chat.uuid, chat_user2.icon)
+    end
+
+    assert_redirected_to chats_url
+  end
+
+  test 'should not kick user as general chat user' do
+    sign_in(@user2)
+
+    chat_user = @chat.chat_users.find_by(user: @user)
+    assert_raises CanCan::AccessDenied do
+      delete chat_kick_path(@chat.uuid, chat_user.icon)
+    end
   end
 end

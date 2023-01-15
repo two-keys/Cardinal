@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class ConnectCodeController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_connect_code, only: %i[update consume]
+  include ApplicationHelper
 
-  load_and_authorize_resource
+  before_action :set_connect_code, only: %i[update consume]
+  before_action :authenticate_user!
+  before_action :authorized?, only: %i[edit bump update update_tags destroy]
+
+  authorize_resource
 
   def create
     @chat = Chat.new
@@ -24,6 +27,7 @@ class ConnectCodeController < ApplicationController
 
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
+    authorize! :update, @connect_code
     respond_to do |format|
       if @connect_code.update(
         {
@@ -64,5 +68,11 @@ class ConnectCodeController < ApplicationController
 
   def update_connect_code_params
     params.permit(:connect_code, :remaining_uses, :status)
+  end
+
+  def authorized?
+    return if @connect_code.user_id == current_user.id || admin?
+
+    redirect_to edit_chat_url(@connect_code.chat.uuid), alert: 'You are not authorized to edit this connect code.'
   end
 end
