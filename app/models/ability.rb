@@ -69,6 +69,9 @@ class Ability
     can :destroy, User, user: user
 
     ## Non-CRUD Actions
+    can :chat_kick, Chat do |chat|
+      ChatUser.find_by(chat:, user:).chat_admin?
+    end
     can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
