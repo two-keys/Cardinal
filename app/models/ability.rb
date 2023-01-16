@@ -70,7 +70,9 @@ class Ability
     can :destroy, Filter, user: user
     can :destroy, PromptTag, prompt: { user: }
     can :destroy, Prompt, user: user
-    can :destroy, Ticket, user: user
+    can :destroy, Ticket do |ticket|
+      ticket.user == user && ticket.destroyable?
+    end
     can :destroy, User, user: user
 
     ## Non-CRUD Actions
