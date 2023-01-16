@@ -5,7 +5,7 @@ class ConnectCodeController < ApplicationController
 
   before_action :set_connect_code, only: %i[update consume]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[edit bump update update_tags destroy]
+  before_action :authorized?, only: %i[edit update destroy]
 
   authorize_resource
 
