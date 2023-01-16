@@ -4,6 +4,9 @@
 class Ability
   include CanCan::Ability
 
+  ## This is kind of forced to have high complexity, there's a lot that
+  ## goes into determining authorization
+  # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(user)
     # Things which require no login
 
@@ -111,5 +114,6 @@ class Ability
     can :manage, :all
     can :view_users, :all
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 end
 # rubocop:enable Style/HashSyntax
