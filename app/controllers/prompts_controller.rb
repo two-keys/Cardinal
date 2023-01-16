@@ -9,8 +9,6 @@ class PromptsController < ApplicationController
 
   before_action :set_prompt, only: %i[show edit bump update update_tags answer destroy]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[edit bump update update_tags destroy]
-  before_action :visible?, only: %i[show]
 
   authorize_resource
 
@@ -236,18 +234,6 @@ class PromptsController < ApplicationController
 
   def search_params
     params.permit(:before, :tags, :nottags)
-  end
-
-  def visible?
-    return if @prompt.posted? || @prompt.user_id == current_user.id || admin?
-
-    raise ActiveRecord::RecordNotFound.new, "Couldn't find Prompt with 'id'=#{@prompt.id}"
-  end
-
-  def authorized?
-    return if @prompt.user_id == current_user.id || admin?
-
-    redirect_to root_path, alert: 'You are not authorized to edit this prompt.'
   end
 end
 # rubocop:enable Metrics/ClassLength
