@@ -72,6 +72,9 @@ class Ability
     can :chat_kick, Chat do |chat|
       ChatUser.find_by(chat:, user:).chat_admin?
     end
+    can :forceongoing, Chat do |chat|
+      chat.users.include?(user)
+    end
     can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
