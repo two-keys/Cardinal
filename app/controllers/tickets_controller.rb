@@ -7,9 +7,6 @@ class TicketsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_ticket, only: %i[show destroy]
 
-  before_action :authorized?, only: %i[destroy]
-  before_action :destroyable?, only: %i[destroy]
-
   authorize_resource
 
   # GET /tickets
@@ -43,13 +40,7 @@ class TicketsController < ApplicationController
     @ticket = Ticket.find(params[:id])
   end
 
-  def authorized?
-    return if @ticket.user_id == current_user.id || admin?
-
-    redirect_to tickets_path
-  end
-
-  def destroyable?
-    @ticket.destroyable?
+  def auth_redirect
+    tickets_path
   end
 end

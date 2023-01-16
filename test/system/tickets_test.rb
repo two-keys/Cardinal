@@ -18,13 +18,12 @@ class TicketsTest < ApplicationSystemTestCase
   end
 
   test 'should destroy ticket' do
-    visit ticket_url(@ticket)
-
-    future = DateTime.now + 1.day
+    future = 1.day.from_now
     travel_to(future)
 
-    click_on 'Destroy this ticket', match: :first
+    visit ticket_url(@ticket)
 
+    click_on 'Destroy this ticket', match: :first
     assert_text 'Ticket was successfully destroyed'
   end
 end

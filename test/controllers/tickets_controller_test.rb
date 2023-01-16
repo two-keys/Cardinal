@@ -51,7 +51,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
       delete ticket_url(@ticket)
     end
 
-    assert_response :unprocessable_entity
+    assert_response :missing
   end
 
   test 'should not destroy ticket user doesn\'t own' do
@@ -60,6 +60,6 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
       delete ticket_url(@ticket)
     end
 
-    assert_redirected_to tickets_path
+    assert_response :missing
   end
 end

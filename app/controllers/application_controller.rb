@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   before_action :set_sentry_context
   before_action :set_unleash_context
 
+  rescue_from CanCan::AccessDenied, with: :user_not_authorized
+
   def set_start_time
     @start_time = Time.now.to_f
   end
@@ -28,5 +30,14 @@ class ApplicationController < ActionController::Base
                            user_id: current_user.id
                          )
                        end
+  end
+
+  def user_not_authorized(exception)
+    # auth_redirect should be defined per controller as a method
+    final_auth_redirect = defined?(auth_redirect) ? auth_redirect : main_app.root_url
+    respond_to do |format|
+      format.html { redirect_to final_auth_redirect, notice: exception.message, status: :not_found }
+      format.json { render nothing: true, status: :not_found }
+    end
   end
 end

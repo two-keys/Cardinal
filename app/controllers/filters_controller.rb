@@ -4,7 +4,6 @@ class FiltersController < ApplicationController
   include Pagy::Backend
   before_action :set_filter, only: %i[show edit update destroy]
   before_action :authenticate_user!
-  before_action :visible?, only: %i[show edit update destroy]
 
   load_and_authorize_resource
 
@@ -91,9 +90,7 @@ class FiltersController < ApplicationController
     params.permit(:group)
   end
 
-  def visible?
-    return if @filter.user_id == current_user.id
-
-    raise ActiveRecord::RecordNotFound.new, "Couldn't find Filter with 'id'=#{@filter.id}"
+  def auth_redirect
+    filters_url
   end
 end

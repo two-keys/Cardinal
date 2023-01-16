@@ -5,7 +5,6 @@ class ConnectCodeController < ApplicationController
 
   before_action :set_connect_code, only: %i[update consume]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[edit bump update update_tags destroy]
 
   authorize_resource
 
@@ -70,9 +69,7 @@ class ConnectCodeController < ApplicationController
     params.permit(:connect_code, :remaining_uses, :status)
   end
 
-  def authorized?
-    return if @connect_code.user_id == current_user.id || admin?
-
-    redirect_to edit_chat_url(@connect_code.chat.uuid), alert: 'You are not authorized to edit this connect code.'
+  def auth_redirect
+    edit_chat_url(@connect_code.chat.uuid)
   end
 end

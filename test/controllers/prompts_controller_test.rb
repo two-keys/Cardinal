@@ -8,8 +8,12 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @prompt = prompts(:one)
     @prompt_without_tags = prompts(:no_tags)
+    @posted = prompts(:posted)
+    @draft = prompts(:draft)
+
     @user = users(:user)
     @user2 = users(:user_two)
+    @john = users(:john)
     @admin = users(:admin)
     @banned = users(:user_banned)
   end
@@ -209,16 +213,40 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'should show prompt' do
-    sign_in(@user)
-    get prompt_url(@prompt)
+  test 'should show own posted prompt' do
+    sign_in(@john)
+    get prompt_url(@posted)
     assert_response :success
+  end
+
+  test 'should show someone elses posted prompt' do
+    sign_in(@user)
+    get prompt_url(@posted)
+    assert_response :success
+  end
+
+  test 'should show own drafted prompt' do
+    sign_in(@john)
+    get prompt_url(@draft)
+    assert_response :success
+  end
+
+  test 'should not show someone elses drafted prompt' do
+    sign_in(@user)
+    get prompt_url(@draft)
+    assert_response :missing
   end
 
   test 'should get edit' do
     sign_in(@user)
     get edit_prompt_url(@prompt)
     assert_response :success
+  end
+
+  test 'should not get edit for someone elses prompt' do
+    sign_in(@user2)
+    get edit_prompt_url(@prompt)
+    assert_response :missing
   end
 
   test 'should update prompt' do

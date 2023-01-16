@@ -83,8 +83,10 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user2)
 
     chat_user = @chat.chat_users.find_by(user: @user)
-    assert_raises CanCan::AccessDenied do
+    assert_no_difference 'ChatUser.count' do
       delete chat_kick_path(@chat.uuid, chat_user.icon)
     end
+
+    assert_response :missing
   end
 end

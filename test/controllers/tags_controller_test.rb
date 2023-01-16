@@ -49,9 +49,9 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not get new' do
     sign_in(@user)
-    assert_raise CanCan::AccessDenied do
-      get new_tag_url
-    end
+
+    get new_tag_url
+    assert_response :missing
   end
 
   test 'should show tag' do
@@ -68,9 +68,9 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not get edit' do
     sign_in(@user)
-    assert_raise CanCan::AccessDenied do
-      get edit_tag_url @capital
-    end
+
+    get edit_tag_url @capital
+    assert_response :missing
   end
 
   test 'should create tag' do
@@ -126,10 +126,10 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   test 'should not create tag' do
     sign_in(@user)
     assert_no_difference('Tag.count') do
-      assert_raise CanCan::AccessDenied do
-        post tags_url, params: { tag: { name: @capital.name, tag_type: @capital.tag_type } }
-      end
+      post tags_url, params: { tag: { name: @capital.name, tag_type: @capital.tag_type } }
     end
+
+    assert_response :missing
   end
 
   test 'should update tag' do
@@ -176,11 +176,11 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not update tag' do
     sign_in(@user)
-    assert_raise CanCan::AccessDenied do
-      patch tag_url(@capital), params: {
-        tag: { name: @capital.name, tag_type: @capital.tag_type, polarity: @capital.polarity }
-      }
-    end
+    patch tag_url(@capital), params: {
+      tag: { name: @capital.name, tag_type: @capital.tag_type, polarity: @capital.polarity }
+    }
+
+    assert_response :missing
   end
 
   test 'should destroy tag' do
@@ -195,9 +195,9 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   test 'should not destroy tag' do
     sign_in(@user)
     assert_no_difference('Tag.count') do
-      assert_raise CanCan::AccessDenied do
-        delete tag_url(@capital)
-      end
+      delete tag_url(@capital)
     end
+
+    assert_response :missing
   end
 end

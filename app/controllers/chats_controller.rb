@@ -8,8 +8,6 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: %i[show edit update destroy chat_kick read forceongoing]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[show edit update destroy chat_kick read forceongoing]
-
   authorize_resource
 
   # GET /chats or /chats.json
@@ -128,10 +126,8 @@ class ChatsController < ApplicationController
     params.require(:chat).permit(:title, :description)
   end
 
-  def authorized?
-    return if !@chat.nil? && @chat.users.include?(current_user)
-
-    redirect_to chats_path
+  def auth_redirect
+    chats_url
   end
 end
 # rubocop:enable Metrics/ClassLength
