@@ -62,6 +62,11 @@ class Ability
     can :destroy, Chat do |chat|
       chat.users.include?(user)
     end
+    can :destroy, ConnectCode do |connect_code|
+      ChatUser.exists?(
+        chat: connect_code.chat, user:, role: [ChatUser.roles[:chat_admin]]
+      )
+    end
     can :destroy, Filter, user: user
     can :destroy, PromptTag, prompt: { user: }
     can :destroy, Prompt, user: user

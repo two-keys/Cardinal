@@ -96,6 +96,6 @@ class ConnectCodeControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to edit_chat_url(@chat.uuid)
+    assert_response :missing
   end
 end
