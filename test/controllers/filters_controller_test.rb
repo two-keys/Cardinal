@@ -48,9 +48,8 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
   test 'should not show filter user doesnt own' do
     sign_in(@user2)
 
-    assert_raises ActiveRecord::RecordNotFound do
-      get filter_url(@filter)
-    end
+    get filter_url(@filter)
+    assert_response :missing
   end
 
   test 'should get edit' do
@@ -63,9 +62,8 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
   test 'should not get edit for filter user doesnt own' do
     sign_in(@user2)
 
-    assert_raises ActiveRecord::RecordNotFound do
-      get edit_filter_url(@filter)
-    end
+    get edit_filter_url(@filter)
+    assert_response :missing
   end
 
   test 'should update filter' do
@@ -81,12 +79,12 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
   test 'should not update filter user doesn\'t own' do
     sign_in(@user2)
 
-    assert_raises ActiveRecord::RecordNotFound do
-      patch filter_url(@filter), params: {
-        filter: { filter_type: @filter.filter_type, group: @filter.group, priority: @filter.priority },
-        tag: { polarity: 'misc', tag_type: 'misc', name: 'Tag I don\'t Like' }
-      }
-    end
+    patch filter_url(@filter), params: {
+      filter: { filter_type: @filter.filter_type, group: @filter.group, priority: @filter.priority },
+      tag: { polarity: 'misc', tag_type: 'misc', name: 'Tag I don\'t Like' }
+    }
+
+    assert_response :missing
   end
 
   test 'should destroy filter' do
@@ -102,8 +100,10 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
   test 'should not destroy filter user doesn\'t own' do
     sign_in(@user2)
 
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_no_difference 'Filter.count' do
       delete filter_url(@filter)
     end
+
+    assert_response :missing
   end
 end
