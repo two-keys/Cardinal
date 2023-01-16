@@ -27,10 +27,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test 'unauthorized user should not create message' do
     sign_in(@user2)
     assert_no_difference('Message.count') do
-      assert_raise CanCan::AccessDenied do
-        post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
-      end
+      post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     end
+
+    assert_response :missing
   end
 
   test 'user cannot create message as another user' do
@@ -56,18 +56,20 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
 
   test 'unauthorized user should not update message' do
     sign_in(@user2)
-    assert_raise CanCan::AccessDenied do
-      patch message_url(@message), params: { message: { content: 'test', ooc: true } }
-    end
+
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+
+    assert_response :missing
   end
 
   test 'previously sent message should not update if user left chat' do
     sign_in(@user)
     post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat.id } }
     @chat.users.delete(@user)
-    assert_raise CanCan::AccessDenied do
-      patch message_url(@message), params: { message: { content: 'test', ooc: true } }
-    end
+
+    patch message_url(@message), params: { message: { content: 'test', ooc: true } }
+
+    assert_response :missing
   end
 
   test 'not logged in should not update message' do
