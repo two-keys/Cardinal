@@ -258,7 +258,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should update prompt to have tags' do
     sign_in(@user)
 
-    assert_difference('PromptTag.count', 7) do
+    assert_difference('ObjectTag.count', 7) do
       patch prompt_tags_url(@prompt_without_tags), params: {
         tags: {
           playing: {
@@ -287,7 +287,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     old_amount = @prompt.tags.count
     assert old_amount > 1
 
-    assert_changes('PromptTag.count', from: old_amount, to: 1) do
+    assert_changes('ObjectTag.count', from: old_amount, to: 1) do
       patch prompt_tags_url(@prompt), params: {
         tags: {
           misc: {

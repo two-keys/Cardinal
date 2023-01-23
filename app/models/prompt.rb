@@ -9,8 +9,8 @@ class Prompt < ApplicationRecord
 
   belongs_to :user
 
-  has_many :prompt_tags, dependent: :destroy
-  has_many :tags, through: :prompt_tags
+  has_many :object_tags, dependent: :destroy
+  has_many :tags, through: :object_tags
 
   has_many :chats, dependent: :nullify
 
@@ -78,7 +78,7 @@ class Prompt < ApplicationRecord
     end
 
     begin
-      self.prompt_tags = PromptTag.from_tag_params(tag_params) # RecordInvalid thrown here
+      self.object_tags = ObjectTag.from_tag_params(tag_params) # RecordInvalid thrown here
       process_tags
     rescue ActiveRecord::RecordInvalid
       # If this block is run, something's(enabled flag?) probably wrong with one of the add_meta_tags tags

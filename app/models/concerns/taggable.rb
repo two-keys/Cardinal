@@ -94,6 +94,6 @@ module Taggable
 
   # Should be replaced by a polymorphic function if we add tags to things besides prompts
   def remove_disabled_tags_from_prompts
-    prompt_tags.includes(:tag).where(tag: { enabled: false }).delete_all
+    object_tags.includes(:tag).where(tag: { enabled: false }).delete_all
   end
 end
