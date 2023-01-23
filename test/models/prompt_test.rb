@@ -5,7 +5,7 @@ require 'test_helper'
 class PromptTest < ActiveSupport::TestCase
   setup do
     @prompt = prompts(:one)
-    @first_tag_for_prompt = prompt_tags(:one_suite1)
+    @first_tag_for_prompt = object_tags(:one_suite1)
     @user = users(:user)
 
     @generic = tags(:generic)

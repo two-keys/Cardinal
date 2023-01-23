@@ -10,8 +10,8 @@ class Tag < ApplicationRecord
   belongs_to :synonym, class_name: 'Tag', optional: true
   before_save :fix_synonym
 
-  has_many :prompt_tags, dependent: :destroy
-  has_many :prompts, through: :prompt_tags
+  has_many :object_tags, dependent: :destroy
+  has_many :prompts, through: :object_tags
 
   scope :with_public, -> { where(enabled: true) }
 
@@ -24,7 +24,7 @@ class Tag < ApplicationRecord
   validates :enabled, inclusion: [true, false]
 
   def useage_count
-    prompt_tags.count
+    object_tags.count
   end
 
   # Compares two tags by comparing their lowercase versions

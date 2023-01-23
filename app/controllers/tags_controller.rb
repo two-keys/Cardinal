@@ -90,8 +90,8 @@ class TagsController < ApplicationController
     if params[:tag] == 'prefetch'
       @tags = Tag.where(tag_type: params[:tag_type],
                         polarity: params[:polarity])
-                 .left_joins(:prompt_tags)
-                 .group(:id).order('COUNT(prompt_tags.id) DESC')
+                 .left_joins(:object_tags)
+                 .group(:id).order('COUNT(object_tags.id) DESC')
                  .limit(50)
     elsif params[:tag_search].present?
       @tags_string = params[:tag_search].split(',')
