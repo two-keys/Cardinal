@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_23_020018) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_10_014808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -111,10 +111,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_23_020018) do
   end
 
   create_table "object_tags", force: :cascade do |t|
-    t.bigint "prompt_id"
     t.bigint "tag_id"
-    t.index ["prompt_id", "tag_id"], name: "index_object_tags_on_prompt_id_and_tag_id", unique: true
-    t.index ["prompt_id"], name: "index_object_tags_on_prompt_id"
+    t.string "object_type"
+    t.bigint "object_id"
+    t.index ["object_type", "object_id"], name: "index_object_tags_on_object", unique: true
     t.index ["tag_id"], name: "index_object_tags_on_tag_id"
   end
 
@@ -187,7 +187,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_23_020018) do
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "tags"
   add_foreign_key "filters", "users"
-  add_foreign_key "object_tags", "prompts"
   add_foreign_key "object_tags", "tags"
   add_foreign_key "tags", "tags", column: "synonym_id"
   add_foreign_key "tickets", "users"
