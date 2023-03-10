@@ -29,7 +29,7 @@ class PromptsController < ApplicationController
       # logger.debug query_tag_ids
       query = query.where(
         'NOT(ARRAY[?]::bigint[] && array(?))', # no overlap
-        query_tag_ids, ObjectTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+        query_tag_ids, ObjectTag.where('object_type = \'Prompt\' AND object_id = "prompts"."id"').select(:tag_id)
       )
     end
 
@@ -42,7 +42,7 @@ class PromptsController < ApplicationController
       # logger.debug query_tag_ids
       query = query.where(
         'ARRAY[?]::bigint[] <@ array(?)',
-        query_tag_ids, ObjectTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+        query_tag_ids, ObjectTag.where('object_type = \'Prompt\' AND object_id = "prompts"."id"').select(:tag_id)
       )
     end
 
@@ -55,7 +55,10 @@ class PromptsController < ApplicationController
         # We want prompts that don't have a tag mathcing a Rejection filter
         Filter.where(
           # Do any of the prompt's tags hit the rejection filter?
-          '"filters"."tag_id" IN (?)', ObjectTag.where('"object_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+          '"filters"."tag_id" IN (?)',
+          ObjectTag.where(
+            '"object_tags"."object_type" = \'Prompt\' AND "object_tags"."object_id" = "prompts"."id"'
+          ).select(:tag_id)
         ).where(
           # We could theoretically let people specify the specific filters they want to match,
           # but that sounds like a pain
@@ -67,7 +70,10 @@ class PromptsController < ApplicationController
           # we can let that slide IF an Exception filter in the same group overrides that
           Filter.from(f2).select('"filters_2".*').where(
             # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
-            '"filters_2"."tag_id" IN (?)', ObjectTag.where('"object_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+            '"filters_2"."tag_id" IN (?)',
+            ObjectTag.where(
+              '"object_tags"."object_type" = \'Prompt\' AND "object_tags"."object_id" = "prompts"."id"'
+            ).select(:tag_id)
           ).where(
             '"filters_2"."filter_type" = ?', 'Exception'
           ).where(
