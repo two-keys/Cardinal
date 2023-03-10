@@ -73,7 +73,7 @@ class PromptsController < ApplicationController
             '"filters_2"."tag_id" IN (?)',
             ObjectTag.where(
               '"object_tags"."object_type" = \'Prompt\' AND "object_tags"."object_id" = "prompts"."id"'
-            )
+            ).select(:tag_id)
           ).where(
             '"filters_2"."filter_type" = ?', 'Exception'
           ).where(
