@@ -40,14 +40,20 @@ class PromptTest < ActiveSupport::TestCase
     end
   end
 
-  test 'deleting a prompt should delete prompt tags' do
+  test 'deleting a prompt should delete prompt tags without deleting the tag itself' do
     assert_nothing_raised do
       @first_tag_for_prompt.reload
     end
 
+    actual_tag = @first_tag_for_prompt.tag
+
     @prompt.destroy
     assert_raises ActiveRecord::RecordNotFound do
       @first_tag_for_prompt.reload
+    end
+
+    assert_nothing_raised do
+      actual_tag.reload
     end
   end
 

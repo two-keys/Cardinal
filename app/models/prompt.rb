@@ -9,7 +9,7 @@ class Prompt < ApplicationRecord
 
   belongs_to :user
 
-  has_many :object_tags, dependent: :destroy
+  has_many :object_tags, as: :object, dependent: :destroy
   has_many :tags, through: :object_tags
 
   has_many :chats, dependent: :nullify
