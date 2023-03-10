@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_10_014808) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_10_050504) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -114,7 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_014808) do
     t.bigint "tag_id"
     t.string "object_type"
     t.bigint "object_id"
-    t.index ["object_type", "object_id"], name: "index_object_tags_on_object", unique: true
+    t.index ["object_type", "object_id", "tag_id"], name: "index_object_tags_on_object_type_and_object_id_and_tag_id", unique: true
     t.index ["tag_id"], name: "index_object_tags_on_tag_id"
   end
 
