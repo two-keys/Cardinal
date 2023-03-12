@@ -45,7 +45,7 @@ user_arr = []
 end
 
 temp_user = User.new(
-  username: 'adminuser',
+  username: 'admin',
   email: 'admin@cherp.chat',
   verified: true,
   admin: true
