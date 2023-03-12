@@ -10,7 +10,15 @@
 
 require 'faker'
 
+logger = Logger.new($stdout)
+
+def self.log_to_console(logger, msg, level = 0)
+  logger.debug "#{'--' * level}> #{msg}"
+end
+
 # Delete all database rows
+log_to_console logger, 'Starting to purge all database table'
+
 Announcement.destroy_all
 
 ChatUser.destroy_all
@@ -28,10 +36,12 @@ Prompt.destroy_all
 User.destroy_all
 
 # Users
+log_to_console logger, 'Starting to seed users'
 
 user_arr = []
 
-20.times do
+20.times do |n|
+  log_to_console logger, "creating #{n}-th user", 1
   created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
   temp_user = User.new(
     username: Faker::Alphanumeric.unique.alpha(number: 15),
@@ -56,10 +66,13 @@ temp_user.save!
 user_arr << temp_user
 
 # Prompts
+log_to_console logger, 'Starting to seed prompts'
 
 prompt_arr = []
 
 user_arr.each do |e_user|
+  log_to_console logger, "creating prompts for user #{e_user.id}", 2
+
   created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.new(2022, 10, 1))
 
   end_of_range = rand(2..15)
@@ -83,9 +96,12 @@ user_arr.each do |e_user|
 end
 
 # Tags
+log_to_console logger, 'Starting to seed tags'
 
 CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
   type_hash['polarities'].each do |polarity|
+    log_to_console logger, "creating tags for #{polarity}, #{tag_type_key}", 2
+
     if type_hash['fill_in'] then
       # randomly generated fill_ins
       
@@ -124,12 +140,15 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
 end
 
 # Filters
+log_to_console logger, 'Starting to seed filters'
 
 ## Filters are too complicated to represent in programmatic generation,
 ## so they're better off being made manually
 
 # Chats
 user_arr.each_with_index do |user|
+  log_to_console logger, "creating chats for user #{user.id}", 2
+
   # grab a random array of other users
   sample_array = user_arr.sample(rand(2..user_arr.length)) - [user]
   sample_array.each do |sample_user|
@@ -152,8 +171,11 @@ user_arr.each_with_index do |user|
 end
 
 # Announcements
+log_to_console logger, 'Starting to seed announcements'
 
-100.times do
+100.times do |n|
+  log_to_console logger, "creating #{n}-th announcement", 2
+
   created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
   sentences = rand(1..15)
   Announcement.create!(
