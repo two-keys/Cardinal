@@ -111,11 +111,11 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
           tag_type: tag_type_key,
           polarity: polarity
         )
-    
-        prompt_arr.each do |temp_prompt|
-          if rand(0..1) == 0 then
-            temp_prompt.tags << temp_tag
-          end
+        
+        prompts_to_tag = rand(3..prompt_arr.length)
+        prompts_sample = prompt_arr.sample(prompts_to_tag)
+        prompts_sample.each do |temp_prompt|
+          temp_prompt.tags << temp_tag
         end
       end
     end
@@ -129,10 +129,10 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
           polarity: polarity
         )
     
-        prompt_arr.each do |temp_prompt|
-          if rand(0..1) == 0 then
-            temp_prompt.tags << temp_tag
-          end
+        prompts_to_tag = rand(3..prompt_arr.length)
+        prompts_sample = prompt_arr.sample(prompts_to_tag)
+        prompts_sample.each do |temp_prompt|
+          temp_prompt.tags << temp_tag
         end
       end
     end
