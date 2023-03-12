@@ -56,6 +56,9 @@ temp_user.save!
 user_arr << temp_user
 
 # Prompts
+
+prompt_arr = []
+
 user_arr.each do |e_user|
   created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.new(2022, 10, 1))
 
@@ -74,6 +77,49 @@ user_arr.each do |e_user|
     temp_t = temp_p.tickets.first
     temp_t.created_at = temp_p.created_at
     temp_t.save!
+
+    prompt_arr << temp_p
+  end
+end
+
+# Tags
+
+CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
+  type_hash['polarities'].each do |polarity|
+    if type_hash['fill_in'] then
+      # randomly generated fill_ins
+      
+      rand(1..5).times do 
+        temp_tag = Tag.create!(
+          name: Faker::Alphanumeric.alpha(number: 10).downcase,
+          tag_type: tag_type_key,
+          polarity: polarity
+        )
+    
+        prompt_arr.each do |temp_prompt|
+          if rand(0..1) == 0 then
+            temp_prompt.tags << temp_tag
+          end
+        end
+      end
+    end
+
+    # generate entries
+    if type_hash.key?('entries') then
+      type_hash['entries'].each do |entry| 
+        temp_tag = Tag.create!(
+          name: entry,
+          tag_type: tag_type_key,
+          polarity: polarity
+        )
+    
+        prompt_arr.each do |temp_prompt|
+          if rand(0..1) == 0 then
+            temp_prompt.tags << temp_tag
+          end
+        end
+      end
+    end
   end
 end
 
