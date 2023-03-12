@@ -123,6 +123,34 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
   end
 end
 
+# Filters
+
+## Filters are too complicated to represent in programmatic generation,
+## so they're better off being made manually
+
+# Chats
+user_arr.each_with_index do |user|
+  # grab a random array of other users
+  sample_array = user_arr.sample(rand(2..user_arr.length)) - [user]
+  sample_array.each do |sample_user|
+    random_prompt = Prompt.where(user:, status: 'posted').sample
+    
+    # create a chat with user and sample_user
+    chat = random_prompt.answer(sample_user)
+    chat.save!
+    
+    connect_code = ConnectCode.new(
+      chat_id: chat.id,
+      user: random_prompt.user,
+      remaining_uses: random_prompt.default_slots - 2
+    )
+    connect_code.save!
+    creation_message = "Chat created.  \n" \
+                        "Connect code is: #{connect_code.code}. It has #{connect_code.remaining_uses} uses left."
+    chat.messages << Message.new(content: creation_message)
+  end
+end
+
 # Announcements
 
 100.times do
