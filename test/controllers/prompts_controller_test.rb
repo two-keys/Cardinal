@@ -287,7 +287,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     old_amount = @prompt.tags.count
     assert old_amount > 1
 
-    assert_changes('ObjectTag.count', from: old_amount, to: 1) do
+    assert_changes('ObjectTag.where(object_type: \'Prompt\', object_id: @prompt.id).count', from: old_amount, to: 1) do
       patch prompt_tags_url(@prompt), params: {
         tags: {
           misc: {

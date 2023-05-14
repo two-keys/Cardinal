@@ -10,6 +10,6 @@ module Ticketable
   def can_spend
     return if Ticket.remaining(user).positive?
 
-    errors.add(:bump, 'You don\'t have enough tickets remaining for this.')
+    errors.add(:tickets, 'You don\'t have enough tickets remaining for this.')
   end
 end

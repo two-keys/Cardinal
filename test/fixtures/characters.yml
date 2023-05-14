@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: user_one
+  description: This is a character profile
+  status: 1
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+two:
+  name: Some Guy
+  description: This is a character profile owned by user2
+  user: user_two
+  status: 1
+
+no_tags:
+  name: no tags guy
+  description: this character should have no tags 
+  status: 1
+  user: user
+  created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
