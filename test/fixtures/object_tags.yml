@@ -4,6 +4,10 @@ one_suite1:
   object: one (Prompt)
   tag: generic
 
+char_one_suite1:
+  object: one (Character)
+  tag: generic
+
 one_suite2:
   object: one (Prompt)
   tag: modernfan
