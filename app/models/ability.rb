@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/HashSyntax
 class Ability
   include CanCan::Ability
 
+  ## This is kind of forced to have high complexity, there's a lot that
+  ## goes into determining authorization
+  # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(user)
     # Things which require no login
 
@@ -21,7 +25,7 @@ class Ability
     can :create, Chat
     can :create, ConnectCode
     can :create, Filter
-    can :create, PromptTag, prompt: { user: }
+    can :create, ObjectTag, object: { user: }
     can :create, Prompt
 
     ## Reading
@@ -33,7 +37,7 @@ class Ability
     end
     can :read, ConnectCode, user: user
     can :read, Filter, user: user
-    can :read, PromptTag, prompt: { user: }
+    can :read, ObjectTag, object: { user: }
     can :read, Prompt, status: 'posted'
     can :read, Prompt, user: user
     can :read, Tag, enabled: true
@@ -48,12 +52,12 @@ class Ability
       chat.users.include?(user)
     end
     can :update, ConnectCode do |connect_code|
-      ChatUser.where(
+      ChatUser.exists?(
         chat: connect_code.chat, user:, role: [ChatUser.roles[:chat_admin]]
-      ).arel.exists
+      )
     end
     can :update, Filter, user: user
-    can :update, PromptTag, prompt: { user: }
+    can :update, ObjectTag, object: { user: }
     can :update, Prompt, user: user
     can :update, User, user: user
 
@@ -61,13 +65,26 @@ class Ability
     can :destroy, Chat do |chat|
       chat.users.include?(user)
     end
+    can :destroy, ConnectCode do |connect_code|
+      ChatUser.exists?(
+        chat: connect_code.chat, user:, role: [ChatUser.roles[:chat_admin]]
+      )
+    end
     can :destroy, Filter, user: user
-    can :destroy, PromptTag, prompt: { user: }
+    can :destroy, ObjectTag, object: { user: }
     can :destroy, Prompt, user: user
-    can :destroy, Ticket, user: user
+    can :destroy, Ticket do |ticket|
+      ticket.user == user && ticket.destroyable?
+    end
     can :destroy, User, user: user
 
     ## Non-CRUD Actions
+    can :chat_kick, Chat do |chat|
+      ChatUser.find_by(chat:, user:).chat_admin?
+    end
+    can :forceongoing, Chat do |chat|
+      chat.users.include?(user)
+    end
     can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
@@ -97,4 +114,6 @@ class Ability
     can :manage, :all
     can :view_users, :all
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 end
+# rubocop:enable Style/HashSyntax

@@ -9,8 +9,8 @@ class Prompt < ApplicationRecord
 
   belongs_to :user
 
-  has_many :prompt_tags, dependent: :destroy
-  has_many :tags, through: :prompt_tags
+  has_many :object_tags, as: :object, dependent: :destroy
+  has_many :tags, through: :object_tags
 
   has_many :chats, dependent: :nullify
 
@@ -44,8 +44,8 @@ class Prompt < ApplicationRecord
   def answer(as_user)
     @chat = Chat.new
     @chat.prompt = self
-    @chat.users << user
-    @chat.users << as_user
+    @chat.chat_users << ChatUser.new(user:, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << ChatUser.new(user: as_user)
 
     @chat.messages << Message.new(content: ooc) if ooc.present?
     @chat.messages << Message.new(content: starter) if starter.present?
@@ -78,7 +78,7 @@ class Prompt < ApplicationRecord
     end
 
     begin
-      self.prompt_tags = PromptTag.from_tag_params(tag_params) # RecordInvalid thrown here
+      self.object_tags = ObjectTag.from_tag_params(tag_params) # RecordInvalid thrown here
       process_tags
     rescue ActiveRecord::RecordInvalid
       # If this block is run, something's(enabled flag?) probably wrong with one of the add_meta_tags tags

@@ -8,8 +8,12 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @prompt = prompts(:one)
     @prompt_without_tags = prompts(:no_tags)
+    @posted = prompts(:posted)
+    @draft = prompts(:draft)
+
     @user = users(:user)
     @user2 = users(:user_two)
+    @john = users(:john)
     @admin = users(:admin)
     @banned = users(:user_banned)
   end
@@ -106,7 +110,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
 
     assert_not permitted[:meta].key?(:bad_value)
-    assert permitted[:playing].length.zero?
+    assert permitted[:playing].empty?
     assert_not permitted[:seeking][0].key?(:tag)
     assert_not permitted[:misc].key?(:fandom)
   end
@@ -209,16 +213,40 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'should show prompt' do
-    sign_in(@user)
-    get prompt_url(@prompt)
+  test 'should show own posted prompt' do
+    sign_in(@john)
+    get prompt_url(@posted)
     assert_response :success
+  end
+
+  test 'should show someone elses posted prompt' do
+    sign_in(@user)
+    get prompt_url(@posted)
+    assert_response :success
+  end
+
+  test 'should show own drafted prompt' do
+    sign_in(@john)
+    get prompt_url(@draft)
+    assert_response :success
+  end
+
+  test 'should not show someone elses drafted prompt' do
+    sign_in(@user)
+    get prompt_url(@draft)
+    assert_response :missing
   end
 
   test 'should get edit' do
     sign_in(@user)
     get edit_prompt_url(@prompt)
     assert_response :success
+  end
+
+  test 'should not get edit for someone elses prompt' do
+    sign_in(@user2)
+    get edit_prompt_url(@prompt)
+    assert_response :missing
   end
 
   test 'should update prompt' do
@@ -230,7 +258,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should update prompt to have tags' do
     sign_in(@user)
 
-    assert_difference('PromptTag.count', 7) do
+    assert_difference('ObjectTag.count', 7) do
       patch prompt_tags_url(@prompt_without_tags), params: {
         tags: {
           playing: {
@@ -259,7 +287,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     old_amount = @prompt.tags.count
     assert old_amount > 1
 
-    assert_changes('PromptTag.count', from: old_amount, to: 1) do
+    assert_changes('ObjectTag.where(object_type: \'Prompt\', object_id: @prompt.id).count', from: old_amount, to: 1) do
       patch prompt_tags_url(@prompt), params: {
         tags: {
           misc: {

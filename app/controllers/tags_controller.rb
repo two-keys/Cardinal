@@ -8,7 +8,6 @@ class TagsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_tag, only: %i[show edit update destroy]
 
-  before_action :visible?, only: %i[show]
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
 
@@ -90,8 +89,8 @@ class TagsController < ApplicationController
     if params[:tag] == 'prefetch'
       @tags = Tag.where(tag_type: params[:tag_type],
                         polarity: params[:polarity])
-                 .left_joins(:prompt_tags)
-                 .group(:id).order('COUNT(prompt_tags.id) DESC')
+                 .left_joins(:object_tags)
+                 .group(:id).order('COUNT(object_tags.id) DESC')
                  .limit(50)
     elsif params[:tag_search].present?
       @tags_string = params[:tag_search].split(',')
@@ -174,12 +173,6 @@ class TagsController < ApplicationController
 
   def autocomplete_params
     params.require(:tag).permit(:tag_search, :tag_type, :polarity)
-  end
-
-  def visible?
-    return if @tag.enabled? || admin?
-
-    raise ActiveRecord::RecordNotFound.new, "Couldn't find Tag with 'id'=#{@tag.id}"
   end
 end
 # rubocop:enable Metrics/ClassLength

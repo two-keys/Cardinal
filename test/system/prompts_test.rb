@@ -156,7 +156,7 @@ class PromptsTest < ApplicationSystemTestCase
 
     tags_to_look_for = []
 
-    fill_in 'Ooc', with: '1234928i383 totally unique prompt ooc'
+    fill_in 'prompt_ooc', with: '1234928i383 totally unique prompt ooc'
     CardinalSettings::Tags.types.each do |_tag_type, type_hash|
       next unless type_hash['fill_in']
 
@@ -168,8 +168,8 @@ class PromptsTest < ApplicationSystemTestCase
 
       fill_in input_node[:id], with: tags_to_look_for.join(', ')
     end
-    click_on 'Submit'
-    assert_text 'Prompt was successfully created'
+    find('input[name="commit"]').click
+    assert_text 'Prompt was successfully created.', wait: 10
 
     tags_to_look_for.each do |tag_text|
       find 'a', exact_text: tag_text

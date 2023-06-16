@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_12_063532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -49,6 +49,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
   create_table "chat_users", force: :cascade do |t|
@@ -110,12 +120,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "prompt_tags", force: :cascade do |t|
-    t.bigint "prompt_id"
+  create_table "object_tags", force: :cascade do |t|
     t.bigint "tag_id"
-    t.index ["prompt_id", "tag_id"], name: "index_prompt_tags_on_prompt_id_and_tag_id", unique: true
-    t.index ["prompt_id"], name: "index_prompt_tags_on_prompt_id"
-    t.index ["tag_id"], name: "index_prompt_tags_on_tag_id"
+    t.string "object_type"
+    t.bigint "object_id"
+    t.index ["object_type", "object_id", "tag_id"], name: "index_object_tags_on_object_type_and_object_id_and_tag_id", unique: true
+    t.index ["tag_id"], name: "index_object_tags_on_tag_id"
   end
 
   create_table "prompts", force: :cascade do |t|
@@ -172,9 +182,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
     t.string "username", default: "", null: false
     t.boolean "admin", default: false
     t.boolean "verified", default: false
-    t.datetime "unban_at"
+    t.datetime "unban_at", precision: nil
     t.string "ban_reason"
-    t.datetime "delete_at"
+    t.datetime "delete_at", precision: nil
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -182,13 +192,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_212623) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "characters", "users"
   add_foreign_key "chats", "prompts"
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "tags"
   add_foreign_key "filters", "users"
-  add_foreign_key "prompt_tags", "prompts"
-  add_foreign_key "prompt_tags", "tags"
+  add_foreign_key "object_tags", "tags"
   add_foreign_key "tags", "tags", column: "synonym_id"
   add_foreign_key "tickets", "users"
 end

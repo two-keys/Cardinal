@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy read forceongoing]
+  before_action :set_chat, only: %i[show edit update destroy chat_kick read forceongoing]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[show edit update destroy read forceongoing]
-
   authorize_resource
 
   # GET /chats or /chats.json
@@ -83,6 +82,22 @@ class ChatsController < ApplicationController
     end
   end
 
+  # DELETE/chats/1/🌮 or /chats/1/🌮.json
+  def chat_kick
+    target_user = @chat.chat_users.find_by(icon: params[:icon]).user
+    @chat.users.delete(target_user)
+    if @chat.users.empty?
+      @chat.destroy
+    elsif @chat.users.count == 1
+      @chat.chat_users.each(&:ended!)
+    end
+    @chat.messages << Message.new(content: "#{params[:icon]} has left the chat.")
+    respond_to do |format|
+      format.html { redirect_to chats_url, notice: 'Chat user was successfully banned.' }
+      format.json { head :no_content }
+    end
+  end
+
   # POST /chats/1/forceongoing
   def forceongoing
     chat_user = @chat.chat_users.find_by(user: current_user)
@@ -111,9 +126,8 @@ class ChatsController < ApplicationController
     params.require(:chat).permit(:title, :description)
   end
 
-  def authorized?
-    return if !@chat.nil? && @chat.users.include?(current_user)
-
-    redirect_to chats_path
+  def auth_redirect
+    chats_url
   end
 end
+# rubocop:enable Metrics/ClassLength

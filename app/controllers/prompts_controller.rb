@@ -9,8 +9,6 @@ class PromptsController < ApplicationController
 
   before_action :set_prompt, only: %i[show edit bump update update_tags answer destroy]
   before_action :authenticate_user!
-  before_action :authorized?, only: %i[edit bump update update_tags destroy]
-  before_action :visible?, only: %i[show]
 
   authorize_resource
 
@@ -31,7 +29,7 @@ class PromptsController < ApplicationController
       # logger.debug query_tag_ids
       query = query.where(
         'NOT(ARRAY[?]::bigint[] && array(?))', # no overlap
-        query_tag_ids, PromptTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+        query_tag_ids, ObjectTag.where('object_type = \'Prompt\' AND object_id = "prompts"."id"').select(:tag_id)
       )
     end
 
@@ -44,7 +42,7 @@ class PromptsController < ApplicationController
       # logger.debug query_tag_ids
       query = query.where(
         'ARRAY[?]::bigint[] <@ array(?)',
-        query_tag_ids, PromptTag.where('prompt_id = "prompts"."id"').select(:tag_id)
+        query_tag_ids, ObjectTag.where('object_type = \'Prompt\' AND object_id = "prompts"."id"').select(:tag_id)
       )
     end
 
@@ -57,7 +55,10 @@ class PromptsController < ApplicationController
         # We want prompts that don't have a tag mathcing a Rejection filter
         Filter.where(
           # Do any of the prompt's tags hit the rejection filter?
-          '"filters"."tag_id" IN (?)', PromptTag.where('"prompt_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+          '"filters"."tag_id" IN (?)',
+          ObjectTag.where(
+            '"object_tags"."object_type" = \'Prompt\' AND "object_tags"."object_id" = "prompts"."id"'
+          ).select(:tag_id)
         ).where(
           # We could theoretically let people specify the specific filters they want to match,
           # but that sounds like a pain
@@ -69,7 +70,10 @@ class PromptsController < ApplicationController
           # we can let that slide IF an Exception filter in the same group overrides that
           Filter.from(f2).select('"filters_2".*').where(
             # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
-            '"filters_2"."tag_id" IN (?)', PromptTag.where('"prompt_tags"."prompt_id" = "prompts"."id"').select(:tag_id)
+            '"filters_2"."tag_id" IN (?)',
+            ObjectTag.where(
+              '"object_tags"."object_type" = \'Prompt\' AND "object_tags"."object_id" = "prompts"."id"'
+            ).select(:tag_id)
           ).where(
             '"filters_2"."filter_type" = ?', 'Exception'
           ).where(
@@ -236,18 +240,6 @@ class PromptsController < ApplicationController
 
   def search_params
     params.permit(:before, :tags, :nottags)
-  end
-
-  def visible?
-    return if @prompt.posted? || @prompt.user_id == current_user.id || admin?
-
-    raise ActiveRecord::RecordNotFound.new, "Couldn't find Prompt with 'id'=#{@prompt.id}"
-  end
-
-  def authorized?
-    return if @prompt.user_id == current_user.id || admin?
-
-    redirect_to root_path, alert: 'You are not authorized to edit this prompt.'
   end
 end
 # rubocop:enable Metrics/ClassLength

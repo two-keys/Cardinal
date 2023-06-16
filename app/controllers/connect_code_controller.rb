@@ -1,13 +1,32 @@
 # frozen_string_literal: true
 
 class ConnectCodeController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_connect_code, only: %i[update consume]
+  include ApplicationHelper
 
-  load_and_authorize_resource
+  before_action :set_connect_code, only: %i[update consume]
+  before_action :authenticate_user!
+
+  authorize_resource
+
+  def create
+    @chat = Chat.new
+    @chat.save
+    @connect_code = ConnectCode.new(chat: @chat, user: current_user, remaining_uses: 8)
+    @connect_code.save!
+    creation_message = "Chat created.  \n" \
+                       "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
+    @chat.messages << Message.new(content: creation_message)
+    @connect_code.use(current_user)
+    current_user.chat_users.find_by(chat: @chat).ongoing!
+    respond_to do |format|
+      format.html { redirect_to chat_path(@chat.uuid) }
+      format.json { render :show, status: :created, location: @chat.uuid }
+    end
+  end
 
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
+    authorize! :update, @connect_code
     respond_to do |format|
       if @connect_code.update(
         {
@@ -36,22 +55,6 @@ class ConnectCodeController < ApplicationController
     end
   end
 
-  def create
-    @chat = Chat.new
-    @chat.save
-    @connect_code = ConnectCode.new(chat: @chat, user: current_user, remaining_uses: 8)
-    @connect_code.save!
-    creation_message = "Chat created.  \n" \
-                       "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
-    @chat.messages << Message.new(content: creation_message)
-    @connect_code.use(current_user)
-    current_user.chat_users.find_by(chat: @chat).ongoing!
-    respond_to do |format|
-      format.html { redirect_to chat_path(@chat.uuid) }
-      format.json { render :show, status: :created, location: @chat.uuid }
-    end
-  end
-
   def connect_code_params
     params.require(:connect_code)
   end
@@ -64,5 +67,9 @@ class ConnectCodeController < ApplicationController
 
   def update_connect_code_params
     params.permit(:connect_code, :remaining_uses, :status)
+  end
+
+  def auth_redirect
+    edit_chat_url(@connect_code.chat.uuid)
   end
 end

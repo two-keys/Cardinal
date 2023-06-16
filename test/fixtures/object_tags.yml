@@ -1,21 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one_suite1:
-  prompt: one
+  object: one (Prompt)
+  tag: generic
+
+char_one_suite1:
+  object: one (Character)
   tag: generic
 
 one_suite2:
-  prompt: one
+  object: one (Prompt)
   tag: modernfan
 
 one_suite3:
-  prompt: one
+  object: one (Prompt)
   tag: twentiethcentury
 
 one_suite4:
-  prompt: one
+  object: one (Prompt)
   tag: nofandom
 
 one_suite5:
-  prompt: one
+  object: one (Prompt)
   tag: originalcharacter
