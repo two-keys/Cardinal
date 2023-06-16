@@ -1,11 +1,15 @@
 # frozen_string_literal: true
+# rubocop:disable all
 
-begin
-  require 'rubocop/rake_task'
-rescue LoadError => e
-  raise e unless ENV.fetch('RAILS_ENV', nil) == 'production'
+namespace :rubocop do
+  begin
+    require 'rubocop/rake_task'
+
+    RuboCop::RakeTask.new(:lint) do |t|
+      t.options = ['-A', '--display-cop-names'].concat ARGV.drop(1)
+    end
+  rescue LoadError
+  end
 end
 
-RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ['-A', '--display-cop-names'].concat ARGV.drop(1)
-end
+# rubocop:enable all
