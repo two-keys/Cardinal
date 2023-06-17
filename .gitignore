@@ -33,3 +33,5 @@
 #local stuff
 /vendor/bundle
 dynamic_settings.yml
+.env.local
+.vscode
