@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  get 'admin_panel/index'
   resources :filters
   scope 'prompts' do
     get 'search', to: 'prompts#search'
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
   get '500', to: 'errors#internal_server_error'
   namespace :admin do
     resources :users, only: %i[index edit update destroy]
+    root 'admin_panel#index'
   end
 
   scope 'use' do
