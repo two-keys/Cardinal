@@ -1,0 +1,251 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+
+class CharactersControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  setup do
+    @character = characters(:one)
+    @character_without_tags = characters(:no_tags)
+    @posted = characters(:posted)
+    @draft = characters(:draft)
+
+    @user = users(:user)
+    @user2 = users(:user_two)
+    @john = users(:john)
+    @admin = users(:admin)
+    @banned = users(:user_banned)
+  end
+
+  test 'should get index' do
+    sign_in(@user)
+    get characters_url
+    assert_response :success
+  end
+
+  test 'should get new' do
+    sign_in(@user)
+    get new_character_url
+    assert_response :success
+  end
+
+  test 'valid tag parameters should pass' do
+    params = ActionController::Parameters.new(
+      {
+        tags: {
+          meta: {
+            type: ['Some generic type tag, Another type tag']
+          },
+          playing: {
+            fandom: ['A piece of media'],
+            character: ['Character in ^ media']
+          }
+        }
+      }
+    )
+
+    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+
+    assert permitted.key?(:meta)
+    assert permitted[:meta].key?(:type)
+
+    assert permitted.key?(:playing)
+    assert permitted[:playing].key?(:fandom)
+    assert permitted[:playing].key?(:character)
+  end
+
+  test 'tag parameters with invalid keys should not pass' do
+    params = ActionController::Parameters.new(
+      {
+        tags: {
+          not_a_valid_key: ['Some generic tag', 'Another tag'],
+          meta: [
+            { not_a_good_key: ['hm'] }
+          ]
+        }
+      }
+    )
+
+    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+
+    assert_not permitted.key?(:not_a_valid_key)
+    assert_not permitted[:meta][0].key?(:not_a_good_key)
+  end
+
+  test 'tag parameters with invalid values should not pass' do
+    params = ActionController::Parameters.new(
+      {
+        tags: {
+          meta: { bad_value: 'hi' },
+          playing: [['bad'], ['value']],
+          seeking: [tag: { character_id: 1, user_id: 99 }],
+          misc: { fandom: ['Huh?'] }
+        }
+      }
+    )
+
+    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+
+    assert_not permitted[:meta].key?(:bad_value)
+    assert permitted[:playing].empty?
+    assert_not permitted[:seeking][0].key?(:tag)
+    assert_not permitted[:misc].key?(:fandom)
+  end
+
+  test 'should create character' do
+    sign_in(@user)
+    assert_difference('Character.count') do
+      post characters_url, params: {
+        character: { description: 'Some unique description text', starter: 'Some unique starter text' },
+        tags: {
+          misc: {
+            misc: ['This is a misc tag']
+          }
+        }
+      }
+    end
+
+    assert_redirected_to character_url(Character.find_by(description: 'Some unique description text'))
+  end
+
+  test 'should create character with just description' do
+    sign_in(@user)
+    assert_difference('Character.count') do
+      post characters_url, params: {
+        character: { description: 'Some unique description text' },
+        tags: {
+          misc: {
+            misc: ['This is a misc tag']
+          }
+        }
+      }
+    end
+
+    assert_redirected_to character_url(Character.find_by(description: 'Some unique description text'))
+  end
+
+  test 'should not create character with really long tag' do
+    sign_in(@user)
+    post characters_url, params: {
+      character: { starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ["This tag is really#{' really' * 500} long"]
+        }
+      }
+    }
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'should show own posted character' do
+    sign_in(@john)
+    get character_url(@posted)
+    assert_response :success
+  end
+
+  test 'should show someone elses posted character' do
+    sign_in(@user)
+    get character_url(@posted)
+    assert_response :success
+  end
+
+  test 'should show own drafted character' do
+    sign_in(@john)
+    get character_url(@draft)
+    assert_response :success
+  end
+
+  test 'should not show someone elses drafted character' do
+    sign_in(@user)
+    get character_url(@draft)
+    assert_response :missing
+  end
+
+  test 'should get edit' do
+    sign_in(@user)
+    get edit_character_url(@character)
+    assert_response :success
+  end
+
+  test 'should not get edit for someone elses character' do
+    sign_in(@user2)
+    get edit_character_url(@character)
+    assert_response :missing
+  end
+
+  test 'should update character' do
+    sign_in(@user)
+    patch character_url(@character), params: {
+      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+    }
+    assert_redirected_to character_url(@character)
+  end
+
+  test 'should update character to have tags' do
+    sign_in(@user)
+
+    assert_difference('ObjectTag.count', 7) do
+      patch character_tags_url(@character_without_tags), params: {
+        tags: {
+          playing: {
+            fandom: ['Some Fandom?'], # 1
+            character: ['A Guy'], # 2
+            characteristic: ['Short'] # 3
+          },
+          seeking: {
+            fandom: ['Some Other Fandom?'], # 4
+            character: ['Another guy'], # 5
+            characteristic: ['Tall'] # 6
+          },
+          misc: {
+            misc: ['This is a misc tag'] # 7
+          }
+        }
+      }
+    end
+
+    assert_redirected_to character_url(@character_without_tags)
+  end
+
+  test 'updating a character with tags should remove old tags' do
+    sign_in(@user)
+
+    old_amount = @character.tags.count
+    assert old_amount > 1
+
+    assert_changes(
+      'ObjectTag.where(object_type: \'Character\', object_id: @character.id).count',
+      from: old_amount,
+      to: 1
+    ) do
+      patch character_tags_url(@character), params: {
+        tags: {
+          misc: {
+            misc: ['This is a misc tag'] # 1
+          }
+        }
+      }
+    end
+
+    assert_redirected_to character_url(@character)
+  end
+
+  test 'should update arbitrary character as admin' do
+    sign_in(@admin)
+    patch character_url(@character), params: {
+      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+    }
+    assert_redirected_to character_url(@character)
+  end
+
+  test 'should destroy character' do
+    sign_in(@user)
+    assert_difference('Character.count', -1) do
+      delete character_url(@character)
+    end
+
+    assert_redirected_to characters_url
+  end
+end

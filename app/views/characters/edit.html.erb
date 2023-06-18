@@ -1,0 +1,18 @@
+<div class="card">
+  <h1>Editing description</h1>
+
+  <%= render "form", character: @character, with_tags: false %>
+</div>
+
+<div class="card">
+  <h1>Editing tags</h1>
+
+  <%= render "form_tags", character: @character %>
+
+  <br>
+
+  <div>
+    <%= link_to "Show this character", @character %> |
+    <%= link_to "Back to characters", characters_path %>
+  </div>
+</div>

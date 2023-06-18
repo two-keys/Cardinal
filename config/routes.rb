@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     match 'bump', action: 'bump', via: %i[put patch]
   end
 
+  resources :characters do
+    match 'tags', action: 'update_tags', via: %i[put patch]
+  end
+
   resources :tags do
     collection do
       post :autocomplete

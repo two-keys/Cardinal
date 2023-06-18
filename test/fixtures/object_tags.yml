@@ -4,10 +4,6 @@ one_suite1:
   object: one (Prompt)
   tag: generic
 
-char_one_suite1:
-  object: one (Character)
-  tag: generic
-
 one_suite2:
   object: one (Prompt)
   tag: modernfan
@@ -22,4 +18,24 @@ one_suite4:
 
 one_suite5:
   object: one (Prompt)
+  tag: originalcharacter
+
+char_one_suite1:
+  object: one (Character)
+  tag: generic
+
+char_one_suite2:
+  object: one (Character)
+  tag: modernfan
+
+char_one_suite3:
+  object: one (Character)
+  tag: twentiethcentury
+
+char_one_suite4:
+  object: one (Character)
+  tag: nofandom
+
+char_one_suite5:
+  object: one (Character)
   tag: originalcharacter

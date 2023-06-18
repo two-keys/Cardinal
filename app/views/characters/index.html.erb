@@ -1,0 +1,7 @@
+<h1>Characters</h1>
+
+<% content_for :left_sidebar do %>
+  <%= render partial: 'characters/characters_sidebar' %>
+<% end %>
+
+<%= render partial: 'characters/characters', locals: {characters: @characters} %>

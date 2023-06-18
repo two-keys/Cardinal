@@ -19,3 +19,17 @@ no_tags:
   status: 1
   user: user
   created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
+
+posted:
+  name: posted guy
+  description: this is a definitely posted prompt
+  status: 2 # posted
+  user: john
+  created_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
+
+draft:
+  name: drafted guy
+  description: this is johns drafted prompt
+  status: 0 # draft
+  user: john
+  created_at: Tue, 01 Jan 1999 06:06:11.543035000 UTC +00:00
