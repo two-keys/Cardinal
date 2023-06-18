@@ -1,0 +1,110 @@
+# frozen_string_literal: true
+
+## Characters controller is inevitably going to have a lot that goes into it
+## tag searching, characters, updates, etc
+class CharactersController < ApplicationController
+  include Pagy::Backend
+  include ApplicationHelper
+
+  before_action :set_character, only: %i[show edit bump update update_tags answer destroy]
+  before_action :authenticate_user!
+
+  authorize_resource
+
+  # GET /characters
+  def index
+    query = Character.accessible_by(current_ability)
+
+    # we could make this searchable like prompts
+    # but that'll take some time to decouple prompt search logic
+
+    @pagy, @characters = pagy(query, items: 5)
+  end
+
+  # GET /characters/1
+  def show; end
+
+  # GET /characters/new
+  def new
+    @character = Character.new
+  end
+
+  # GET /characters/1/edit
+  def edit; end
+
+  # POST /characters
+  def create
+    @character = Character.new(character_params)
+    @character.user_id = current_user.id
+
+    added_tags = @character.add_tags(tag_params)
+
+    respond_to do |format|
+      if added_tags && @character.save
+        format.html { redirect_to character_url(@character), notice: 'Character was successfully created.' }
+        format.json { render :show, status: :created, location: @character }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @character.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /characters/1
+  def update
+    respond_to do |format|
+      if @character.update(character_params)
+        format.html { redirect_to character_url(@character), notice: 'Character was successfully updated.' }
+        format.json { render :show, status: :ok, location: @character }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @character.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /characters/1/tags
+  def update_tags
+    added_tags = @character.add_tags(tag_params)
+
+    respond_to do |format|
+      if added_tags && @character.save
+        format.html { redirect_to character_url(@character), notice: 'Tags were successfully updated.' }
+        format.json { render :show, status: :ok, location: @character }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @character.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /characters/1
+  def destroy
+    @character.destroy
+
+    respond_to do |format|
+      format.html { redirect_to characters_url, notice: 'Character was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_character
+    @character = Character.find(params[:id] || params[:character_id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def character_params
+    params.require(:character).permit(:description, :status, :default_slots)
+  end
+
+  def tag_params
+    params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+  end
+
+  def search_params
+    params.permit(:before, :tags, :nottags)
+  end
+end

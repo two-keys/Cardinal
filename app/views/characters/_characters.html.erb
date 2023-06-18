@@ -1,0 +1,15 @@
+<div id="characters_container">
+  <div class="card primary">
+    <div class="pagination">
+      <%= link_to "New Character", new_character_path %>
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+      Your search has <strong><%= @pagy.count %></strong> total characters!
+    </div>
+  </div>
+  <%= render partial: 'characters/mini', collection: @characters, as: :character %>
+  <div class="card primary">
+    <div class="pagination">
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+</div>

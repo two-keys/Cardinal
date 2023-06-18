@@ -1,0 +1,11 @@
+<div class="card">
+  <h1>New character</h1>
+
+  <%= render "form", character: @character, with_tags: true %>
+
+  <br>
+
+  <div>
+    <%= link_to "Back to characters", characters_path %>
+  </div>
+</div>

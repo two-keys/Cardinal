@@ -1,0 +1,22 @@
+<% if character.errors.any? %>
+  <div style="color: red">
+    <h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
+
+    <ul>
+      <% character.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div>
+  <%= form.label :description, style: "display: block" %>
+  <%= form.text_area :description %>
+</div>
+
+<div>
+  <%= form.label :status, style: "display: block" %>
+  <%= form.radio_button :status, 'draft' %><%= label_tag(:character_status_draft, 'draft') %>
+  <%= form.radio_button :status, 'posted' %><%= label_tag(:character_status_posted, 'posted') %>
+</div>

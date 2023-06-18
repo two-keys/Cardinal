@@ -1,0 +1,19 @@
+<%= form_with(model: character, url: character_tags_path(character), id: 'character_tags_form') do |form| %>
+  <% if character.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(character.errors.count, "error") %> prohibited this character from being saved:</h2>
+
+      <ul>
+        <% character.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= render partial: 'characters/form_tags/tag_fields', locals: { character: character} %>
+
+  <div>
+    <%= form.submit 'Submit Tags' %>
+  </div>
+<% end %>

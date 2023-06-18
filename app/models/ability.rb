@@ -27,6 +27,7 @@ class Ability
     can :create, Filter
     can :create, ObjectTag, object: { user: }
     can :create, Prompt
+    can :create, Character
 
     ## Reading
     can :read, Message do |message|
@@ -40,6 +41,8 @@ class Ability
     can :read, ObjectTag, object: { user: }
     can :read, Prompt, status: 'posted'
     can :read, Prompt, user: user
+    can :read, Character, status: 'posted'
+    can :read, Character, user: user
     can :read, Tag, enabled: true
     can :read, Ticket, user: user
     can :read, User, user: user
@@ -59,6 +62,7 @@ class Ability
     can :update, Filter, user: user
     can :update, ObjectTag, object: { user: }
     can :update, Prompt, user: user
+    can :update, Character, user: user
     can :update, User, user: user
 
     ## Destroying
@@ -73,6 +77,7 @@ class Ability
     can :destroy, Filter, user: user
     can :destroy, ObjectTag, object: { user: }
     can :destroy, Prompt, user: user
+    can :destroy, Character, user: user
     can :destroy, Ticket do |ticket|
       ticket.user == user && ticket.destroyable?
     end
@@ -88,6 +93,7 @@ class Ability
     can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
+    can :update_tags, Character, user: user
     can :answer, Prompt
     cannot :answer, Prompt, user: user
     can :search, Prompt
@@ -104,6 +110,7 @@ class Ability
       ## Non-CRUD Actions
       cannot :bump, Prompt
       cannot :update_tags, Prompt
+      cannot :update_tags, Character
       cannot :answer, Prompt
     end
 
