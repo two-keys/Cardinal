@@ -177,7 +177,9 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update character' do
     sign_in(@user)
-    patch character_url(@character), params: { character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+    patch character_url(@character), params: {
+      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+    }
     assert_redirected_to character_url(@character)
   end
 
@@ -232,7 +234,9 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update arbitrary character as admin' do
     sign_in(@admin)
-    patch character_url(@character), params: { character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+    patch character_url(@character), params: {
+      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+    }
     assert_redirected_to character_url(@character)
   end
 
