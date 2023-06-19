@@ -86,6 +86,38 @@ class PromptTest < ActiveSupport::TestCase
     end
   end
 
+  test 'if a tag\'s tag_type has a parent, add that parent' do
+    meta_kv = CardinalSettings::Tags.types.find { |_k, v| v['parent'].present? }
+    skip if meta_kv.nil? # we need to have tag types with parents in the first place
+
+    type_key = meta_kv.first
+    type_hash = meta_kv.last
+    tag_name =
+      if type_hash.key?('entries')
+        type_hash['entries'].first
+      elsif type_hash['fill_in']
+        'testing meta tags'
+      end
+    tag_to_add = Tag.find_or_create_by!(
+      tag_type: type_key,
+      name: tag_name,
+      polarity: type_hash['polarities'].first
+    )
+
+    tag_components = type_hash['parent']
+    parent_tag = Tag.find_or_create_by!(
+      tag_type: tag_components['type'],
+      name: tag_components['name'],
+      polarity: tag_components['polarity']
+    )
+    assert_raises(ActiveRecord::RecordNotFound) { @no_tags.tags.find(parent_tag.id) }
+
+    @no_tags.tags << tag_to_add
+    @no_tags.process_tags
+
+    assert(@no_tags.tags.exists?(id: parent_tag.id))
+  end
+
   test 'cannot bump the same prompt twice in a row' do
     assert @prompt.bump!
     assert_empty @prompt.errors[:bump]
