@@ -79,6 +79,11 @@ class Prompt < ApplicationRecord
 
     begin
       self.object_tags = ObjectTag.from_tag_params(tag_params) # RecordInvalid thrown here
+      # polymorphic relations are weird, so we have to reload for the above to take effect
+      reload unless new_record?
+
+      # logger.debug(object_tags.map { |v| "test #{v.tag.tag_type} - #{v.tag.name}" })
+      # logger.debug tags.pluck(:name)
       process_tags
     rescue ActiveRecord::RecordInvalid
       # If this block is run, something's(enabled flag?) probably wrong with one of the add_meta_tags tags

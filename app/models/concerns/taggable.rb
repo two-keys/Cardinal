@@ -71,14 +71,16 @@ module Taggable
   # Adds tags outside of the normal synonym/parent ecosystem.
   def add_meta_tags
     # An array of strings representing the tag types present in this prompt
-    calculated_types = tags.select(:tag_type).group(:tag_type).pluck(:tag_type)
+    calculated_types = tags.pluck(:tag_type)
     # A hash of type hashes from our site settings. Only includes those with parents
     cardinal_types = CardinalSettings::Tags.types.select do |_k, v|
       v['parent'].present?
     end
 
     calculated_types.each do |calc_type|
-      next unless cardinal_types.key?(calc_type)
+      has_parent = cardinal_types.key?(calc_type)
+      # logger.debug "#{calc_type} has_parent = #{has_parent}"
+      next unless has_parent
 
       # Array of form [<tag_type>, <tag_lower_name>]
       tag_components = cardinal_types[calc_type]['parent']
@@ -88,7 +90,9 @@ module Taggable
         name: tag_components['name'],
         polarity: tag_components['polarity']
       )
-      tags << new_parent unless tags.exists?(new_parent.id)
+      next if tags.exists?(new_parent.id)
+
+      tags << new_parent
     end
   end
 
