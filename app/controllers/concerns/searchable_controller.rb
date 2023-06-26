@@ -18,6 +18,16 @@ module SearchableController
   # @param query This can be the object in question or an instance of ActiveRecord::Relation
   # @return [ActiveRecord::Relation]
   def add_search(obj_class)
+    # brakeman really hates string interpolation in sql, even when its 99% safe
+    # so we have to roundabout this
+    object_tag_string =
+      case obj_class.name
+      when 'Prompt'
+        'object_type = \'Prompt\' AND object_id = "prompts"."id"'
+      when 'Character'
+        'object_type = \'Character\' AND object_id = "characters"."id"'
+      end
+
     query = obj_class.accessible_by(current_ability)
 
     # GET /prompts?before=2022-02-17
@@ -39,10 +49,7 @@ module SearchableController
       # logger.debug query_tag_ids
       query = query.where(
         'NOT(ARRAY[?]::bigint[] && array(?))', # no overlap
-        query_tag_ids, ObjectTag.where(
-          "object_type = '#{obj_class.name}' " \
-          "AND object_id = \"#{obj_class.name.downcase}s\".\"id\""
-        ).select(:tag_id)
+        query_tag_ids, ObjectTag.where(object_tag_string).select(:tag_id)
       )
     end
 
@@ -55,10 +62,7 @@ module SearchableController
       # logger.debug query_tag_ids
       query = query.where(
         'ARRAY[?]::bigint[] <@ array(?)',
-        query_tag_ids, ObjectTag.where(
-          "object_type = '#{obj_class.name}' " \
-          "AND object_id = \"#{obj_class.name.downcase}s\".\"id\""
-        ).select(:tag_id)
+        query_tag_ids, ObjectTag.where(object_tag_string).select(:tag_id)
       )
     end
 
@@ -72,10 +76,7 @@ module SearchableController
         Filter.where(
           # Do any of the prompt's tags hit the rejection filter?
           '"filters"."tag_id" IN (?)',
-          ObjectTag.where(
-            "\"object_tags\".\"object_type\" = '#{obj_class.name}' " \
-            "AND \"object_tags\".\"object_id\" = \"#{obj_class.name.downcase}s\".\"id\""
-          ).select(:tag_id)
+          ObjectTag.where(object_tag_string).select(:tag_id)
         ).where(
           # We could theoretically let people specify the specific filters they want to match,
           # but that sounds like a pain
@@ -88,10 +89,7 @@ module SearchableController
           Filter.from(f2).select('"filters_2".*').where(
             # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
             '"filters_2"."tag_id" IN (?)',
-            ObjectTag.where(
-              "\"object_tags\".\"object_type\" = '#{obj_class.name}' " \
-              "AND \"object_tags\".\"object_id\" = \"#{obj_class.name.downcase}s\".\"id\""
-            ).select(:tag_id)
+            ObjectTag.where(object_tag_string).select(:tag_id)
           ).where(
             '"filters_2"."filter_type" = ?', 'Exception'
           ).where(
