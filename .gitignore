@@ -35,3 +35,6 @@
 dynamic_settings.yml
 .env.local
 .vscode
+/doc
+.yardoc
+.solargraph.yml
