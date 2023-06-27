@@ -85,7 +85,7 @@ class PromptsTest < ApplicationSystemTestCase
   end
 
   test 'should be able to use advanced search' do
-    visit search_url
+    visit prompts_search_url
 
     tags_to_look_for = []
 

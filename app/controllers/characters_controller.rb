@@ -6,14 +6,16 @@ class CharactersController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_character, only: %i[show edit bump update update_tags answer destroy]
+  before_action :set_character, only: %i[show edit bump update answer destroy]
   before_action :authenticate_user!
 
   authorize_resource
 
+  include SearchableController
+
   # GET /characters
   def index
-    query = Character.accessible_by(current_ability)
+    query = add_search(Character)
 
     # we could make this searchable like prompts
     # but that'll take some time to decouple prompt search logic
@@ -55,21 +57,6 @@ class CharactersController < ApplicationController
     respond_to do |format|
       if @character.update(character_params)
         format.html { redirect_to character_url(@character), notice: 'Character was successfully updated.' }
-        format.json { render :show, status: :ok, location: @character }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @character.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /characters/1/tags
-  def update_tags
-    added_tags = @character.add_tags(tag_params)
-
-    respond_to do |format|
-      if added_tags && @character.save
-        format.html { redirect_to character_url(@character), notice: 'Tags were successfully updated.' }
         format.json { render :show, status: :ok, location: @character }
       else
         format.html { render :edit, status: :unprocessable_entity }
