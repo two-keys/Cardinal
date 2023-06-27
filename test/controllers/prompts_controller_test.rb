@@ -42,7 +42,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get search page' do
     sign_in(@user)
-    get search_path
+    get prompts_search_path
     assert_response :success
   end
 

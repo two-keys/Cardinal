@@ -164,6 +164,8 @@ module SearchableController
     case self.class.name
     when 'PromptsController'
       set_prompt
+    when 'CharactersController'
+      set_character
     else
       logger.debug "my case statement name is '#{self.class.name}'"
     end

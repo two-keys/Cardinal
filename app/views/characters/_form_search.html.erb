@@ -1,0 +1,29 @@
+<%= form_with do |form| %>
+  <% @autocomplete = (UNLEASH.is_enabled? "TagAutocomplete", @unleash_context) && !Rails.env.test? %>
+  <% CardinalSettings::Tags.polarities.each do |polarity| %>
+    <div class="polarity">
+      <h3><%= form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
+      <% CardinalSettings::Tags.types.each do |tag_type, tag_hash| %>
+        
+        <% if tag_hash['polarities'].include?(polarity) %>
+          <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
+            <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
+
+            <% if tag_hash.key? 'entries' %>
+              <%= render partial: 'characters/form_tags/entries', locals: { entries: default_entries_for(tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+            <% end %>
+            <% if tag_hash['fill_in'] %>
+              <%= render partial: 'characters/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+            <% end %>
+
+          <% end %>
+        <% end %>
+      
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit 'Submit Tags' %>
+  </div>
+<% end %>

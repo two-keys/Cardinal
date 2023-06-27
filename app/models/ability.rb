@@ -97,6 +97,7 @@ class Ability
     can :answer, Prompt
     cannot :answer, Prompt, user: user
     can :search, Prompt
+    can :search, Character
     can :generate_search, Prompt
     can :autocomplete, Tag
 

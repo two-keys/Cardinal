@@ -24,6 +24,28 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get index with tag search' do
+    sign_in(@user)
+    get characters_url, params: {
+      tags: 'playing:fandom:No Fandom,playing:character:Original Character,playing:characteristic:Tall'
+    }
+    assert_response :success
+  end
+
+  test 'should get index with NOT tag search' do
+    sign_in(@user)
+    get characters_url, params: {
+      nottags: 'playing:fandom:No Fandom,playing:character:Original Character,playing:characteristic:Tall'
+    }
+    assert_response :success
+  end
+
+  test 'should get search page' do
+    sign_in(@user)
+    get characters_search_path
+    assert_response :success
+  end
+
   test 'should get new' do
     sign_in(@user)
     get new_character_url

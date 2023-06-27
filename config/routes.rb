@@ -4,19 +4,19 @@
 Rails.application.routes.draw do
   get 'admin_panel/index'
   resources :filters
-  scope 'prompts' do
-    get 'search', to: 'prompts#search'
-    post 'search', to: 'prompts#generate_search'
-  end
 
   resources :tickets, only: %i[index show destroy]
 
+  get 'prompts/search', to: 'prompts#search'
+  post 'prompts/search', to: 'prompts#generate_search'
   resources :prompts do
     match 'tags', action: 'update_tags', via: %i[put patch]
     post 'answer', to: 'prompts#answer'
     match 'bump', action: 'bump', via: %i[put patch]
   end
 
+  get 'characters/search', to: 'characters#search'
+  post 'characters/search', to: 'characters#generate_search'
   resources :characters do
     match 'tags', action: 'update_tags', via: %i[put patch]
   end
