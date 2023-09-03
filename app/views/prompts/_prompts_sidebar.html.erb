@@ -18,7 +18,15 @@
         <button data-action="click->tagactions#exclude">Exclude</button>
       </div>
       <br />
-      <%= link_to 'Update timestamp', params.permit(:before, :tags, :nottags, :page).merge(before: 1.second.from_now) %>
+      <%= link_to 'Update timestamp', params.permit(:before, :tags, :nottags, :page, :managed).merge(before: 1.second.from_now) %>
+      <br />
+      <%= 
+        link_to 'Switch (Un-)managed', params.permit(
+          :before, :tags, :nottags, :page, :before
+        ).merge(
+          managed: params[:managed] == 'false' ? 'true' : 'false'
+        )
+      %>
     </div>
   </div>
 </div>

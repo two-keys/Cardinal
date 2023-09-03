@@ -30,3 +30,8 @@
   <%= form.label :default_slots, style: "display: block" %>
   <%= form.number_field :default_slots, min: 2, step: 1 %>
 </div>
+
+<div>
+  <%= form.label :managed, style: "display: inline" %>
+  <%= form.check_box :managed, default: false %>
+</div>

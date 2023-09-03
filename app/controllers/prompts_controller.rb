@@ -18,6 +18,9 @@ class PromptsController < ApplicationController
   def index
     query = add_search(Prompt)
 
+    # prompt specific search
+    query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
+
     @pagy, @prompts = pagy(query, items: 5)
   end
 
@@ -131,7 +134,7 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots)
+    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots, :managed)
   end
 
   def tag_params
@@ -139,7 +142,7 @@ class PromptsController < ApplicationController
   end
 
   def search_params
-    params.permit(:before, :tags, :nottags)
+    params.permit(:before, :tags, :nottags, :managed)
   end
 end
 # rubocop:enable Metrics/ClassLength
