@@ -17,6 +17,9 @@
     <span class="slots">
       <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
     </span>
+    <span class="managed">
+      <strong><% unless prompt.managed? %>UN-<% end %>MANAGED</strong>
+    </span>
   </div>
 
   <% if prompt.ooc.present? %>

@@ -4,7 +4,6 @@ class Prompt < ApplicationRecord
   include Markdownable
   include Taggable
   include Ticketable
-  include Moderatable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
@@ -44,7 +43,11 @@ class Prompt < ApplicationRecord
   def answer(as_user)
     @chat = Chat.new
     @chat.prompt = self
-    @chat.chat_users << ChatUser.new(user:, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @chat.chat_users << if managed?
+                          ChatUser.new(user:, role: ChatUser.roles[:chat_admin]) # prompt owner
+                        else
+                          ChatUser.new(user:)
+                        end
     @chat.chat_users << ChatUser.new(user: as_user)
 
     @chat.messages << Message.new(content: ooc) if ooc.present?

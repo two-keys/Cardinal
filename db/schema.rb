@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_12_063532) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_03_211810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -137,7 +137,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_12_063532) do
     t.integer "status", default: 0, null: false
     t.datetime "bumped_at", null: false
     t.integer "default_slots", default: 2, null: false
+    t.boolean "managed", default: false, null: false
     t.index ["default_slots"], name: "index_prompts_on_default_slots"
+    t.index ["managed"], name: "index_prompts_on_managed"
     t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 
