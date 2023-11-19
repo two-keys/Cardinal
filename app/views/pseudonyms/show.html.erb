@@ -1,0 +1,12 @@
+<%= render @pseudonym %>
+
+<div>
+  <% if can? :update, @pseudonym %>
+    <%= link_to "Edit this pseudonym", edit_pseudonym_path(@pseudonym) %> |
+  <% end %>
+  <%= link_to "Back to pseudonyms", pseudonyms_path %>
+
+  <% if can? :destroy, @pseudonym %>
+    <%= button_to "Destroy this pseudonym", @pseudonym, method: :delete %>
+  <% end %>
+</div>

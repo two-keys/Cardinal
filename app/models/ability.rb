@@ -26,6 +26,7 @@ class Ability
     can :create, ConnectCode
     can :create, Filter
     can :create, ObjectTag, object: { user: }
+    can :create, Pseudonym
     can :create, Prompt
     can :create, Character
 
@@ -39,6 +40,8 @@ class Ability
     can :read, ConnectCode, user: user
     can :read, Filter, user: user
     can :read, ObjectTag, object: { user: }
+    can :read, Pseudonym, status: 'posted'
+    can :read, Pseudonym, user: user
     can :read, Prompt, status: 'posted'
     can :read, Prompt, user: user
     can :read, Character, status: 'posted'
@@ -61,6 +64,7 @@ class Ability
     end
     can :update, Filter, user: user
     can :update, ObjectTag, object: { user: }
+    can :update, Pseudonym, user: user
     can :update, Prompt, user: user
     can :update, Character, user: user
     can :update, User, user: user
@@ -76,6 +80,7 @@ class Ability
     end
     can :destroy, Filter, user: user
     can :destroy, ObjectTag, object: { user: }
+    can :destroy, Pseudonym, user: user
     can :destroy, Prompt, user: user
     can :destroy, Character, user: user
     can :destroy, Ticket do |ticket|

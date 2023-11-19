@@ -1,0 +1,24 @@
+<div id="<%= dom_id pseudonym %>" class="card primary pseudonym">
+  <div class="pseudonym_info">
+    <% if can? :view_users, pseudonym %>
+      <%= link_to "PROFILE", edit_admin_user_path(pseudonym.user) %> |
+    <% end %>
+    <span class="type_notif <% pseudonym.status %>">
+      <% if pseudonym.draft? %>
+        DRAFT
+      <% end %>
+      <% if pseudonym.locked? %>
+        LOCKED
+      <% end %>
+    </span>
+    <div class="name">
+      <strong>NAME <u><%= pseudonym.name %></u></strong>
+    </div>
+  </div>
+
+  </br>
+
+  <% if can? :edit, pseudonym %>
+    <%= link_to "Edit", edit_pseudonym_path(pseudonym), class: "pseudonym_edit_link" %>
+  <% end %>
+</div>

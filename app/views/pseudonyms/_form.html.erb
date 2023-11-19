@@ -1,0 +1,8 @@
+<%= form_with(model: pseudonym, id: 'pseudonym_form') do |form| %>
+  <%= render partial: 'pseudonyms/pseudonym_fields', locals: { pseudonym: pseudonym, form: form } %>
+
+  <div>
+    <%= form.submit 'Submit' %>
+  </div>
+<% end %>
+

@@ -1,0 +1,15 @@
+<div id="pseudonyms_container">
+  <div class="card primary">
+    <div class="pagination">
+      <%= link_to "New Pseudonym", new_pseudonym_path %>
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+      Your search has <strong><%= @pagy.count %></strong> total pseudonyms!
+    </div>
+  </div>
+  <%= render partial: 'pseudonyms/mini', collection: @pseudonyms, as: :pseudonym %>
+  <div class="card primary">
+    <div class="pagination">
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+</div>
