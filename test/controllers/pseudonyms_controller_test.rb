@@ -77,10 +77,19 @@ class PseudonymsControllerTest < ActionDispatch::IntegrationTest
     assert_response :missing
   end
 
-  test 'should update pseudonym' do
+  test 'should update pseudonym name and status' do
     sign_in(@user)
-    patch pseudonym_url(@pseudonym), params: { pseudonym: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+
+    name = @pseudonym.name
+
+    patch pseudonym_url(@pseudonym), params: {
+      pseudonym: { name: 'new_name238291', status: 'posted' }
+    }
+
     assert_redirected_to pseudonym_url(@pseudonym)
+
+    @pseudonym.reload
+    assert_not_equal(name, @pseudonym.name)
   end
 
   test 'should destroy pseudonym' do

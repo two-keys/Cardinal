@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class PseudonymsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
@@ -85,4 +84,3 @@ class PseudonymsController < ApplicationController
     params.permit(:before)
   end
 end
-# rubocop:enable Metrics/ClassLength
