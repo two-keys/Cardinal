@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     match 'bump', action: 'bump', via: %i[put patch]
   end
 
+  resources :pseudonyms
+
   get 'characters/search', to: 'characters#search'
   post 'characters/search', to: 'characters#generate_search'
   resources :characters do

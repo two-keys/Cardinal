@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_03_211810) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_221255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -143,6 +143,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_211810) do
     t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 
+  create_table "pseudonyms", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_pseudonyms_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", limit: 254, null: false
     t.string "tag_type", limit: 25, null: false
@@ -201,6 +210,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_03_211810) do
   add_foreign_key "filters", "tags"
   add_foreign_key "filters", "users"
   add_foreign_key "object_tags", "tags"
+  add_foreign_key "pseudonyms", "users"
   add_foreign_key "tags", "tags", column: "synonym_id"
   add_foreign_key "tickets", "users"
 end

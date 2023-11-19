@@ -1,0 +1,33 @@
+<div id="<%= dom_id pseudonym %>" class="card primary pseudonym mini">
+  <div class="pseudonym_info">
+    <% if can? :view_users, pseudonym %>
+      <%= link_to "PROFILE", edit_admin_user_path(pseudonym.user) %> |
+    <% end %>
+    <span class="type_notif <% pseudonym.status %>">
+      <% if pseudonym.draft? %>
+        DRAFT
+      <% end %>
+      <% if pseudonym.locked? %>
+        LOCKED
+      <% end %>
+    </span>
+  </div>
+  <div class="name">
+    <strong>NAME <u><%= pseudonym.name %></u></strong>
+  </div>
+  
+  <hr />
+
+  <span class="pseudonym_date_time">
+    <!-- Display the date and time of the pseudonym  -->
+    <%= link_to (pseudonym.updated_at || pseudonym.created_at).strftime("%Y-%m-%d %k:%M:%S"), pseudonym %>
+  </span>
+
+  <% if can? :edit, pseudonym %>
+    <%= link_to "Edit", edit_pseudonym_path(pseudonym), class: "pseudonym_edit_link" %>
+  <% end %>
+
+  <ul class="pseudonym_actions">
+    
+  </ul>
+</div>
