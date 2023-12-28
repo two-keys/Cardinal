@@ -19,7 +19,18 @@ class PromptsController < ApplicationController
     query = add_search(Prompt)
 
     # prompt specific search
+
+    # can chats from the prompt be moderated?
     query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
+
+    # is this your prompt?
+    if search_params.key?(:myprompts)
+      query = if search_params[:myprompts] == 'true'
+                query.where(user: current_user)
+              else
+                query.where.not(user: current_user)
+              end
+    end
 
     @pagy, @prompts = pagy(query, items: 5)
   end
@@ -142,7 +153,7 @@ class PromptsController < ApplicationController
   end
 
   def search_params
-    params.permit(:before, :tags, :nottags, :managed)
+    params.permit(:before, :tags, :nottags, :managed, :myprompts)
   end
 end
 # rubocop:enable Metrics/ClassLength
