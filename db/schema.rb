@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_221255) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_17_235839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -120,6 +120,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_221255) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "object_characters", id: false, force: :cascade do |t|
+    t.bigint "character_id"
+    t.string "object_type"
+    t.bigint "object_id"
+    t.index ["character_id"], name: "index_object_characters_on_character_id"
+    t.index ["object_type", "object_id", "character_id"], name: "index_object_characters_with_id", unique: true
+    t.index ["object_type", "object_id"], name: "index_object_characters_on_object"
+  end
+
   create_table "object_tags", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "object_type"
@@ -209,6 +218,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_221255) do
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "tags"
   add_foreign_key "filters", "users"
+  add_foreign_key "object_characters", "characters"
   add_foreign_key "object_tags", "tags"
   add_foreign_key "pseudonyms", "users"
   add_foreign_key "tags", "tags", column: "synonym_id"
