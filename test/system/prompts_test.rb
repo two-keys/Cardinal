@@ -157,7 +157,7 @@ class PromptsTest < ApplicationSystemTestCase
     tags_to_look_for = []
 
     fill_in 'prompt_ooc', with: '1234928i383 totally unique prompt ooc'
-    CardinalSettings::Tags.types.each do |_tag_type, type_hash|
+    CardinalSettings::Tags.types.each_value do |type_hash|
       next unless type_hash['fill_in']
 
       input_node = find 'input#tags_misc_misc'
