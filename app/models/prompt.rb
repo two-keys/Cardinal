@@ -3,13 +3,16 @@
 class Prompt < ApplicationRecord
   include Markdownable
   include Taggable
+  include Characterized
   include Ticketable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
 
   has_many :object_tags, as: :object, dependent: :destroy
+  has_many :object_characters, as: :object, dependent: :destroy
   has_many :tags, through: :object_tags
+  has_many :characters, through: :object_characters
 
   has_many :chats, dependent: :nullify
 

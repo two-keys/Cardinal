@@ -1,0 +1,6 @@
+<%= fields_for :tags do |tag_form| %>
+    <div class="polarity">
+        <h3><%= tag_form.label 'character profile(s)', 'CHARACTER PROFILE(S)' %></h3>
+        <%= select_tag('characters[]', options_for_select(character_options)) %><br />
+    </div>
+<% end %>

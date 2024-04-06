@@ -13,6 +13,7 @@ class PromptsController < ApplicationController
   authorize_resource
 
   include SearchableController
+  include CharacterizedController
 
   # GET /prompts
   def index
@@ -146,10 +147,6 @@ class PromptsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def prompt_params
     params.require(:prompt).permit(:starter, :ooc, :status, :default_slots, :managed)
-  end
-
-  def tag_params
-    params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
   end
 
   def search_params

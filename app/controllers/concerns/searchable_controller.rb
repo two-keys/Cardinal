@@ -9,6 +9,11 @@ module SearchableController
     before_action :set_searchable, only: %i[update_tags]
   end
 
+  # Used in other controller concerns
+  def searchable?
+    true
+  end
+
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
 
@@ -138,9 +143,10 @@ module SearchableController
   # PATCH/PUT /prompts/1/tags
   def update_tags
     added_tags = @searchable.add_tags(tag_params)
+    added_characters = @searchable.add_characters(character_params) if characterized?
 
     respond_to do |format|
-      if added_tags && @searchable.save
+      if added_tags && (characterized? == false || added_characters) && @searchable.save
         format.html { redirect_to url_for(@searchable), notice: 'Tags were successfully updated.' }
         format.json { render :show, status: :ok, location: @searchable }
       else

@@ -16,7 +16,7 @@ class UseControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get each page in SETTINGS_HASH' do
-    CardinalSettings::Use.pages.each do |key, _page_hash|
+    CardinalSettings::Use.pages.each_key do |key|
       # sending a get response to the use controller
       get use_page_path key
       assert_response :success

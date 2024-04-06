@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Sentry.init do |config|
+  config.enabled_environments = %w[production]
   config.dsn = ENV['SENTRY_DSN'] || 'https://c844309d409e4ad9a87377b255224291@sentry.roleply.site/2'
   config.breadcrumbs_logger = %i[active_support_logger http_logger]
 

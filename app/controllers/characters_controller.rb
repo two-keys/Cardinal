@@ -84,7 +84,7 @@ class CharactersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def character_params
-    params.require(:character).permit(:description, :status, :default_slots)
+    params.require(:character).permit(:name, :description, :status, :default_slots)
   end
 
   def tag_params

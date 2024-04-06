@@ -11,6 +11,8 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @posted = prompts(:posted)
     @draft = prompts(:draft)
 
+    @character = characters(:one)
+
     @user = users(:user)
     @user2 = users(:user_two)
     @john = users(:john)
@@ -260,6 +262,34 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference('ObjectTag.count', 7) do
       patch prompt_tags_url(@prompt_without_tags), params: {
+        characters: ['-1'],
+        tags: {
+          playing: {
+            fandom: ['Some Fandom?'], # 1
+            character: ['A Guy'], # 2
+            characteristic: ['Short'] # 3
+          },
+          seeking: {
+            fandom: ['Some Other Fandom?'], # 4
+            character: ['Another guy'], # 5
+            characteristic: ['Tall'] # 6
+          },
+          misc: {
+            misc: ['This is a misc tag'] # 7
+          }
+        }
+      }
+    end
+
+    assert_redirected_to prompt_url(@prompt_without_tags)
+  end
+
+  test 'should update prompt to have characters' do
+    sign_in(@user)
+
+    assert_difference('ObjectCharacter.count', 1) do
+      patch prompt_tags_url(@prompt_without_tags), params: {
+        characters: [@character.id.to_s],
         tags: {
           playing: {
             fandom: ['Some Fandom?'], # 1
@@ -289,6 +319,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes('ObjectTag.where(object_type: \'Prompt\', object_id: @prompt.id).count', from: old_amount, to: 1) do
       patch prompt_tags_url(@prompt), params: {
+        characters: ['-1'],
         tags: {
           misc: {
             misc: ['This is a misc tag'] # 1
