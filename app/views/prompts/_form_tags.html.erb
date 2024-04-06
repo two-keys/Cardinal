@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+  <%= render partial: 'prompts/form_tags/characters', locals: { character_options: character_options } %>
   <%= render partial: 'prompts/form_tags/tag_fields', locals: { prompt: prompt} %>
 
   <div>

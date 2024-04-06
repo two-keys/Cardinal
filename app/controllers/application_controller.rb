@@ -7,6 +7,16 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied, with: :user_not_authorized
 
+  # start concern initializers
+  def searchable?
+    false
+  end
+
+  def characterized?
+    false
+  end
+  # end   concern initializers
+
   def set_start_time
     @start_time = Time.now.to_f
   end
