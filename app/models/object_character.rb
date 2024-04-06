@@ -6,8 +6,9 @@ class ObjectCharacter < ApplicationRecord
 
   validates :character_id, uniqueness: { scope: %i[object_id object_type] }
 
-  # This should be called by using the object_characters setter on a prompt, since we aren't setting Objectcharacter.prompt here
-  # @return [Array<Objectcharacter>]
+  # This should be called by using the object_characters setter on a prompt
+  # since we aren't setting Objectcharacter.prompt here
+  # @return [Array<ObjectCharacter>]
   def self.from_character_params(character_params)
     new_object_characters = []
 
