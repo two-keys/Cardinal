@@ -5,7 +5,7 @@ module CharacterizedController
 
   # there's probably a better way to do this but my brain is fried
   included do
-    before_action :set_character_options, only: %I[new edit bump update]
+    before_action :set_character_options, only: %I[new create edit bump answer update]
   end
 
   # Used in other controller concerns

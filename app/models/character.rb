@@ -11,6 +11,9 @@ class Character < ApplicationRecord
   has_many :object_tags, as: :object, dependent: :destroy
   has_many :tags, through: :object_tags
 
+  has_many :object_characters, dependent: :destroy
+  has_many :objects, through: :object_characters
+
   enum status: {
     draft: 0,
     locked: 1,

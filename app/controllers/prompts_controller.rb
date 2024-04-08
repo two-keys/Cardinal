@@ -65,9 +65,10 @@ class PromptsController < ApplicationController
     @prompt.user_id = current_user.id
 
     added_tags = @prompt.add_tags(tag_params)
+    added_characters = @prompt.add_characters(character_params)
 
     respond_to do |format|
-      if added_tags && @prompt.save
+      if added_tags && added_characters && @prompt.save
         format.html { redirect_to prompt_url(@prompt), notice: 'Prompt was successfully created.' }
         format.json { render :show, status: :created, location: @prompt }
       else
