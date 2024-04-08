@@ -104,6 +104,7 @@ class Ability
     can :search, Prompt
     can :search, Character
     can :generate_search, Prompt
+    can :generate_search, Character
     can :autocomplete, Tag
 
     unless user.active_for_authentication?
