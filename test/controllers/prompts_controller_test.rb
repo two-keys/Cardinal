@@ -121,6 +121,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
     assert_difference('Prompt.count') do
       post prompts_url, params: {
+        characters: ['-1'],
         prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
         tags: {
           misc: {
@@ -137,6 +138,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
     assert_difference('Prompt.count') do
       post prompts_url, params: {
+        characters: ['-1'],
         prompt: { ooc: 'Some unique ooc text' },
         tags: {
           misc: {
@@ -153,6 +155,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
     assert_difference('Prompt.count') do
       post prompts_url, params: {
+        characters: ['-1'],
         prompt: { starter: 'Some unique starter text' },
         tags: {
           misc: {
@@ -168,6 +171,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should not create prompt with really long tag' do
     sign_in(@user)
     post prompts_url, params: {
+      characters: ['-1'],
       prompt: { starter: 'Some unique starter text' },
       tags: {
         misc: {
@@ -183,6 +187,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
     assert_difference('Prompt.count') do
       post prompts_url, params: {
+        characters: ['-1'],
         prompt: {
           starter: 'Some unique starter text',
           default_slots: 2
@@ -201,6 +206,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should not create prompt with just one slot' do
     sign_in(@user)
     post prompts_url, params: {
+      characters: ['-1'],
       prompt: {
         starter: 'Some unique starter text',
         default_slots: 1
