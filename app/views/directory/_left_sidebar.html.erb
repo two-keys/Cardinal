@@ -7,43 +7,6 @@
             </ul>
             <hr />
             <%= yield %>
-            <div class="directory-actions">
-                <% if action_name == 'index' %>
-                    <div data-controller="tagactions">
-                    <div data-controller="polaritytype">
-                        <%= select 'tag', 'polarity', CardinalSettings::Tags.polarities, {}, data: { 
-                        "tagactions-target": "polarity",
-                        "polaritytype-target": "polarity", action: "polaritytype#changePolarity"
-                        } %>
-                        <%= select 'tag', 'type', CardinalSettings::Tags.types.keys, {}, data: {
-                        "tagactions-target": "tagType",
-                        "polaritytype-target": "tagType"
-                        } %>
-                    </div>
-                    <input data-tagactions-target="name" type="text">
-                    <button data-action="click->tagactions#add">Add</button>
-                    <button data-action="click->tagactions#exclude">Exclude</button>
-                    </div>
-                    <br />
-                    <%= link_to 'Update timestamp', params.permit(:before, :tags, :nottags, :page, :managed, :myprompts).merge(before: 1.second.from_now) %>
-                    <br />
-                    <%= 
-                    link_to 'Toggle Managed', params.permit(
-                        :before, :tags, :nottags, :page, :myprompts
-                    ).merge(
-                        managed: params[:managed] == 'false' ? 'true' : 'false'
-                    )
-                    %>
-                    <br />
-                    <%= 
-                        link_to 'Toggle My Prompts', params.permit(
-                        :before, :tags, :nottags, :page, :managed
-                        ).merge(
-                        myprompts: params[:myprompts] == 'false' ? 'true' : 'false'
-                        )
-                    %>
-                <% end %>
-            </div>
         </div>
     </div>
 <% end %>

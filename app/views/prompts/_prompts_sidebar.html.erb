@@ -1,1 +1,4 @@
 <%= link_to '(Advanced Search)', prompts_search_path %>
+<% if local_assigns[:with_search] %>
+    <%= render partial: 'directory/search_actions' %>
+<% end %>
