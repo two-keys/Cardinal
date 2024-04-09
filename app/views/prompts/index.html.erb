@@ -1,7 +1,7 @@
 <h1>Prompts</h1>
 
-<% content_for :left_sidebar do %>
-  <%= render partial: 'prompts/prompts_sidebar' %>
-<% end %>
+<%= render partial: 'prompts/prompts_sidebar', layout: 'directory/left_sidebar',
+    locals: { with_search: true }
+%>
 
 <%= render partial: 'prompts/prompts', locals: {prompts: @prompts} %>

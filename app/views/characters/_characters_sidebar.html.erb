@@ -1,5 +1,4 @@
-<div class="directory_left_sidebar">
-  <div class="card primary">
-    
-  </div>
-</div>
+<%= link_to '(Advanced Search)', characters_search_path %>
+<% if local_assigns[:with_search] %>
+    <%= render partial: 'directory/search_actions' %>
+<% end %>

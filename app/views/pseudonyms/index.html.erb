@@ -1,7 +1,5 @@
-<h1>Prompts</h1>
+<h1>Pseudonyms</h1>
 
-<% content_for :left_sidebar do %>
-  <%= render partial: 'pseudonyms/pseudonyms_sidebar' %>
-<% end %>
+<%= render partial: 'pseudonyms/pseudonyms_sidebar', layout: 'directory/left_sidebar' %>
 
 <%= render partial: 'pseudonyms/pseudonyms', locals: {pseudonyms: @pseudonyms} %>

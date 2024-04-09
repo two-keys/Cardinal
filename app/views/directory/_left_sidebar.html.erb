@@ -1,0 +1,15 @@
+<% content_for :left_sidebar do %>
+    <div class="directory_left_sidebar">
+        <div class="card primary">
+            <ul id='directory_links'>
+                <li><%= link_to 'Prompts', prompts_path %></li>
+                <li><%= link_to 'Characters', characters_path %></li>
+                <li><%= link_to 'Filters', filters_path %></li>
+                <li><%= link_to 'Pseudonyms', pseudonyms_path %></li>
+                <li><%= link_to 'Tickets', tickets_path %></li>
+            </ul>
+            <hr />
+            <%= yield %>
+        </div>
+    </div>
+<% end %>
