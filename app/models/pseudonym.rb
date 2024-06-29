@@ -6,6 +6,9 @@ class Pseudonym < ApplicationRecord
 
   belongs_to :user
 
+  has_many :characters, dependent: :nullify
+  has_many :chat_users, dependent: :nullify
+  has_many :prompts, dependent: :nullify
   # has_many :object_tags, as: :object, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true

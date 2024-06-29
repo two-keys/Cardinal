@@ -30,6 +30,7 @@ class Prompt < ApplicationRecord
   validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validate :can_bump, on: :update
   validate :can_spend, on: %i[create update]
+  validate :authorization, on: %i[create update]
 
   after_create :spend_ticket
 
@@ -125,5 +126,11 @@ class Prompt < ApplicationRecord
 
   def spend_ticket
     Ticket.spend(self)
+  end
+
+  def authorization
+    return unless !pseudonym.nil? && pseudonym.user.id != user.id
+
+    errors.add(:pseudonym, 'You are not authorized to do that.')
   end
 end

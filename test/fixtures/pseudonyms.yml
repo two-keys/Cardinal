@@ -14,6 +14,11 @@ user:
   name: user
   status: posted
 
+user_second:
+  user: user
+  name: user_sec
+  status: posted
+
 user_two:
   user: user_two
   name: user2

@@ -14,7 +14,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @character = characters(:one)
     @character2 = characters(:two)
 
-    @user_pseud2 = pseudonyms(:posted)
+    @user_pseud2 = pseudonyms(:user_second)
     @user2_pseud = pseudonyms(:user_two)
 
     @user = users(:user)
@@ -223,6 +223,20 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :unprocessable_entity
+  end
+
+  test 'should update pseudonym on a prompt' do
+    sign_in(@user)
+    assert_changes('@prompt.reload.pseudonym.name') do
+      patch prompt_url(@prompt), params: { prompt: { pseudonym_id: @user_pseud2.id } }
+    end
+  end
+
+  test 'should not attach a pseudonym you dont own' do
+    sign_in(@user)
+    assert_no_changes('@prompt.reload.pseudonym.name') do
+      patch prompt_url(@prompt), params: { prompt: { pseudonym_id: @user2_pseud.id } }
+    end
   end
 
   test 'should show own posted prompt' do

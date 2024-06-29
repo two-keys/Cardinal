@@ -4,6 +4,7 @@ one:
   starter: This is a starter of at least ten characters
   ooc: This is an ooc of at least ten characters
   user: user
+  pseudonym: user
   created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
   bumped_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
 
