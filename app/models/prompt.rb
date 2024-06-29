@@ -8,6 +8,7 @@ class Prompt < ApplicationRecord
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
+  belongs_to :pseudonym, optional: true
 
   has_many :object_tags, as: :object, dependent: :destroy
   has_many :object_characters, as: :object, dependent: :destroy

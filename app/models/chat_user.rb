@@ -2,6 +2,7 @@
 
 class ChatUser < ApplicationRecord
   belongs_to :user
+  belongs_to :pseudonym, optional: true
   belongs_to :chat
 
   enum status: {
