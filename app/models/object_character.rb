@@ -26,7 +26,7 @@ class ObjectCharacter < ApplicationRecord
   private
 
   def authorization
-    return if object.user.id == character.user.id
+    return unless object.user.id != character.user.id
 
     errors.add(:user, "You don't own this #{object_type} or Character.")
   end
