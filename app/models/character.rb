@@ -24,6 +24,7 @@ class Character < ApplicationRecord
   validates_with CharacterContentValidator
   validates :status, inclusion: { in: Character.statuses }
   validate :can_spend, on: %i[create update]
+  validate :authorization, on: %i[create update]
 
   after_create :spend_ticket
 
@@ -71,5 +72,11 @@ class Character < ApplicationRecord
 
   def spend_ticket
     Ticket.spend(self)
+  end
+
+  def authorization
+    return unless !pseudonym.nil? && pseudonym.user.id != user.id
+
+    errors.add(:pseudonym, 'You are not authorized to do that.')
   end
 end

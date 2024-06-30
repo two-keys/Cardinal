@@ -11,6 +11,9 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     @posted = characters(:posted)
     @draft = characters(:draft)
 
+    @user_pseud2 = pseudonyms(:user_second)
+    @user2_pseud = pseudonyms(:user_two)
+
     @user = users(:user)
     @user2 = users(:user_two)
     @john = users(:john)
@@ -260,6 +263,26 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
       character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
     }
     assert_redirected_to character_url(@character)
+  end
+
+  test 'should update character to have pseudonym' do
+    sign_in(@user)
+
+    assert_changes('@character.reload.pseudonym.name', 1) do
+      patch character_url(@character), params: {
+        character: { pseudonym_id: @user_pseud2.id }
+      }
+    end
+  end
+
+  test 'should not update character to have someone elses pseudonym' do
+    sign_in(@user)
+
+    assert_no_changes('@character.reload.pseudonym.id') do
+      patch character_url(@character), params: {
+        character: { pseudonym_id: @user2_pseud.id }
+      }
+    end
   end
 
   test 'should destroy character' do
