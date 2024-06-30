@@ -12,6 +12,10 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @draft = prompts(:draft)
 
     @character = characters(:one)
+    @character2 = characters(:two)
+
+    @user_pseud2 = pseudonyms(:user_second)
+    @user2_pseud = pseudonyms(:user_two)
 
     @user = users(:user)
     @user2 = users(:user_two)
@@ -221,6 +225,20 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'should update pseudonym on a prompt' do
+    sign_in(@user)
+    assert_changes('@prompt.reload.pseudonym.name') do
+      patch prompt_url(@prompt), params: { prompt: { pseudonym_id: @user_pseud2.id } }
+    end
+  end
+
+  test 'should not attach a pseudonym you dont own' do
+    sign_in(@user)
+    assert_no_changes('@prompt.reload.pseudonym.name') do
+      patch prompt_url(@prompt), params: { prompt: { pseudonym_id: @user2_pseud.id } }
+    end
+  end
+
   test 'should show own posted prompt' do
     sign_in(@john)
     get prompt_url(@posted)
@@ -315,6 +333,31 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to prompt_url(@prompt_without_tags)
+  end
+
+  test 'should not update prompt to have someone elses character' do
+    sign_in(@user)
+
+    assert_raises ActiveRecord::RecordNotSaved do
+      patch prompt_tags_url(@prompt_without_tags), params: {
+        characters: [@character2.id.to_s],
+        tags: {
+          playing: {
+            fandom: ['Some Fandom?'], # 1
+            character: ['A Guy'], # 2
+            characteristic: ['Short'] # 3
+          },
+          seeking: {
+            fandom: ['Some Other Fandom?'], # 4
+            character: ['Another guy'], # 5
+            characteristic: ['Tall'] # 6
+          },
+          misc: {
+            misc: ['This is a misc tag'] # 7
+          }
+        }
+      }
+    end
   end
 
   test 'updating a prompt with tags should remove old tags' do

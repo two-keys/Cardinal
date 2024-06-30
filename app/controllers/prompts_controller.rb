@@ -147,7 +147,7 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots, :managed)
+    params.require(:prompt).permit(:starter, :ooc, :status, :default_slots, :managed, :pseudonym_id)
   end
 
   def search_params

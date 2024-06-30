@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true
 
+  has_many :pseudonyms, dependent: :delete_all
   has_many :chat_users, dependent: :delete_all
   has_many :chats, through: :chat_users
   has_many :characters, dependent: :delete_all

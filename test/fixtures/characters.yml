@@ -5,6 +5,7 @@ one:
   description: This is a character profile
   status: 1
   user: user
+  pseudonym: user
   created_at: Tue, 01 Jan 2022 06:06:11.543035000 UTC +00:00
 
 two:

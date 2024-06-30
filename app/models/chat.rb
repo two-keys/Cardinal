@@ -54,11 +54,7 @@ class Chat < ApplicationRecord
   end
 
   def all_users_display_data
-    users_data = []
-    users.each do |user|
-      users_data << { icon: chat_users.find_by(user_id: user.id).icon, id: user.id }
-    end
-    users_data
+    users.map { |user| { icon: chat_users.find_by(user_id: user.id).icon, id: user.id } }
   end
 
   def message_sent

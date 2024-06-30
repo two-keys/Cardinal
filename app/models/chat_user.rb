@@ -2,6 +2,7 @@
 
 class ChatUser < ApplicationRecord
   belongs_to :user
+  belongs_to :pseudonym, optional: true
   belongs_to :chat
 
   enum status: {
@@ -22,6 +23,7 @@ class ChatUser < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
+  validate :authorization, on: %i[create update]
 
   ## This is kind of forced to have high complexity, there's a lot that
   ## goes into determining the user's notification status.
@@ -56,5 +58,11 @@ class ChatUser < ApplicationRecord
     blacklisted_emoji = CardinalSettings::Icons.icon_blacklist
     available_emoji = all_emoji - blacklisted_emoji
     self.icon = available_emoji.sample
+  end
+
+  def authorization
+    return unless !pseudonym.nil? && pseudonym.user.id != user.id
+
+    errors.add(:pseudonym, 'You are not authorized to do that.')
   end
 end

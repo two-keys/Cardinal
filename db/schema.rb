@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_29_182248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -58,6 +58,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.bigint "pseudonym_id"
+    t.index ["pseudonym_id"], name: "index_characters_on_pseudonym_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
@@ -69,7 +71,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
     t.integer "status", default: 0
     t.string "icon"
     t.integer "role", default: 0
+    t.bigint "pseudonym_id"
     t.index ["chat_id"], name: "index_chat_users_on_chat_id"
+    t.index ["pseudonym_id"], name: "index_chat_users_on_pseudonym_id"
     t.index ["role"], name: "index_chat_users_on_role"
     t.index ["user_id", "chat_id"], name: "index_chat_users_on_user_id_and_chat_id", unique: true
     t.index ["user_id"], name: "index_chat_users_on_user_id"
@@ -147,8 +151,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
     t.datetime "bumped_at", null: false
     t.integer "default_slots", default: 2, null: false
     t.boolean "managed", default: false, null: false
+    t.bigint "pseudonym_id"
     t.index ["default_slots"], name: "index_prompts_on_default_slots"
     t.index ["managed"], name: "index_prompts_on_managed"
+    t.index ["pseudonym_id"], name: "index_prompts_on_pseudonym_id"
     t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 
@@ -212,7 +218,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "characters", "pseudonyms"
   add_foreign_key "characters", "users"
+  add_foreign_key "chat_users", "pseudonyms"
   add_foreign_key "chats", "prompts"
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
@@ -220,6 +228,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_014121) do
   add_foreign_key "filters", "users"
   add_foreign_key "object_characters", "characters"
   add_foreign_key "object_tags", "tags"
+  add_foreign_key "prompts", "pseudonyms"
   add_foreign_key "pseudonyms", "users"
   add_foreign_key "tags", "tags", column: "synonym_id"
   add_foreign_key "tickets", "users"
