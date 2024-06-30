@@ -10,7 +10,12 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
 
-    @chat.chat_users << ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin]) # prompt owner
+    @user_pseud = pseudonyms(:user)
+    @user_pseud2 = pseudonyms(:user_second)
+    @user2_pseud = pseudonyms(:user_two)
+
+    @chat_user = ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin], pseudonym: @user_pseud) # owner
+    @chat.chat_users << @chat_user
     @chat.chat_users << ChatUser.new(user: @user2)
   end
 
@@ -43,8 +48,26 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update chat' do
     sign_in(@user)
-    patch chat_path(@chat.uuid), params: { chat: { title: 'test', description: 'test' } }
+    patch chat_path(@chat.uuid), params: { chat: { title: 'test', description: 'test', pseudonym_id: nil } }
     assert_redirected_to chat_path(@chat.uuid)
+  end
+
+  test 'should update chat to have pseudonym' do
+    sign_in(@user)
+    assert_changes('@chat_user.reload.pseudonym.name') do
+      patch chat_path(@chat.uuid), params: {
+        chat: { title: 'test', description: 'test', pseudonym_id: @user_pseud2.id }
+      }
+    end
+  end
+
+  test 'should not update chat to have someone elses pseudonym' do
+    sign_in(@user)
+    assert_no_changes('@chat_user.reload.pseudonym.name') do
+      patch chat_path(@chat.uuid), params: {
+        chat: { title: 'test', description: 'test', pseudonym_id: @user2_pseud.id }
+      }
+    end
   end
 
   test 'should remove from chat' do

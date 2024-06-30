@@ -56,7 +56,11 @@ class ChatsController < ApplicationController
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
     respond_to do |format|
-      if @chat_info.update({ title: params[:chat][:title], description: params[:chat][:description] })
+      if @chat_info.update({
+                             title: params[:chat][:title],
+                             description: params[:chat][:description],
+                             pseudonym_id: params[:chat][:pseudonym_id]
+                           })
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully updated.' }
         format.json { render :show, status: :ok, location: @chat.uuid }
       else
@@ -123,7 +127,7 @@ class ChatsController < ApplicationController
   end
 
   def edit_chat_params
-    params.require(:chat).permit(:title, :description)
+    params.require(:chat).permit(:title, :description, :pseudonym_id)
   end
 
   def auth_redirect
