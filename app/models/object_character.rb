@@ -11,16 +11,10 @@ class ObjectCharacter < ApplicationRecord
   # since we aren't setting Objectcharacter.prompt here
   # @return [Array<ObjectCharacter>]
   def self.from_character_params(character_params)
-    new_object_characters = []
-
     characters = character_params.map { |c_id| Character.find(c_id) }
 
-    characters.each do |temp_character|
-      new_object_characters << ObjectCharacter.new(character: temp_character)
-    end
-
     # Let @prompt.save handle the bulk of processing/validating characters
-    new_object_characters
+    characters.map { |temp_character| ObjectCharacter.new(character: temp_character) }
   end
 
   private
