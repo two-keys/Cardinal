@@ -1,8 +1,6 @@
 <div id="<%= dom_id ticket %>" class="card primary prompt mini">
   <div class="ticket_info">
-    <% if can? :view_users, ticket %>
-      <%= link_to "PROFILE", edit_admin_user_path(ticket.user) %> |
-    <% end %>
+    <%= render partial: 'directory/metainfo', locals: { model: ticket} %>
   </div>
 
   <% if ticket.present? %>

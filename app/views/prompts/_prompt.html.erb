@@ -1,19 +1,6 @@
 <div id="<%= dom_id prompt %>" class="card primary prompt">
   <div class="prompt_info">
-    <% if can? :view_users, prompt %>
-      <%= link_to "PROFILE", edit_admin_user_path(prompt.user) %> |
-    <% end %>
-    <span class="type_notif <% prompt.status %>">
-      <strong>
-        POSTED BY <% if prompt.pseudonym.nil? %>anonymous<% else %><%= prompt.pseudonym.name%><% end %>
-      </strong>
-      <% if prompt.draft? %>
-        | DRAFT
-      <% end %>
-      <% if prompt.locked? %>
-        | LOCKED
-      <% end %>
-    </span>
+    <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
     <div class="tags">
       <%= render partial: 'prompts/tags', locals: { prompt: prompt} %>
     </div>

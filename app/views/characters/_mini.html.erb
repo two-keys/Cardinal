@@ -1,20 +1,6 @@
 <div id="<%= dom_id character %>" class="card primary character mini">
   <div class="character_info">
-    <% if can? :view_users, character %>
-      <%= link_to "PROFILE", edit_admin_user_path(character.user) %> |
-    <% end %>
-    <span class="type_notif <% character.status %>">
-      <strong>
-        POSTED BY <% if character.pseudonym.nil? %>anonymous<% else %><%= character.pseudonym.name%><% end %>
-      </strong>
-      <% if character.draft? %>
-        | DRAFT
-      <% end %>
-      <% if character.locked? %>
-        | LOCKED
-      <% end %>
-    </span>
-
+    <%= render partial: 'directory/metainfo', locals: { model: character} %>
     <div>
       <h2><%= character.name %></h2>
     </div>

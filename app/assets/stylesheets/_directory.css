@@ -3,3 +3,20 @@ ul#directory_links {
     margin: 0;
     padding: 0;
 }
+
+ul.metainfo {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    right: 0px;
+}
+
+ul.metainfo li {
+    font-weight: bold;
+    display: inline;
+}
+
+ul.metainfo li:nth-child(n+2)::before {
+    content: '|';
+}

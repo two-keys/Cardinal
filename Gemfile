@@ -85,6 +85,9 @@ gem 'debug', platforms: %i[mri mingw x64_mingw]
 # Stripe
 gem 'stripe'
 
+# See https://github.com/minitest/minitest/issues/1007
+gem 'minitest', '!= 5.25.0'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
 

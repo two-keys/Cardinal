@@ -1,0 +1,24 @@
+<ul class="metainfo">
+    <% if can? :view_users, model %>
+        <li>
+            <%= link_to "OWNER", edit_admin_user_path(model.user) %>
+        </li>
+    <% end %>
+    <% if model.class.method_defined?(:pseudonym) %>
+    <li>
+        <strong>
+        POSTED AS 
+            <% if !model.pseudonym.nil? && can?(:read, model.pseudonym) %>
+                <%= model.pseudonym.name%>
+            <% else  %>
+                anonymous
+            <% end %>
+        </strong>
+    </li>
+    <% end %>
+    <% if model.class.method_defined?(:status) %>
+    <li>
+        <%= model.status.upcase %>
+    </li>
+    <% end %>
+</ul>
