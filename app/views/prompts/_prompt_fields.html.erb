@@ -21,6 +21,11 @@
 </div>
 
 <div>
+  <%= form.label :pseudonym, style: "display: block" %>
+  <%= select_tag('prompt[pseudonym_id]', options_for_select(pseudonym_options, prompt.pseudonym_id)) %>
+</div>
+
+<div>
   <%= form.label :status, style: "display: block" %>
   <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
   <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>

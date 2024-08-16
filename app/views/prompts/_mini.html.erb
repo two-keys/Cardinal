@@ -4,11 +4,14 @@
       <%= link_to "PROFILE", edit_admin_user_path(prompt.user) %> |
     <% end %>
     <span class="type_notif <% prompt.status %>">
+      <strong>
+        POSTED BY <% if prompt.pseudonym.nil? %>anonymous<% else %><%= prompt.pseudonym.name%><% end %>
+      </strong>
       <% if prompt.draft? %>
-        DRAFT
+        | DRAFT
       <% end %>
       <% if prompt.locked? %>
-        LOCKED
+        | LOCKED
       <% end %>
     </span>
     <div class="tags">

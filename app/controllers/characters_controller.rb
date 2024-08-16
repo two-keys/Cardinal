@@ -12,6 +12,7 @@ class CharactersController < ApplicationController
   authorize_resource
 
   include SearchableController
+  include PseudableController
 
   # GET /characters
   def index

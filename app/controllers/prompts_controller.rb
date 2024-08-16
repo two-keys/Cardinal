@@ -13,6 +13,7 @@ class PromptsController < ApplicationController
   authorize_resource
 
   include SearchableController
+  include PseudableController
   include CharacterizedController
 
   # GET /prompts

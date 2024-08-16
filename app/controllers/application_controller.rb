@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     false
   end
 
+  def pseudable?
+    false
+  end
+
   def characterized?
     false
   end

@@ -1,5 +1,5 @@
 <%= form_with(model: character, id: 'character_form') do |form| %>
-  <%= render partial: 'characters/character_fields', locals: { character: character, form: form } %>
+  <%= render partial: 'characters/character_fields', locals: { character: character, form: form, pseudonym_options: } %>
   <% if local_assigns[:with_tags] %>
     <%= render partial: 'characters/form_tags/tag_fields', locals: { character: character} %>
   <% end %>
