@@ -6,7 +6,7 @@ class ConnectCode < ApplicationRecord
   belongs_to :user
   belongs_to :chat
 
-  enum status: {
+  enum :status, {
     unlisted: 0,
     listed: 1
   }

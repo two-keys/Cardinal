@@ -17,7 +17,7 @@ class Prompt < ApplicationRecord
 
   has_many :chats, dependent: :nullify
 
-  enum status: {
+  enum :status, {
     draft: 0,
     locked: 1,
     posted: 2

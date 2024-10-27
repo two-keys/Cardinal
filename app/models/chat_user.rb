@@ -5,7 +5,7 @@ class ChatUser < ApplicationRecord
   belongs_to :pseudonym, optional: true
   belongs_to :chat
 
-  enum status: {
+  enum :status, {
     ongoing: 0,
     unanswered: 1,
     unread: 2,
@@ -13,7 +13,7 @@ class ChatUser < ApplicationRecord
     ended_viewed: 4
   }
 
-  enum role: {
+  enum :role, {
     chat_user: 0,
     chat_moderator: 1,
     chat_admin: 2

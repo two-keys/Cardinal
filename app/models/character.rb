@@ -15,7 +15,7 @@ class Character < ApplicationRecord
   has_many :object_characters, dependent: :destroy
   has_many :objects, through: :object_characters
 
-  enum status: {
+  enum :status, {
     draft: 0,
     locked: 1,
     posted: 2

@@ -13,7 +13,7 @@ class Pseudonym < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  enum status: {
+  enum :status, {
     draft: 0,
     locked: 1,
     posted: 2

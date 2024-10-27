@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/HashSyntax
 class Ability
   include CanCan::Ability
 
@@ -130,4 +129,3 @@ class Ability
   end
   # rubocop:enable Metrics/CyclomaticComplexity
 end
-# rubocop:enable Style/HashSyntax
