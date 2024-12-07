@@ -2,6 +2,29 @@
 
 <div class="card">
   <%= render "form", user: @user %>
+  <% if @user.handled_reports.any? %>
+    <p>Reports this admin has resolved:</p>
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy_handled_reports} %>
+    <ul>
+      <% @handled_reports.each do |report| %>
+        <li><%= link_to "Report #{report.id}", [:admin, report] %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <p>Content this user has Reported:</p>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_sent_reports} %>
+  <ul>
+    <% @sent_reports.each do |report| %>
+      <li><%= render report, variant: "mini" %></li>
+    <% end %>
+  </ul>
+  <p>Content this user has been Reported for:</p>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_received_reports} %>
+  <ul>
+    <% @received_reports.each do |report| %>
+      <li><%= render report, variant: "mini" %></li>
+    <% end %>
+  </ul>
 </div>
 
 <br>

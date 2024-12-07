@@ -10,6 +10,31 @@ user:
   chat: chat_one
   icon: 🕕
 
+user_two:
+  content: 'Lorem Ipsum 2 Electric Boogaloo.'
+  user: user_two
+  chat: chat_one
+  icon: ❤️
+
+user_three:
+  content: 'Lorem Ipsum 3: The Re-Return of the Lorem Ipsum.'
+  user: user_three
+  chat: chat_two
+  icon: 🕕
+
+reported_message:
+  content: 'Lorem Ipsum ...... '
+  user: user_two
+  chat: chat_one
+  icon: ❤️
+
+reported_message_two:
+  content: 'Lorem Ipsum 2 Electric Boogaloo.'
+  user: user_two
+  chat: chat_one
+  icon: ❤️
+  
+
 system:
   content: 'Lorem Ipsum 2 Electric Boogaloo.'
   chat: chat_one

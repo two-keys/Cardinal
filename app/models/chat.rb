@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Chat < ApplicationRecord
+  include Reportable
   require 'securerandom'
 
   belongs_to :prompt, optional: true

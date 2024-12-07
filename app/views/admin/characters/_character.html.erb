@@ -1,6 +1,3 @@
-<% if defined?(locals) && locals[:reporting] %>
-  <% character = locals[:reportable] %>
-<% end %>
 <div id="<%= dom_id character %>" class="card primary character">
   <div class="character_info">
     <%= render partial: 'directory/metainfo', locals: { model: character} %>
@@ -18,10 +15,6 @@
     <div class="ooc">
       <%= character.mark_description %>
     </div>
-  <% end %>
-
-  <% if character.user != current_user %>
-    <%= link_to "Report", new_report_path(reportable_id: character.id, reportable_type: character.class.name), class: "report_link" %>
   <% end %>
 
   <% if can? :edit, character %>

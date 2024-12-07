@@ -18,6 +18,32 @@
   border: 2px solid var(--card-textarea-bg-color);
 }
 
+#messages_container > * > .message.reported {
+  border: 2px solid var(--ended-color);
+}
+
+.admin_chat.mini .user_icon {
+    position: initial;
+    float: initial;
+    left: initial;
+    top: initial;
+    border-radius: initial;
+    padding: initial;
+    padding-right: initial;
+    margin: initial;
+    background-color: initial;
+    font-size: initial;
+    text-align: right;
+    border-right: initial;
+    max-width: initial;
+    min-width: initial;
+}
+
+.admin_chat.mini .type_notif {
+  position: initial;
+  right: initial;
+}
+
 .type_notif {
   position: relative;
   right: 0px;

@@ -1,3 +1,6 @@
+<% if defined?(locals) && locals[:reporting] %>
+  <% prompt = locals[:reportable] %>
+<% end %>
 <div id="<%= dom_id prompt %>" class="card primary prompt">
   <div class="prompt_info">
     <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
@@ -33,6 +36,7 @@
   <% end %>
 
   <ul class="prompt_actions">
+    <li><%= link_to "Report", new_report_path(reportable_id: prompt.id, reportable_type: prompt.class.name), class: "report_link" %></li>
     <% if can?(:edit, prompt) && prompt.bumpable? %>
       <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
     <% end %>
@@ -41,17 +45,19 @@
     <% end %>
   </ul>
 </div>
-<% @chats.each do |chat| %>
-    <% connect_code = chat.connect_code %>
-    <div class="card secondary">
-      <%= link_to 'No title set', chat_path(chat.uuid) %>
-      <hr />
-      <p><strong>CONNECT CODE</strong> <%= connect_code.code %></p>
-      <p><strong>OPEN SLOTS <u><%= connect_code.remaining_uses %></u></strong></p>
-      <% if false && connect_code.description.present? %>
-        <%= connect_code.description %>
-      <% else %>
-        <i>No description set.</i>
-      <% end %>
-    </div>
-  <% end %>
+<% if defined?(locals) && !locals[:reporting] %>
+  <% @chats.each do |chat| %>
+      <% connect_code = chat.connect_code %>
+      <div class="card secondary">
+        <%= link_to 'No title set', chat_path(chat.uuid) %>
+        <hr />
+        <p><strong>CONNECT CODE</strong> <%= connect_code.code %></p>
+        <p><strong>OPEN SLOTS <u><%= connect_code.remaining_uses %></u></strong></p>
+        <% if false && connect_code.description.present? %>
+          <%= connect_code.description %>
+        <% else %>
+          <i>No description set.</i>
+        <% end %>
+      </div>
+    <% end %>
+<% end %>

@@ -1,6 +1,6 @@
 ---
   type: default # 'default' or 'dynamic'
-  version: 1.3.3 # change every time this file is updated
+  version: 1.3.4 # change every time this file is updated
   icons:
     icon_blacklist: ["🐦"] 
     system_icon: "🐦"
@@ -126,6 +126,10 @@
           - Be kind. Tier 1.
           - Be mindful. Tier 1.
           - Be patient. Tier 1.
+        titles:
+          - Kindness
+          - Mindfulness
+          - Patience
       formatting:
         markdown: |+
           **Last updated: 1/5/2022**

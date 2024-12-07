@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class Ability
   include CanCan::Ability
 
-  ## This is kind of forced to have high complexity, there's a lot that
+  ## This is kind of forced to have high complexity
+  ## and high class length, there's a lot that
   ## goes into determining authorization
   # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def initialize(user)
     # Things which require no login
 
@@ -28,6 +31,15 @@ class Ability
     can :create, Pseudonym
     can :create, Prompt
     can :create, Character
+    can :create, Report do |report|
+      user_valid = report.reporter = user
+      reportee_valid = !report.reportee.nil?
+
+      # Special case for Message
+      # Prevent reporting in chats you are not in
+      user_valid = user.chats.include?(report.reportable.chat) if report.reportable_type == 'Message'
+      user_valid && reportee_valid
+    end
 
     ## Reading
     can :read, Message do |message|
@@ -48,6 +60,7 @@ class Ability
     can :read, Tag, enabled: true
     can :read, Ticket, user: user
     can :read, User, user: user
+    can :read, Report, reporter: user
 
     ## Updating
     can :update, Message do |message|
@@ -128,4 +141,6 @@ class Ability
     can :view_users, :all
   end
   # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 end
+# rubocop:enable Metrics/ClassLength

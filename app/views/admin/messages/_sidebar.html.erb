@@ -1,0 +1,25 @@
+<%= turbo_frame_tag "chat_#{locals[:chat_id]}_user_#{locals[:user].id}_userlist" do %>
+    <div id="<%= "chat_#{locals[:chat_id]}_users"%>" class="chat_left_sidebar">
+        <div class="card primary">
+            <ul id="sidebar_users">
+                <!-- Special case: Append fake Cardinal user  -->
+                <% locals[:users_data].append({id: -1, icon: "🐦"}) %>
+                <% for user_data in locals[:users_data] %>
+                    <% name = Emoji.find_by_unicode(user_data[:icon]).name.capitalize().gsub("_", " ") %>
+                    <% is_loc_user =  locals[:user].id == user_data[:id] || user_data[:id] == -1 %>
+                    <li>
+                        <div class="sidebar_user_icon">
+                            <span><%= user_data[:icon] %></span>
+                        </div>
+                        <%= name  + (is_loc_user ? " (you)" : "") %>
+                        <div class="chat-admin-actions">
+                            <% if !is_loc_user && can?(:chat_kick, @chat) %>
+                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, data: {turbo_frame: '_top' }  %>
+                            <% end %>
+                        </div>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>

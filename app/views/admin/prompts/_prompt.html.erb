@@ -1,0 +1,34 @@
+<div id="<%= dom_id prompt %>" class="card primary prompt">
+  <div class="prompt_info">
+    <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
+    <div class="tags">
+      <%= render partial: 'prompts/tags', locals: { prompt: prompt} %>
+    </div>
+    <span class="slots">
+      <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
+    </span>
+    <span class="managed">
+      <strong><% unless prompt.managed? %>UN-<% end %>MANAGED</strong>
+    </span>
+  </div>
+
+  <% if prompt.ooc.present? %>
+    <div class="ooc">
+      <%= prompt.mark_ooc %>
+    </div>
+  <% end %>
+
+  <% if prompt.ooc.present? && prompt.starter.present? %>
+    <hr />
+  <% end %>
+
+  <% if prompt.starter.present? %>
+    <div>
+      <%= prompt.mark_starter %>
+    </div>
+  <% end %>
+
+  <% if can? :edit, prompt %>
+    <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
+  <% end %>
+</div>

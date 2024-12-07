@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+reported_message:
+  reporter: user
+  reportee: user_two
+  rules:
+    - 1
+  reportable: reported_message
+  reportable_type: Message

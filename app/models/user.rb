@@ -16,7 +16,12 @@ class User < ApplicationRecord
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy
   has_many :tickets, dependent: :delete_all
-
+  has_many :sent_reports, class_name: 'Report', foreign_key: 'reporter_id', dependent: :delete_all,
+                          inverse_of: 'reporter'
+  has_many :received_reports, class_name: 'Report', foreign_key: 'reportee_id', dependent: :delete_all,
+                              inverse_of: 'reportee'
+  has_many :handled_reports, class_name: 'Report', foreign_key: 'handled_by_id', dependent: :delete_all,
+                             inverse_of: 'handled_by'
   delegate :can?, :cannot?, to: :ability
 
   def after_database_authentication

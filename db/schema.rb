@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_29_182248) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_06_234656) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -167,6 +167,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_182248) do
     t.index ["user_id"], name: "index_pseudonyms_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.boolean "handled", default: false
+    t.integer "rules", default: [], null: false, array: true
+    t.bigint "reporter_id", null: false
+    t.bigint "reportee_id", null: false
+    t.string "reportable_type", null: false
+    t.bigint "reportable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "handled_by_id"
+    t.index ["handled_by_id"], name: "index_reports_on_handled_by_id"
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
+    t.index ["reportee_id"], name: "index_reports_on_reportee_id"
+    t.index ["reporter_id"], name: "index_reports_on_reporter_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", limit: 254, null: false
     t.string "tag_type", limit: 25, null: false
@@ -208,9 +224,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_182248) do
     t.string "username", default: "", null: false
     t.boolean "admin", default: false
     t.boolean "verified", default: false
-    t.datetime "unban_at", precision: nil
+    t.datetime "unban_at"
     t.string "ban_reason"
-    t.datetime "delete_at", precision: nil
+    t.datetime "delete_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -230,6 +246,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_182248) do
   add_foreign_key "object_tags", "tags"
   add_foreign_key "prompts", "pseudonyms"
   add_foreign_key "pseudonyms", "users"
+  add_foreign_key "reports", "users", column: "handled_by_id"
+  add_foreign_key "reports", "users", column: "reportee_id"
+  add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "tags", "tags", column: "synonym_id"
   add_foreign_key "tickets", "users"
 end

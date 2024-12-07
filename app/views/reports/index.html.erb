@@ -1,0 +1,22 @@
+<div class="card primary">
+    <p style="color: green"><%= notice %></p>
+
+    <h1>Reports</h1>
+    <%= link_to "Unhandled", reports_path %> | <%= link_to "Handled", reports_path(handled: true) %>
+
+    <div id="reports">
+    <%== pagy_nav @pagy %>
+    <% @reports.each do |report| %>
+        <div>
+            <span>Type: <%= report.reportable_type %></span>
+            <br />
+            <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
+        </div>
+        <p>
+            <%= link_to "Show this report", report %>
+        </p>
+    <% end %>
+    <%== pagy_nav @pagy %>
+    </div>
+
+</div>

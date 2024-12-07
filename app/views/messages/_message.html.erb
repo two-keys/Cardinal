@@ -1,3 +1,6 @@
+<% if locals[:reporting] %>
+  <% locals[:message] = locals[:reportable] %>
+<% end %>
 <%= turbo_frame_tag locals[:message] do %>
   <% if !locals[:message].ooc %>
     <div class="message">
@@ -16,6 +19,12 @@
       <%= locals[:message].markdown %>
       <span class="message_created_at">
         <!-- Display the date and time of the message -->
+         <% if !locals[:reporting] %>
+          <% is_reportable = locals[:message].type != 'system' && locals[:message].user != current_user %>
+          <% if is_reportable %>
+            <%= link_to "⚠️", new_report_path(reportable_id: locals[:message].id, reportable_type: locals[:message].class.name), data: { turbo: false }, class: "report_link" %>
+          <% end %>
+        <% end %>
         Sent <%= locals[:message].created_at.strftime("%Y-%m-%d %k:%M:%S") %>
       </span>
       <% if can? :edit, locals[:message] %>

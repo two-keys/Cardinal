@@ -131,6 +131,14 @@ module CardinalSettings
       entries = get_page(page)['entries'] if page.key?('entries')
       entries
     end
+
+    def self.get_page_titles(key)
+      page = get_page(key)
+
+      titles = []
+      titles = get_page(page)['titles'] if page.key?('titles')
+      titles
+    end
   end
 end
 

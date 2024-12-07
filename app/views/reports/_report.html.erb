@@ -1,0 +1,22 @@
+<div class="card primary">
+    <b>This report has <%= @report.handled ? "been handled" : "not been handled" %></b>
+    <br />
+    <b>Reported Rules: </b><%= @report.rules.to_sentence %>
+</div>
+<% if @report.reportable.present? %>
+    <div id="<%= dom_id @report.reportable %>" class="report">
+        <!-- Render report partial for this reportable as defined in that view's folder -->
+        <% if can? :read, @report.reportable %>
+            <% if @report.reportable_type == "Message" %>
+                <!-- Create a wrapper -->
+                <div class="card secondary">
+                    <div id="messages_container">
+                        <%= render @report.reportable, locals: {reporting: true, reportable: @report.reportable} %>
+                    </div>
+                </div>
+            <% else %>
+                <%= render @report.reportable, locals: {reporting: true, reportable: @report.reportable} %>
+            <% end %>
+        <% end %>
+    </div>
+<% end %>

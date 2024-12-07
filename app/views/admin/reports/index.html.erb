@@ -1,0 +1,29 @@
+<div class="card primary">
+  <p style="color: green"><%= notice %></p>
+
+  <h1>Reports</h1>
+  <%= link_to "Unhandled", admin_reports_path %> | <%= link_to "Handled", admin_reports_path(handled: true) %>
+
+  <div id="reports">
+    <%== pagy_nav @pagy %>
+    <% @reports.each do |report| %>
+      <div class="card secondary">
+        <span>From: <%= link_to report.reporter.username, edit_admin_user_path(report.reporter) %></span>
+        <br />
+        <span>Concerning: <%= link_to report.reportee.username, edit_admin_user_path(report.reportee) %></span>
+        <br />
+        <span>Type: <%= report.reportable_type %></span>
+        <br />
+        <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
+        <% if report.handled %>
+          <br />
+          <span>Resolved by: <%= link_to report.handled_by.username, edit_admin_user_path(report.handled_by) %></span>
+        <% end %>
+        <p>
+          <%= link_to "Show this report", [:admin, report] %>
+        </p>
+      </div>
+    <% end %>
+    <%== pagy_nav @pagy %>
+  </div>
+</div>

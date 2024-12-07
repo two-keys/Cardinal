@@ -22,7 +22,13 @@ module Admin
     end
 
     # GET /admin/users/1/edit
-    def edit; end
+    def edit
+      @pagy_sent_reports, @sent_reports = pagy(@user.sent_reports, items: 5, page: params[:made_reports_page])
+      @pagy_received_reports, @received_reports = pagy(@user.received_reports, items: 5,
+                                                                               page: params[:received_reports_page])
+      @pagy_handled_reports, @handled_reports = pagy(@user.handled_reports, items: 5,
+                                                                            page: params[:handled_reports_page])
+    end
 
     # POST /admin/users or /admin/users.json
     def create

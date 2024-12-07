@@ -23,6 +23,10 @@
     <%= link_to (character.created_at).strftime("%Y-%m-%d %k:%M:%S"), character %>
   </span>
 
+  <% if character.user != current_user %>
+    <%= link_to "Report", new_report_path(reportable_id: character.id, reportable_type: character.class.name), class: "report_link" %>
+  <% end %>
+
   <% if can? :edit, character %>
     <%= link_to "Edit", edit_character_path(character), class: "character_edit_link" %>
   <% end %>

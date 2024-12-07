@@ -5,6 +5,7 @@ class Prompt < ApplicationRecord
   include Taggable
   include Characterized
   include Ticketable
+  include Reportable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user

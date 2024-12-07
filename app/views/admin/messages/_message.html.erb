@@ -1,0 +1,77 @@
+
+<% surrounding_count = 0 %>
+<% if variant == "full" %>
+  <% surrounding_count = 10 %>
+<% end %>
+<% messages = message.surrounding_messages(surrounding_count) %>
+<% chat = message.chat %>
+<% container_class = "" %>
+<% if variant == "mini" %>
+  <% container_class = " mini" %>
+<% end %>
+<div id="<%= dom_id chat %>_container" class="admin_chat<%= container_class %>">
+    <div class="card secondary">
+        <div id="messages_container">
+            <% for message in messages.reverse %>
+                <%= turbo_frame_tag message do %>
+                  <% css = "message" %>
+                  <% if message.ooc %>
+                      <% css += " ooc" %>
+                  <% end %>
+                  <% if message.reports.count > 0 %>
+                      <% css += " reported" %>
+                  <% end %>
+                    <div class="<%= css %>">
+                      <span class="user_icon"><%= message.icon %></span>
+                      <span class="type_notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+                        <% if message.type == 'system' %>
+                          SYS
+                        <% end %>
+                        <% if message.ooc %>
+                          OOC
+                        <% end %>
+                        <% if message.reports.where(handled: false).count > 0 %>
+                          <!-- Collect all reported rules of all reports and create a list of unique rule entries -->
+                          <% rule_violations = message.reports.map { |report| report.rules }.flatten.uniq %>
+                          REPORTED FOR RULES <%= rule_violations.to_sentence(last_word_connector: " AND ") %> BY <%= message.reports.count %> USER(S)
+                        <% end %>
+                      </span>
+                      <%= message.markdown %>
+                      <span class="message_created_at">
+                        <!-- Display the date and time of the message -->
+                        <% if message.user %>
+                          Sent by <%= link_to message.user.username, edit_admin_user_path(message.user) %> at <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
+                        <% else %>
+                          Sent <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
+                        <% end %>
+                      </span>
+                      <% if can? :edit, message %>
+                          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link" %>
+                      <% end %>
+                      <% if message.updated_at > message.created_at %>
+                          <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
+                      <% end %>
+                      <hr class="message_break"/>
+                  </div>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<% content_for :right_sidebar do %>
+    <% if variant == "full" %>
+      <%= turbo_stream_from(dom_id(chat) + "_" + dom_id(current_user) + "_userlist") %>
+      <%== render partial: 'admin/messages/sidebar', locals: {locals: { chat_id: chat.id, users_data: chat.all_users_display_data, chat_uuid: chat.uuid, user: current_user }} %>
+    <% end %>
+<% end %>
+
+<% content_for :info_bottom do %>
+    <% if variant == "full" %>
+      <div class="card secondary">
+          <%= turbo_frame_tag "message_form_frame" do %>
+              <%= render 'admin/messages/form', locals: {message: Message.new, chat_id: chat.id} %>
+          <% end %>
+      </div>
+    <% end %>
+<% end %>

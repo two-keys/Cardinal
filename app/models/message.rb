@@ -2,6 +2,7 @@
 
 class Message < ApplicationRecord
   include Markdownable
+  include Reportable
 
   belongs_to :chat
   belongs_to :user, optional: true
@@ -62,6 +63,13 @@ class Message < ApplicationRecord
     else
       'user'
     end
+  end
+
+  def surrounding_messages(amount = 5)
+    result = chat.messages.where(created_at: ...created_at).last(amount) +
+             [self] +
+             chat.messages.where('created_at > ?', created_at).first(amount)
+    result.reverse
   end
 
   private

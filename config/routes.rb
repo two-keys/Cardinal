@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   post 'chats/:id/forceongoing' => 'chats#forceongoing'
   delete 'chats/:id/:icon', to: 'chats#chat_kick', as: 'chat_kick'
 
+  resources :reports, only: %i[new index show create]
+
   resources :announcements
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -57,6 +59,8 @@ Rails.application.routes.draw do
   get '500', to: 'errors#internal_server_error'
   namespace :admin do
     resources :users, only: %i[index edit update destroy]
+    resources :reports, only: %i[index show edit update destroy]
+    resources :messages, only: %i[create]
     root 'admin_panel#index'
   end
 

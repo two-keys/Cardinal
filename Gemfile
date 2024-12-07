@@ -70,6 +70,9 @@ gem 'gemoji'
 # Ancestry (self-referential, node-based tree traversal)
 gem 'ancestry'
 
+# Discord Webhooks
+gem 'discordrb-webhooks'
+
 # Sentry error reporting
 gem 'sentry-rails'
 gem 'sentry-ruby'
@@ -87,6 +90,9 @@ gem 'stripe'
 
 # See https://github.com/minitest/minitest/issues/1007
 gem 'minitest', '!= 5.25.0'
+
+# https://github.com/rails/rails-html-sanitizer/security/advisories/GHSA-rxv5-gxqc-xx8g
+gem 'rails-html-sanitizer', '>= 1.6.1'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -42,6 +42,7 @@
   <% end %>
 
   <ul class="prompt_actions">
+    <li><%= link_to "Report", new_report_path(reportable_id: prompt.id, reportable_type: prompt.class.name), class: "report_link" %></li>
     <% if can?(:edit, prompt) && prompt.bumpable? %>
       <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
     <% end %>
