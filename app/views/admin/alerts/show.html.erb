@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card secondary">
+  <%= render @alert %>
+</div>
+
+<div class="card primary">
+  <%= link_to "Edit this alert", edit_admin_alert_path(@alert) %> |
+  <%= link_to "Back to alerts", admin_alerts_path %>
+
+  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete %>
+</div>

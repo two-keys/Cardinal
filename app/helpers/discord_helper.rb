@@ -28,7 +28,7 @@ module DiscordHelper
 
     Discord.webhook_client.execute do |builder|
       builder.add_embed do |embed|
-        embed.colour = 0x77b255
+        embed.colour = 0xfba703
         embed.timestamp = Time.zone.now
 
         embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Report Resolved', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
@@ -43,6 +43,36 @@ module DiscordHelper
         embed.add_field(name: 'Handled By',
                         value: "[#{report.handled_by.username}](#{edit_admin_user_url(report.handled_by)})", inline: true)
         # rubocop:enable Layout/LineLength
+      end
+    end
+  end
+
+  def send_discord_alert(alertable, alerts)
+    return if Rails.env.test?
+
+    Discord.webhook_client.execute do |builder|
+      builder.add_embed do |embed|
+        embed.colour = 0xfba703
+        embed.timestamp = Time.zone.now
+
+        embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Alert', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
+
+        embed.add_field(name: 'Alerts',
+                        value: alerts.map { |alert| "`#{alert}`" }.join(', '), inline: false)
+        embed.add_field(name: 'Offender',
+                        value: "[#{alertable.user.username}](#{edit_admin_user_url(alertable.user)})", inline: true)
+
+        # Special case for Messages
+        if alertable.is_a?(Message)
+          embed.add_field(name: 'Alerted Content',
+                          value: "[#{alertable.class}](#{url_for([:admin, alertable])})", inline: true)
+        else
+          embed.add_field(name: 'Alerted Content',
+                          value: "[#{alertable.class}](#{url_for(alertable)})", inline: true)
+        end
+
+        embed.add_field(name: 'Alerted Text',
+                        value: alertable.content.truncate(1024), inline: false)
       end
     end
   end

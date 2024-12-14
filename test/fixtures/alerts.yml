@@ -1,0 +1,18 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: Regex
+  find: (foo|bar)
+  regex: true
+  replacement: baz
+
+two:
+  title: Standard
+  find: foo
+  regex: false
+
+three:
+  title: Standard Replace
+  find: foo
+  regex: false
+  replacement: bar

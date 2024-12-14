@@ -94,6 +94,9 @@ gem 'minitest', '!= 5.25.0'
 # https://github.com/rails/rails-html-sanitizer/security/advisories/GHSA-rxv5-gxqc-xx8g
 gem 'rails-html-sanitizer', '>= 1.6.1'
 
+# https://github.com/rails/rails/security/advisories/GHSA-vfm5-rmrh-j26v
+gem 'actionpack', '>= 7.0.8.7'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
 

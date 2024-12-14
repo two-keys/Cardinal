@@ -6,6 +6,7 @@ class Prompt < ApplicationRecord
   include Characterized
   include Ticketable
   include Reportable
+  include Alertable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
@@ -36,6 +37,10 @@ class Prompt < ApplicationRecord
   after_create :spend_ticket
 
   default_scope { order(bumped_at: :desc) }
+
+  def alertable_fields
+    %i[starter ooc]
+  end
 
   def mark_starter
     markdown_concern(starter)

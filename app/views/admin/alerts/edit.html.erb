@@ -1,0 +1,14 @@
+<div class="card primary">
+  <h1>Editing alert</h1>
+</div>
+
+<div class="card secondary">
+  <%= render "form", alert: @alert %>
+</div>
+
+<br>
+
+<div class="card primary">
+  <%= link_to "Show this alert", [:admin, @alert] %> |
+  <%= link_to "Back to alerts", admin_alerts_path %>
+</div>

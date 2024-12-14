@@ -3,6 +3,7 @@
 class Message < ApplicationRecord
   include Markdownable
   include Reportable
+  include Alertable
 
   belongs_to :chat
   belongs_to :user, optional: true
@@ -20,6 +21,10 @@ class Message < ApplicationRecord
   after_create_commit :update_chat
   after_create_commit :broadcast_create
   after_update_commit :broadcast_update
+
+  def alertable_fields
+    %i[content]
+  end
 
   def update_timestamp
     return if chat.frozen?

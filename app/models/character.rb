@@ -5,6 +5,7 @@ class Character < ApplicationRecord
   include Taggable
   include Ticketable
   include Reportable
+  include Alertable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
@@ -30,6 +31,10 @@ class Character < ApplicationRecord
   after_create :spend_ticket
 
   default_scope { order(updated_at: :desc) }
+
+  def alertable_fields
+    %i[description]
+  end
 
   def mark_description
     markdown_concern(description)

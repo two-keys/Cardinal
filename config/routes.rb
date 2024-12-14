@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[index edit update destroy]
     resources :reports, only: %i[index show edit update destroy]
     resources :messages, only: %i[create]
+    resources :alerts
     root 'admin_panel#index'
   end
 

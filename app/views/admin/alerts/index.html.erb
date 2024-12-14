@@ -1,0 +1,24 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card primary">
+  <h1>Alerts</h1>
+  <%== pagy_nav @pagy %>
+  <p>
+    <%= link_to "New Alert", new_admin_alert_path %>
+  </p>
+</div>
+
+<div id="alerts">
+  <% @alerts.each do |alert| %>
+    <div class="card secondary">
+      <%= render alert %>
+      <p>
+        <%= link_to "Show this alert", url_for([:admin, alert]) %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<div class="card primary">
+  <%== pagy_nav @pagy %>
+</div>
