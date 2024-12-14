@@ -65,14 +65,16 @@ module DiscordHelper
         # Special case for Messages
         if alertable.is_a?(Message)
           embed.add_field(name: 'Alerted Content',
-                          value: "[#{alertable.class}](#{url_for([:admin, alertable])})", inline: true)
+                          value: "[#{alertable.class}](#{chat_url(alertable.chat.uuid)})", inline: true)
         else
           embed.add_field(name: 'Alerted Content',
                           value: "[#{alertable.class}](#{url_for(alertable)})", inline: true)
         end
 
-        embed.add_field(name: 'Alerted Text',
-                        value: alertable.content.truncate(1024), inline: false)
+        alertable.alertable_fields.each do |field|
+          value = alertable.send(field).to_s.truncate(200, omission: '...')
+          embed.add_field(name: field.to_s.humanize, value: value, inline: false)
+        end
       end
     end
   end
