@@ -36,7 +36,7 @@ class ConnectCodeControllerTest < ActionDispatch::IntegrationTest
 
     original_count = @chat.users.count.to_i
 
-    assert_raises ActiveRecord::RecordInvalid do
+    assert_no_difference('@chat.users.count') do
       patch connect_code_consume_path, params: {
         connect_code: @connect_code.code
       }

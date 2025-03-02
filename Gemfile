@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+def next?
+  File.basename(__FILE__) == 'Gemfile.next'
+end
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -7,8 +11,13 @@ ruby '3.2.2'
 
 gem 'bundler', '~>2.4'
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.2.2'
+
+# if next?
+#  gem 'rails', '~> 7.2.2'
+# else
+#  gem 'rails', '~> 7.0.8'
+# end
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -96,6 +105,13 @@ gem 'rails-html-sanitizer', '>= 1.6.1'
 
 # https://github.com/rails/rails/security/advisories/GHSA-vfm5-rmrh-j26v
 gem 'actionpack', '>= 7.0.8.7'
+
+# Upgrades
+gem 'next_rails'
+
+gem 'net-imap', '>= 0.5.6'
+gem 'nokogiri', '>= 1.18.3'
+gem 'rack', '~> 2.2.11'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

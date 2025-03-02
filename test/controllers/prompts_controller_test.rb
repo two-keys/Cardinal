@@ -338,7 +338,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should not update prompt to have someone elses character' do
     sign_in(@user)
 
-    assert_raises ActiveRecord::RecordNotSaved do
+    assert_no_changes('ObjectCharacter.where(object_type: \'Prompt\', object_id: @prompt_without_tags.id).count') do
       patch prompt_tags_url(@prompt_without_tags), params: {
         characters: [@character2.id.to_s],
         tags: {
