@@ -8,7 +8,7 @@ on:
 
 jobs:
   skip_check_job:
-    # continue-on-error: true # Uncomment once integration is finished
+    continue-on-error: true
     name: Skip Check
     runs-on: ubuntu-latest
     outputs:
