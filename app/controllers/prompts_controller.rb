@@ -139,6 +139,33 @@ class PromptsController < ApplicationController
     end
   end
 
+  # GET /prompts/lucky_dip
+  def lucky_dip
+    # First apply all filters (including blacklists) to create a base query
+    base_query = add_search(Prompt.where(status: 'posted'))
+
+    # More efficient random selection using PostgreSQL's TABLESAMPLE
+    # This avoids the expensive COUNT operation
+    random_prompt = base_query
+                    .from("#{Prompt.table_name} TABLESAMPLE BERNOULLI(1)")
+                    .order('RANDOM()')
+                    .first
+
+    if random_prompt
+      redirect_to prompt_url(random_prompt)
+    else
+      # Fall back to a different method if TABLESAMPLE returns no results
+      # This handles edge cases with heavily filtered prompts
+      fallback_prompt = base_query.order('RANDOM()').first
+
+      if fallback_prompt
+        redirect_to prompt_url(fallback_prompt)
+      else
+        redirect_to prompts_url, notice: 'No matching prompts found for Lucky Dip.'
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
