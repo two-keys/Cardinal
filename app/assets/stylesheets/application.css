@@ -35,6 +35,8 @@
     --tag-plot-text: var(--tag-generic-text);
     --tag-theme: var(--tag-generic);
     --tag-theme-text: var(--tag-generic-text);
+    --tag-detail: var(--tag-generic);
+    --tag-detail-text: var(--tag-generic-text);
 
     --tag-fandom: #424242;
     --tag-fandom-text: #fff;

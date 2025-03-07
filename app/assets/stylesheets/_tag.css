@@ -44,6 +44,11 @@
   color: var(--tag-theme-text);
 }
 
+.tag.detail a {
+  background-color: var(--tag-detail);
+  color: var(--tag-detail-text);
+}
+
 .tag.fandom a {
   background-color: var(--tag-fandom);
   color: var(--tag-fandom-text);
