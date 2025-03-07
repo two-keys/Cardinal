@@ -44,6 +44,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "ads", force: :cascade do |t|
+    t.integer "size", default: 0, null: false
+    t.integer "views", default: 0, null: false
+    t.integer "clicks", default: 0, null: false
+    t.text "image_data", null: false
+    t.string "target_url"
+    t.boolean "active", default: false, null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_ads_on_active"
+    t.index ["size"], name: "index_ads_on_size"
+    t.index ["user_id"], name: "index_ads_on_user_id"
+  end
+
   create_table "alerts", force: :cascade do |t|
     t.string "title", null: false
     t.string "find", null: false
@@ -270,6 +285,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ads", "users"
   add_foreign_key "characters", "pseudonyms"
   add_foreign_key "characters", "users"
   add_foreign_key "chat_users", "pseudonyms"
