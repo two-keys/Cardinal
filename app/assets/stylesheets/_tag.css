@@ -16,3 +16,85 @@
 .tag_actions li, .tag_actions button, .tag_actions form {
   display: inline;
 }
+
+.tag {
+  word-break: keep-all;
+}
+
+.tag a {
+  background-color: var(--main-bg-color);
+  border: 1px solid var(--card-bg-color);
+  border-radius: 5px;
+  box-shadow: .6px .6px 1px #333;
+  color: var(--card-text-color);
+  padding: 2px 3px;
+  text-decoration: none;
+  transition: filter .2s, color .2s, border .2s, box-shadow .2s;
+  word-break: keep-all;
+  white-space: pre;
+}
+
+.tag.genre a {
+  background-color: var(--tag-genre);
+  color: var(--tag-genre-text);
+}
+
+.tag.theme a {
+  background-color: var(--tag-theme);
+  color: var(--tag-theme-text);
+}
+
+.tag.fandom a {
+  background-color: var(--tag-fandom);
+  color: var(--tag-fandom-text);
+}
+
+.tag.light_warning a {
+  background-color: var(--tag-light-warning);
+  color: var(--tag-light-warning-text);
+}
+
+.tag.heavy_warning a {
+  background-color: var(--tag-heavy-warning);
+  color: var(--tag-heavy-warning-text);
+}
+
+.tag.gender a {
+  background-color: var(--tag-gender);
+  color: var(--tag-gender-text);
+}
+
+.tag.character a {
+  background-color: var(--tag-character);
+  color: var(--tag-character-text);
+}
+
+.tag.characteristic a {
+  background-color: var(--tag-characteristic);
+  color: var(--tag-characteristic-text);
+}
+
+.tag.setting a {
+  background-color: var(--tag-setting);
+  color: var(--tag-setting-text);
+}
+
+.tag.post_length a {
+  background-color: var(--tag-post-length);
+  color: var(--tag-post-length-text);
+}
+
+.tag.rp_length a {
+  background-color: var(--tag-rp-length);
+  color: var(--tag-rp-length-text);
+}
+
+.tag.character_pref a {
+  background-color: var(--tag-character-pref);
+  color: var(--tag-character-pref-text);
+}
+
+.tag.plotness a {
+  background-color: var(--tag-plot);
+  color: var(--tag-plot-text);
+}
