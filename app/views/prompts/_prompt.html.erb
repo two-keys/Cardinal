@@ -16,8 +16,14 @@
   </div>
 
   <% if prompt.ooc.present? %>
-    <div class="ooc">
-      <%= prompt.mark_ooc %>
+    <div data-controller="read-more" data-read-more-more-text-value="Read more" data-read-more-less-text-value="Read less">
+      <div class="ooc truncate truncate--line-clamped" data-read-more-target="content">
+        <div data-read-more-target="inner">
+          <%= prompt.mark_ooc %>
+        </div>
+      </div>
+
+      <button data-action="read-more#toggle" data-read-more-target="button" class="hide fullwidth">More...</button>
     </div>
   <% end %>
 
@@ -26,8 +32,14 @@
   <% end %>
 
   <% if prompt.starter.present? %>
-    <div>
-      <%= prompt.mark_starter %>
+    <div data-controller="read-more" data-read-more-more-text-value="Read more" data-read-more-less-text-value="Read less">
+      <div class="starter truncate truncate--line-clamped" data-read-more-target="content">
+        <div data-read-more-target="inner">
+          <%= prompt.mark_starter %>
+        </div>
+      </div>
+
+      <button data-read-more-target="button" data-action="read-more#toggle" class="hide fullwidth">More...</button>
     </div>
   <% end %>
 

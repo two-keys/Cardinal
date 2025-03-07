@@ -63,3 +63,25 @@ form .polarity {
 .prompt_actions li, .prompt_actions button, .prompt_actions form {
   display: inline;
 }
+
+.truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: var(--truncate-height, auto);
+  margin: 0 auto;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.truncate--line-clamped {
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+}
+
+.truncate--expanded {
+  max-height: var(--truncate-height-expanded, auto);
+}
+
+.fullwidth {
+  width: 100%;
+}

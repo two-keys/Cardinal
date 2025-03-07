@@ -198,6 +198,8 @@ body {
     text-align: center;
 }
 
+.hide { display: none; }
+
 @media only screen and (max-width: 840px) {
     #site_container {
         display: grid; 
