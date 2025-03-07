@@ -142,15 +142,20 @@ class PromptsController < ApplicationController
 
   # GET /prompts/lucky_dip
   def lucky_dip
+    prompt_max = Prompt.last.id
     # First apply all filters (including blacklists) to create a base query
     base_query = add_search(Prompt.where(status: 'posted'))
 
-    # More efficient random selection using PostgreSQL's TABLESAMPLE
-    # This avoids the expensive COUNT operation
-    random_prompt = base_query
-                    .from("#{Prompt.table_name} TABLESAMPLE BERNOULLI(1)")
-                    .order('RANDOM()')
-                    .first
+    random_prompt = if prompt_max >= 1000
+                      # More efficient random selection using PostgreSQL's TABLESAMPLE
+                      # This avoids the expensive COUNT operation
+                      base_query
+                        .from("#{Prompt.table_name} TABLESAMPLE BERNOULLI(1)")
+                        .order('RANDOM()')
+                        .first
+                    else
+                      base_query.sample
+                    end
 
     if random_prompt
       redirect_to prompt_url(random_prompt)
