@@ -45,6 +45,10 @@ form .polarity {
   word-wrap: break-word;
 }
 
+.prompt img {
+  width: 100%;
+}
+
 .prompt_edit_link {
   position: relative;
   float: right;
