@@ -106,4 +106,18 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :missing
   end
+
+  test 'should create filter someone else has' do
+    sign_in(@user2)
+    tag = @filter.target
+
+    assert_difference('Filter.count') do
+      post filters_url, params: {
+        filter: { filter_type: @filter.filter_type, group: 'default', priority: @filter.priority },
+        tag: { polarity: tag.polarity, tag_type: tag.tag_type, name: tag.name }
+      }
+    end
+
+    assert_redirected_to filter_url(Filter.find_by(user: @user2, target: tag))
+  end
 end

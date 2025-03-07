@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_07_144009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -42,21 +42,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "ads", force: :cascade do |t|
-    t.integer "size", default: 0, null: false
-    t.integer "views", default: 0, null: false
-    t.integer "clicks", default: 0, null: false
-    t.text "image_data", null: false
-    t.string "target_url"
-    t.boolean "active", default: false, null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["active"], name: "index_ads_on_active"
-    t.index ["size"], name: "index_ads_on_size"
-    t.index ["user_id"], name: "index_ads_on_user_id"
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -132,7 +117,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
     t.integer "priority", default: 0, null: false
     t.string "target_type"
     t.bigint "target_id"
-    t.index ["target_type", "target_id", "group"], name: "index_filters_on_target_type_and_target_id_and_group", unique: true
+    t.index ["target_type", "target_id", "group", "user_id"], name: "idx_on_target_type_target_id_group_user_id_394635f237", unique: true
     t.index ["target_type", "target_id"], name: "index_filters_on_target"
     t.index ["user_id"], name: "index_filters_on_user_id"
   end
@@ -285,7 +270,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "ads", "users"
   add_foreign_key "characters", "pseudonyms"
   add_foreign_key "characters", "users"
   add_foreign_key "chat_users", "pseudonyms"
