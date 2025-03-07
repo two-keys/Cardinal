@@ -24,6 +24,7 @@ module Admin
 
     # GET /admin/users/1/edit
     def edit
+      @pagy_prompts, @prompts = pagy(@user.prompts, items: 5, page: params[:prompts_page])
       @pagy_sent_reports, @sent_reports = pagy(@user.sent_reports, items: 5, page: params[:made_reports_page])
       @pagy_received_reports, @received_reports = pagy(@user.received_reports, items: 5,
                                                                                page: params[:received_reports_page])

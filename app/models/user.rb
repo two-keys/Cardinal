@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :pseudonyms, dependent: :delete_all
   has_many :chat_users, dependent: :delete_all
   has_many :chats, through: :chat_users
+  has_many :prompts, dependent: :delete_all
   has_many :characters, dependent: :delete_all
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy

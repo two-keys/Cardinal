@@ -25,6 +25,13 @@
       <li><%= render report, variant: "mini" %></li>
     <% end %>
   </ul>
+  <p>Prompts:</p>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_prompts} %>
+  <div>
+    <% @prompts.each do |prompt| %>
+      <%= render prompt %>
+    <% end %>
+  </div>
 </div>
 
 <br>
