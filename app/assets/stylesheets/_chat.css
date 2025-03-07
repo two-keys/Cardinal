@@ -22,6 +22,10 @@
   border: 2px solid var(--ended-color);
 }
 
+.message > * > img {
+  width: 100%;
+}
+
 .admin_chat.mini .user_icon {
     position: initial;
     float: initial;
