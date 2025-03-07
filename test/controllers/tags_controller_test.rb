@@ -200,4 +200,15 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :missing
   end
+
+  test 'should hide a tag' do
+    sign_in(@user)
+    assert_difference('Filter.where(user: @user).count', 1) do
+      post hide_tag_path(@capital)
+    end
+
+    f = Filter.where(user: @user, target: @capital).first
+
+    assert_redirected_to filter_url(f)
+  end
 end

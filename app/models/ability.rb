@@ -124,6 +124,7 @@ class Ability
     can :restore, Message, user: user
     can :history, Character, user: user
     can :restore, Character, user: user
+    can :hide, Tag
 
     unless user.active_for_authentication?
       # Things which banned users cannot do

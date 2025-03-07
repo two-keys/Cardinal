@@ -106,7 +106,7 @@ module SearchableController
         # We want prompts that don't have a tag mathcing a Rejection filter
         Filter.where(
           # Do any of the prompt's tags hit the rejection filter?
-          '"filters"."tag_id" IN (?)',
+          '"filters"."target_type" = \'Tag\' AND "filters"."target_id" IN (?)',
           ObjectTag.where(object_tag_string).or(
             # sub-search for character tags if characterized
             ObjectTag.where('? = TRUE', characterized?)
@@ -128,7 +128,7 @@ module SearchableController
           # we can let that slide IF an Exception filter in the same group overrides that
           Filter.from(f2).select('"filters_2".*').where(
             # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
-            '"filters_2"."tag_id" IN (?)',
+            '"filters_2"."target_type" = \'Tag\' AND "filters_2"."target_id" IN (?)',
             ObjectTag.where(object_tag_string).or(
               # sub-search for character tags if characterized
               ObjectTag.where('? = TRUE', characterized?)

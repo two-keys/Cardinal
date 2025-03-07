@@ -5,6 +5,8 @@ class TagsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
+  include HideableController
+
   before_action :authenticate_user!
   before_action :set_tag, only: %i[show edit update destroy]
 

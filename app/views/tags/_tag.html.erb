@@ -28,4 +28,10 @@
     Parent
     <%= render partial: 'tags/mini', locals: {tag: tag.parent} %>
   <% end %>
+
+  <ul class="tag_actions">
+    <% if can?(:hide, tag) %>
+      <li><%= button_to "Hide", hide_tag_path(tag), method: :post %></li>
+    <% end %>
+  </ul>
 </div>

@@ -5,11 +5,11 @@ one:
   filter_type: 'Rejection'
   priority: 1
   user: user
-  tag: generic
+  target: generic (Tag)
 
 two:
   group: default
   filter_type: 'Exception'
   priority: 2
   user: user
-  tag: nofandom
+  target: nofandom (Tag)

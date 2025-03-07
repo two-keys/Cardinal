@@ -12,6 +12,7 @@ class Tag < ApplicationRecord
 
   has_many :object_tags, dependent: :destroy
   has_many :objects, through: :object_tags
+  has_many :filters, as: :target, dependent: :destroy
 
   scope :with_public, -> { where(enabled: true) }
 

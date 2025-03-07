@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   resources :tags do
+    post 'hide', to: 'tags#hide', on: :member
     collection do
       post :autocomplete
     end

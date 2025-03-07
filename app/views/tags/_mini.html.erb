@@ -11,4 +11,12 @@
   </div>
   Polarity: <%= tag.polarity %><br />
   Type: <%= tag.tag_type %>
+  
+  <hr />
+
+  <ul class="tag_actions">
+    <% if can?(:hide, tag) %>
+      <li><%= button_to "Hide", hide_tag_path(tag), method: :post %></li>
+    <% end %>
+  </ul>
 </div>

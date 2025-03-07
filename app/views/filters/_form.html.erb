@@ -31,8 +31,9 @@
     <%= form.number_field :priority, within: -999..999 %>
   </div>
   <br />
+  <% if params[:action] == 'new' %>
   <div>
-    <%= fields_for :tag, filter.tag do |tag_form| %>
+    <%= fields_for :tag, filter.target do |tag_form| %>
       <div data-controller="polaritytype">
         <div>
           <%= tag_form.label :polarity, style: "display: block"  %>
@@ -46,6 +47,7 @@
       <%= tag_form.label :name %>     <%= tag_form.text_field :name %>
     <% end %>
   </div>
+  <% end %>
 
   <div>
     <%= form.submit %>

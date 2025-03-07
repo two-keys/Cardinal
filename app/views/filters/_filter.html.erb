@@ -16,6 +16,6 @@
     <%= filter.priority %>
   </p>
 
-  <%= render partial: 'tags/mini', locals: { tag: filter.tag } %>
+  <%= render filter.target %>
   <%= link_to "Edit", edit_filter_path(filter), class: "prompt_edit_link" %>
 </div>

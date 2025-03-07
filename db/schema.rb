@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_06_010443) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_07_020925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -112,12 +112,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_06_010443) do
 
   create_table "filters", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "tag_id"
     t.string "group", default: "default", null: false
     t.string "filter_type", limit: 25, null: false
     t.integer "priority", default: 0, null: false
-    t.index ["tag_id"], name: "index_filters_on_tag_id"
-    t.index ["user_id", "tag_id", "group"], name: "index_filters_on_user_id_and_tag_id_and_group", unique: true
+    t.string "target_type"
+    t.bigint "target_id"
+    t.index ["target_type", "target_id", "group"], name: "index_filters_on_target_type_and_target_id_and_group", unique: true
+    t.index ["target_type", "target_id"], name: "index_filters_on_target"
     t.index ["user_id"], name: "index_filters_on_user_id"
   end
 
@@ -275,7 +276,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_06_010443) do
   add_foreign_key "chats", "prompts"
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
-  add_foreign_key "filters", "tags"
   add_foreign_key "filters", "users"
   add_foreign_key "object_characters", "characters"
   add_foreign_key "object_tags", "tags"

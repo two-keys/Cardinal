@@ -32,7 +32,7 @@ class FiltersController < ApplicationController
   def create
     @filter = Filter.new(filter_params)
     @filter.user_id = current_user.id
-    @filter.tag = Tag.find_or_create_by!(tag_params)
+    @filter.target = Tag.find_or_create_by!(tag_params)
 
     respond_to do |format|
       if @filter.save
@@ -48,7 +48,6 @@ class FiltersController < ApplicationController
   # PATCH/PUT /filters/1 or /filters/1.json
   def update
     @filter.assign_attributes(filter_params)
-    @filter.tag = Tag.find_or_create_by!(tag_params)
 
     respond_to do |format|
       if @filter.save
