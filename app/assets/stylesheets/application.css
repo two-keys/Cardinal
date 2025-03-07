@@ -153,8 +153,8 @@ body {
       "top_1 info_top info_top top_2"
       "sidebar_left main_content main_content sidebar_right"
       "bottom_1 info_bottom info_bottom bottom_2"; 
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 2rem;
+    margin-right: 2rem;
     max-width: 97vw;
 }
 
@@ -165,6 +165,8 @@ body {
     max-width: 100%;
     text-align: center;
     grid-area: main_content;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 #left_sidebar {
@@ -222,5 +224,10 @@ body {
 
     #left_sidebar {
         position: static;
+    }
+
+    #main {
+        margin-left: 0px;
+        margin-right: 0px;
     }
 }

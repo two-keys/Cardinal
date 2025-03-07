@@ -1,4 +1,4 @@
-<div id="<%= dom_id prompt %>" class="card primary prompt mini">
+<div id="<%= dom_id prompt %>" class="card primary prompt mini<%= prompt.default_slots > 2 ? ' group' : ' standard' %>">
   <div class="prompt_info">
     <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
     <div class="tags">

@@ -64,6 +64,16 @@ form .polarity {
   display: inline;
 }
 
+.prompt.group {
+  border-bottom: var(--main-text-color) 2px dashed;
+  padding-bottom: 1rem;
+}
+
+.prompt.standard {
+  border-bottom: var(--main-text-color) 2px solid;
+  padding-bottom: 1rem;
+}
+
 .truncate {
   display: -webkit-box;
   -webkit-box-orient: vertical;

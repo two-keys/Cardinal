@@ -1,7 +1,7 @@
 <% if defined?(locals) && locals[:reporting] %>
   <% prompt = locals[:reportable] %>
 <% end %>
-<div id="<%= dom_id prompt %>" class="card primary prompt">
+<div id="<%= dom_id prompt %>" class="card primary prompt<%= prompt.default_slots > 2 ? ' group' : ' standard' %>">
   <div class="prompt_info">
     <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
     <div class="tags">

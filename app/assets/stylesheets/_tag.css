@@ -19,6 +19,7 @@
 
 .tag {
   word-break: keep-all;
+  line-height: 28px;
 }
 
 .tag a {
