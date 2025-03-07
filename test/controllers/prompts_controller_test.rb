@@ -456,4 +456,22 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to prompts_url
   end
+
+  test 'should get prompt history as admin' do
+    sign_in(@admin)
+    get history_prompt_url(@prompt)
+    assert_response :ok
+  end
+
+  test 'should get prompt history as owner' do
+    sign_in(@user)
+    get history_prompt_url(@prompt)
+    assert_response :ok
+  end
+
+  test 'should not get prompt history as non-owner' do
+    sign_in(@user2)
+    get history_prompt_url(@prompt)
+    assert_response :missing
+  end
 end

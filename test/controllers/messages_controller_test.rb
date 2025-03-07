@@ -7,6 +7,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @message = messages(:user)
+    @admin = users(:admin)
     @user = users(:user)
     @user2 = users(:user_two)
     @user3 = users(:user_three)
@@ -75,5 +76,23 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test 'not logged in should not update message' do
     patch message_url(@message), params: { message: { content: 'test', ooc: true } }
     assert_redirected_to new_user_session_url
+  end
+
+  test 'should get message history as admin' do
+    sign_in(@admin)
+    get history_message_url(@message)
+    assert_response :ok
+  end
+
+  test 'should get message history as owner' do
+    sign_in(@user)
+    get history_message_url(@message)
+    assert_response :ok
+  end
+
+  test 'should not get message history as non-owner' do
+    sign_in(@user2)
+    get history_message_url(@message)
+    assert_response :missing
   end
 end

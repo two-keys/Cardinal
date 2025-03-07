@@ -7,15 +7,24 @@ Rails.application.routes.draw do
 
   resources :tickets, only: %i[index show destroy]
 
+  concern :auditable do
+    member do
+      get 'history'
+      post 'history/:version_id/restore', action: 'restore', as: 'restore'
+    end
+  end
+
   get 'prompts/search', to: 'prompts#search'
   post 'prompts/search', to: 'prompts#generate_search'
   resources :prompts do
     match 'tags', action: 'update_tags', via: %i[put patch]
     post 'answer', to: 'prompts#answer'
+    post 'revert', to: 'prompts#revert'
     match 'bump', action: 'bump', via: %i[put patch]
     collection do
       get 'lucky_dip'
     end
+    concerns :auditable
   end
 
   resources :pseudonyms
@@ -24,6 +33,7 @@ Rails.application.routes.draw do
   post 'characters/search', to: 'characters#generate_search'
   resources :characters do
     match 'tags', action: 'update_tags', via: %i[put patch]
+    concerns :auditable
   end
 
   resources :tags do
@@ -32,7 +42,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :messages, only: %i[show create destroy update edit]
+  resources :messages, only: %i[show create destroy update edit] do
+    concerns :auditable
+  end
   resources :chats, except: :show
   get 'chats/:id', to: 'chats#show'
   get 'chats/:id/:page', to: 'chats#show'
@@ -50,7 +62,9 @@ Rails.application.routes.draw do
 
   resources :reports, only: %i[new index show create]
 
-  resources :announcements
+  resources :announcements do
+    concerns :auditable
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -61,10 +75,13 @@ Rails.application.routes.draw do
 
   get '500', to: 'errors#internal_server_error'
   namespace :admin do
-    resources :users, only: %i[index edit update destroy]
+    resources :users, only: %i[index edit update destroy] do
+      concerns :auditable
+    end
     resources :reports, only: %i[index show edit update destroy]
     resources :messages, only: %i[create]
     resources :alerts
+    resources :audit_logs, only: %i[index]
     root 'admin_panel#index'
   end
 

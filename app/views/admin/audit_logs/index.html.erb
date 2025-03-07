@@ -1,0 +1,64 @@
+<!-- Admin view for audit logs -->
+<div class="card">
+  <h2>Audit Log</h2>
+  
+  <%= form_with url: admin_audit_logs_path, method: :get, class: 'filter-form' do |f| %>
+    <div class="filters">
+      <%= f.select :item_type, 
+                  [['All Types', ''], 'Alert', 'Announcement', 'Character', 'Message', 'Prompt', 'User'], 
+                  { selected: params[:item_type] } %>
+                  
+      <%= f.select :event, 
+                  [['All Events', ''], 'create', 'update', 'destroy'], 
+                  { selected: params[:event] } %>
+                  
+      <%= f.text_field :whodunnit, value: params[:whodunnit], placeholder: 'Username' %>
+                             
+      <%= f.date_field :date_from, value: params[:date_from] %>
+      <%= f.date_field :date_to, value: params[:date_to] %>
+      
+      <%= f.submit 'Filter' %>
+    </div>
+  <% end %>
+  
+  <table class="audit-log">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>User</th>
+        <th>Action</th>
+        <th>Item Type</th>
+        <th>Item ID</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @versions.each do |version| %>
+        <tr>
+          <td><%= l version.created_at, format: :long %></td>
+          <td>
+            <% if user = User.find_by(id: version.user) %>
+              <%= link_to user.username, [:admin, user] %>
+            <% else %>
+              System
+            <% end %>
+          </td>
+          <td><%= version.metadata["event"] %></td>
+          <td><%= version.item_type %></td>
+          <td><%= version.item_id %></td>
+          <% if admin_scoped?(version.item_type.underscore.to_sym) %>
+            <% if default_edit?(version.item_type.underscore.to_sym) %>
+              <td><%= link_to "View", send("edit_admin_#{version.item_type.downcase}_path", version.item) %>
+            <% else %>
+              <td><%= link_to "View", [:admin, version.item] %></td>
+            <% end %>
+          <% else %>
+            <td><%= link_to "View", version.item %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+</div>

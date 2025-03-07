@@ -4,6 +4,7 @@ class Message < ApplicationRecord
   include Markdownable
   include Reportable
   include Alertable
+  include Auditable
 
   belongs_to :chat
   belongs_to :user, optional: true

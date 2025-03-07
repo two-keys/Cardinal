@@ -15,6 +15,7 @@ class PromptsController < ApplicationController
   include SearchableController
   include PseudableController
   include CharacterizedController
+  include AuditableController
 
   # GET /prompts
   def index
@@ -167,6 +168,10 @@ class PromptsController < ApplicationController
   end
 
   private
+
+  def model_class
+    'prompt'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_prompt

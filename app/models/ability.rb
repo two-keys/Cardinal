@@ -118,6 +118,12 @@ class Ability
     can :generate_search, Prompt
     can :generate_search, Character
     can :autocomplete, Tag
+    can :history, Prompt, user: user
+    can :restore, Prompt, user: user
+    can :history, Message, user: user
+    can :restore, Message, user: user
+    can :history, Character, user: user
+    can :restore, Character, user: user
 
     unless user.active_for_authentication?
       # Things which banned users cannot do
@@ -131,6 +137,7 @@ class Ability
       cannot :update_tags, Prompt
       cannot :update_tags, Character
       cannot :answer, Prompt
+      cannot :restore, :all
     end
 
     return unless user.admin?
@@ -138,7 +145,10 @@ class Ability
     # Things which admins can do
 
     can :manage, :all
+    can :history, :all
+    can :restore, :all
     can :view_users, :all
+    can :view_sensitive, :all
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity

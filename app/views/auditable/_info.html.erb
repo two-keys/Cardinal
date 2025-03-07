@@ -1,0 +1,22 @@
+<div class="card secondary">
+    <%= l(version.created_at, format: "%-d.%m.%Y %H:%M:%S %Z") %><br/>
+    Event ID: <%= version.id %><br/>
+    <% who = version.user %>
+    <b>Target:</b> <%= version.item_type %>
+    <small>(id: <%= version.item_id %>)</small>; <b>event:</b> <%= version.metadata["event"] %>; 
+    <% if can?(:view_sensive, version) %>
+        <b>whodunnit:</b> <%= who ? link_to(who.username, edit_admin_user_path(who)) : "system" %>;<br/>
+        <% if version.metadata["ip"] %>
+            <b>IP:</b> <%= version.metadata["ip"] %>;<br/>
+        <% end %>
+        <% if version.metadata["user_agent"] %>
+            <b>Agent:</b> <%= version.metadata["user_agent"] %>;<br/>
+        <% end %>
+        <% if version.metadata["controller"]%>
+            <b>Controller:</b> <%= version.metadata["controller"] %>;<br/>
+        <% end%>
+    <% end %>
+    <% if can?(:restore, version.item) %>
+        <%= button_to "Restore", send("restore_#{admin_scope? ? "admin_": ""}#{version.item_type.underscore}_path", version.item_id, version.id), method: :post, form: {data: {turbo_confirm: 'Are you sure?'}}, class: "button small" %><br/>
+    <% end %>
+</div>

@@ -1,11 +1,17 @@
-<div id="<%= dom_id user %>" class="user">
-  <strong><%= link_to user.username, edit_admin_user_path(user) %></strong>
-  <br />
-  <span><%= user.created_at.strftime("%l:%M %p %b %d %Y") %></span>
-  <% if user.updated_at > user.created_at %>
-    <h6 class="user_edited">(Edited <%= user.updated_at.strftime("%l:%M %p %b %d %Y") %>)</h6>
-  <% end %>
+<div id="<%= dom_id user %>" class="user card primary">
   <p>
-    <%= simple_format h(user.username) %>
+    <b>Username:</b> <strong><%= link_to user.username, edit_admin_user_path(user) %></strong><br/>
+    <b>Email:</b> <%= user.email %><br/>
+    <b>Created:</b> <span><%= user.created_at.strftime("%l:%M %p %b %d %Y") %></span><br/>
+    <b>Pseudonyms:</b><br/>
+    <ul>
+    <% user.pseudonyms.each do |pseudonym| %>
+      <li><%= link_to "#{pseudonym.name}#{pseudonym.status == "draft" ? " (draft)" : ""}", pseudonym %></li>
+    <% end %>
+    </ul>
+    <b>Characters:</b><br/>
+    <% user.characters.each do |character| %>
+      <li><%= link_to "#{character.name}#{character.status == "draft" ? " (draft)" : ""}", character %></li>
+    <% end %>
   </p>
 </div>

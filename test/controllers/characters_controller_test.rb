@@ -293,4 +293,22 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to characters_url
   end
+
+  test 'should get character history as admin' do
+    sign_in(@admin)
+    get history_character_url(@character)
+    assert_response :ok
+  end
+
+  test 'should get character history as owner' do
+    sign_in(@user)
+    get history_character_url(@character)
+    assert_response :ok
+  end
+
+  test 'should not get character history as non-owner' do
+    sign_in(@user2)
+    get history_character_url(@character)
+    assert_response :missing
+  end
 end

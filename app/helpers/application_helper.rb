@@ -3,6 +3,12 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def pluralize_without_count(count, noun, text = nil)
+    return unless count != 0
+
+    count == 1 ? "#{noun}#{text}" : "#{noun.pluralize}#{text}"
+  end
+
   def require_admin
     return if admin?
 
@@ -19,6 +25,10 @@ module ApplicationHelper
       format.html { redirect_to root_url, notice: 'You are not authorized to perform this action.' }
       format.json { render json: {}, status: :unauthorized }
     end
+  end
+
+  def admin_scope?
+    controller.class.name.split('::').first == 'Admin'
   end
 
   def admin?

@@ -5,6 +5,7 @@
 class CharactersController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
+  include AuditableController
 
   before_action :set_character, only: %i[show edit bump update answer destroy]
   before_action :authenticate_user!
@@ -77,6 +78,10 @@ class CharactersController < ApplicationController
   end
 
   private
+
+  def model_class
+    'character'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_character

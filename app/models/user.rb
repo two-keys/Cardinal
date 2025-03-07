@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include Auditable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -23,6 +25,14 @@ class User < ApplicationRecord
   has_many :handled_reports, class_name: 'Report', foreign_key: 'handled_by_id', dependent: :delete_all,
                              inverse_of: 'handled_by'
   delegate :can?, :cannot?, to: :ability
+
+  has_snapshot_children do
+    instance = self.class.includes(:pseudonyms, :characters).find(id)
+    {
+      pseudonyms: instance.pseudonyms,
+      characters: instance.characters
+    }
+  end
 
   def after_database_authentication
     return unless unbannable?

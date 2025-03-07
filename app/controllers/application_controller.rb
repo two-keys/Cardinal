@@ -4,8 +4,18 @@ class ApplicationController < ActionController::Base
   before_action :set_start_time
   before_action :set_sentry_context
   before_action :set_unleash_context
+  before_action :set_current_attributes
 
   rescue_from CanCan::AccessDenied, with: :user_not_authorized
+
+  # Accessing these in in model callbacks requires this
+  def set_current_attributes
+    Current.user = current_user
+    Current.remote_ip = request.remote_ip
+    Current.user_agent = request.user_agent
+    Current.controller_name = controller_name
+    Current.action_name = action_name
+  end
 
   # start concern initializers
   def searchable?

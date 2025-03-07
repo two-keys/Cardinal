@@ -1,0 +1,25 @@
+<div id="prompts_container">
+  <div class="card primary">
+    <div class="pagination">
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+      This prompt has <strong><%= @pagy.count %></strong> <%= pluralize_without_count(@pagy.count, 'version') %>.
+    </div>
+  </div>
+  <div class="card secondary">
+    <% if @prompt %>
+      <small>current</small>
+      <%= render @prompt %>
+    <% end %>
+    <% @prompt_versions.each do |version| %>
+      <%= render partial: "auditable/info", :locals => {:version => version} %>
+      <div>
+        <%= render version.reify(has_many: true, belongs_to: true) %>
+      </div>
+    <% end %>
+  </div>
+  <div class="card primary">
+    <div class="pagination">
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
+  </div>
+</div>

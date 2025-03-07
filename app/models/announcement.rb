@@ -2,6 +2,7 @@
 
 class Announcement < ApplicationRecord
   include Markdownable
+  include Auditable
 
   validates :title, presence: true
   validates :content, presence: true

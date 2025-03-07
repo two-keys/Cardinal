@@ -6,6 +6,7 @@ class Character < ApplicationRecord
   include Ticketable
   include Reportable
   include Alertable
+  include Auditable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
@@ -31,6 +32,14 @@ class Character < ApplicationRecord
   after_create :spend_ticket
 
   default_scope { order(updated_at: :desc) }
+
+  has_snapshot_children do
+    instance = self.class.includes(:object_tags, :object_characters).find(id)
+    {
+      object_tags: instance.object_tags,
+      object_characters: instance.object_characters
+    }
+  end
 
   def alertable_fields
     %i[description]

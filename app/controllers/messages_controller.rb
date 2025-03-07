@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class MessagesController < ApplicationController
+  include AuditableController
+
   before_action :set_message, only: %i[show edit update destroy]
   before_action :authenticate_user!
 
@@ -68,6 +70,10 @@ class MessagesController < ApplicationController
   end
 
   private
+
+  def model_class
+    'message'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_message

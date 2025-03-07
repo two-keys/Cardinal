@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Alert < ApplicationRecord
+  include Auditable
+
   def condition(value)
     return false if value.nil?
     return true if regex && Regexp.new(find).match?(value)

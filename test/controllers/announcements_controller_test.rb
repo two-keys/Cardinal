@@ -95,4 +95,16 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :missing
   end
+
+  test 'should get announcement history as admin' do
+    sign_in(@admin)
+    get history_announcement_url(@announcement)
+    assert_response :ok
+  end
+
+  test 'should not get character history as non-admin' do
+    sign_in(@user)
+    get history_announcement_url(@announcement)
+    assert_response :missing
+  end
 end

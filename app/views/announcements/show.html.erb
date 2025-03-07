@@ -1,11 +1,14 @@
 <%= render @announcement %>
 
-<div>
+<div class="card primary">
   <% if can? :edit, @announcement %>
     <%= link_to "Edit this announcement", edit_announcement_path(@announcement) %> |
   <% end %>
+  <% if can? :history, @announcement %>
+    <%= link_to "History", history_announcement_path(@announcement) %> |
+  <% end %>
   <% if can? :destroy, @announcement %>
-    <%= button_to "Destroy this announcement", @announcement, method: :delete %> |
+    <%= button_to "Destroy this announcement", @announcement, method: :delete, data: {turbo_confirm: "Are you sure?"} %> |
   <% end %>
   <%= link_to "Back to announcements", announcements_path %>
 </div>

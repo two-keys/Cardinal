@@ -11,6 +11,10 @@
     text-align: left;
 }
 
+.card .card.primary a {
+    color: var(--card-text-color);
+}
+
 .card.secondary {
     background-color: var(--card-bg-color-secondary);
     color: var(--card-text-color-secondary);

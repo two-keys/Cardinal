@@ -106,12 +106,15 @@ gem 'rails-html-sanitizer', '>= 1.6.1'
 # https://github.com/rails/rails/security/advisories/GHSA-vfm5-rmrh-j26v
 gem 'actionpack', '>= 7.0.8.7'
 
+# Audit logging
+gem 'active_snapshot'
+
 # Upgrades
 gem 'next_rails'
 
 gem 'net-imap', '>= 0.5.6'
 gem 'nokogiri', '>= 1.18.3'
-gem 'rack', '~> 2.2.11'
+gem 'rack', '~> 2.2.12'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

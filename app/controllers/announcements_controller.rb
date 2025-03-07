@@ -3,6 +3,7 @@
 class AnnouncementsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
+  include AuditableController
 
   load_and_authorize_resource
 
@@ -63,6 +64,10 @@ class AnnouncementsController < ApplicationController
   end
 
   private
+
+  def model_class
+    'announcement'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_announcement

@@ -1,14 +1,22 @@
 <% CardinalSettings::Tags.polarities.each do |polarity| %>
   <div id="<%= polarity %>" class="polarity">  
     <h4><%= polarity.upcase %></h4>
-    <% prompt.tags_for(polarity).each do |tag_type, tags| %>
-      <ul id="<%= tag_type %>" class="type"><%= "#{readable_tag_type tag_type}:" %>
-        <% tags.each do |tag| %>
-          <li id="<%= tag.id %>" class="tag">
-            <%= link_to tag.name, tag_url(tag) %>
-          </li>
-        <% end %>
-      </ul>
+    <% tags_for_polarity = nil %>
+    <% if !prompt.children_hash %>
+      <% tags_for_polarity = prompt.tags_for(polarity) %>
+    <% else %>
+      <% tags_for_polarity = Taggable.tags_for(polarity, prompt.children_hash["object_tags"]) %>
+    <% end %>
+    <% if !tags_for_polarity.nil? %>
+      <% tags_for_polarity.each do |tag_type, tags| %>
+        <ul id="<%= tag_type %>" class="type"><%= "#{readable_tag_type tag_type}:" %>
+          <% tags.each do |tag| %>
+            <li id="<%= tag.id %>" class="tag">
+              <%= link_to tag.name, tag_url(tag) %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     <% end %>
   </div>
 <% end %>

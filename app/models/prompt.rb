@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-class Prompt < ApplicationRecord
+class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Markdownable
   include Taggable
   include Characterized
   include Ticketable
   include Reportable
   include Alertable
+  include Auditable
   MIN_CONTENT_LENGTH = 10
 
   belongs_to :user
@@ -38,6 +39,14 @@ class Prompt < ApplicationRecord
 
   default_scope { order(bumped_at: :desc) }
 
+  has_snapshot_children do
+    instance = self.class.includes(:object_tags, :object_characters).find(id)
+    {
+      object_tags: instance.object_tags,
+      object_characters: instance.object_characters
+    }
+  end
+
   def alertable_fields
     %i[starter ooc]
   end
@@ -68,6 +77,8 @@ class Prompt < ApplicationRecord
   end
 
   def bumpable?
+    return false if bumped_at_was.nil?
+
     diff_in_seconds = Time.zone.at(DateTime.now) - bumped_at_was
     diff_in_seconds += 1.second # a surprise tool to help us later
     seconds_in_a_day = 24 * 60 * 60

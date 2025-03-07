@@ -1,5 +1,5 @@
 <%= fields_for :tags do |tag_form| %>
-  <% @autocomplete = (UNLEASH.is_enabled? "TagAutocomplete", @unleash_context) && !Rails.env.test? %>
+  <% @autocomplete = !Rails.env.test? %>
   <% CardinalSettings::Tags.polarities.each do |polarity| %>
     <div class="polarity">
       <h3><%= tag_form.label polarity, "#{polarity.upcase} TAGS:" %></h3>

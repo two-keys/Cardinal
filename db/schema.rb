@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_14_184454) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_06_010443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -190,6 +190,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_14_184454) do
     t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
     t.index ["reportee_id"], name: "index_reports_on_reportee_id"
     t.index ["reporter_id"], name: "index_reports_on_reporter_id"
+  end
+
+  create_table "snapshot_items", force: :cascade do |t|
+    t.bigint "snapshot_id", null: false
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.json "object", null: false
+    t.datetime "created_at", null: false
+    t.string "child_group_name"
+    t.index ["item_type", "item_id"], name: "index_snapshot_items_on_item"
+    t.index ["snapshot_id", "item_id", "item_type"], name: "index_snapshot_items_on_snapshot_id_and_item_id_and_item_type", unique: true
+    t.index ["snapshot_id"], name: "index_snapshot_items_on_snapshot_id"
+  end
+
+  create_table "snapshots", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "user_type"
+    t.bigint "user_id"
+    t.string "identifier"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.index ["identifier", "item_id", "item_type"], name: "index_snapshots_on_identifier_and_item_id_and_item_type", unique: true
+    t.index ["identifier"], name: "index_snapshots_on_identifier"
+    t.index ["item_type", "item_id"], name: "index_snapshots_on_item"
+    t.index ["user_type", "user_id"], name: "index_snapshots_on_user"
   end
 
   create_table "tags", force: :cascade do |t|

@@ -1,37 +1,44 @@
-<% if locals[:reporting] %>
+<% if defined?(locals) && locals[:reporting] %>
   <% locals[:message] = locals[:reportable] %>
 <% end %>
-<%= turbo_frame_tag locals[:message] do %>
-  <% if !locals[:message].ooc %>
+<% message = defined?(locals) ? locals[:message] : message %>
+<%= turbo_frame_tag message do %>
+  <% if !message.ooc %>
     <div class="message">
   <% else %>
     <div class="message ooc">
   <% end %>
-      <span class="user_icon"><%= locals[:message].icon %></span>
-      <span class="type_notif <%= locals[:message].type %><%= locals[:message].ooc ? " ooc" : nil %>">
-        <% if locals[:message].type == 'system' %>
+      <span class="user_icon"><%= message.icon %></span>
+      <span class="type_notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+        <% if message.type == 'system' %>
           SYS
         <% end %>
-        <% if locals[:message].ooc %>
+        <% if message.ooc %>
           OOC
         <% end %>
       </span>
-      <%= locals[:message].markdown %>
+      <%= message.markdown %>
       <span class="message_created_at">
         <!-- Display the date and time of the message -->
-         <% if !locals[:reporting] %>
-          <% is_reportable = locals[:message].type != 'system' && locals[:message].user != current_user %>
+         <% if defined?(locals) && !locals[:reporting] %>
+          <% is_reportable = message.type != 'system' && message.user != current_user %>
           <% if is_reportable %>
-            <%= link_to "⚠️", new_report_path(reportable_id: locals[:message].id, reportable_type: locals[:message].class.name), data: { turbo: false }, class: "report_link" %>
+            <%= link_to "⚠️", new_report_path(reportable_id: message.id, reportable_type: message.class.name), data: { turbo: false }, class: "report_link" %>
           <% end %>
         <% end %>
-        Sent <%= locals[:message].created_at.strftime("%Y-%m-%d %k:%M:%S") %>
+        Sent <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
       </span>
-      <% if can? :edit, locals[:message] %>
-          <%= link_to "Edit", edit_message_path(locals[:message]), class: "message_edit_link" %>
+      <% if (can? :edit, message) && defined?(locals) %>
+          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link" %>
       <% end %>
-      <% if locals[:message].updated_at > locals[:message].created_at %>
-          <span class="message_edited_at">(edited <%= time_ago_in_words(locals[:message].updated_at) %> ago)</span>
+      <% if message.updated_at > message.created_at %>
+          <% if (can? :edit, message) %>
+            <%= link_to history_message_path(message), data: {turbo: false}, class: "message_history_link" do %>
+              <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
+            <% end %>
+          <% else %>
+            <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
+          <% end %>
       <% end %>
       <hr class="message_break"/>
   </div>

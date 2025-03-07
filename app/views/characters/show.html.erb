@@ -2,13 +2,16 @@
 
 <%= render @character %>
 
-<div>
+<div class="card primary">
   <% if can? :update, @character %>
     <%= link_to "Edit this character", edit_character_path(@character) %> |
+  <% end %>
+  <% if can? :history, @character %>
+    <%= link_to "History", history_character_path(@character) %> |
   <% end %>
   <%= link_to "Back to characters", characters_path %>
 
   <% if can? :destroy, @character %>
-    <%= button_to "Destroy this character", @character, method: :delete %>
+    <%= button_to "Destroy this character", @character, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

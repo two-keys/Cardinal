@@ -21,6 +21,33 @@ module Taggable
     polarity_tags
   end
 
+  def self.tags_for(polarity, tags)
+    return nil if tags.nil?
+
+    polarity_tags = {}
+    tag_ids = tags.map(&:tag_id)
+
+    raw_tags = Tag.where(
+      id: tag_ids
+    )
+    raw_polarity_tags = raw_tags.where(
+      polarity:
+    )
+
+    CardinalSettings::Tags.types.each do |tag_type, tag_hash|
+      next unless tag_hash['polarities'].include? polarity
+
+      polarity_type_tags = raw_polarity_tags.filter do |tag|
+        tag.tag_type == tag_type
+      end
+      polarity_tags[tag_type] = polarity_type_tags unless polarity_type_tags.empty?
+    end
+
+    Rails.logger.debug polarity_tags
+
+    polarity_tags
+  end
+
   def entries_for(polarity, tag_type)
     checked_entries = tags.where(
       name: CardinalSettings::Tags.types[tag_type]['entries']

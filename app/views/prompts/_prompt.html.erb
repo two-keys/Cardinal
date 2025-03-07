@@ -32,7 +32,10 @@
   <% end %>
 
   <% if can? :edit, prompt %>
-    <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
+    <span>
+      <%= link_to "History", history_prompt_path(prompt), class: "prompt_history_link" %>
+      <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
+    </span>
   <% end %>
 
   <ul class="prompt_actions">

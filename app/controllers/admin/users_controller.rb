@@ -4,6 +4,7 @@ module Admin
   class UsersController < ApplicationController
     include Pagy::Backend
     include ApplicationHelper
+    include AuditableController
 
     before_action :require_admin
     before_action :set_user, only: %i[show edit update destroy]
@@ -72,6 +73,10 @@ module Admin
     end
 
     private
+
+    def model_class
+      'user'
+    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_user
