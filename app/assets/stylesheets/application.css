@@ -12,6 +12,37 @@
     --card-textarea-bg-color: rgb(228, 228, 228);
     --card-textarea-text-color: #333;
 
+    --tag-generic: #888;
+    --tag-generic-text: #000;
+
+    --tag-genre: var(--tag-generic);
+    --tag-genre-text: var(--tag-generic-text);
+    --tag-gender: var(--tag-generic);
+    --tag-gender-text: var(--tag-generic-text);
+    --tag-character: var(--tag-generic);
+    --tag-character-text: var(--tag-generic-text);
+    --tag-characteristic: var(--tag-generic);
+    --tag-characteristic-text: var(--tag-generic-text);
+    --tag-setting: var(--tag-generic);
+    --tag-setting-text: var(--tag-generic-text);
+    --tag-post-length: var(--tag-generic);
+    --tag-post-length-text: var(--tag-generic-text);
+    --tag-rp-length: var(--tag-generic);
+    --tag-rp-length-text: var(--tag-generic-text);
+    --tag-character-pref: var(--tag-generic);
+    --tag-character-pref-text: var(--tag-generic-text);
+    --tag-plot: var(--tag-generic);
+    --tag-plot-text: var(--tag-generic-text);
+
+    --tag-fandom: #424242;
+    --tag-fandom-text: #fff;
+
+    --tag-light-warning: var(--ended-color);
+    --tag-light-warning-text: #fff;
+
+    --tag-heavy-warning: var(--ended-color);
+    --tag-heavy-warning-text: #fff;
+
     --ongoing-color: grey;
     --unread-color: cornflowerblue;
     --unanswered-color: #9acd32;
@@ -31,6 +62,15 @@
     --card-textarea-bg-color: rgb(228, 228, 228);
     --card-textarea-text-color: #333;
 
+    --tag-generic: #a44747;
+    --tag-generic-text: #fff;
+
+    --tag-fandom: #8a486d;
+    --tag-fandom-text: #fff;
+
+    --tag-light-warning: #f0a123;
+    --tag-light-warning-text: #292929;
+
     --ongoing-color: grey;
     --unread-color: cornflowerblue;
     --unanswered-color: #9acd32;
@@ -49,6 +89,18 @@
     --card-text-color-secondary: #bebebe;
     --card-textarea-bg-color: #333;
     --card-textarea-text-color: #bbb;
+
+    --tag-generic: #772020;
+    --tag-generic-text: #fff;
+
+    --tag-fandom: #67264b;
+    --tag-fandom-text: #fff;
+
+    --tag-heavy-warning: #971818;
+    --tag-heavy-warning-text: #cfcfcf;
+
+    --tag-light-warning: #744e12;
+    --tag-light-warning-text: #ffffff;
 
     --ongoing-color: rgb(43, 43, 43);
     --unread-color: rgb(103, 133, 189);
