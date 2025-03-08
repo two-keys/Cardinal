@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<% if !@chat.connect_code.nil? && can? :edit, @chat.connect_code %>
+<% if !@chat.connect_code.nil? && can?(:edit, @chat.connect_code) %>
   <div class="card secondary">
     <%= render "form_connect_code", connect_code: @chat.connect_code %>
   </div>
