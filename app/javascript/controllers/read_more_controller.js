@@ -19,7 +19,7 @@ export default class extends Controller {
     calculateHeights() {
       this.truncateRect = this.truncateEl.getBoundingClientRect();
       this.truncateInnerRect = this.truncateInnerEl.getBoundingClientRect();
-      this.truncateEl.style.setProperty("--truncate-height", `${this.truncateRect.height}px`);
+      this.truncateEl.style.setProperty("--truncate-height", `${this.truncateRect.height ? this.truncateRect.height : 24}px`);
     }
 
     connect() {
@@ -29,9 +29,8 @@ export default class extends Controller {
 
         setTimeout(() => {
           this.calculateHeights();
-          if (this.isTextClamped(this.contentTarget) || this.isMobileOrTablet()) {
-            this.buttonTarget.classList.remove("hide");
-          }
+
+          this.buttonTarget.classList.remove("hide");
         }, 100);
     }
     toggle(event) {
