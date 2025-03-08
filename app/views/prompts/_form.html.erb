@@ -1,10 +1,10 @@
 <%= form_with(model: prompt, id: 'prompt_form') do |form| %>
-  <%= render partial: 'prompts/prompt_fields', locals: { prompt: prompt, form: form, pseudonym_options: } %>
   <% if local_assigns[:with_tags] %>
     <br />
     <%= render partial: 'prompts/form_tags/characters', locals: { prompt:, character_options: character_options } %>
     <%= render partial: 'prompts/form_tags/tag_fields', locals: { prompt: prompt} %>
   <% end %>
+  <%= render partial: 'prompts/prompt_fields', locals: { prompt: prompt, form: form, pseudonym_options: } %>
 
   <div>
     <%= form.submit 'Submit' %>
