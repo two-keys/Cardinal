@@ -10,17 +10,23 @@ export default class extends Controller {
 
     isTextClamped = elm => elm.scrollHeight > elm.clientHeight
 
+    calculateHeights() {
+      this.truncateRect = this.truncateEl.getBoundingClientRect();
+      this.truncateInnerRect = this.truncateInnerEl.getBoundingClientRect();
+      this.truncateEl.style.setProperty("--truncate-height", `${this.truncateRect.height}px`);
+    }
+
     connect() {
         this.open = false;
-        if (this.isTextClamped(this.contentTarget)) {
-          this.buttonTarget.classList.remove("hide");
-        }
         this.truncateEl = this.contentTarget;
         this.truncateInnerEl = this.innerTarget;
-        this.truncateRect = this.truncateEl.getBoundingClientRect();
-        this.truncateInnerRect = this.truncateInnerEl.getBoundingClientRect();
 
-        this.truncateEl.style.setProperty("--truncate-height", `${this.truncateRect.height}px`);
+        setTimeout(() => {
+          this.calculateHeights();
+          if (this.isTextClamped(this.contentTarget)) {
+            this.buttonTarget.classList.remove("hide");
+          }
+        }, 100);
     }
     toggle(event) {
         this.open === false ? this.show(event) : this.hide(event);
