@@ -64,12 +64,12 @@ form .polarity {
   display: inline;
 }
 
-.prompt.group {
+.prompt.group .prompt_info {
   border-bottom: var(--main-text-color) 2px dashed;
   padding-bottom: 1rem;
 }
 
-.prompt.standard {
+.prompt.standard .prompt_info {
   border-bottom: var(--main-text-color) 2px solid;
   padding-bottom: 1rem;
 }
