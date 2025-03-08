@@ -15,6 +15,15 @@
         <span>Type: <%= report.reportable_type %></span>
         <br />
         <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
+        <br />
+        <ol>
+          <% rule_titles = CardinalSettings::Use.get_page('rules')['titles'] %>
+          <% report.rules.each do |rule| %>
+            <li value="<%= rule %>">
+              <%= (1..rule_titles.count).member?(rule) ? rule_titles[rule-1] : "Undefined" %>
+            </li>
+          <% end %>
+        </ol>
         <% if report.handled %>
           <br />
           <span>Resolved by: <%= link_to report.handled_by.username, edit_admin_user_path(report.handled_by) %></span>

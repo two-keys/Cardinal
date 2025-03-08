@@ -1,6 +1,15 @@
 <p style="color: green"><%= notice %></p>
 
 <div class="card primary">
+  <b>Rule Violations:</b>
+  <ol>
+    <% rule_titles = CardinalSettings::Use.get_page('rules')['titles'] %>
+    <% @report.rules.each do |rule| %>
+      <li value="<%= rule %>">
+        <%= (1..rule_titles.count).member?(rule) ? rule_titles[rule-1] : "Undefined" %>
+      </li>
+    <% end %>
+  </ol>
   <% if @report.handled %>
     <p>This report has been resolved by <%= link_to @report.handled_by.username, edit_admin_user_path(@report.handled_by) %></p>
   <% end %>
