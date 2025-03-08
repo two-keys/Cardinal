@@ -12,6 +12,18 @@
       src="https://js.sentry-cdn.com/561d51d4da53e5e5ad60cab12cbe3039.min.js"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://browser.sentry-cdn.com/9.5.0/bundle.min.js"
+      integrity="sha384-5uFF6g91sxV2Go9yGCIngIx1AD3yg6buf0YFt7PSNheVk6CneEMSH6Eap5+e+8gt"
+      crossorigin="anonymous"
+    ></script>
+    <% sentry_id = request.env["sentry.error_event_id"] %>
+    <% if sentry_id.present? %>
+    <script>
+      Sentry.init({ dsn: "https://561d51d4da53e5e5ad60cab12cbe3039@o4508939275010048.ingest.us.sentry.io/4508939284578304" });
+      Sentry.showReportDialog({ eventId: "<%= sentry_id %>" });
+    </script>
+    <% end %>
     <script>
       function checkLocalStorage() {
           var mod = 'test';
