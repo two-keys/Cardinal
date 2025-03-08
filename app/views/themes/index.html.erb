@@ -1,0 +1,16 @@
+<% content_for :title, "Themes" %>
+
+<h1>Themes</h1>
+
+<div class="card">
+  <input id="theme_enable" type="checkbox" data-controller="theme-selector">
+  <label for="theme_enable">Enable Custom Theme</label>
+  <%= link_to "New theme", new_theme_path %><br/>
+  <div id="themes">
+    <% @themes.each do |theme| %>
+      <%= render theme %>
+    <% end %>
+  </div>
+</div>
+
+

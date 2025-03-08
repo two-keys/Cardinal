@@ -1,0 +1,11 @@
+<% content_for :title, "New theme" %>
+<h1>New theme</h1>
+<div class="card secondary">
+  <%= render "form", theme: @theme %>
+
+  <br>
+
+  <div>
+    <%= link_to "Back to themes", themes_path %>
+  </div>
+</div>

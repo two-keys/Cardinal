@@ -1,0 +1,41 @@
+<div class="card">
+  <%= form_with(model: theme) do |form| %>
+    <% if theme.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(theme.errors.count, "error") %> prohibited this theme from being saved:</h2>
+
+        <ul>
+          <% theme.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :title, style: "display: block" %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div>
+      <%= form.hidden_field :css, id: "css_hidden" %>
+      <div id="css_editor"><%= theme.css %></div>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+
+    <script>
+      var editor = ace.edit("css_editor");
+      var target = document.getElementById("css_hidden")
+      editor.setTheme("ace/theme/monokai");
+      editor.session.setMode("ace/mode/css", () => {
+        AceColorPicker.load(ace, editor);  
+      })
+      editor.session.on('change', function(delta) {
+          target.value = editor.getValue()
+      });
+    </script>
+  <% end %>
+</div>

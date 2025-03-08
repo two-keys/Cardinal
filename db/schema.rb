@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_07_144009) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_08_062801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -246,6 +246,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_144009) do
     t.index ["synonym_id"], name: "index_tags_on_synonym_id"
   end
 
+  create_table "themes", force: :cascade do |t|
+    t.string "title", null: false
+    t.boolean "public", default: false, null: false
+    t.boolean "system", default: false, null: false
+    t.text "css", default: "", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["public"], name: "index_themes_on_public"
+    t.index ["system"], name: "index_themes_on_system"
+    t.index ["user_id"], name: "index_themes_on_user_id"
+  end
+
   create_table "tickets", force: :cascade do |t|
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -278,9 +291,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_144009) do
     t.datetime "unban_at"
     t.string "ban_reason"
     t.datetime "delete_at"
+    t.bigint "theme_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["theme_id"], name: "index_users_on_theme_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -301,5 +316,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_144009) do
   add_foreign_key "reports", "users", column: "reportee_id"
   add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "tags", "tags", column: "synonym_id"
+  add_foreign_key "themes", "users"
   add_foreign_key "tickets", "users"
+  add_foreign_key "users", "themes"
 end

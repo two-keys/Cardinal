@@ -93,5 +93,8 @@ Rails.application.routes.draw do
   scope 'schema' do
     get 'types', to: 'schema#types'
   end
+
+  resources :themes
+  post 'themess/:id/apply', to: 'themes#apply', as: 'apply_theme'
 end
 # rubocop:enable Metrics/BlockLength

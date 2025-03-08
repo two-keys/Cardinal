@@ -25,6 +25,9 @@ class User < ApplicationRecord
                               inverse_of: 'reportee'
   has_many :handled_reports, class_name: 'Report', foreign_key: 'handled_by_id', dependent: :delete_all,
                              inverse_of: 'handled_by'
+  has_many :themes, dependent: :nullify
+  belongs_to :theme, optional: true
+
   delegate :can?, :cannot?, to: :ability
 
   has_snapshot_children do

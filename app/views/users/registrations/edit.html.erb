@@ -41,6 +41,15 @@
       </div>
     <% end %>
   <% end %>
+  <h3>Themes</h3>
+  <input id="theme_enable" type="checkbox" data-controller="theme-selector">
+  <label for="theme_enable">Enable Custom Theme</label><br/>
+  <%= link_to "New Theme", new_theme_path %>
+  <ul>
+  <% current_user.themes.each do |theme| %>
+    <li><%= link_to theme.title, theme %></li>
+  <% end %>
+  <ul>
   <h3>My Reports</h3>
   <%= link_to "My Reports", reports_path %>
   

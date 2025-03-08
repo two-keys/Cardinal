@@ -1,0 +1,18 @@
+<div class="card secondary">
+  <div id="<%= dom_id theme %>">
+    <%= button_to "Apply", apply_theme_path(theme) %>
+    <p>
+      <strong>Title:</strong>
+      <%= theme.title %>
+    </p>
+    
+    <% if theme.system %>
+      <p>
+        <strong>System:</strong>
+        <%= theme.system %>
+      </p>
+    <% end %>
+
+    <%= link_to "Edit this theme", edit_theme_path(theme) %>
+  </div>
+</div>
