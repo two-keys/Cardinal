@@ -49,6 +49,7 @@ module ThemesHelper
       --unanswered-color
       --ended-color
       --nav-bg-color
+      row-gap
     ]
 
     css = sanitize(css, tags: [])
