@@ -55,15 +55,6 @@ form .polarity {
   opacity: 75%;
 }
 
-.prompt_actions {
-  list-style-type: none;
-  margin-bottom: 0;
-}
-
-.prompt_actions li, .prompt_actions button, .prompt_actions form {
-  display: inline;
-}
-
 .prompt.group .prompt_info {
   border-bottom: var(--main-text-color) 2px dashed;
   padding-bottom: 1rem;

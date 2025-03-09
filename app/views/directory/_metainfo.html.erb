@@ -1,5 +1,5 @@
 <ul class="metainfo">
-    <% if can? :view_users, model %>
+    <% if can?(:view_users, model) && defined?(model.user) %>
         <li>
             <%= link_to model.user.username, edit_admin_user_path(model.user) %>
         </li>

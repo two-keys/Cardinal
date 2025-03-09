@@ -1,4 +1,4 @@
-<div id="<%= dom_id filter %>" class="card primary filter">
+<% content_for :card_content do %>
   <%= link_to filter.id, filter %>
 
   <p>
@@ -17,5 +17,6 @@
   </p>
 
   <%= render filter.target %>
-  <%= link_to "Edit", edit_filter_path(filter), class: "prompt_edit_link" %>
-</div>
+<% end %>
+
+<%= render partial: 'directory/card', locals: { model: filter } %>

@@ -1,20 +1,21 @@
 <% if defined?(locals) && locals[:reporting] %>
   <% prompt = locals[:reportable] %>
 <% end %>
-<div id="<%= dom_id prompt %>" class="card primary prompt<%= prompt.default_slots > 2 ? ' group' : ' standard' %>">
-  <div class="prompt_info">
-    <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
-    <div class="tags">
-      <%= render partial: 'prompts/tags', locals: { prompt: prompt} %>
-    </div>
-    <span class="slots">
-      <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
-    </span>
-    <span class="managed">
-      <strong><% unless prompt.managed? %>UN-<% end %>MANAGED</strong>
-    </span>
-  </div>
 
+<% content_for :card_classes, flush: true do %>
+  <%= prompt.default_slots > 2 ? ' group' : ' standard' %>
+<% end %>
+<% content_for :card_info, flush: true do %>
+  <span class="slots">
+    <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
+  </span>
+  <span class="managed">
+    <strong>
+      <% unless prompt.managed? %>UN-<% end %>MANAGED
+    </strong>
+  </span>
+<% end %>
+<% content_for :card_content, flush: true do %>
   <% if prompt.ooc.present? %>
     <div data-controller="read-more" data-read-more-more-text-value="Read more" data-read-more-less-text-value="Read less">
       <div class="ooc truncate truncate--line-clamped" data-read-more-target="content">
@@ -23,7 +24,7 @@
         </div>
       </div>
 
-      <button data-action="read-more#toggle" data-read-more-target="button" class="hide fullwidth">More...</button>
+      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth">More...</button>
     </div>
   <% end %>
 
@@ -39,27 +40,19 @@
         </div>
       </div>
 
-      <button data-read-more-target="button" data-action="read-more#toggle" class="hide fullwidth">More...</button>
+      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth">More...</button>
     </div>
   <% end %>
+<% end %>
+<% content_for :timestamp, flush: true do %>
+  <%= link_to (prompt.bumped_at || prompt.created_at).strftime("%Y-%m-%d %k:%M:%S"), prompt %>
+<% end %>
 
-  <% if can? :edit, prompt %>
-    <span>
-      <%= link_to "History", history_prompt_path(prompt), class: "prompt_history_link" %>
-      <%= link_to "Edit", edit_prompt_path(prompt), class: "prompt_edit_link" %>
-    </span>
-  <% end %>
+<%= render partial: 'prompts/actions', locals: { prompt: } %>
 
-  <ul class="prompt_actions">
-    <li><%= link_to "Report", new_report_path(reportable_id: prompt.id, reportable_type: prompt.class.name), class: "report_link" %></li>
-    <% if can?(:edit, prompt) && prompt.bumpable? %>
-      <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
-    <% end %>
-    <% if can?(:answer, prompt) %>
-      <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post %></li>
-    <% end %>
-  </ul>
-</div>
+<%= render partial: 'directory/card', locals: { 
+  model: prompt, variant: (defined?(variant) && variant) || 'full' 
+} %>
 <% if defined?(locals) && !locals[:reporting] %>
   <% @chats.each do |chat| %>
       <% connect_code = chat.connect_code %>

@@ -8,15 +8,6 @@
   opacity: 75%;
 }
 
-.tag_actions {
-  list-style-type: none;
-  margin-bottom: 0;
-}
-
-.tag_actions li, .tag_actions button, .tag_actions form {
-  display: inline;
-}
-
 .tag {
   word-break: keep-all;
   line-height: 28px;

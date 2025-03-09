@@ -1,14 +1,17 @@
-<div id="<%= dom_id tag %>" class="card primary">
-  <div class="tag_info">
-    <strong><%= link_to tag.name, tag %></strong>:
-    <span class="type_notif">
-      <% if tag.enabled? %>
-        ENABLED
-      <% else %>
-        DISABLED
-      <% end %>
-    </span>
-  </div>
+<% variant = (defined?(variant) && variant) || 'full'  %>
+
+<% content_for :card_info, flush: true do %>
+  <strong><%= link_to tag.name, tag %></strong>:
+  <span class="type_notif">
+    <% if tag.enabled? %>
+      ENABLED
+    <% else %>
+      DISABLED
+    <% end %>
+  </span>
+<% end %>
+
+<% content_for :card_content, flush: true do %>
   <div class="tag_body">
     <p>
       Polarity: <%= tag.polarity %><br />
@@ -21,17 +24,15 @@
     </p>
   </div>
   
-  <% if tag.synonym.present? %>
+  <% if tag.synonym.present? && variant == 'full' %>
     Synonym
     <%= render partial: 'tags/mini', locals: {tag: tag.synonym} %>
-  <% elsif tag.parent.present? %>
+  <% elsif tag.parent.present? && variant == 'full' %>
     Parent
     <%= render partial: 'tags/mini', locals: {tag: tag.parent} %>
   <% end %>
+<% end %>
 
-  <ul class="tag_actions">
-    <% if can?(:hide, tag) %>
-      <li><%= button_to "Hide", hide_tag_path(tag), method: :post %></li>
-    <% end %>
-  </ul>
-</div>
+<%= render partial: 'directory/card', locals: { 
+  model: tag, variant:
+} %>

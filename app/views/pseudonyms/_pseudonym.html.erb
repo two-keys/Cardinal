@@ -1,14 +1,7 @@
-<div id="<%= dom_id pseudonym %>" class="card primary pseudonym">
-  <div class="pseudonym_info">
-    <%= render partial: 'directory/metainfo', locals: { model: pseudonym} %>
-    <div class="name">
-      <strong>NAME <u><%= pseudonym.name %></u></strong>
-    </div>
-  </div>
+<% content_for :timestamp do %>
+  <%= link_to (pseudonym.updated_at || pseudonym.created_at).strftime("%Y-%m-%d %k:%M:%S"), pseudonym %>
+<% end %>
 
-  </br>
-
-  <% if can? :edit, pseudonym %>
-    <%= link_to "Edit", edit_pseudonym_path(pseudonym), class: "pseudonym_edit_link" %>
-  <% end %>
-</div>
+<%= render partial: 'directory/card', locals: {
+  model: pseudonym, variant: (defined?(variant) && variant) || 'full' 
+} %>

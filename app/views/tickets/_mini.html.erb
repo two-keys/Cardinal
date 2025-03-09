@@ -1,23 +1,9 @@
-<div id="<%= dom_id ticket %>" class="card primary prompt mini">
-  <div class="ticket_info">
-    <%= render partial: 'directory/metainfo', locals: { model: ticket} %>
-  </div>
-
-  <% if ticket.present? %>
-    
+<% content_for :card_content do %>
+  <% if ticket.item_type.present? %>
+    <%= link_to "#{ticket.item_type} #{ticket.item_id}", ticket %>
+  <% else %>
+    No ticket item attached.
   <% end %>
-  <div>
-    <% if ticket.item_type.present? %>
-      <%= link_to "#{ticket.item_type} #{ticket.item_id}", ticket %>
-    <% else %>
-      No ticket item attached.
-    <% end %>
-  </div>
-  
-  <hr />
+<% end %>
 
-  <span class="ticket_date_time">
-    <!-- Display the date and time of the prompt  -->
-    <%= link_to ticket.created_at.strftime("%Y-%m-%d %k:%M:%S"), ticket %>
-  </span>
-</div>
+<%= render partial: 'directory/card', locals: { model: ticket } %>

@@ -2,7 +2,7 @@
   <div id="<%= polarity %>" class="polarity">  
     <h4><%= polarity.upcase %></h4>
     <ul>
-      <% character.tags_for(polarity).each do |tag_type, tags| %>
+      <% model.tags_for(polarity).each do |tag_type, tags| %>
         <% tags.each do |tag| %>
           <li id="<%= tag.id %>" class="<%= tag_type %> tag">
             <%= link_to tag.name, tag_url(tag) %>

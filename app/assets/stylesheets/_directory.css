@@ -20,3 +20,31 @@ ul.metainfo li {
 ul.metainfo li:nth-child(n+2)::before {
     content: '|';
 }
+
+.card_footer {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.card_footer .timestamp {
+  min-width: fit-content;
+}
+
+.actions {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.actions_left, .actions_right {
+  display: inline;
+  padding-inline-start: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.card_footer li, .card_footer button, .card_footer form {
+  display: inline;
+}

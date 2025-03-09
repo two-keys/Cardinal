@@ -1,0 +1,8 @@
+<% content_for :card_actions_right, flush: true do %>
+    <% if can?(:edit, prompt) && prompt.bumpable? %>
+        <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
+    <% end %>
+    <% if can?(:answer, prompt) %>
+        <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post %></li>
+    <% end %>
+<% end %>

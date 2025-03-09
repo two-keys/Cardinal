@@ -1,0 +1,65 @@
+<% class_name = model.class.name.downcase %>
+<div id="<%= dom_id model %>" class="card primary <%= class_name %> mini<%= yield :card_classes %>">
+  <div class="<%= class_name %>_info">
+    <%= render partial: 'directory/metainfo', locals: { model: } %>
+    <% if defined? model.name %>
+      <div>
+        <h2><%= model.name %></h2>
+      </div>
+    <% end %>
+    <% if defined? model.tags %>
+        <div class="tags">
+            <% if defined?(variant) && variant == 'mini' %>
+              <%= render partial: 'directory/mini_tags', locals: { model: } %>
+            <% else %>
+              <%= render partial: 'directory/tags', locals: { model: } %>
+            <% end %>
+        </div>
+    <% end %>
+
+    <%= yield :card_info %>
+  </div>
+
+  <%= yield :card_content %>
+ 
+  <% if defined? model.description %>
+    <div class="description">
+      <%= model.mark_description %>
+    </div>
+  <% end %>
+  
+  <hr />
+
+  <div class="card_footer">
+    <% if defined? model.created_at %>
+      <span class="<%= class_name %>_date_time timestamp">
+        <!-- Display the date and time of the model  -->
+        <% if content_for?(:timestamp) %>
+          <%= yield :timestamp %>
+        <% else %>
+          <%= link_to (model.created_at).strftime("%Y-%m-%d %k:%M:%S"), model %>
+        <% end %>
+      </span>
+    <% end %>
+    <div class="actions">
+      <ul class="actions_left">
+        <% if can?(:hide, model) %>
+          <li><%= button_to "Hide", hide_tag_path(model), method: :post %></li>
+        <% end %>
+
+        <% if defined?(model.user) && model.user != current_user %>
+          <li><%= link_to "Report", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report_link" %></li>
+        <% end %>
+
+        <% if can? :edit, model %>
+          <li><%= link_to "Edit", "#{url_for(model)}/edit", class: "#{class_name}_edit_link" %></li>
+        <% end %>
+
+        <%= yield :card_actions_left %>
+      </ul>
+      <ul class="actions_right">
+        <%= yield :card_actions_right %>
+      </ul>
+    </div>
+  </div>
+</div>

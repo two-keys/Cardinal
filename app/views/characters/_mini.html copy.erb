@@ -1,0 +1,33 @@
+<div id="<%= dom_id character %>" class="card primary character mini">
+  <div class="character_info">
+    <%= render partial: 'directory/metainfo', locals: { model: character} %>
+    <div>
+      <h2><%= character.name %></h2>
+    </div>
+  
+    <div class="tags">
+      <%= render partial: 'characters/mini_tags', locals: { character: character} %>
+    </div>
+  </div>
+  
+  <% if character.description.present? %>
+    <div>
+      <%= character.mark_description %>
+    </div>
+  <% end %>
+  
+  <hr />
+
+  <span class="character_date_time">
+    <!-- Display the date and time of the character  -->
+    <%= link_to (character.created_at).strftime("%Y-%m-%d %k:%M:%S"), character %>
+  </span>
+
+  <% if character.user != current_user %>
+    <%= link_to "Report", new_report_path(reportable_id: character.id, reportable_type: character.class.name), class: "report_link" %>
+  <% end %>
+
+  <% if can? :edit, character %>
+    <%= link_to "Edit", edit_character_path(character), class: "character_edit_link" %>
+  <% end %>
+</div>
