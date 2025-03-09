@@ -4,9 +4,9 @@
 <% message = defined?(locals) ? locals[:message] : message %>
 <%= turbo_frame_tag message do %>
   <% if !message.ooc %>
-    <div class="message">
+    <div class="message" data-controller="twemoji">
   <% else %>
-    <div class="message ooc">
+    <div class="message ooc" data-controller="twemoji">
   <% end %>
       <span class="user_icon"><%= message.icon %></span>
       <span class="type_notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">

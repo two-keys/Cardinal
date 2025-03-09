@@ -134,6 +134,13 @@ body {
     bottom: 0;
 }
 
+#site img.emoji {
+    height: 1.1em;
+    width: 1.1em;
+    margin: 0 .05em 0 .1em;
+    vertical-align: -0.1em;
+ }
+
 #site {
     position: relative;
 }
