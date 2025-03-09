@@ -51,6 +51,8 @@ module ThemesHelper
       --nav-bg-color
     ]
 
+    css = sanitize(css, tags: [])
+
     Sanitize::CSS.stylesheet(css, Sanitize::Config.merge(Sanitize::Config::RELAXED,
                                                          css: { properties: Sanitize::Config::RELAXED[:css][:properties] + valid_properties }, # rubocop:disable Layout/LineLength
                                                          remove_contents: true))

@@ -1,9 +1,9 @@
 <%= turbo_frame_tag "theme" do %>
   <style type="text/css">
     <% user = Current.user ? Current.user : current_user %>
-    <%= sanitize_user_css(user.theme.css) %>
+    <%== sanitize_user_css(user.theme.css) %>
   </style>
   <div style="display: none">
-    <%= sanitize_user_css(user.theme.css) %>
+    <%== sanitize_user_css(user.theme.css) %>
   </div>
 <% end %>
