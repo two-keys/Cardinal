@@ -9,6 +9,7 @@ class TagTest < ActiveSupport::TestCase
     @son_tag.parent = @dad_tag
 
     @capital = tags(:capital)
+    @camel_case = tags(:camel_case)
   end
 
   test 'lower can be accessed' do
@@ -76,5 +77,41 @@ class TagTest < ActiveSupport::TestCase
     test_tag.validate
 
     assert_includes test_tag.errors[:tag_type], 'is not included in the list'
+  end
+
+  test 'cant create tags with the same lower field' do
+    Tag.create!(
+      name: 'My New Tag',
+      polarity: 'misc',
+      tag_type: 'misc',
+      synonym: nil,
+      parent: nil
+    )
+
+    dupe_tag = Tag.new(
+      name: 'My New TAG',
+      polarity: 'misc',
+      tag_type: 'misc',
+      synonym: nil,
+      parent: nil
+    )
+
+    assert_raises ActiveRecord::RecordInvalid do
+      dupe_tag.save!
+    end
+  end
+
+  test 'Tag.find_or_create_with_downcase should correctly identify duplicates' do
+    found_tag = nil
+
+    assert_no_difference('Tag.count') do
+      found_tag = Tag.find_or_create_with_downcase(
+        polarity: @camel_case.polarity,
+        tag_type: @camel_case.tag_type,
+        name: 'CAMELCASE'
+      )
+    end
+
+    assert_equal @camel_case.id, found_tag.id
   end
 end

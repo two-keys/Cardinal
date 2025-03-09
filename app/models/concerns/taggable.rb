@@ -112,10 +112,10 @@ module Taggable
       # Array of form [<tag_type>, <tag_lower_name>]
       tag_components = cardinal_types[calc_type]['parent']
 
-      new_parent = Tag.find_or_create_by(
+      new_parent = Tag.find_or_create_with_downcase(
+        polarity: tag_components['polarity'],
         tag_type: tag_components['type'],
-        name: tag_components['name'],
-        polarity: tag_components['polarity']
+        name: tag_components['name']
       )
       next if tags.exists?(new_parent.id)
 

@@ -8,6 +8,7 @@ class Tag < ApplicationRecord
 
   has_many :duplicates, class_name: 'Tag', foreign_key: 'synonym_id', inverse_of: 'synonym', dependent: :destroy
   belongs_to :synonym, class_name: 'Tag', optional: true
+  before_validation :set_lower
   before_save :fix_synonym
 
   has_many :object_tags, dependent: :destroy
@@ -17,6 +18,7 @@ class Tag < ApplicationRecord
   scope :with_public, -> { where(enabled: true) }
 
   validates :name, presence: true, length: { maximum: 254 }
+  validates :lower, presence: true, length: { maximum: 254 }, uniqueness: { scope: %i[polarity tag_type] }
   validates :tag_type, presence: true, length: { maximum: 25 }, inclusion: CardinalSettings::Tags.types.keys
 
   validates :polarity, presence: true
@@ -33,8 +35,24 @@ class Tag < ApplicationRecord
     lower == other.lower
   end
 
-  def lower
-    name.downcase
+  # An extended version of find_or_create_by that takes into account
+  # lowercase versions of tags
+  # @param polarity [string] tag's polarity
+  # @param tag_type [string] tag's type
+  # @param name Tag's display name. Compared against existing tags with .downcase
+  # @return [Tag] Either a new tag or the existing tag matching polarity, tag_type, and name.
+  def self.find_or_create_with_downcase(polarity:, tag_type:, name:)
+    temp_tag = Tag.find_by(
+      polarity:, tag_type:, lower: name.downcase
+    )
+
+    if temp_tag.nil?
+      temp_tag = Tag.create!(
+        polarity:, tag_type:, name:
+      )
+    end
+
+    temp_tag
   end
 
   # Automatically called before saving a tag to the DB
@@ -75,7 +93,13 @@ class Tag < ApplicationRecord
       tag_type = pieces[1]
       name = pieces[2].strip
 
-      search_tags << Tag.find_or_create_by!(name:, tag_type:, polarity:)
+      search_tags << Tag.find_or_create_with_downcase(
+        polarity:,
+        tag_type:,
+        name:
+      )
+
+      logger.debug search_tags.last
     end
 
     # Let @prompt.save handle the bulk of processing/validating tags
@@ -104,7 +128,11 @@ class Tag < ApplicationRecord
           list_from_split.compact_blank! # strip might've resulted in empty tags
 
           list_from_split.each do |tag_name|
-            temp_tag = Tag.find_or_create_by!(name: tag_name, tag_type: type, polarity:)
+            temp_tag = Tag.find_or_create_with_downcase(
+              polarity:,
+              tag_type: type,
+              name: tag_name
+            )
             new_tags << temp_tag
           end
         end
@@ -120,5 +148,9 @@ class Tag < ApplicationRecord
     return if CardinalSettings::Tags.polarities_for(tag_type).include? polarity
 
     errors.add(:polarity, 'Must be a valid polarity for the given tag type')
+  end
+
+  def set_lower
+    self.lower = name.downcase
   end
 end

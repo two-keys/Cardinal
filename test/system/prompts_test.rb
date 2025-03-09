@@ -30,7 +30,11 @@ class PromptsTest < ApplicationSystemTestCase
 
     bad_tags = []
     bad_tag_objs.each do |bt|
-      temp_tag = Tag.find_or_create_by!(bt)
+      temp_tag = Tag.find_or_create_with_downcase(
+        polarity: bt['polarity'],
+        tag_type: bt['tag_type'],
+        name: bt['name']
+      )
       bad_tags << temp_tag
       Filter.create(user: @user, tag: temp_tag, group: 'test', filter_type: 'Rejection')
     end

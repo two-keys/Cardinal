@@ -2,57 +2,74 @@
 
 son:
   name: son
+  lower: son
   tag_type: misc
   polarity: misc
 
 dad:
   name: dad
+  lower: dad
   tag_type: misc
   polarity: misc
 
 capital:
   name: CAPITAL
+  lower: capital
   tag_type: misc
   polarity: misc
 
 generic:
   name: Generic tag
+  lower: generic tag
   tag_type: misc
   polarity: misc
 
 modernfan:
   name: Modern Fantasy
+  lower: modern fantasy
   tag_type: misc
   polarity: misc
 
 twentiethcentury:
   name: 20th Century
+  lower: 20th century
   tag_type: misc
   polarity: misc
 
 twentiethcenturyfantasy:
   name: 20th century Fantasy
+  lower: 20th century fantasy
   tag_type: misc
   polarity: misc
   synonym: modernfan
 
 nofandom:
   name: No Fandom
+  lower: no fandom
   tag_type: fandom
   polarity: playing
 
 originalcharacter:
   name: Original Character
+  lower: original character
   tag_type: character
   polarity: playing
 
 disabled:
   name: Disabled tag
+  lower: disabled tag
   tag_type: misc
   polarity: misc
   enabled: false
 
 tagfordupefilters:
   name: Tag dupefilters
+  lower: tag dupefilters
+  tag_type: misc
+  polarity: misc
+
+camel_case:
+  name: camelCase
+  lower: camelcase
   tag_type: misc
   polarity: misc

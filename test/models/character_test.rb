@@ -97,17 +97,17 @@ class CharacterTest < ActiveSupport::TestCase
       elsif type_hash['fill_in']
         'testing meta tags'
       end
-    tag_to_add = Tag.find_or_create_by!(
+    tag_to_add = Tag.find_or_create_with_downcase(
+      polarity: type_hash['polarities'].first,
       tag_type: type_key,
-      name: tag_name,
-      polarity: type_hash['polarities'].first
+      name: tag_name
     )
 
     tag_components = type_hash['parent']
-    parent_tag = Tag.find_or_create_by!(
+    parent_tag = Tag.find_or_create_with_downcase(
+      polarity: tag_components['polarity'],
       tag_type: tag_components['type'],
-      name: tag_components['name'],
-      polarity: tag_components['polarity']
+      name: tag_components['name']
     )
     assert_raises(ActiveRecord::RecordNotFound) { @no_tags.tags.find(parent_tag.id) }
 

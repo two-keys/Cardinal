@@ -32,7 +32,11 @@ class FiltersController < ApplicationController
   def create
     @filter = Filter.new(filter_params)
     @filter.user_id = current_user.id
-    @filter.target = Tag.find_or_create_by!(tag_params)
+    @filter.target = Tag.find_or_create_with_downcase(
+      polarity: tag_params[:polarity],
+      tag_type: tag_params[:tag_type],
+      name: tag_params[:name]
+    )
 
     respond_to do |format|
       if @filter.save

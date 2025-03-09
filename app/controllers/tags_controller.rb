@@ -142,7 +142,11 @@ class TagsController < ApplicationController
     )
     return if missing_something
 
-    @parent = Tag.find_or_create_by!(parent_params)
+    @parent = Tag.find_or_create_with_downcase(
+      polarity: parent_params[:polarity],
+      tag_type: parent_params[:tag_type],
+      name: parent_params[:name]
+    )
   end
 
   def set_synonym
@@ -158,7 +162,11 @@ class TagsController < ApplicationController
     )
     return if missing_something
 
-    @synonym = Tag.find_or_create_by!(synonym_params)
+    @synonym = Tag.find_or_create_with_downcase(
+      polarity: synonym_params[:polarity],
+      tag_type: synonym_params[:tag_type],
+      name: synonym_params[:name]
+    )
   end
 
   def tag_params
