@@ -75,7 +75,7 @@
     </script>
     <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <%= javascript_include_tag 'ace-colorpicker.min.js' %>
-    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/ace-builds@1.39.0/css/ace.min.css" rel="stylesheet">
     <% if user_signed_in? && current_user.theme %>
       <%= turbo_stream_from dom_id(current_user)  + "_theme" %>
