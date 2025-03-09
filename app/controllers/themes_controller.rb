@@ -30,9 +30,7 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
   def create
     params = theme_params
 
-    if !admin?
-      params = params.except(:public, :system)
-    end
+    params.except(:public, :system) unless admin?
 
     @theme = Theme.new(theme_params)
     @theme.user = current_user
@@ -52,9 +50,7 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
   def update
     params = theme_params
 
-    if !admin?
-      params = params.except(:public, :system)
-    end
+    params = params.except(:public, :system) unless admin?
 
     respond_to do |format|
       if @theme.update(params)

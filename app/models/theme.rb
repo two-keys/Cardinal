@@ -6,7 +6,7 @@ class Theme < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 32 }
 
-  scope :available, ->(user) { where(user: user).or(where(system: true)).or(where(public: true)).order("system DESC") }
+  scope :available, ->(user) { where(user: user).or(where(system: true)).or(where(public: true)).order('system DESC') }
 
   after_update_commit :broadcast_changes
 
