@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLength
+  include Pagy::Backend
+  include ApplicationHelper
+
   before_action :authenticate_user!
   before_action :set_theme, only: %i[show edit update destroy apply]
 
+  authorize_resource
+
   # GET /themes or /themes.json
   def index
-    @themes = Theme.available(current_user)
-    Rails.logger.debug @themes
+    @pagy, @themes = pagy(Theme.available(current_user))
   end
 
   # GET /themes/1 or /themes/1.json
@@ -24,6 +28,12 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   # POST /themes or /themes.json
   def create
+    params = theme_params
+
+    if !admin?
+      params = params.except(:public, :system)
+    end
+
     @theme = Theme.new(theme_params)
     @theme.user = current_user
 
@@ -40,8 +50,14 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   # PATCH/PUT /themes/1 or /themes/1.json
   def update
+    params = theme_params
+
+    if !admin?
+      params = params.except(:public, :system)
+    end
+
     respond_to do |format|
-      if @theme.update(theme_params)
+      if @theme.update(params)
         format.html { redirect_to edit_theme_path(@theme), notice: 'Theme was successfully updated.' }
         format.json { render :show, status: :ok, location: @theme }
       else

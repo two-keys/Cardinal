@@ -17,6 +17,13 @@
       <%= form.text_field :title %>
     </div>
 
+    <% if admin? %>
+      <div>
+        <%= form.label :system, style: "display: block" %>
+        <%= form.check_box :system  %>
+      </div>
+    <% end %>
+
     <div>
       <%= form.hidden_field :css, id: "css_hidden" %>
       <div id="css_editor"><%= theme.css %></div>

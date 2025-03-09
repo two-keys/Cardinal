@@ -1,7 +1,11 @@
 <div class="card">
   <%= render @theme %>
-  <%= link_to "Edit this theme", edit_theme_path(@theme) %> |
+  <% if can? :create, Theme %>
+    <%= link_to "Edit this theme", edit_theme_path(@theme) %> |
+  <% end %>
   <%= link_to "Back to themes", themes_path %>
 
-  <%= button_to "Destroy this theme", @theme, method: :delete, data: {turbo_confirm: "Are you sure?"}  %>
+  <% if can? :destroy, @theme %>
+    <%= button_to "Destroy this theme", @theme, method: :delete, data: {turbo_confirm: "Are you sure?"}  %>
+  <% end %>
 </div>

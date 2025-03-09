@@ -40,6 +40,7 @@ class Ability
       user_valid = user.chats.include?(report.reportable.chat) if report.reportable_type == 'Message'
       user_valid && reportee_valid
     end
+    can :create, Theme
 
     ## Reading
     can :read, Message do |message|
@@ -61,6 +62,9 @@ class Ability
     can :read, Ticket, user: user
     can :read, User, user: user
     can :read, Report, reporter: user
+    can :read, Theme, user: user
+    can :read, Theme, public: true
+    can :read, Theme, system: true
 
     ## Updating
     can :update, Message do |message|
@@ -80,6 +84,7 @@ class Ability
     can :update, Prompt, user: user
     can :update, Character, user: user
     can :update, User, user: user
+    can :update, Theme, user: user
 
     ## Destroying
     can :destroy, Chat do |chat|
@@ -99,6 +104,7 @@ class Ability
       ticket.user == user && ticket.destroyable?
     end
     can :destroy, User, user: user
+    can :destroy, Theme, user: user
 
     ## Non-CRUD Actions
     can :chat_kick, Chat do |chat|
@@ -126,6 +132,9 @@ class Ability
     can :history, Character, user: user
     can :restore, Character, user: user
     can :hide, Tag
+    can :apply, Theme, user: user
+    can :apply, Theme, public: true
+    can :apply, Theme, system: true
 
     unless user.active_for_authentication?
       # Things which banned users cannot do
@@ -151,6 +160,7 @@ class Ability
     can :restore, :all
     can :view_users, :all
     can :view_sensitive, :all
+    can :apply, Theme
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity

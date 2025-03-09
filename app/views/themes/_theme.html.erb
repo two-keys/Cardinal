@@ -12,7 +12,9 @@
         <%= theme.system %>
       </p>
     <% end %>
-
-    <%= link_to "Edit this theme", edit_theme_path(theme) %>
+    
+    <% if can? :edit, theme %>
+      <%= link_to "Edit this theme", edit_theme_path(theme) %>
+    <% end %>
   </div>
 </div>

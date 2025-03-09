@@ -5,12 +5,16 @@
 <div class="card">
   <input id="theme_enable" type="checkbox" data-controller="theme-selector">
   <label for="theme_enable">Enable Custom Theme</label>
-  <%= link_to "New theme", new_theme_path %><br/>
+  <% if can? :create, Theme %>
+    <%= link_to "New theme", new_theme_path %><br/>
+  <% end %>
+  <%== pagy_nav @pagy %>
   <div id="themes">
     <% @themes.each do |theme| %>
       <%= render theme %>
     <% end %>
   </div>
+  <%== pagy_nav @pagy %>
 </div>
 
 
