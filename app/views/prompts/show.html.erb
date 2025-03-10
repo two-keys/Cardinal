@@ -2,6 +2,33 @@
 
 <%= render @prompt %>
 
+<div class="card primary">
+  <p>This prompt has <strong><%= @pagy.count %></strong> joinable <%= @pagy.count > 1 ? pluralize_without_count(@pagy.count, "chat") : "chats" %>.</p>
+  <%== pagy_nav @pagy %>
+  <% @chats.each do |chat| %>
+    <% connect_code = chat.connect_code %>
+    <div class="card secondary">
+      <p><strong><%= connect_code.remaining_uses %></strong> remaining <%= pluralize_without_count(connect_code.remaining_uses, "slot") %>.</p>
+      <% if !current_user.chats.include?(connect_code.chat) %>
+        <%= form_with url: url_for(connect_code_consume_path), method: :patch, id: "connect_code_form" do |f| %>
+          <%= f.hidden_field :connect_code, value: connect_code.code, class: "form-control" %>
+          <%= f.submit 'Join' %>
+        <% end %>
+      <% else %>
+        <% settings = chat.get_user_info(current_user) %>
+        <% if settings.title %>
+          <%= link_to "#{settings.title} (#{settings.status == "ended_viewed" ? "ended" : settings.status})", chat_path(chat.uuid) %>
+        <% else %>
+          <%= link_to "#{chat.uuid} (#{settings.status == "ended_viewed" ? "ended" : settings.status})", chat_path(chat.uuid) %>
+        <% end %>
+        <% if settings.description %>
+          <p><%= settings.description %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
 <div class="card">
   <% if can? :update, @prompt %>
     <%= link_to "Edit this prompt", edit_prompt_path(@prompt) %> |

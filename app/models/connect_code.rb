@@ -13,7 +13,7 @@ class ConnectCode < ApplicationRecord
 
   before_validation :generate_code, on: :create
 
-  validates :remaining_uses, numericality: { only_integer: true, less_than: 10 }
+  validates :remaining_uses, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def use(user)
     if remaining_uses.positive?

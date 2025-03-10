@@ -50,7 +50,7 @@ class PromptsController < ApplicationController
     )
     # We could add more qualifiers here later, if we think we need to. For now, it should be fine.
 
-    @chats = query
+    @pagy, @chats = pagy(query, items: 5)
   end
 
   # GET /prompts/new
@@ -110,11 +110,12 @@ class PromptsController < ApplicationController
   def answer
     respond_to do |format|
       @chat = @prompt.answer(current_user)
-      if @chat.save
+      if @chat.save!
         @connect_code = ConnectCode.new(
           chat_id: @chat.id,
           user: @prompt.user,
-          remaining_uses: @prompt.default_slots - 2
+          remaining_uses: @prompt.default_slots - 2,
+          status: @prompt.managed? ? :unlisted : :listed
         )
         @connect_code.save!
         creation_message = "Chat created.  \n" \

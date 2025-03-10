@@ -65,9 +65,9 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     @chat = Chat.new
     @chat.prompt = self
     @chat.chat_users << if managed?
-                          ChatUser.new(user:, role: ChatUser.roles[:chat_admin]) # prompt owner
+                          ChatUser.new(user: user, role: ChatUser.roles[:chat_admin]) # prompt owner
                         else
-                          ChatUser.new(user:)
+                          ChatUser.new(user: user)
                         end
     @chat.chat_users << ChatUser.new(user: as_user)
 

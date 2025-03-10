@@ -14,6 +14,10 @@
       <% unless prompt.managed? %>UN-<% end %>MANAGED
     </strong>
   </span>
+  <br/>
+  <% if prompt.default_slots > 2 %>
+    <%= link_to "View Joinable Chats", prompt %>
+  <% end %>
 <% end %>
 <% content_for :card_content, flush: true do %>
   <% if prompt.ooc.present? %>
@@ -53,19 +57,3 @@
 <%= render partial: 'directory/card', locals: { 
   model: prompt, variant: (defined?(variant) && variant) || 'full' 
 } %>
-<% if defined?(locals) && !locals[:reporting] %>
-  <% @chats.each do |chat| %>
-      <% connect_code = chat.connect_code %>
-      <div class="card secondary">
-        <%= link_to 'No title set', chat_path(chat.uuid) %>
-        <hr />
-        <p><strong>CONNECT CODE</strong> <%= connect_code.code %></p>
-        <p><strong>OPEN SLOTS <u><%= connect_code.remaining_uses %></u></strong></p>
-        <% if false && connect_code.description.present? %>
-          <%= connect_code.description %>
-        <% else %>
-          <i>No description set.</i>
-        <% end %>
-      </div>
-    <% end %>
-<% end %>
