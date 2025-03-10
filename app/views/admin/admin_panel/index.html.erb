@@ -20,6 +20,17 @@
 
 <div id="admin_panel_container">
   <div class="card primary">
+    <%= form_with url: admin_root_path, method: :get, class: 'analytics-form' do |f| %>
+      <div class="filters">
+        <%= f.select :interval, @intervals, 
+                    { selected: params[:interval] ? params[:interval] : 'day'} %>
+
+        <%= f.datetime_field :date_from, value: @begin_date %>
+        <%= f.datetime_field :date_to, value: @end_date %>
+
+        <%= f.submit 'Filter' %>
+      </div>
+    <% end %>
     <div class="card secondary">
       <h2>Reports</h2>
       <%= line_chart @report_analytics %>

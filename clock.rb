@@ -6,5 +6,5 @@ require './config/boot'
 require './config/environment'
 
 module Clockwork
-  every(1.hour, 'analytics.refresh') { AnalyticsJob.perform_later }
+  every(5.minutes, 'analytics.refresh') { AnalyticsJob.perform_later }
 end
