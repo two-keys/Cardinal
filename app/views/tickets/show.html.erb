@@ -2,7 +2,7 @@
 
 <%= render partial: 'tickets/mini', locals: { ticket: @ticket} %>
 
-<div>
+<div class="card">
   <%= link_to "Back to tickets", tickets_path %>
 
   <% if can? :destroy, @ticket %>

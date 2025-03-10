@@ -2,7 +2,7 @@
 
 <%= render @pseudonym %>
 
-<div>
+<div class="card">
   <% if can? :update, @pseudonym %>
     <%= link_to "Edit this pseudonym", edit_pseudonym_path(@pseudonym) %> |
   <% end %>

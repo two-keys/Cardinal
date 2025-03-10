@@ -2,7 +2,7 @@
 
 <%= render @prompt %>
 
-<div>
+<div class="card">
   <% if can? :update, @prompt %>
     <%= link_to "Edit this prompt", edit_prompt_path(@prompt) %> |
   <% end %>

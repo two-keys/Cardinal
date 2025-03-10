@@ -1,10 +1,8 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render partial: 'filters/filter_sidebar', layout: 'directory/left_sidebar' %>
 
 <%= render @filter %>
 
-<div>
+<div class="card">
   <% if can? :update, @filter %>
     <%= link_to "Edit this filter", edit_filter_path(@filter) %> |
   <% end %>

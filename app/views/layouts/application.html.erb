@@ -91,10 +91,20 @@
         </a>
       </header>
       <%= render 'navbar' %>
-      <div class="site-alert">
-        <%= notice %>
-        <%= alert %>
-      </div>
+      <% if notice || alert %>
+        <div class="site-alert">
+          <% if notice %>
+            <div class="notice">
+              <%= notice %>
+            </div>
+          <% end %>
+          <% if alert %>
+            <div class="alert">
+              <%= alert %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
       <div id="site_container">
         <div id="left_sidebar">
           <%= yield :left_sidebar %>

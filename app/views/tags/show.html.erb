@@ -1,6 +1,6 @@
 <%= render @tag %>
 
-<div>
+<div class="card">
   <% if can? :update, @tag %>
     <%= link_to "Edit this tag", edit_tag_path(@tag) %> |
   <% end %>
