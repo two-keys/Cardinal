@@ -9,6 +9,6 @@
   <%= link_to "Back to filters", filters_path, class: "button" %>
 
   <% if can? :destroy, @filter %>
-    <%= button_to "Destroy this filter", @filter, method: :delete, class: "button" data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Destroy this filter", @filter, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>
