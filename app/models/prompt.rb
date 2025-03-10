@@ -9,6 +9,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Alertable
   include Auditable
   MIN_CONTENT_LENGTH = 10
+  MAX_CONTENT_LENGTH = 65536
 
   belongs_to :user
   belongs_to :pseudonym, optional: true
