@@ -20,6 +20,14 @@ jobs:
       with:
         fetch-depth: 0 # This is required or you might get an error from Dokku
 
+    - name: Notify Discord - Begin Build
+      uses: tsickert/discord-webhook@v7.0.0
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+        username: CherAmi
+        avatar-url: "https://i.imgur.com/lsEPYp5.png"
+        content: "New push to `deploy` branch. Building site."
+
     - name: Push to dokku
       uses: obrassard/action-dokku-deploy@v1.0.2
       with:
@@ -35,3 +43,11 @@ jobs:
         SENTRY_PROJECT: cherami
       with:
         environment: production
+
+    - name: Notify Discord - Finish Build
+      uses: tsickert/discord-webhook@v7.0.0
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+        username: CherAmi
+        avatar-url: "https://i.imgur.com/lsEPYp5.png"
+        content: "Deployment complete and live at [CherAmi](https://cherami.chat)!"
