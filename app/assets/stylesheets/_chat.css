@@ -158,16 +158,6 @@
   display: inline;
 }
 
-/* Style button like a link */
-.chat-actions button, .chat-admin-actions button {
-    background: none;
-    color: var(--main-text-color);
-    text-decoration: underline;
-    border: none;
-    padding: 0;
-    font-size: 1em;
-    cursor: pointer;
-}
 
 
 
