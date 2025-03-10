@@ -4,7 +4,7 @@ class Theme < ApplicationRecord
   belongs_to :user
   has_many :users, dependent: :nullify
 
-  validates :title, presence: true, length: { maximum: 32 }
+  validates :title, presence: true, length: { maximum: 64 }
 
   scope :available, ->(user) { where(user: user).or(where(system: true)).or(where(public: true)).order('system DESC') }
 
