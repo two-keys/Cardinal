@@ -6,6 +6,9 @@ class ConnectCodeController < ApplicationController
   before_action :set_connect_code, only: %i[update consume]
   before_action :authenticate_user!
 
+  after_action :track_create, only: :create
+  after_action :track_consume, only: :consume
+
   authorize_resource
 
   def create
@@ -73,5 +76,13 @@ class ConnectCodeController < ApplicationController
 
   def auth_redirect
     edit_chat_url(@connect_code.chat.uuid)
+  end
+
+  def track_create
+    ahoy.track 'ConnectCode Created', { user_id: @connect_code.user.id, chat_id: @connect_code.chat.id }
+  end
+
+  def track_consume
+    ahoy.track 'ConnectCode Consumed', { user_id: @connect_code.user.id, chat_id: @connect_code.chat.id }
   end
 end

@@ -57,6 +57,7 @@ module Admin
       @report.handled = true
       @report.handled_by = current_user
       @report.save
+      ahoy.track 'Report Resolved', { report_id: @report.id, handler_id: current_user.id }
 
       respond_to do |format|
         format.html { redirect_to admin_reports_path, status: :see_other, notice: 'Report was successfully destroyed.' }

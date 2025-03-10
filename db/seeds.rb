@@ -9,6 +9,10 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 require 'faker'
+require 'request_faker'
+
+Ahoy.geocode = false
+ahoy = Ahoy::Tracker.new(request: RequestFaker.new)
 
 logger = Logger.new($stdout)
 
@@ -41,6 +45,8 @@ user_arr = []
   )
   temp_user.password = '123456' # devise overwrites and assigns digest automatically
   temp_user.save!
+
+  ahoy.track 'User Created', {}, {time: created_edited}
   
   user_arr << temp_user
 end
@@ -54,6 +60,8 @@ temp_user = User.new(
 temp_user.password = '123456'
 temp_user.save!
 
+ahoy.track 'User Created'
+
 user_arr << temp_user
 
 # Tags
@@ -62,16 +70,20 @@ log_to_console logger, 'Starting to seed tags'
 CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
   type_hash['polarities'].each do |polarity|
     log_to_console logger, "creating tags for #{polarity}, #{tag_type_key}", 2
+    created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
 
     if type_hash['fill_in'] then
       # randomly generated fill_ins
       
-      rand(1..5).times do 
+      rand(1..5).times do
+        created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
         Tag.create!(
           name: Faker::Alphanumeric.alpha(number: 10).downcase,
           tag_type: tag_type_key,
           polarity: polarity
         )
+
+        ahoy.track 'Tag Created', {}, {time: created_edited}
       end
     end
 
@@ -83,6 +95,7 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
           tag_type: tag_type_key,
           polarity: polarity
         )
+        ahoy.track 'Tag Created', {}, {time: created_edited}
       end
     end
   end
@@ -113,6 +126,7 @@ user_arr.each do |e_user|
       created_at: created_edited,
       updated_at: created_edited
     )
+    ahoy.track 'Prompt Created', {user_id: selected_user.id}, {time: created_edited}
     temp_p.save!
     # needed for ticket check
     temp_t = temp_p.tickets.first
@@ -147,6 +161,9 @@ user_arr.each_with_index do |user|
       user: random_prompt.user,
       remaining_uses: random_prompt.default_slots - 2
     )
+    ahoy.track 'ConnectCode Created', {user_id: random_prompt.user, chat_id: chat.id}, {time: chat.prompt.created_at}
+    ahoy.track 'ConnectCode Consumed', {user_id: random_prompt.user, chat_id: chat.id}, {time: chat.prompt.created_at}
+    ahoy.track 'ConnectCode Consumed', {user_id: sample_user.id, chat_id: chat.id}, {time: chat.prompt.created_at}
     connect_code.save!
     creation_message = "Chat created.  \n" \
                         "Connect code is: #{connect_code.code}. It has #{connect_code.remaining_uses} uses left."
@@ -175,3 +192,5 @@ end
     updated_at: Faker::Time.between(from: DateTime.now - 1.day, to: DateTime.now)
   )
 end
+
+AnalyticsJob.perform_now

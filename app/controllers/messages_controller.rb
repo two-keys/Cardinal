@@ -6,6 +6,9 @@ class MessagesController < ApplicationController
   before_action :set_message, only: %i[show edit update destroy]
   before_action :authenticate_user!
 
+  after_action :track_create, only: :create
+  after_action :track_edit, only: :update
+
   authorize_resource
 
   # GET /messages/1 or /messages/1.json
@@ -83,5 +86,13 @@ class MessagesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def message_params
     params.require(:message).permit(:content, :ooc, :chat_id)
+  end
+
+  def track_create
+    ahoy.track 'Message Created', { chat_id: @message.chat.id, user_id: @message.user.id }
+  end
+
+  def track_edit
+    ahoy.track 'Message Edited', { chat_id: @message.chat.id, user_id: @message.user.id }
   end
 end

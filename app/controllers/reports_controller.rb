@@ -8,6 +8,8 @@ class ReportsController < ApplicationController
   before_action :authenticate_user!
   before_action :sanitize_input_params, only: %i[create]
 
+  after_action :track_create, only: :create
+
   authorize_resource
 
   def index
@@ -72,5 +74,9 @@ class ReportsController < ApplicationController
   def sanitize_input_params
     # Convert strings to integers and remove any non-integer values
     params[:report][:rules] = params[:report][:rules].map(&:to_i).select(&:positive?)
+  end
+
+  def track_create
+    ahoy.track 'Report Created', { reporter_id: @report.reporter.id, reportee_id: @report.reportee.id }
   end
 end

@@ -112,6 +112,12 @@ gem 'actionpack', '>= 7.0.8.7'
 # Audit logging
 gem 'active_snapshot'
 
+# Analytics
+gem 'ahoy_matey'
+gem 'chartkick'
+gem 'clockwork'
+gem 'rollups'
+
 # Upgrades
 gem 'next_rails'
 

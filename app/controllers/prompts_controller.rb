@@ -10,6 +10,11 @@ class PromptsController < ApplicationController
   before_action :set_prompt, only: %i[show edit bump update answer destroy]
   before_action :authenticate_user!
 
+  after_action :track_create, only: :create
+  after_action :track_edit, only: :update
+  after_action :track_answer, only: :answer
+  after_action :track_lucky_dip, only: :lucky_dip
+
   authorize_resource
 
   include SearchableController
@@ -159,6 +164,7 @@ class PromptsController < ApplicationController
                     end
 
     if random_prompt
+      @prompt = random_prompt
       redirect_to prompt_url(random_prompt)
     else
       # Fall back to a different method if TABLESAMPLE returns no results
@@ -191,6 +197,32 @@ class PromptsController < ApplicationController
 
   def search_params
     params.permit(:before, :tags, :nottags, :managed, :myprompts)
+  end
+
+  def track_create
+    ahoy.track 'Prompt Created', { user_id: @prompt.user.id }
+
+    @prompt.tags.each do |tag|
+      ahoy.track 'Tag Used', { tag_id: tag.id, prompt_id: @prompt.id }
+    end
+  end
+
+  def track_edit
+    ahoy.track 'Prompt Edited', { user_id: @prompt.user.id, prompt_id: @prompt.id }
+
+    @prompt.tags.each do |tag|
+      ahoy.track 'Tag Used', { tag_id: tag.id, prompt_id: @prompt.id }
+    end
+  end
+
+  def track_answer
+    ahoy.track 'Prompt Answered', { user_id: @prompt.user.id, prompt_id: @prompt.id, taker_id: current_user.id }
+    ahoy.track 'ConnectCode Consumed', { user_id: @connect_code.user.id, chat_id: @chat.id }
+    ahoy.track 'ConnectCode Consumed', { user_id: current_user.id, chat_id: @chat.id }
+  end
+
+  def track_lucky_dip
+    ahoy.track 'Prompt Lucky Dipped', { user_id: current_user.id, prompt_id: @prompt.id, prompt_user: @prompt.user.id }
   end
 end
 # rubocop:enable Metrics/ClassLength

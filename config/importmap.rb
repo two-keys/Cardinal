@@ -12,5 +12,8 @@ pin 'jquery.caret', to: 'https://ga.jspm.io/npm:jquery.caret@0.3.1/dist/jquery.c
 pin 'selectize.js', to: 'https://ga.jspm.io/npm:selectize.js@0.12.12/dist/js/selectize.js', preload: true
 pin 'microplugin', to: 'https://ga.jspm.io/npm:microplugin@0.0.3/src/microplugin.js', preload: true
 pin 'sifter', to: 'https://ga.jspm.io/npm:sifter@0.5.4/sifter.js', preload: true
+pin 'ahoy', to: 'ahoy.js', preload: true
+pin 'chartkick', to: 'chartkick.js', preload: true
+pin 'Chart.bundle', to: 'Chart.bundle.js', preload: true
 
 pin_all_from 'app/javascript/controllers', under: 'controllers'

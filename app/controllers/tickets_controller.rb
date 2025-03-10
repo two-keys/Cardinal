@@ -7,6 +7,8 @@ class TicketsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_ticket, only: %i[show destroy]
 
+  after_action :track_create, only: :create
+
   authorize_resource
 
   # GET /tickets
@@ -42,5 +44,9 @@ class TicketsController < ApplicationController
 
   def auth_redirect
     tickets_path
+  end
+
+  def track_create
+    ahoy.track 'Ticket Created', { user_id: @ticket.user.id, item_id: @ticket.item_id, item_type: @ticket.item_type }
   end
 end

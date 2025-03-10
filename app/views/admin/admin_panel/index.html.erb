@@ -20,7 +20,33 @@
 
 <div id="admin_panel_container">
   <div class="card primary">
-    <h1>This page intentionally left blank.</h1>
-    <h6>For now...</h6>
+    <div class="card secondary">
+      <h2>Reports</h2>
+      <%= line_chart @report_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Users</h2>
+      <%= line_chart @user_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Prompts</h2>
+      <%= line_chart @prompt_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Characters</h2>
+      <%= line_chart @character_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Tickets</h2>
+      <%= line_chart @ticket_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Messages</h2>
+      <%= line_chart @message_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Connect Codes</h2>
+      <%= line_chart @connect_code_analytics %>
+    </div>
   </div>
 </div>

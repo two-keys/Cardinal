@@ -77,6 +77,10 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    ahoy_matey (5.3.0)
+      activesupport (>= 7)
+      device_detector (>= 1)
+      safely_block (>= 0.4)
     ancestry (4.3.3)
       activerecord (>= 5.2.6)
     ast (2.4.2)
@@ -102,6 +106,10 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chartkick (5.1.4)
+    clockwork (3.0.2)
+      activesupport
+      tzinfo
     concurrent-ruby (1.3.4)
     connection_pool (2.5.0)
     crass (1.0.6)
@@ -109,6 +117,7 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    device_detector (1.1.3)
     devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -125,6 +134,8 @@ GEM
     gemoji (4.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    groupdate (6.5.1)
+      activesupport (>= 7)
     hiredis (0.6.3)
     http-accept (1.7.0)
     http-cookie (1.0.8)
@@ -250,6 +261,9 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.3.9)
+    rollups (0.4.1)
+      activesupport (>= 7)
+      groupdate (>= 6.1)
     rubocop (1.69.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -269,6 +283,7 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
+    safely_block (0.4.1)
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
@@ -331,6 +346,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack (>= 7.0.8.7)
   active_snapshot
+  ahoy_matey
   ancestry
   bootsnap
   brakeman
@@ -338,6 +354,8 @@ DEPENDENCIES
   bundler-audit
   cancancan
   capybara
+  chartkick
+  clockwork
   debug
   devise
   discordrb-webhooks
@@ -358,6 +376,7 @@ DEPENDENCIES
   rails-html-sanitizer (>= 1.6.1)
   redcarpet
   redis (~> 4.0)
+  rollups
   rubocop
   rubocop-rails
   sanitize

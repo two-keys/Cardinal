@@ -10,6 +10,8 @@ class CharactersController < ApplicationController
   before_action :set_character, only: %i[show edit bump update answer destroy]
   before_action :authenticate_user!
 
+  after_action :track_create, only: :create
+
   authorize_resource
 
   include SearchableController
@@ -99,5 +101,9 @@ class CharactersController < ApplicationController
 
   def search_params
     params.permit(:before, :tags, :nottags)
+  end
+
+  def track_create
+    ahoy.track 'Character Created', { user_id: @character.user.id }
   end
 end

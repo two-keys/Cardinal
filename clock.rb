@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+require 'clockwork'
+require 'active_support/time' # Allow numeric durations (eg: 1.minutes)
+require './config/boot'
+require './config/environment'
+
+module Clockwork
+  every(1.hour, 'analytics.refresh') { AnalyticsJob.perform_later }
+end

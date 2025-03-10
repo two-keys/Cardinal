@@ -13,6 +13,8 @@ class TagsController < ApplicationController
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
 
+  after_action :track_create, only: :create
+
   skip_before_action :verify_authenticity_token, raise: false, only: %i[autocomplete]
 
   authorize_resource
@@ -183,6 +185,10 @@ class TagsController < ApplicationController
 
   def autocomplete_params
     params.require(:tag).permit(:tag_search, :tag_type, :polarity)
+  end
+
+  def track_create
+    ahoy.track 'Tag Created', { user_id: current_user.id, tag_id: @tag.id }
   end
 end
 # rubocop:enable Metrics/ClassLength

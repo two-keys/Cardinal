@@ -7,6 +7,9 @@ module Users
     before_action :configure_sign_up_params, only: [:create]
     before_action :configure_account_update_params, only: [:update]
 
+    after_action :track_create, only: :create
+    after_action :track_destroy, only: :destroy
+
     authorize_resource except: %i[new create], class: User
 
     # GET /resource/sign_up
@@ -66,6 +69,14 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(_resource)
       root_path
+    end
+
+    def track_create
+      ahoy.track 'User Created'
+    end
+
+    def track_destroy
+      ahoy.track 'User Destroyed'
     end
   end
 end
