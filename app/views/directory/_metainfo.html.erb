@@ -9,9 +9,9 @@
         <strong>
         POSTED AS 
             <% if !model.pseudonym.nil? && can?(:read, model.pseudonym) %>
-                <%= model.pseudonym.name%>
+                <span class="pseudonym"><%= model.pseudonym.name%></span>
             <% else  %>
-                anonymous
+                <span class="pseudonym">anonymous</span>
             <% end %>
         </strong>
     </li>
