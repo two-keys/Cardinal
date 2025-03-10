@@ -29,7 +29,7 @@
         link_to 'Toggle My Prompts', params.permit(
         :before, :tags, :nottags, :page, :managed
         ).merge(
-        myprompts: params[:myprompts] == 'false' ? 'true' : 'false'
+        myprompts: params[:myprompts] == 'true' ? 'false' : 'true'
         )
     %>
 </div>
