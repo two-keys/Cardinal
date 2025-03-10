@@ -3,9 +3,9 @@
 <%= render partial: 'tickets/mini', locals: { ticket: @ticket} %>
 
 <div class="card">
-  <%= link_to "Back to tickets", tickets_path %>
+  <%= link_to "Back to tickets", tickets_path, class: "button" %>
 
   <% if can? :destroy, @ticket %>
-    <%= button_to "Destroy this ticket", @ticket, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Destroy this ticket", @ticket, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

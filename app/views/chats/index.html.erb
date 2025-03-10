@@ -7,7 +7,7 @@
         <%= f.text_field :connect_code, class: "form-control" %>
         <%= f.submit 'Use' %>
       <% end %>
-      <%= button_to "New", chats_path, method: :post %>
+      <%= button_to "New", chats_path, method: :post, class: "button" %>
     <% end %>
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>

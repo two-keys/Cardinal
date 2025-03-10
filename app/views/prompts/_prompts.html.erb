@@ -1,7 +1,7 @@
 <div id="prompts_container">
   <div class="card primary">
     <div class="pagination">
-      <%= link_to "New Prompt", new_prompt_path %>
+      <%= link_to "New Prompt", new_prompt_path, class: "button" %>
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
       Your search has <strong><%= @pagy.count %></strong> total prompts!
     </div>

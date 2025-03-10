@@ -9,21 +9,19 @@
     <% connect_code = chat.connect_code %>
     <div class="card secondary">
       <p><strong><%= connect_code.remaining_uses %></strong> remaining <%= pluralize_without_count(connect_code.remaining_uses, "slot") %>.</p>
+      <% if connect_code.title %>
+        <p><strong><%= connect_code.title %></strong></p>
+      <% end %>
+      <% if connect_code.description %>
+        <p><%= connect_code.description %></p>
+      <% end %>
       <% if !current_user.chats.include?(connect_code.chat) %>
         <%= form_with url: url_for(connect_code_consume_path), method: :patch, id: "connect_code_form" do |f| %>
           <%= f.hidden_field :connect_code, value: connect_code.code, class: "form-control" %>
           <%= f.submit 'Join' %>
         <% end %>
       <% else %>
-        <% settings = chat.get_user_info(current_user) %>
-        <% if settings.title %>
-          <%= link_to "#{settings.title} (#{settings.status == "ended_viewed" ? "ended" : settings.status})", chat_path(chat.uuid) %>
-        <% else %>
-          <%= link_to "#{chat.uuid} (#{settings.status == "ended_viewed" ? "ended" : settings.status})", chat_path(chat.uuid) %>
-        <% end %>
-        <% if settings.description %>
-          <p><%= settings.description %></p>
-        <% end %>
+        <%= link_to chat.uuid, chat_path(chat.uuid) %>
       <% end %>
     </div>
   <% end %>
@@ -31,11 +29,11 @@
 
 <div class="card">
   <% if can? :update, @prompt %>
-    <%= link_to "Edit this prompt", edit_prompt_path(@prompt) %> |
+    <%= link_to "Edit this prompt", edit_prompt_path(@prompt), class: "button" %> |
   <% end %>
-  <%= link_to "Back to prompts", prompts_path %>
+  <%= link_to "Back to prompts", prompts_path, class: "button" %>
 
   <% if can? :destroy, @prompt %>
-    <%= button_to "Destroy this prompt", @prompt, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Destroy this prompt", @prompt, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

@@ -4,11 +4,11 @@
 
 <div class="card">
   <% if can? :update, @pseudonym %>
-    <%= link_to "Edit this pseudonym", edit_pseudonym_path(@pseudonym) %> |
+    <%= link_to "Edit this pseudonym", edit_pseudonym_path(@pseudonym), class: "button" %> |
   <% end %>
-  <%= link_to "Back to pseudonyms", pseudonyms_path %>
+  <%= link_to "Back to pseudonyms", pseudonyms_path, class: "button" %>
 
   <% if can? :destroy, @pseudonym %>
-    <%= button_to "Destroy this pseudonym", @pseudonym, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Destroy this pseudonym", @pseudonym, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

@@ -1,6 +1,6 @@
 <div class="card secondary">
   <div id="<%= dom_id theme %>">
-    <%= button_to "Apply", apply_theme_path(theme) %>
+    <%= button_to "Apply", apply_theme_path(theme), class: "button" %>
     <p>
       <strong>Title:</strong>
       <%= theme.title %>
@@ -14,7 +14,7 @@
     <% end %>
     
     <% if can? :edit, theme %>
-      <%= link_to "Edit this theme", edit_theme_path(theme) %>
+      <%= link_to "Edit this theme", edit_theme_path(theme), class: "button" %>
     <% end %>
   </div>
 </div>

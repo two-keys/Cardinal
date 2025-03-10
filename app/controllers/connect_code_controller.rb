@@ -31,7 +31,9 @@ class ConnectCodeController < ApplicationController
       if @connect_code.update(
         {
           remaining_uses: update_connect_code_params[:remaining_uses],
-          status: update_connect_code_params[:status]
+          status: update_connect_code_params[:status],
+          title: update_connect_code_params[:title],
+          description: update_connect_code_params[:description]
         }
       )
         format.html { redirect_to edit_chat_path(@connect_code.chat.uuid), notice: 'Code was successfully updated.' }
@@ -66,7 +68,7 @@ class ConnectCodeController < ApplicationController
   private
 
   def update_connect_code_params
-    params.permit(:connect_code, :remaining_uses, :status)
+    params.permit(:connect_code, :title, :description, :remaining_uses, :status)
   end
 
   def auth_redirect

@@ -1,8 +1,13 @@
 <% content_for :card_actions_right, flush: true do %>
     <% if can?(:edit, prompt) && prompt.bumpable? %>
-        <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put %></li>
+        <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
     <% end %>
     <% if can?(:answer, prompt) %>
-        <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post %></li>
+        <% if prompt.default_slots > 2 %>
+            <li><%= link_to "Joinable Chats", prompt, class: "button" %><li>
+            <li><%= button_to "New Chat", prompt_answer_path(prompt), method: :post, class: "button" %></li>
+        <% else %>
+            <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post, class: "button" %></li>
+        <% end %>
     <% end %>
 <% end %>

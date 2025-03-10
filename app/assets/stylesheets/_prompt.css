@@ -49,12 +49,6 @@ form .polarity {
   width: 100%;
 }
 
-.prompt_edit_link {
-  position: relative;
-  float: right;
-  opacity: 75%;
-}
-
 .prompt.group .prompt_info {
   border-bottom: var(--main-text-color) 2px dashed;
   padding-bottom: 1rem;

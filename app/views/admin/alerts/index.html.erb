@@ -2,7 +2,7 @@
   <h1>Alerts</h1>
   <%== pagy_nav @pagy %>
   <p>
-    <%= link_to "New Alert", new_admin_alert_path %>
+    <%= link_to "New Alert", new_admin_alert_path, class: "button" %>
   </p>
 </div>
 
@@ -11,7 +11,7 @@
     <div class="card secondary">
       <%= render alert %>
       <p>
-        <%= link_to "Show this alert", url_for([:admin, alert]) %>
+        <%= link_to "Show this alert", url_for([:admin, alert]), class: "button" %>
       </p>
     </div>
   <% end %>

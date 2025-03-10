@@ -1,6 +1,6 @@
 <div class="card primary">
   <h1>Reports</h1>
-  <%= link_to "Unhandled", admin_reports_path %> | <%= link_to "Handled", admin_reports_path(handled: true) %>
+  <%= link_to "Unhandled", admin_reports_path, class: "button" %> | <%= link_to "Handled", admin_reports_path(handled: true), class: "button" %>
 
   <div id="reports">
     <%== pagy_nav @pagy %>
@@ -27,7 +27,7 @@
           <span>Resolved by: <%= link_to report.handled_by.username, edit_admin_user_path(report.handled_by) %></span>
         <% end %>
         <p>
-          <%= link_to "Show this report", [:admin, report] %>
+          <%= link_to "Show this report", [:admin, report], class: "button" %>
         </p>
       </div>
     <% end %>

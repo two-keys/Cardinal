@@ -2,8 +2,8 @@
     <div id="<%= "chat_#{locals[:chat_id]}_users"%>" class="chat_left_sidebar">
         <div class="card primary">
             <div class="chat-actions">
-                <%= link_to "Edit", edit_chat_path(locals[:chat_uuid]), data: {turbo_frame: '_top' } %>
-                <%= button_to "Delete", chat_path(locals[:chat_uuid]), method: :delete, data: {turbo_frame: '_top', turbo_confirm: "Are you sure?"}  %>
+                <%= link_to "Edit", edit_chat_path(locals[:chat_uuid]), data: {turbo_frame: '_top' }, class: "button" %>
+                <%= button_to "Delete", chat_path(locals[:chat_uuid]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?"}  %>
             </div>
             <ul id="sidebar_users">
                 <% for user_data in locals[:users_data] %>
@@ -16,7 +16,7 @@
                         <%= name  + (is_loc_user ? " (you)" : "") %>
                         <div class="chat-admin-actions">
                             <% if !is_loc_user && can?(:chat_kick, @chat) %>
-                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, data: {turbo_frame: '_top', turbo_confirm: "Are you sure?" }  %>
+                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?" }  %>
                             <% end %>
                         </div>
                     </li>

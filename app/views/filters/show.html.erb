@@ -4,11 +4,11 @@
 
 <div class="card">
   <% if can? :update, @filter %>
-    <%= link_to "Edit this filter", edit_filter_path(@filter) %> |
+    <%= link_to "Edit this filter", edit_filter_path(@filter), class: "button" %> |
   <% end %>
-  <%= link_to "Back to filters", filters_path %>
+  <%= link_to "Back to filters", filters_path, class: "button" %>
 
   <% if can? :destroy, @filter %>
-    <%= button_to "Destroy this filter", @filter, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Destroy this filter", @filter, method: :delete, class: "button" data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

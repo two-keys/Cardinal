@@ -4,9 +4,9 @@
   <% @messages.display.each do |message| %>
     <%= render message %>
     <p>
-      <%= link_to "Show this message", message %>
+      <%= link_to "Show this message", message, class: "button" %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New message", new_message_path %>
+<%= link_to "New message", new_message_path, class: "button" %>

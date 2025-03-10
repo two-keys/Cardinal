@@ -48,12 +48,12 @@
           <td><%= version.item_id %></td>
           <% if admin_scoped?(version.item_type.underscore.to_sym) %>
             <% if default_edit?(version.item_type.underscore.to_sym) %>
-              <td><%= link_to "View", send("edit_admin_#{version.item_type.downcase}_path", version.item) %>
+              <td><%= link_to "View", send("edit_admin_#{version.item_type.downcase}_path", version.item), class: "button" %>
             <% else %>
-              <td><%= link_to "View", [:admin, version.item] %></td>
+              <td><%= link_to "View", [:admin, version.item], class: "button" %></td>
             <% end %>
           <% else %>
-            <td><%= link_to "View", version.item %></td>
+            <td><%= link_to "View", version.item, class: "button" %></td>
           <% end %>
         </tr>
       <% end %>

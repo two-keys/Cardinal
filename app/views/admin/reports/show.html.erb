@@ -11,9 +11,9 @@
   <% if @report.handled %>
     <p>This report has been resolved by <%= link_to @report.handled_by.username, edit_admin_user_path(@report.handled_by) %></p>
   <% end %>
-  <%= link_to "Back to reports", admin_reports_path %>
+  <%= link_to "Back to reports", admin_reports_path, class: "button" %>
   <% if !@report.handled %>
-    <%= button_to "Resolve", [:admin, @report], method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Resolve", [:admin, @report], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>
 <%= render @report, variant: "full" %>

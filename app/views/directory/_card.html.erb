@@ -44,15 +44,15 @@
     <div class="actions">
       <ul class="actions_left">
         <% if can?(:hide, model) %>
-          <li><%= button_to "Hide", hide_tag_path(model), method: :post %></li>
+          <li><%= button_to "Hide", hide_tag_path(model), method: :post, class: "button" %></li>
         <% end %>
 
         <% if defined?(model.user) && model.user != current_user %>
-          <li><%= link_to "Report", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report_link" %></li>
+          <li><%= link_to "Report", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report_link button" %></li>
         <% end %>
 
         <% if can? :edit, model %>
-          <li><%= link_to "Edit", "#{url_for(model)}/edit", class: "#{class_name}_edit_link" %></li>
+          <li><%= link_to "Edit", "#{url_for(model)}/edit", class: "#{class_name}_edit_link button" %></li>
         <% end %>
 
         <%= yield :card_actions_left %>

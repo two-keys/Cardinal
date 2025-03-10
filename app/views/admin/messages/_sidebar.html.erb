@@ -14,7 +14,7 @@
                         <%= name  + (is_loc_user ? " (you)" : "") %>
                         <div class="chat-admin-actions">
                             <% if !is_loc_user && can?(:chat_kick, @chat) %>
-                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, data: {turbo_frame: '_top' }  %>
+                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), class: "button", method: :delete, data: {turbo_frame: '_top' }  %>
                             <% end %>
                         </div>
                     </li>

@@ -15,9 +15,6 @@
     </strong>
   </span>
   <br/>
-  <% if prompt.default_slots > 2 %>
-    <%= link_to "View Joinable Chats", prompt %>
-  <% end %>
 <% end %>
 <% content_for :card_content, flush: true do %>
   <% if prompt.ooc.present? %>
@@ -28,7 +25,7 @@
         </div>
       </div>
 
-      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth">More...</button>
+      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth button">More...</button>
     </div>
   <% end %>
 
@@ -44,7 +41,7 @@
         </div>
       </div>
 
-      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth">More...</button>
+      <button data-action="read-more#toggle" data-read-more-target="button"  class="hide fullwidth button">More...</button>
     </div>
   <% end %>
 <% end %>

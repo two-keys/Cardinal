@@ -11,7 +11,7 @@
 
   <%= render "form", prompt: @prompt, with_tags: false, pseudonym_options: @pseudonym_options %>
   <div>
-    <%= link_to "Show this prompt", @prompt %> |
-    <%= link_to "Back to prompts", prompts_path %>
+    <%= link_to "Show this prompt", @prompt, class: "button" %> |
+    <%= link_to "Back to prompts", prompts_path, class: "button" %>
   </div>
 </div>

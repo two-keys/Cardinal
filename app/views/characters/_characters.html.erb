@@ -1,7 +1,7 @@
 <div id="characters_container">
   <div class="card primary">
     <div class="pagination">
-      <%= link_to "New Character", new_character_path %>
+      <%= link_to "New Character", new_character_path, class: "button" %>
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
       Your search has <strong><%= @pagy.count %></strong> total characters!
     </div>

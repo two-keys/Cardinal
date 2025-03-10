@@ -209,6 +209,19 @@ body {
 
 .hide { display: none; }
 
+.button {
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 840px) {
     #site_container {
         display: grid; 

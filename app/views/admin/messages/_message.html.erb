@@ -46,7 +46,7 @@
                         <% end %>
                       </span>
                       <% if can? :edit, message %>
-                          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link" %>
+                          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link button" %>
                       <% end %>
                       <% if message.updated_at > message.created_at %>
                           <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>

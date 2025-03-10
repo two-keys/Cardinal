@@ -15,6 +15,17 @@
 
   <%= f.hidden_field :connect_code, value: connect_code.code %>
 
+
+  <div>
+    <%= f.label :title, style: "display: inline" %>
+    <%= f.text_field :title, value: connect_code.title %>
+  </div>
+
+  <div>
+    <%= f.label :description, style: "display: inline" %>
+    <%= f.text_area :description, value: connect_code.description %>
+  </div>
+
   <div>
     <%= f.label :remaining_uses, style: "display: inline" %>
     <%= f.number_field :remaining_uses, greater_than_or_equal: 0, value: connect_code.remaining_uses %>

@@ -6,7 +6,7 @@
   <input id="theme_enable" type="checkbox" data-controller="theme-selector">
   <label for="theme_enable">Enable Custom Theme</label>
   <% if can? :create, Theme %>
-    <%= link_to "New theme", new_theme_path %><br/>
+    <%= link_to "New theme", new_theme_path, class: "button" %><br/>
   <% end %>
   <%== pagy_nav @pagy %>
   <div id="themes">

@@ -1,6 +1,6 @@
 <div class="card primary">
     <h1>Reports</h1>
-    <%= link_to "Unhandled", reports_path %> | <%= link_to "Handled", reports_path(handled: true) %>
+    <%= link_to "Unhandled", reports_path, class: "button" %> | <%= link_to "Handled", reports_path(handled: true), class: "button" %>
 
     <div id="reports">
     <%== pagy_nav @pagy %>
@@ -11,7 +11,7 @@
             <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
         </div>
         <p>
-            <%= link_to "Show this report", report %>
+            <%= link_to "Show this report", report, class: "button" %>
         </p>
     <% end %>
     <%== pagy_nav @pagy %>

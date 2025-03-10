@@ -11,18 +11,18 @@
         } %>
     </div>
     <input data-tagactions-target="name" type="text">
-    <button data-action="click->tagactions#add">Add</button>
-    <button data-action="click->tagactions#exclude">Exclude</button>
+    <button class="button" data-action="click->tagactions#add">Add</button>
+    <button class="button" data-action="click->tagactions#exclude">Exclude</button>
     </div>
     <br />
-    <%= link_to 'Update timestamp', params.permit(:before, :tags, :nottags, :page, :managed, :myprompts).merge(before: 1.second.from_now) %>
+    <%= link_to 'Update timestamp', params.permit(:before, :tags, :nottags, :page, :managed, :myprompts).merge(before: 1.second.from_now), class: "button" %>
     <br />
     <%= 
     link_to 'Toggle Managed', params.permit(
         :before, :tags, :nottags, :page, :myprompts
     ).merge(
         managed: params[:managed] == 'false' ? 'true' : 'false'
-    )
+    ), class: "button"
     %>
     <br />
     <%= 
@@ -30,6 +30,6 @@
         :before, :tags, :nottags, :page, :managed
         ).merge(
         myprompts: params[:myprompts] == 'true' ? 'false' : 'true'
-        )
+        ), class: "button"
     %>
 </div>

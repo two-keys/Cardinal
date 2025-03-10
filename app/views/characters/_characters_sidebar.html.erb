@@ -1,4 +1,4 @@
-<%= link_to '(Advanced Search)', characters_search_path %>
+<%= link_to '(Advanced Search)', characters_search_path, class: "button" %>
 <% if local_assigns[:with_search] %>
     <%= render partial: 'directory/search_actions' %>
 <% end %>

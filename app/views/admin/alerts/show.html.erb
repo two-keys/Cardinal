@@ -3,8 +3,8 @@
 </div>
 
 <div class="card primary">
-  <%= link_to "Edit this alert", edit_admin_alert_path(@alert) %> |
-  <%= link_to "Back to alerts", admin_alerts_path %>
+  <%= link_to "Edit this alert", edit_admin_alert_path(@alert), class: "button" %> |
+  <%= link_to "Back to alerts", admin_alerts_path, class: "button" %>
 
-  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
 </div>

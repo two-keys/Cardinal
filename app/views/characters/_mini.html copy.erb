@@ -24,10 +24,10 @@
   </span>
 
   <% if character.user != current_user %>
-    <%= link_to "Report", new_report_path(reportable_id: character.id, reportable_type: character.class.name), class: "report_link" %>
+    <%= link_to "Report", new_report_path(reportable_id: character.id, reportable_type: character.class.name), class: "report_link button" %>
   <% end %>
 
   <% if can? :edit, character %>
-    <%= link_to "Edit", edit_character_path(character), class: "character_edit_link" %>
+    <%= link_to "Edit", edit_character_path(character), class: "character_edit_link button" %>
   <% end %>
 </div>
