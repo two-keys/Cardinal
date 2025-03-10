@@ -21,7 +21,7 @@
     <li class="nav_item nav_use"> <%= link_to "Site Use", use_page_path %> </li>
     <li class="disabled nav_item nav_discord"><a href="/">Discord</a></li>
     <% if user_signed_in? %>
-      <li class="nav_item nav_logout"><%= button_to "Log Out", destroy_user_session_path, method: :delete %></li>
+      <li class="nav_item nav_logout"><%= button_to "Log Out", destroy_user_session_path, method: :delete, data: {turbo_confirm: "Are you sure?"} %></li>
     <% end %>
     <% if !Rails.env.test? %>
       <li id="online_count" class="nav_item nav_online">

@@ -9,6 +9,6 @@
   <%= link_to "Back to pseudonyms", pseudonyms_path %>
 
   <% if can? :destroy, @pseudonym %>
-    <%= button_to "Destroy this pseudonym", @pseudonym, method: :delete %>
+    <%= button_to "Destroy this pseudonym", @pseudonym, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

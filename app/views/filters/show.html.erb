@@ -11,6 +11,6 @@
   <%= link_to "Back to filters", filters_path %>
 
   <% if can? :destroy, @filter %>
-    <%= button_to "Destroy this filter", @filter, method: :delete %>
+    <%= button_to "Destroy this filter", @filter, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

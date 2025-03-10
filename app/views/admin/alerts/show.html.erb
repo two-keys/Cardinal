@@ -8,5 +8,5 @@
   <%= link_to "Edit this alert", edit_admin_alert_path(@alert) %> |
   <%= link_to "Back to alerts", admin_alerts_path %>
 
-  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete %>
+  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete, data: {turbo_confirm: "Are you sure?"} %>
 </div>

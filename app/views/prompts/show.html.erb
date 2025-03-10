@@ -9,6 +9,6 @@
   <%= link_to "Back to prompts", prompts_path %>
 
   <% if can? :destroy, @prompt %>
-    <%= button_to "Destroy this prompt", @prompt, method: :delete %>
+    <%= button_to "Destroy this prompt", @prompt, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

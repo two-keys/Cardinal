@@ -7,6 +7,6 @@
   <%= link_to "Back to tags", tags_path %>
 
   <% if can? :destroy, @tag %>
-    <%= button_to "Destroy this tag", @tag, method: :delete %>
+    <%= button_to "Destroy this tag", @tag, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
   <% end %>
 </div>

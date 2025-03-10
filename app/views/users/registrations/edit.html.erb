@@ -52,7 +52,7 @@
   <%= link_to "My Reports", reports_path %>
   
   <h3>Log out</h3>
-  <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+  <%= button_to "Log Out", destroy_user_session_path, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
 
   <h3>Cancel my account</h3>
 
