@@ -161,6 +161,8 @@ class Ability
     can :view_users, :all
     can :view_sensitive, :all
     can :apply, Theme
+    cannot :hide, :all
+    can :hide, Tag
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
