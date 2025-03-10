@@ -21,11 +21,11 @@
     border-color: var(--main-text-color);
 }
 
-.card a {
+a {
     color: var(--card-text-color);
 }
 
-.card a:visited {
+a:visited {
     color: var(--card-text-color);
 }
 

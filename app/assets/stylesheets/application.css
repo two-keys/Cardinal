@@ -209,7 +209,7 @@ body {
 
 .hide { display: none; }
 
-.button {
+a.button {
     text-decoration: none;
     padding: 2px;
     padding-right: 4px;
@@ -220,6 +220,11 @@ body {
     border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
+}
+
+a.button:visited {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
 }
 
 @media only screen and (max-width: 840px) {
