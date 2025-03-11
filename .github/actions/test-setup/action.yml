@@ -32,5 +32,8 @@ runs:
         RAILS_ENV: test
         DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
       run: |
-        bin/rails db:setup
+        bin/rails db:drop
+        bin/rails db:create
+        bin/rails db:environment:set
+        bin/rails rails db:schema:load
       shell: bash
