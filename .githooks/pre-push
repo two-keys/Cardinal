@@ -1,20 +1,21 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'English'
 
-system("rake test:all")
+system('rake test')
 @test_status = $CHILD_STATUS.exitstatus
 
-if @test_status !=0
-  puts "Tests failed"
+if @test_status != 0
+  puts 'Tests failed'
   exit(@test_status)
 end
 
-system("bundle exec bundler-audit --update")
-system("bundle exec brakeman -q -w2 --summary --no-pager")
+system('bundle exec bundler-audit --update')
+system('bundle exec brakeman -q -w2 --summary --no-pager')
 @brakeman_status = $CHILD_STATUS.exitstatus
 
-if @brakeman_status !=0
-    puts "Brakeman found issues"
-    exit(@brakeman_status)
+if @brakeman_status != 0
+  puts 'Brakeman found issues'
+  exit(@brakeman_status)
 end
