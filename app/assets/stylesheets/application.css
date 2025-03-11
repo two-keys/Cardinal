@@ -227,6 +227,20 @@ a.button:visited {
     color: var(--card-textarea-text-color);
 }
 
+button {
+    cursor: pointer;
+}
+
+button:disabled,
+button[disabled]{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.push_subscriptions {
+    padding-top: 24px;
+}
+
 @media only screen and (max-width: 840px) {
     #site_container {
         display: grid; 

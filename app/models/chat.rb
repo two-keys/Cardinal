@@ -62,7 +62,12 @@ class Chat < ApplicationRecord
     return if messages.count == 1
 
     users_to_unread = chat_users.where.not(user: active_chat_users).where(status: %i[ongoing unanswered])
-    users_to_unread.each { |u| u.update(status: :unread) }
+    users_to_unread.each do |u|
+      u.update(status: :unread)
+      u.user.push_subscriptions.each do |s|
+        s.push('New Unread', 'Click to view', url: "/chats/#{uuid}")
+      end
+    end
 
     users_to_unanswered = chat_users.where(user: active_chat_users - [messages.last.user])
     users_to_unanswered.each { |u| u.update(status: :unanswered) }

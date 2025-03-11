@@ -41,6 +41,7 @@ class Ability
       user_valid && reportee_valid
     end
     can :create, Theme
+    can :create, PushSubscription
 
     ## Reading
     can :read, Message do |message|
@@ -105,6 +106,7 @@ class Ability
     end
     can :destroy, User, user: user
     can :destroy, Theme, user: user
+    can :destroy, PushSubscription, user: user
 
     ## Non-CRUD Actions
     can :chat_kick, Chat do |chat|

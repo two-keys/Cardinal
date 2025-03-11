@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :handled_reports, class_name: 'Report', foreign_key: 'handled_by_id', dependent: :delete_all,
                              inverse_of: 'handled_by'
   has_many :themes, dependent: :nullify
+  has_many :push_subscriptions, dependent: :delete_all
   belongs_to :theme, optional: true
 
   delegate :can?, :cannot?, to: :ability

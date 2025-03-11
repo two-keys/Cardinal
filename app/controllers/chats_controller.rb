@@ -78,6 +78,12 @@ class ChatsController < ApplicationController
       @chat.destroy
     elsif @chat.users.count == 1
       @chat.chat_users.each(&:ended!)
+      users_to_notify = @chat.chat_users.where.not(user: @chat.active_chat_users)
+      users_to_notify.each do |u|
+        u.user.push_subscriptions.each do |s|
+          s.push('Chat Ended', 'Click to view', url: "/chats/#{@chat.uuid}")
+        end
+      end
     end
     @chat.messages << Message.new(content: "#{user_icon} has left the chat.")
     respond_to do |format|
@@ -94,6 +100,12 @@ class ChatsController < ApplicationController
       @chat.destroy
     elsif @chat.users.count == 1
       @chat.chat_users.each(&:ended!)
+      users_to_notify = @chat.chat_users.where.not(user: @chat.active_chat_users)
+      users_to_notify.each do |u|
+        u.user.push_subscriptions.each do |s|
+          s.push('Chat Ended', 'Click to view', url: "/chats/#{@chat.uuid}")
+        end
+      end
     end
     @chat.messages << Message.new(content: "#{params[:icon]} has left the chat.")
     respond_to do |format|

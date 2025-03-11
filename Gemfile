@@ -118,6 +118,9 @@ gem 'chartkick'
 gem 'clockwork'
 gem 'rollups'
 
+# Web Push Notifications
+gem 'web-push'
+
 # Upgrades
 gem 'next_rails'
 

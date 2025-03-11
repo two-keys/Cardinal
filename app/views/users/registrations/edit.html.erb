@@ -35,6 +35,12 @@
       <%= f.password_field :current_password, autocomplete: "current-password" %>
     </div>
 
+    <div class="field">
+      <%= f.label "Announcements trigger Web Push?" %><br />
+      <%= f.check_box :push_announcements %>
+    </div>
+  
+
     <% if can? :edit, resource %>
       <div class="actions">
         <%= f.submit "Update" %>
@@ -48,6 +54,19 @@
     <%= link_to "New Theme", new_theme_path, class: "button" %> |
   <% end %>
   <%= link_to "Themes", themes_path, class: "button" %>
+  <h3>Notifications</h3>
+  <div data-controller="web-push-subscription" class="web-push-subscription">
+    <button disabled data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
+    <button disabled data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
+  </div>
+  <div class="push_subscriptions">
+    <% current_user.push_subscriptions.each do |subscription| %>
+      <div id="<%= dom_id subscription %>" class="card secondary">
+        Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
+        <%= button_to "Destroy", subscription, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
+      </div>
+    <% end %>
+  </div>
   <h3>My Reports</h3>
   <%= link_to "My Reports", reports_path, class: "button" %>
   

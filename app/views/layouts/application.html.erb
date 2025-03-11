@@ -8,6 +8,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%= tag.meta name: "vapid-public-key", content: ENV.fetch('WEBPUSH_PUBLIC_KEY', nil) %>
     <script
       src="https://js.sentry-cdn.com/561d51d4da53e5e5ad60cab12cbe3039.min.js"
       crossorigin="anonymous"

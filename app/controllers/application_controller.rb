@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_sentry_context
   before_action :set_unleash_context
   before_action :set_current_attributes
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from CanCan::AccessDenied, with: :user_not_authorized
 
@@ -63,5 +64,9 @@ class ApplicationController < ActionController::Base
       format.html { redirect_to final_auth_redirect, notice: exception.message, status: :not_found }
       format.json { render nothing: true, status: :not_found }
     end
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:account_update, keys: [:push_announcements])
   end
 end

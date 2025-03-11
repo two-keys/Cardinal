@@ -2,6 +2,7 @@
 
 module ApplicationHelper
   include Pagy::Frontend
+  require 'digest'
 
   def pluralize_without_count(count, noun, text = nil)
     return unless count != 0
@@ -25,6 +26,10 @@ module ApplicationHelper
       format.html { redirect_to root_url, notice: 'You are not authorized to perform this action.' }
       format.json { render json: {}, status: :unauthorized }
     end
+  end
+
+  def sha256(text)
+    Digest::SHA256.hexdigest(text)
   end
 
   def admin_scope?
