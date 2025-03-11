@@ -20,7 +20,8 @@ module Admin
 
       @intervals = %w[1s 30s 90s 1m 5m 15m hour day week month quarter year]
       @report_analytics = [
-        { name: 'New', data: Rollup.where(time: @range).series('Report creates', interval: @interval) }
+        { name: 'New', data: Rollup.where(time: @range).series('Report creates', interval: @interval) },
+        { name: 'Resolved', data: Rollup.where(time: @range).series('Report resolves', interval: @interval) }
       ]
       @user_analytics = [
         { name: 'Visited', data: Rollup.where(time: @range).series('User visits', interval: @interval) },
