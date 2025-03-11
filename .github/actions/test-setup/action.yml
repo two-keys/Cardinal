@@ -35,5 +35,5 @@ runs:
         bin/rails db:drop
         bin/rails db:create
         bin/rails db:environment:set
-        bin/rails rails db:schema:load
+        bin/rails db:schema:load
       shell: bash
