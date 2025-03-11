@@ -61,7 +61,12 @@
     </div>
     <div class="card secondary">
       <h2>Tag Popularity</h2>
-      <%= pie_chart @tag_analytics %>
+      <%= pie_chart @tag_analytics, legend: false, donut: true %>
+      <div>
+        <% @tag_analytics.each do |key, value| %>
+          <p>'<%= "#{key}' - #{value}" %></p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

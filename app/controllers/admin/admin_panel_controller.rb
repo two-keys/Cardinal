@@ -9,7 +9,7 @@ module Admin
 
     def index; end
 
-    def analytics
+    def analytics # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       @interval = params[:interval] || 'day'
       now = DateTime.now
 
@@ -56,13 +56,16 @@ module Admin
 
       @tag_events.each do |tag_event|
         tag_event.properties['tags'].each do |key, value|
-          @tags[key] = if @tags.key?(key)
-                         @tags[key] + value
-                       else
-                         value
-                       end
+          @tags[key] = [] unless @tags.key?(key)
+          @tags[key] << value
         end
       end
+
+      @tags.each do |key, _value|
+        @tags[key] = @tags[key].inject { |sum, el| sum + el }.to_f / @tags[key].size
+        @tags[key] = @tags[key].round
+      end
+      @tags = @tags.sort_by { |_key, value| value }.reverse.to_h
 
       @tag_analytics = @tags
     end

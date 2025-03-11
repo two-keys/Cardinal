@@ -20,7 +20,7 @@ class AnalyticsJob < ApplicationJob
                          .group(:id)
                          .order('COUNT("tags"."id") DESC')
                          .select('COUNT("tags"."id"), "tags".*')
-                         .limit(10)
+                         .limit(25)
 
       tags = {}
 
