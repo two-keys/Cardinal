@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import "selectize.js"
+import "@selectize/selectize"
 
 export default class extends Controller {
     initialize() {
