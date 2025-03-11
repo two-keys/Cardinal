@@ -21,10 +21,11 @@ class Ticket < ApplicationRecord
     ahoy = Ahoy.instance
     ticket = Ticket.create!(user: spend_item.user, item: spend_item)
 
-    return unless ahoy
+    return ticket unless ahoy
 
     ahoy.track 'Ticket Created',
                { user_id: spend_item.user.id, item_id: spend_item.id, item_type: ticket.item_type }
+    ticket
   end
 
   def destroyable?
