@@ -49,6 +49,22 @@ module Admin
         { name: 'New', data: Rollup.where(time: @range).series('ConnectCode creates', interval: @interval) },
         { name: 'Used', data: Rollup.where(time: @range).series('ConnectCode consumes', interval: @interval) }
       ]
+
+      @tags = {}
+
+      @tag_events = Ahoy::Event.where_event('Tag Popular').where(time: @range)
+
+      @tag_events.each do |tag_event|
+        tag_event.properties['tags'].each do |key, value|
+          @tags[key] = if @tags.key?(key)
+                         @tags[key] + value
+                       else
+                         value
+                       end
+        end
+      end
+
+      @tag_analytics = @tags
     end
   end
 end
