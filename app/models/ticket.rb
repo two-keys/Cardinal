@@ -24,7 +24,7 @@ class Ticket < ApplicationRecord
     return unless ahoy
 
     ahoy.track 'Ticket Created',
-               { user_id: spend_item.user.id, item_id: spend_item.id, item_type: spend_item.item_type }
+               { user_id: spend_item.user.id, item_id: spend_item.id, item_type: item_type }
   end
 
   def destroyable?
