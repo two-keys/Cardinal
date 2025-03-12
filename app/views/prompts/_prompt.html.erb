@@ -2,10 +2,10 @@
   <% prompt = locals[:reportable] %>
 <% end %>
 
-<% content_for :card_classes, flush: true do %>
+<% content_for "card_classes_#{prompt.id}" do %>
   <%= prompt.default_slots > 2 ? ' group' : ' standard' %>
 <% end %>
-<% content_for :card_info, flush: true do %>
+<% content_for "card_info_#{prompt.id}" do %>
   <span class="slots">
     <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
   </span>
@@ -16,7 +16,7 @@
   </span>
   <br/>
 <% end %>
-<% content_for :card_content, flush: true do %>
+<% content_for "card_content_#{prompt.id}" do %>
   <% if prompt.ooc.present? %>
     <div data-controller="read-more" data-read-more-more-text-value="Read more" data-read-more-less-text-value="Read less">
       <div class="ooc truncate truncate--line-clamped" data-read-more-target="content">
@@ -45,7 +45,7 @@
     </div>
   <% end %>
 <% end %>
-<% content_for :timestamp, flush: true do %>
+<% content_for "timestamp_#{prompt.id}" do %>
   <%= link_to (prompt.bumped_at || prompt.created_at).strftime("%Y-%m-%d %k:%M:%S"), prompt %>
 <% end %>
 

@@ -126,7 +126,7 @@ gem 'next_rails'
 
 gem 'net-imap', '>= 0.5.6'
 gem 'nokogiri', '>= 1.18.3'
-gem 'rack', '~> 2.2.12'
+gem 'rack', '~> 2.2.13'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

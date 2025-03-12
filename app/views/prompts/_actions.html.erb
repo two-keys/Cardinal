@@ -1,4 +1,4 @@
-<% content_for :card_actions_right, flush: true do %>
+<% content_for "card_actions_right_#{prompt.id}", flush: true do %>
     <% if can?(:edit, prompt) && prompt.bumpable? %>
         <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
     <% end %>

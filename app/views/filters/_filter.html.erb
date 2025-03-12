@@ -1,4 +1,4 @@
-<% content_for :card_content do %>
+<% content_for "card_content_#{filter.id}" do %>
   <%= link_to filter.id, filter %>
 
   <p>

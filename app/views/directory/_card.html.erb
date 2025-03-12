@@ -17,10 +17,10 @@
         </div>
     <% end %>
 
-    <%= yield :card_info %>
+    <%= yield "card_info_#{model.id}" %>
   </div>
 
-  <%= yield :card_content %>
+  <%= yield "card_content_#{model.id}" %>
  
   <% if defined? model.description %>
     <div class="description">
@@ -34,8 +34,8 @@
     <% if defined? model.created_at %>
       <span class="<%= class_name %>_date_time timestamp">
         <!-- Display the date and time of the model  -->
-        <% if content_for?(:timestamp) %>
-          <%= yield :timestamp %>
+        <% if content_for?("timestamp-#{model.id}") %>
+          <%= yield "timestamp_#{model.id}" %>
         <% else %>
           <%= link_to (model.created_at).strftime("%Y-%m-%d %k:%M:%S"), model %>
         <% end %>
@@ -55,10 +55,10 @@
           <li><%= link_to "Edit", "#{url_for(model)}/edit", class: "#{class_name}_edit_link button" %></li>
         <% end %>
 
-        <%= yield :card_actions_left %>
+        <%= yield "card_actions_left_#{model.id}" %>
       </ul>
       <ul class="actions_right">
-        <%= yield :card_actions_right %>
+        <%= yield "card_actions_right_#{model.id}" %>
       </ul>
     </div>
   </div>

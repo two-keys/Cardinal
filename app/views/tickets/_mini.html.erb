@@ -1,4 +1,4 @@
-<% content_for :card_content do %>
+<% content_for "card_content_#{ticket.id}" do %>
   <% if ticket.item_type.present? %>
     <%= link_to "#{ticket.item_type} #{ticket.item_id}", ticket %>
   <% else %>
