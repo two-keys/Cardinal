@@ -16,6 +16,20 @@ class DonationController < ApplicationController
 
     @prices = CardinalSettings::Donation.prices
     @goals = CardinalSettings::Donation.goals
+
+    @funding_goals = CardinalSettings::Donation.funding
+    @funding_total = @funding_goals.sum { |h| h['cost'] }
+    @funding_total = @funding_total.to_f
+    @funding_reached = (@total / @funding_total) * 100
+
+    accumulator = 0.0
+    @funding_goals.each do |fund|
+      fund['accumulative'] = accumulator + fund['cost'].to_f
+      fund['percentage'] = (fund['cost'].to_f / @funding_total) * 100
+      fund['percentage_accumulative'] = (fund['accumulative'].to_f / @funding_total) * 100
+      fund['funded'] = @total > fund['accumulative']
+      accumulator += fund['cost'].to_f
+    end
   end
 
   def create_stripe_session

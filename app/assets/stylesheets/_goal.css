@@ -1,0 +1,130 @@
+.progress-goals {
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 75px;
+}
+  
+.progress-goals h3 {
+    display: inline-block;
+}
+
+.progress-goals:last-child {
+    flex: 1;
+}
+
+.progress {
+    margin: 40px;
+}
+
+.progress-bg {
+    position: relative;
+    border-style: solid;
+    border-color: var(--card-text-color-secondary);
+    border-width: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px auto 0px;
+    height: 78px;
+    border-radius: 5px;
+}
+
+.funding-goal-container {
+    position: relative;
+    height: 0px;
+    width: 0px;
+    top: -75px;
+    overflow: visible;
+}
+
+.funding-goal {
+    position: absolute;
+    opacity: 0.5;
+    text-align: center;
+    top: 0;
+    left: -2rem;
+}
+
+.funding-goal
+h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+}
+
+.funding-goal.funded {
+    opacity: 1;
+}
+
+.goal-bar {
+    position: absolute;
+    height: 78px;
+    border-radius: 15px;
+}
+
+.goal-separator {
+    position: absolute;
+    background-color: var(--card-text-color-secondary);
+    width: 1px;
+    height: 78px;
+    z-index: 2;
+}
+
+.goal-separators {
+    pointer-events: none;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    font-size: 15px;
+    text-align: center;
+    z-index: 2;
+}
+
+.progress-bar-container {
+    display: block;
+    height: 100%;
+    width: 0px;
+    background: transparent;
+    position: absolute;
+    z-index: 1;
+}
+
+.progress-bar {
+    pointer-events: none;
+    display: block;
+    overflow: visible;
+    height: 100%;
+    background: var(--unanswered-color);
+    font-size: 15px;
+    text-align: center;
+    animation-name: expand;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1s;
+}
+
+.progress-current {
+    height: 100%;
+    display: block;
+    position: relative;
+    right: -28px;
+    bottom: -75px;
+    z-index: 4;
+}
+
+.progress-btn-container {
+    display: grid;
+    place-items: center;
+    height: 50px;
+}
+
+@keyframes expand {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}

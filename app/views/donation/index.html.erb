@@ -4,6 +4,42 @@
     <div class="status">$<%= @total %> / $<%= @current_goal['cost'] %> </div>
     <p>The next goal is <strong><%= @current_goal['name'] %></strong></p>
     <p><%= @current_goal['markdown'] %></p>
+    <div class="progress" data-controller="goal">
+      <h3>Funding Breakdown</h3>
+
+      <ul>
+        <%= render partial: 'donation/goal', collection: @funding_goals, as: :goal %>
+      </ul>
+      
+      <div class="progress-goals">
+        <% @funding_goals.each_with_index do |fund, idx| %>
+          <div style="width: <%= fund['percentage'] %>%;">
+          </div>
+          <div class="funding-goal-container">
+            <div class="funding-goal<%= fund['funded'] ? " funded" : "" %>">
+              <h3>$<%= fund['accumulative'].to_i %></h3>
+              <h4><%= fund['name'] %></h4>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="progress-bg" id="progress-bg">
+        <% @funding_goals.each do |fund| %>
+          <div class="goal-bar" style="width: <%= fund['percentage'] %>%;"></div>
+        <% end %>
+        <div class="goal-separators" id="progress-separators">
+          <% @funding_goals.each do |fund| %>
+            <div class="goal-separator" style="left: <%= fund['percentage_accumulative'] %>%;"></div>
+          <% end %>
+        </div>
+        <div class="progress-bar-container" style="width: <%= @funding_reached %>%;">
+          <div class="progress-bar" id="progress-bar" goal="<%= @funding_reached %>">
+            <div class="progress-current">$<%= @total %></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="card primary">
     <h1>SUPPORT THE SITE</h1>

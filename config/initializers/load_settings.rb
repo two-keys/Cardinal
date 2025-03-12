@@ -108,6 +108,10 @@ module CardinalSettings
     def self.goals
       donation_hash['goals']
     end
+
+    def self.funding
+      donation_hash['funding']
+    end
   end
 
   # A collection of methods simplifying access to the use hash within SETTINGS_HASH
