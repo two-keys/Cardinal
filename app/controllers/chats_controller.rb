@@ -127,7 +127,7 @@ class ChatsController < ApplicationController
   # GET /chats/1/search?q=text
   def search
     @query = params[:q]
-    results = params[:q].empty? ? @chat.messages.display : @chat.search(@query)
+    results = params[:q].blank? ? @chat.messages.display : @chat.search(@query)
     @pagy, @messages = pagy(results, items: 20)
   end
 
