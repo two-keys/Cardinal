@@ -34,7 +34,7 @@
     <% if defined? model.created_at %>
       <span class="<%= class_name %>_date_time timestamp">
         <!-- Display the date and time of the model  -->
-        <% if content_for?("timestamp-#{model.id}") %>
+        <% if content_for?("timestamp_#{model.id}") %>
           <%= yield "timestamp_#{model.id}" %>
         <% else %>
           <%= link_to (model.created_at).strftime("%Y-%m-%d %k:%M:%S"), model %>
