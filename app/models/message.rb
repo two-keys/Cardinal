@@ -89,6 +89,11 @@ class Message < ApplicationRecord
     find_each(&:update_pg_search_document)
   end
 
+  def self.search(text)
+    results = PgSearch.multisearch(text).where(searchable_type: 'Message').map(&:searchable_id)
+    where(id: results)
+  end
+
   private
 
   def search_reindex
@@ -99,7 +104,8 @@ class Message < ApplicationRecord
     self.icon = if user_id.nil?
                   CardinalSettings::Icons.system_icon
                 else
-                  user.chat_users.find_by(chat_id:).icon
+                  chat_user = user.chat_users.find_by(chat_id:)
+                  chat_user ? chat_user.icon : CardinalSettings::Icons.system_icon
                 end
   end
 

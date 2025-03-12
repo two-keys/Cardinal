@@ -2,6 +2,7 @@
 
 module Admin
   class MessagesController < ApplicationController
+    include Pagy::Backend
     include ApplicationHelper
 
     before_action :require_admin
@@ -26,6 +27,12 @@ module Admin
           format.json { render json: @message.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    def search
+      @query = params[:q]
+      results = @query ? Message.search(@query) : Message.all
+      @pagy, @messages = pagy(results, items: 20)
     end
 
     # Only allow a list of trusted parameters through

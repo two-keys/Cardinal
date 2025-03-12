@@ -1,0 +1,30 @@
+<% content_for :info_top do %>
+    <div id="chat_info_top" class="card secondary">
+        <%= render partial: 'search_form' %>
+        <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+    </div>
+<% end %>
+
+<div id="admin_search_container">
+    <div class="card secondary">
+        <div id="messages_container">
+            <% if @messages.count > 0 %>
+                <% for message in @messages.reverse %>
+                    <div class="card secondary">
+                        <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
+                        <%= link_to "View Chat", chat_path(message.chat.uuid), class: "button" %>
+                    </div>
+                <% end %>
+            <% else %>
+                <div>Your query has no results...</div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<% content_for :info_bottom do %>
+    <div class="card secondary">
+        <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+    </div>
+<% end %>
+

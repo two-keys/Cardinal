@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     end
     resources :reports, only: %i[index show edit update destroy]
     resources :messages, only: %i[create]
+    get 'messages/search' => 'messages#search', as: 'messages_search'
     resources :alerts
     resources :audit_logs, only: %i[index]
     root 'admin_panel#index'

@@ -17,8 +17,7 @@ class Chat < ApplicationRecord
   validates :uuid, presence: true, uniqueness: true
 
   def search(text)
-    results = PgSearch.multisearch(text).where(chat_id: id).map(&:searchable_id)
-    messages.where(id: results)
+    Chat.search(id, text)
   end
 
   def broadcast_status_to_users
@@ -85,6 +84,9 @@ class Chat < ApplicationRecord
   end
 
   def viewed!(user)
+    chat_user = chat_users.find_by(user:)
+    return unless chat_user
+
     chat_users.find_by(user:).viewed!
   end
 
@@ -112,6 +114,11 @@ class Chat < ApplicationRecord
     end
 
     online_users
+  end
+
+  def self.search(id, text)
+    results = PgSearch.multisearch(text).where(chat_id: id).map(&:searchable_id)
+    Message.where(id: results)
   end
 
   private
