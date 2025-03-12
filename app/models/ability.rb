@@ -115,6 +115,9 @@ class Ability
     can :forceongoing, Chat do |chat|
       chat.users.include?(user)
     end
+    can :search, Chat do |chat|
+      chat.users.include?(user)
+    end
     can :consume, ConnectCode
     can :bump, Prompt, user: user
     can :update_tags, Prompt, user: user
