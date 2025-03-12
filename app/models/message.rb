@@ -27,7 +27,7 @@ class Message < ApplicationRecord
 
   multisearchable(
     against: [:content],
-    additional_attributes: ->(message) { { chat_id: message.chat.id, user_id: message.user_id } }
+    additional_attributes: ->(message) { { chat_id: message.chat_id, user_id: message.user_id } }
   )
 
   def alertable_fields
