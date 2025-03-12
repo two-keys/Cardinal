@@ -12,7 +12,9 @@
                 <% for message in @messages.reverse %>
                     <div class="card secondary">
                         <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
-                        <%= link_to "View Chat", chat_path(message.chat.uuid), class: "button" %>
+                        <% if message.chat %>
+                            <%= link_to "View Chat", chat_path(message.chat.uuid), class: "button" %>
+                        <% end %>
                     </div>
                 <% end %>
             <% else %>
