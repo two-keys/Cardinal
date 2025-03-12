@@ -158,7 +158,17 @@
   display: inline;
 }
 
+.search-form {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
 
+.search-form .search-field {
+  flex-grow: 1;
+}
 
 
 @media only screen and (min-width: 841px) {

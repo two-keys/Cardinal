@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy chat_kick read forceongoing]
+  before_action :set_chat, only: %i[show edit update destroy chat_kick read forceongoing search]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
   authorize_resource
@@ -122,6 +122,13 @@ class ChatsController < ApplicationController
       format.html { redirect_to edit_chat_path(@chat.uuid), notice: 'Chat was successfully updated.' }
       format.json { render :show, status: :ok, location: @chat.uuid }
     end
+  end
+
+  # GET /chats/1/search?q=text
+  def search
+    @query = params[:q]
+    results = params[:q].empty? ? @chat.messages.display : @chat.search(@query)
+    @pagy, @messages = pagy(results, items: 20)
   end
 
   private

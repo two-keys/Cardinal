@@ -121,6 +121,9 @@ gem 'rollups'
 # Web Push Notifications
 gem 'web-push'
 
+# Text Search
+gem 'pg_search', '~> 2.3', '>= 2.3.2'
+
 # Upgrades
 gem 'next_rails'
 

@@ -1,0 +1,37 @@
+<% content_for :info_top do %>
+    <div id="chat_info_top" class="card secondary">
+        <% if @chat_info %>
+            <p><%= @chat_info.title %></p>
+            <p><%= @chat_info.description %></p>
+        <% end %>
+        <%= link_to "Return to Chat", chat_path(@chat.uuid), class: "button" %>
+        <%= render partial: 'search_form' %>
+        <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+    </div>
+<% end %>
+
+<div id="<%= dom_id @chat %>_container">
+    <div class="card secondary">
+        <div id="messages_container">
+            <% if @messages.count > 0 %>
+                <% for message in @messages.reverse %>
+                    <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
+                <% end %>
+            <% else %>
+                <div>Your query has no results...</div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<% content_for :right_sidebar do %>
+    <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
+    <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
+<% end %>
+
+<% content_for :info_bottom do %>
+    <div class="card secondary">
+        <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+    </div>
+<% end %>
+

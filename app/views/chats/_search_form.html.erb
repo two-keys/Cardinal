@@ -1,0 +1,6 @@
+<div class="chat-search">
+    <%= form_with url: chat_messages_search_path(@chat.uuid), method: :get, class: "search-form" do |f| %>
+        <%= f.text_field :q, value: @query, class: "search-field", autofocus: @query ? true : false, onfocus: "this.setSelectionRange(this.value.length,this.value.length);"%>
+        <%= f.submit 'Search', class: "search-button" %>
+    <% end %>
+</div>

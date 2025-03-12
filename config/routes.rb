@@ -46,8 +46,9 @@ Rails.application.routes.draw do
   resources :messages, only: %i[show create destroy update edit] do
     concerns :auditable
   end
-  resources :chats, except: :show
+  resources :chats, except: %i[show]
   get 'chats/:id', to: 'chats#show'
+  get 'chats/:id/search' => 'chats#search', as: 'chat_messages_search'
   get 'chats/:id/:page', to: 'chats#show'
   devise_for :users, controllers: {
     sessions: 'users/sessions',

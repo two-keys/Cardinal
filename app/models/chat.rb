@@ -16,6 +16,11 @@ class Chat < ApplicationRecord
   before_validation :generate_uuid, on: :create
   validates :uuid, presence: true, uniqueness: true
 
+  def search(text)
+    results = PgSearch.multisearch(text).where(chat_id: id).map(&:searchable_id)
+    messages.where(id: results)
+  end
+
   def broadcast_status_to_users
     active_notification_users.each do |user|
       broadcast_update_to("user_#{user.id}_notifications", target: 'notifications',

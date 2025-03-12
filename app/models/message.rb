@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
+  include PgSearch::Model
   include Markdownable
   include Reportable
   include Alertable
@@ -22,6 +23,12 @@ class Message < ApplicationRecord
   after_create_commit :update_chat
   after_create_commit :broadcast_create
   after_update_commit :broadcast_update
+  after_save_commit :search_reindex
+
+  multisearchable(
+    against: [:content],
+    additional_attributes: ->(message) { { chat_id: message.chat.id, user_id: message.user_id } }
+  )
 
   def alertable_fields
     %i[content]
@@ -78,7 +85,15 @@ class Message < ApplicationRecord
     result.reverse
   end
 
+  def self.rebuild_pg_search_documents
+    find_each(&:update_pg_search_document)
+  end
+
   private
+
+  def search_reindex
+    update_pg_search_document
+  end
 
   def set_icon
     self.icon = if user_id.nil?
