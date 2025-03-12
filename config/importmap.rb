@@ -13,5 +13,7 @@ pin '@selectize/selectize', to: 'https://ga.jspm.io/npm:@selectize/selectize@0.1
 pin 'ahoy', to: 'ahoy.js', preload: true
 pin 'chartkick', to: 'chartkick.js', preload: true
 pin 'Chart.bundle', to: 'Chart.bundle.js', preload: true
+pin 'show-more', to: 'https://cdn.jsdelivr.net/gh/tomickigrzegorz/show-more@1.1.8/dist/js/showMore.esm.min.js',
+                 preload: true
 
 pin_all_from 'app/javascript/controllers', under: 'controllers'

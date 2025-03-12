@@ -241,6 +241,19 @@ button[disabled]{
     padding-top: 24px;
 }
 
+.show-more-btn {
+    margin: auto;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 300ms ease-in-out;
+    border: 0;
+    font-size: 0.8em;
+    background: transparent;
+}
+.hidden {
+  display: none;
+}
+
 @media only screen and (max-width: 840px) {
     #site_container {
         display: grid; 
