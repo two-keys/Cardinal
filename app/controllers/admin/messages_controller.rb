@@ -31,7 +31,7 @@ module Admin
 
     def search
       @query = params[:q]
-      results = @query ? Message.search(@query) : Message.all
+      results = @query ? Message.search(@query) : Message.display
       @pagy, @messages = pagy(results, items: 20)
     end
 

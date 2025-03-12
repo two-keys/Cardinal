@@ -89,10 +89,10 @@ class MessagesController < ApplicationController
   end
 
   def track_create
-    ahoy.track 'Message Created', { chat_id: @message.chat.id, user_id: @message.user.id }
+    ahoy.track 'Message Created', { chat_id: @message.chat_id, user_id: @message.user_id }
   end
 
   def track_edit
-    ahoy.track 'Message Edited', { chat_id: @message.chat.id, user_id: @message.user.id }
+    ahoy.track 'Message Edited', { chat_id: @message.chat_id, user_id: @message.user_id }
   end
 end
