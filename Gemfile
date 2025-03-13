@@ -159,4 +159,4 @@ group :test do
   gem 'webdrivers'
 end
 
-gem "rack-cors", "~> 2.0"
+gem 'rack-cors', '~> 2.0'
