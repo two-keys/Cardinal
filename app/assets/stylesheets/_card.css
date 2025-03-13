@@ -36,19 +36,8 @@ a:visited {
     border-radius: 5px;
 }
 
-.card button.show-more-btn {
-    color: var(--card-text-color);
-    margin: auto;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: color 300ms ease-in-out;
-    border: 0;
-    font-size: 0.8em;
-    background: transparent;
-}
-
-.card.secondary button.show-more-btn {
-    color: var(--card-text-color-secondary);
+.card a.button.show-more.more {
+    margin-top: 20px;
 }
 
 .card textarea:focus, .card input:focus, .card button:focus {

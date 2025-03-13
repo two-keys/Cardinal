@@ -10,3 +10,5 @@ import 'Chart.bundle'
 window.$ = jQuery
 window.jQuery = jQuery
 
+import 'readmore-js'
+

@@ -18,7 +18,7 @@
 <% end %>
 <% content_for "card_content_#{prompt.id}" do %>
   <% if prompt.ooc.present? %>
-    <div class="show-more">
+    <div id="<%= dom_id prompt %>_ooc" class="show-more" data-controller="show-more">
       <%= prompt.mark_ooc %>
     </div>
   <% end %>
@@ -28,7 +28,7 @@
   <% end %>
 
   <% if prompt.starter.present? %>
-    <div class="show-more">
+    <div id="<%= dom_id prompt %>_starter" class="show-more" data-controller="show-more">
       <%= prompt.mark_starter %>
     </div>
   <% end %>
