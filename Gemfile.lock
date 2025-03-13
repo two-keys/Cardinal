@@ -213,6 +213,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.13)
+    rack-cors (2.0.2)
+      rack (>= 2.0.0)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.1.0)
@@ -382,6 +384,7 @@ DEPENDENCIES
   pg_search (~> 2.3, >= 2.3.2)
   puma (~> 5.0)
   rack (~> 2.2.13)
+  rack-cors (~> 2.0)
   rails (~> 7.2.2)
   rails-html-sanitizer (>= 1.6.1)
   redcarpet
