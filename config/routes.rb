@@ -101,6 +101,7 @@ Rails.application.routes.draw do
 
   get 'serviceworker' => 'pwa#service_worker', :as => :pwa_serviceworker, :constraints => { format: 'js' }
   get 'manifest' => 'pwa#manifest', as: :pwa_manifest, :constraints => { format: 'json' }
+  get 'notifications' => 'chats#notifications', as: :notifications, :constraints => { format: 'json' }
   resources :push_subscriptions, only: %i[create destroy]
 end
 # rubocop:enable Metrics/BlockLength

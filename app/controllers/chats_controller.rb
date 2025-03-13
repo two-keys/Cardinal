@@ -131,6 +131,14 @@ class ChatsController < ApplicationController
     @pagy, @messages = pagy(results, items: 20)
   end
 
+  # GET /notifications.json
+  def notifications
+    notifications = ChatUser.where(user: current_user, status: %i[unread unanswered ended])
+    respond_to do |format|
+      format.json { render template: '/application/_notifications', locals: {notifications: notifications}, layout: false }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
