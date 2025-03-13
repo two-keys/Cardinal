@@ -14,7 +14,7 @@
 
     <div id="new_message_content">
       <h2>SYS Message</h2>
-      <%= form.text_area :content %>
+      <%= form.text_area :content, id: "chat_#{locals[:chat_id]}_message_#{locals[:message].id ? locals[:message].id : "new"}_admin_editor" , data: {controller: "easy-mde", 'easy-mde-save-value': true, 'easy-mde-focus-value': true} %>
     </div>
     <div>
       <%= form.hidden_field :chat_id, value: locals[:chat_id] %>

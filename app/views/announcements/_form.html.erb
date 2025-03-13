@@ -21,9 +21,9 @@
     <%= form.check_box :push %>
   </div>
 
-  <div>
+  <div class="card secondary">
     <%= form.label :content, style: "display: block" %>
-    <%= form.text_area :content %>
+    <%= form.text_area :content, id: "announcement_#{announcement.id ? announcement.id : "new"}_content" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
   </div>
 
   <div>

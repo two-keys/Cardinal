@@ -10,14 +10,14 @@
   </div>
 <% end %>
 
-<div>
+<div class="card secondary">
   <%= form.label :ooc, style: "display: block" %>
-  <%= form.text_area :ooc %>
+  <%= form.text_area :ooc, id: "prompt_#{prompt.id ? prompt.id : "new"}_ooc" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
 </div>
 
-<div>
+<div class="card secondary">
   <%= form.label :starter, style: "display: block" %>
-  <%= form.text_area :starter %>
+  <%= form.text_area :starter, id: "prompt_#{prompt.id ? prompt.id : "new"}_starter" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
 </div>
 
 <div>

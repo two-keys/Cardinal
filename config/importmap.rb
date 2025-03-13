@@ -10,6 +10,7 @@ pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
 pin 'jquery', to: 'https://ga.jspm.io/npm:jquery@1.12.4/dist/jquery.js', preload: true
 pin 'jquery.caret', to: 'https://ga.jspm.io/npm:jquery.caret@0.3.1/dist/jquery.caret.js', preload: true
 pin '@selectize/selectize', to: 'https://ga.jspm.io/npm:@selectize/selectize@0.15.2/dist/js/selectize.js', preload: true
+pin 'easymde', to: 'https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js', preload: true
 pin 'ahoy', to: 'ahoy.js', preload: true
 pin 'chartkick', to: 'chartkick.js', preload: true
 pin 'Chart.bundle', to: 'Chart.bundle.js', preload: true

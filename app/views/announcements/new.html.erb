@@ -1,9 +1,9 @@
 <h1>New announcement</h1>
 
-<%= render "form", announcement: @announcement %>
+<div class="card">
+  <%= render "form", announcement: @announcement %>
+</div>
 
-<br>
-
-<div>
+<div class="card">
   <%= link_to "Back to announcements", announcements_path, class: "button" %>
 </div>

@@ -15,9 +15,9 @@
   <%= form.text_field :name %>
 </div>
 
-<div>
+<div class="card secondary">
   <%= form.label :description, style: "display: block" %>
-  <%= form.text_area :description %>
+  <%= form.text_area :description, id: "character_#{character.id ? character.id : "new"}_description" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
 </div>
 
 <div>
