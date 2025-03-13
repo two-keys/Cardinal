@@ -135,7 +135,9 @@ class ChatsController < ApplicationController
   def notifications
     notifications = ChatUser.where(user: current_user, status: %i[unread unanswered ended])
     respond_to do |format|
-      format.json { render template: '/application/_notifications', locals: {notifications: notifications}, layout: false }
+      format.json do
+        render template: '/application/_notifications', locals: { notifications: notifications }, layout: false
+      end
     end
   end
 
