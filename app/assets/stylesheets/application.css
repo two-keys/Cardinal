@@ -222,6 +222,39 @@ a.button {
     cursor: pointer;
 }
 
+input[type=submit] {
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.card .button.danger {
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+}
+
+.button.danger {
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+}
+
+button.danger {
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+}
+
+.card button.danger {
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+}
+
 a.button:visited {
     background-color: var(--card-textarea-bg-color);
     color: var(--card-textarea-text-color);

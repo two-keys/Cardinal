@@ -39,6 +39,10 @@ module Users
       sign_out_and_redirect(@user)
     end
 
+    def resend_confirmation
+      @user.send_confirmation_instructions
+    end
+
     # GET /resource/cancel
     # Forces the session data which is usually expired after sign
     # in to be expired now. This is useful if the user wants to

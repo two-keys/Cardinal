@@ -35,8 +35,8 @@ module Admin
     # POST /admin/users or /admin/users.json
     def create
       @user = User.new(user_params)
-      # TODO: Remove this when we're ready to deploy with a real email server.
-      @user.skip_confirmation_notification!
+
+      @user.skip_confirmation_notification! unless ENV.fetch('SMTP_ENABLED', nil)
 
       respond_to do |format|
         if @user.save

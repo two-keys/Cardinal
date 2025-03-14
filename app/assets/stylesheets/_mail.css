@@ -1,0 +1,71 @@
+.theme-ref {
+    --main-bg-color: #401a1a;
+    --main-text-color: #fff;
+    --header-bg-color: #c04e4e;
+    --card-bg-color: #803434;
+    --card-text-color: #fff;
+    --card-bg-color-secondary: #d1d1d1;
+    --card-text-color-secondary: #000;
+    --card-textarea-bg-color: rgb(228, 228, 228);
+    --card-textarea-text-color: #333;
+
+    --tag-generic: #a44747;
+    --tag-generic-text: #fff;
+
+    --tag-fandom: #8a486d;
+    --tag-fandom-text: #fff;
+
+    --tag-light-warning: #f0a123;
+    --tag-light-warning-text: #292929;
+
+    --ongoing-color: grey;
+    --unread-color: cornflowerblue;
+    --unanswered-color: #9acd32;
+    --ended-color: firebrick;
+
+    --nav-bg-color: var(--card-bg-color); 
+}
+
+.mail-container {
+    background-color: #401a1a;
+    color: #fff;
+    font-family: Roboto,sans-serif;
+    line-height: 1.5em;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 64px;
+}
+
+.mail-header {
+    text-align: center;
+    background-color: #c04e4e;
+    padding: 10px;
+}
+
+.mail-container .card {
+    background-color: #803434;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px #000;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 20px auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: left;
+}
+
+.mail-container a.button {
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    background-color: rgb(228, 228, 228);
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}

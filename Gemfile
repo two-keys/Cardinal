@@ -124,6 +124,9 @@ gem 'web-push'
 # Text Search
 gem 'pg_search', '~> 2.3', '>= 2.3.2'
 
+# Mail CSS
+gem 'roadie-rails'
+
 # Upgrades
 gem 'next_rails'
 

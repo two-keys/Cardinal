@@ -2,12 +2,20 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%= stylesheet_link_tag "_mail.css" %>
     <style>
       /* Email styles need to be inline */
     </style>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="light-cardinal">
+    <div class="mail-header">
+      <%= image_tag('titlebar.png') %>
+    </div>
+    <div class="mail-container">
+      <div class="card primary">
+        <%= yield %>
+      </div>
+    <div>
   </body>
 </html>

@@ -5,79 +5,86 @@
     <%= link_to "Admin Edit", edit_admin_user_path(resource), class: "button" %>
   <% end %>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <h3>Profile</h3>
     <%= render "users/shared/error_messages", resource: resource %>
 
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-    </div>
-
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-    <% end %>
-
-    <div class="field">
-      <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-      <%= f.password_field :password, autocomplete: "new-password" %>
-      <% if @minimum_password_length %>
-        <br />
-        <em><%= @minimum_password_length %> characters minimum</em>
-      <% end %>
-    </div>
-
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-    </div>
-
-    <div class="field">
+    <div class="field card secondary">
       <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
       <%= f.password_field :current_password, autocomplete: "current-password" %>
     </div>
-
-    <div class="field">
-      <%= f.label "Announcements trigger Web Push?" %><br />
-      <%= f.check_box :push_announcements %>
-    </div>
-  
-
-    <% if can? :edit, resource %>
-      <div class="actions">
-        <%= f.submit "Update" %>
+    
+    <div class="card secondary">
+      <div class="field">
+        <%= f.label :email %> <br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        <br/>
+        <% if resource.confirmed? %>
+          <span>Confirmed at <%= resource.confirmed_at %></span>
+        <% end %>
       </div>
-    <% end %>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <%= link_to "Resend", resend_confirmation_path, class: 'button', data: { turbo_method: :post } %>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :new_password %> <i>(leave blank if you don't want to change it)</i><br />
+        <%= f.password_field :password, autocomplete: "new-password" %>
+        <% if @minimum_password_length %>
+          <br />
+          <em><%= @minimum_password_length %> characters minimum</em>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+
+      <div class="field">
+        <%= f.label "Announcements trigger Web Push?" %><br />
+        <%= f.check_box :push_announcements %>
+      </div>
+      <% if can? :edit, resource %>
+        <div class="actions">
+          <%= f.submit "Update" %>
+        </div>
+      <% end %>
+      <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <% if can? :destroy, resource %>
+        <%= link_to "Delete Account", registration_path(resource_name), class: "button danger", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure?' } %>
+      <% end %>
+    </div>
   <% end %>
   <h3>Themes</h3>
-  <input id="theme_enable" type="checkbox" data-controller="theme-selector">
-  <label for="theme_enable">Enable Custom Theme</label><br/>
-  <% if can? :create, Theme %>
-    <%= link_to "New Theme", new_theme_path, class: "button" %> |
-  <% end %>
-  <%= link_to "Themes", themes_path, class: "button" %>
-  <h3>Notifications</h3>
-  <div data-controller="web-push-subscription" class="web-push-subscription">
-    <button disabled data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
-    <button disabled data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
-  </div>
-  <div class="push_subscriptions">
-    <% current_user.push_subscriptions.each do |subscription| %>
-      <div id="<%= dom_id subscription %>" class="card secondary">
-        Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
-        <%= button_to "Destroy", subscription, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
-      </div>
+  <div class="card secondary">
+    <input id="theme_enable" type="checkbox" data-controller="theme-selector">
+    <label for="theme_enable">Enable Custom Theme</label><br/>
+    <% if can? :create, Theme %>
+      <%= link_to "New Theme", new_theme_path, class: "button" %> |
     <% end %>
+    <%= link_to "Themes", themes_path, class: "button" %>
+  </div>
+  <h3>Notifications</h3>
+  <div class="card secondary">
+    <div data-controller="web-push-subscription" class="web-push-subscription">
+      <button disabled data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
+      <button disabled data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
+    </div>
+    <div class="push_subscriptions">
+      <% current_user.push_subscriptions.each do |subscription| %>
+        <div id="<%= dom_id subscription %>" class="card secondary">
+          Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
+          <%= button_to "Destroy", subscription, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
+        </div>
+      <% end %>
+    </div>
   </div>
   <h3>My Reports</h3>
-  <%= link_to "My Reports", reports_path, class: "button" %>
-  
-  <h3>Log out</h3>
-  <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
-
-  <h3>Cancel my account</h3>
-
-  <% if can? :destroy, resource %>
-    <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), form: { data: { turbo_confirm: "Are you sure?" } }, method: :delete, class: "button" %></p>
-  <% end %>
+  <div class="card secondary">
+    <%= link_to "My Reports", reports_path, class: "button" %>
+  </div>
 
   <%= link_to "Back", :back, class: "button" %>
 </div>

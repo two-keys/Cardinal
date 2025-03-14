@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+  post 'resend_confirmation' => 'resend_confirmations#resend', as: 'resend_confirmation'
 
   post 'connect_code' => 'connect_code#create'
   patch 'connect_code' => 'connect_code#update'

@@ -113,6 +113,8 @@ GEM
     concurrent-ruby (1.3.4)
     connection_pool (2.5.0)
     crass (1.0.6)
+    css_parser (1.21.1)
+      addressable
     date (3.4.1)
     debug (1.9.2)
       irb (~> 1.10)
@@ -269,6 +271,12 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.3.9)
+    roadie (5.2.1)
+      css_parser (~> 1.4)
+      nokogiri (~> 1.15)
+    roadie-rails (3.3.0)
+      railties (>= 5.1, < 8.1)
+      roadie (~> 5.0)
     rollups (0.4.1)
       activesupport (>= 7)
       groupdate (>= 6.1)
@@ -389,6 +397,7 @@ DEPENDENCIES
   rails-html-sanitizer (>= 1.6.1)
   redcarpet
   redis (~> 4.0)
+  roadie-rails
   rollups
   rubocop
   rubocop-rails

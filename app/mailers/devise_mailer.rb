@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-class ApplicationMailer < ActionMailer::Base
+class DeviseMailer < Devise::Mailer
   include Roadie::Rails::Automatic
 
-  default from: 'from@example.com'
   layout 'mailer'
 end

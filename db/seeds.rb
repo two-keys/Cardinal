@@ -44,10 +44,11 @@ user_arr = []
     verified: true
   )
   temp_user.password = '123456' # devise overwrites and assigns digest automatically
+  temp_user.skip_confirmation!
   temp_user.save!
 
-  ahoy.track 'User Created', {}, {time: created_edited}
-  
+  ahoy.track 'User Created', {}, { time: created_edited }
+
   user_arr << temp_user
 end
 
@@ -58,6 +59,7 @@ temp_user = User.new(
   admin: true
 )
 temp_user.password = '123456'
+temp_user.skip_confirmation!
 temp_user.save!
 
 ahoy.track 'User Created'
@@ -72,9 +74,9 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
     log_to_console logger, "creating tags for #{polarity}, #{tag_type_key}", 2
     created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
 
-    if type_hash['fill_in'] then
+    if type_hash['fill_in']
       # randomly generated fill_ins
-      
+
       rand(1..5).times do
         created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
         Tag.create!(
@@ -83,20 +85,20 @@ CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
           polarity: polarity
         )
 
-        ahoy.track 'Tag Created', {}, {time: created_edited}
+        ahoy.track 'Tag Created', {}, { time: created_edited }
       end
     end
 
     # generate entries
-    if type_hash.key?('entries') then
-      type_hash['entries'].each do |entry| 
-        Tag.create!(
-          name: entry,
-          tag_type: tag_type_key,
-          polarity: polarity
-        )
-        ahoy.track 'Tag Created', {}, {time: created_edited}
-      end
+    next unless type_hash.key?('entries')
+
+    type_hash['entries'].each do |entry|
+      Tag.create!(
+        name: entry,
+        tag_type: tag_type_key,
+        polarity: polarity
+      )
+      ahoy.track 'Tag Created', {}, { time: created_edited }
     end
   end
 end
@@ -112,7 +114,7 @@ user_arr.each do |e_user|
   created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.new(2022, 10, 1))
 
   end_of_range = rand(2..15)
-  (1..end_of_range).each do |n|
+  (1..end_of_range).each do |_n|
     sentences = rand(1..15)
     selected_user = user_arr[rand(0..(user_arr.length - 1))]
     tags = Tag.limit(Random.rand(1..15)).order('RANDOM()')
@@ -126,7 +128,7 @@ user_arr.each do |e_user|
       created_at: created_edited,
       updated_at: created_edited
     )
-    ahoy.track 'Prompt Created', {user_id: selected_user.id}, {time: created_edited}
+    ahoy.track 'Prompt Created', { user_id: selected_user.id }, { time: created_edited }
     temp_p.save!
     # needed for ticket check
     temp_t = temp_p.tickets.first
@@ -144,29 +146,31 @@ log_to_console logger, 'Starting to seed filters'
 ## so they're better off being made manually
 
 # Chats
-user_arr.each_with_index do |user|
+user_arr.each do |user|
   log_to_console logger, "creating chats for user #{user.id}", 2
 
   # grab a random array of other users
   sample_array = user_arr.sample(rand(2..user_arr.length)) - [user]
   sample_array.each do |sample_user|
     random_prompt = Prompt.where(user:, status: 'posted').sample
-    
+
     # create a chat with user and sample_user
     chat = random_prompt.answer(sample_user)
     chat.save!
-    
+
     connect_code = ConnectCode.new(
       chat_id: chat.id,
       user: random_prompt.user,
       remaining_uses: random_prompt.default_slots - 2
     )
-    ahoy.track 'ConnectCode Created', {user_id: random_prompt.user, chat_id: chat.id}, {time: chat.prompt.created_at}
-    ahoy.track 'ConnectCode Consumed', {user_id: random_prompt.user, chat_id: chat.id}, {time: chat.prompt.created_at}
-    ahoy.track 'ConnectCode Consumed', {user_id: sample_user.id, chat_id: chat.id}, {time: chat.prompt.created_at}
+    ahoy.track 'ConnectCode Created', { user_id: random_prompt.user, chat_id: chat.id },
+               { time: chat.prompt.created_at }
+    ahoy.track 'ConnectCode Consumed', { user_id: random_prompt.user, chat_id: chat.id },
+               { time: chat.prompt.created_at }
+    ahoy.track 'ConnectCode Consumed', { user_id: sample_user.id, chat_id: chat.id }, { time: chat.prompt.created_at }
     connect_code.save!
     creation_message = "Chat created.  \n" \
-                        "Connect code is: #{connect_code.code}. It has #{connect_code.remaining_uses} uses left."
+                       "Connect code is: #{connect_code.code}. It has #{connect_code.remaining_uses} uses left."
     chat.messages << Message.new(content: creation_message)
   end
 end
