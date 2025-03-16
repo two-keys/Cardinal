@@ -25,18 +25,10 @@ export default class extends Controller {
         } : undefined,
         lineWrapping: true,
         sideBySideFullscreen: false,
-        status: ["autosave", "lines", "words", "cursor", {
-            className: "keystrokes",
-            defaultValue: (el) => {
-                el.setAttribute('data-keystrokes', 0);
-            },
-            onUpdate: (el) => {
-                const keystrokes = Number(el.getAttribute('data-keystrokes')) + 1;
-                el.innerHTML = `${keystrokes} Keystrokes`;
-                el.setAttribute('data-keystrokes', keystrokes);
-            },
-        }],
+        forceSync: true,
+        status: ["autosave", "lines", "words", "cursor"],
         hideIcons: ['fullscreen']
     });
+    this.element.easymde = easyMDE;
   }
 }
