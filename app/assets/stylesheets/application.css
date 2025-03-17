@@ -227,6 +227,19 @@ a.button {
     cursor: pointer;
 }
 
+.show-more__link {
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
 input[type=submit] {
     text-decoration: none;
     padding: 2px;

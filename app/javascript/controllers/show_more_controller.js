@@ -3,7 +3,11 @@ import ReadSmore from 'read-smore/dist/index.esm'
 
 export default class extends Controller {
   connect() {
-    ReadSmore([this.element]).init()
+    ReadSmore([this.element], {
+      lessText: 'Less',
+      moreText: 'More',
+      blockClassName: 'show-more'
+    }).init()
     /*
     $(this.element).readmore({
         moreLink: '<a href="#" class="button show-more more">More</a>',
