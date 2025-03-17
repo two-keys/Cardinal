@@ -1,3 +1,26 @@
 {
-  "dependencies": {}
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@chialab/esbuild-plugin-babel": "^0.18.0",
+    "esbuild": "^0.25.1",
+    "esbuild-rails": "^1.0.7"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "build:watch": "node esbuild.watch.config.mjs"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.13",
+    "@selectize/selectize": "^0.15.2",
+    "ahoy.js": "^0.4.4",
+    "chart.js": "^4.4.8",
+    "chartkick": "^5.0.1",
+    "easymde": "^2.20.0",
+    "jquery": "^3.7.1",
+    "jquery.caret": "^0.3.1",
+    "readmore-js": "^2.2.1"
+  }
 }

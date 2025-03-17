@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import 'easymde'
+import EasyMDE from "easymde"
 
 export default class extends Controller {
   static values = {

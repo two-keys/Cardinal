@@ -28,11 +28,8 @@ gem 'pg', '~> 1.1'
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
 
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem 'importmap-rails'
-
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem 'turbo-rails', '~> 1.0'
+gem 'turbo-rails'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
@@ -126,6 +123,9 @@ gem 'pg_search', '~> 2.3', '>= 2.3.2'
 
 # Mail CSS
 gem 'roadie-rails'
+
+# Javascript Bundling
+gem 'jsbundling-rails'
 
 # Upgrades
 gem 'next_rails'
