@@ -7,5 +7,3 @@ import ahoy from "ahoy.js"
 import 'chartkick'
 import "chartkick/chart.js"
 
-import 'readmore-js'
-

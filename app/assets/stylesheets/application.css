@@ -134,6 +134,11 @@ body {
     bottom: 0;
 }
 
+div + [data-readmore-toggle], div[data-readmore] {
+    display: block;
+    width: 100%;
+}
+
 #site img.emoji {
     height: 1.1em;
     width: 1.1em;
