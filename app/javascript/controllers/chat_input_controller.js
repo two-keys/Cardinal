@@ -18,8 +18,8 @@ export default class extends Controller {
         success: function (data) {
             $(container).removeClass("error");
             alertBox.innerHTML = "";
-            textArea.easymde.value("");
-            textArea.easymde.codemirror.focus();
+            container.editor.setHTML("");
+            container.editor.focus();
         },
         error: function (jXHR, textStatus, errorThrown) {
             $(container).removeClass("animate");

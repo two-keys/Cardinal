@@ -1,0 +1,201 @@
+.message-input div.editor-container {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: none;
+    border-radius: 5px;
+}
+
+.message-input div.editor-container .toastui-editor-md-splitter {
+    background-color: rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .te-popup-add-image .te-tab button, .te-popup-add-image .te-file-type {
+	display: none !important;
+}
+
+.message-input div.editor-container .te-popup-add-image .te-url-type {
+	display: block !important;
+}
+
+.message-input div.editor-container .toastui-editor-popup-body {
+    background-color: var(--card-bg-color-secondary);
+    color: var(--card-text-color-secondary);
+}
+
+.message-input div.editor-container .toastui-editor-popup.toastui-editor-popup-add-image {
+    background-color: var(--card-bg-color-secondary);
+    color: var(--card-text-color-secondary);
+}
+
+.message-input div.editor-container .toastui-editor-popup-body label {
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container div.toastui-editor-toolbar > div.toastui-editor-popup.toastui-editor-popup-add-image > div > div > div:nth-child(2) {
+    display: block !important;
+}
+
+.message-input div.editor-container div.toastui-editor-toolbar > div.toastui-editor-popup.toastui-editor-popup-add-image > div > div > div:nth-child(3) {
+    display: none !important;
+}
+
+.message-input div.editor-container div.toastui-editor-toolbar > div.toastui-editor-popup.toastui-editor-popup-add-image > div > div > div.toastui-editor-tabs:nth-child(1) {
+    display: none !important;
+}
+
+.message-input div.editor-container .toastui-editor-defaultUI .toastui-editor-close-button {
+    border: unset;
+    height: unset;
+    margin-right: unset;
+    min-width: unset;
+    outline-color: unset;
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    background: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    color: var(--card-textarea-text-color);
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.message-input div.editor-container .toastui-editor-defaultUI .toastui-editor-ok-button {
+    border: unset;
+    height: unset;
+    margin-right: unset;
+    min-width: unset;
+    outline-color: unset;
+    text-decoration: none;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    margin-left: 16px;
+    background: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    color: var(--card-textarea-text-color);
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.message-input div.editor-container #toastuiImageUrlInput {
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container #toastuiImageUrlInput:focus {
+    border: 1px solid rgb(from var(--unread-color) r g b / 0.5);
+}
+
+.message-input div.editor-container #toastuiAltTextInput {
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container #toastuiAltTextInput:focus {
+    border: 1px solid rgb(from var(--unread-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .tui-colorpicker-palette-hex {
+    color: var(--card-textarea-text-color);
+    background-color: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-popup-body input[type=text].tui-colorpicker-palette-hex {
+    color: var(--card-textarea-text-color);
+    background-color: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    width: 80px;
+}
+
+.message-input div.editor-container .toastui-editor-popup-color .tui-colorpicker-container .tui-colorpicker-palette-preview {
+    margin-top: -2px;
+}
+
+.message-input div.editor-container .toastui-editor-dropdown-toolbar {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-popup-color button {
+    background: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container .toastui-editor-mode-switch {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border-top: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-popup-body ul * {
+    background-color: var(--card-textarea-bg-color);
+    color: rgb(from var(--card-textarea-text-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-popup-body ul *:hover {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container .toastui-editor-popup {
+    background: var(--card-textarea-bg-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-mode-switch .tab-item {
+    background-color: var(--card-textarea-bg-color);
+    color: rgb(from var(--card-textarea-text-color) r g b / 0.5);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-mode-switch .tab-item.active {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .ProseMirror.toastui-editor-contents {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container .toastui-editor-defaultUI {
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-defaultUI-toolbar {
+    background-color: var(--card-textarea-bg-color);
+    color: var(--card-textarea-text-color);
+    border-bottom: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-toolbar-icons {
+    border: 1px solid rgb(from var(--main-bg-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .ProseMirror {
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container .toastui-editor-contents * {
+    color: var(--card-textarea-text-color);
+}
+
+.message-input div.editor-container .toastui-editor-contents .toastui-editor-md-preview-highlight::after {
+    background-color: rgb(from var(--unread-color) r g b / 0.5);
+}
+
+.message-input div.editor-container .toastui-editor-defaultUI-toolbar button:not(:disabled):hover {
+    background-color: rgb(from var(--main-bg-color) r g b / 0.5);
+    border: 1px solid var(--main-bg-color);
+}
+
+.message-input div.editor-container .toastui-editor-toolbar-divider {
+    background-color: rgb(from var(--main-bg-color) r g b / 0.5);
+}

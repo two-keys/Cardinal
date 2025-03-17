@@ -7,32 +7,40 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
     process_custom_tags("<p>#{text.strip}</p>\n")
   end
 
-  def process_custom_tags(document)
-    # scans for multiple ?!color|text| tags and replaces them with a span tag
-    # e.g. ?!ff0000|testing|
-    document.gsub!(/\?!([a-zA-Z0-9]{6})\|([^|]+)\|/) do |_match|
-      color_div(Regexp.last_match(1), Regexp.last_match(2))
-    end
-    document
+  def list_item(text, _params)
+    "<li>#{process_custom_tags(text)}</li>\n"
   end
 
-  def color_div(color, text)
-    content_tag(:span, text, style: "color: ##{color}")
+  def header(text, header_level)
+    "<h#{header_level}>#{process_custom_tags(text)}</h#{header_level}>\n"
+  end
+
+  def process_custom_tags(text)
+    color_regex = /\?!([a-zA-Z0-9]{6})\|([^|]+)\|/
+    matches = text.match(color_regex)
+    matches ? colorize(matches[1], matches[2]) : text
+  end
+
+  def colorize(color, text)
+    content_tag(:span, text, style: "color: ##{color};")
   end
 
   # rubocop:disable Rails/OutputSafety
 
   # A generic class method for site-wide, safe markdown.
   def self.generic_render(text)
-    renderer = CardinalMarkdownRenderer.new(hard_wrap: true, filter_html: true,
-                                            link_attributes: { target: '_blank' })
+    renderer = CardinalMarkdownRenderer.new(hard_wrap: true, link_attributes: { target: '_blank' })
     options = {
       autolink: true,
       fenced_code_blocks: true,
       lax_spacing: true,
       no_intra_emphasis: true,
       strikethrough: true,
-      superscript: true
+      superscript: true,
+      tables: true,
+      quote: true,
+      footnotes: true,
+      space_after_headers: true
     }
     Redcarpet::Markdown.new(renderer, options).render(text).html_safe
   end

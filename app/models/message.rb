@@ -6,11 +6,12 @@ class Message < ApplicationRecord
   include Reportable
   include Alertable
   include Auditable
+  MAX_CONTENT_LENGTH = 65_536
 
   belongs_to :chat
   belongs_to :user, optional: true
 
-  validates :content, presence: true, length: { maximum: 50_000 }
+  validates_with MessageContentValidator
   validates :icon, presence: true, length: { maximum: 70 }
   validate :authorization, on: :create
   validate :authorization, on: :update

@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "message_form_frame_#{locals[:message].id ? locals[:message].id : 'new'}" do %>
-  <%= form_with(model: locals[:message], id: "message_form", data: {controller: locals[:message].id ? '' : 'chat-input', action: locals[:message].id ? '' : 'chat-input#submitForm:prevent'}) do |form| %>
+  <%= form_with(model: locals[:message], id: "message_form", class: "message-form", data: {controller: locals[:message].id ? '' : 'chat-input', action: locals[:message].id ? '' : 'chat-input#submitForm:prevent'}) do |form| %>
     <% if locals[:message].errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(locals[:message].errors.count, "error") %> prohibited this message from being saved:</h2>
@@ -21,8 +21,9 @@
       <%= form.check_box :ooc, data: {'chat-input-target': 'ooc'} %>
     </div>
 
-    <div id="form_message_content" data-chat-input-target="container">
-      <%= form.text_area :content, id: "chat_#{locals[:chat_id]}_message_#{locals[:message].id ? locals[:message].id : "new"}_editor" , data: {controller: "easy-mde", 'easy-mde-save-value': true, 'easy-mde-focus-value': true, 'chat-input-target': 'textarea'} %>
+    <div id="form_message_content" data-controller="toasty-editor" class="message-input">
+      <div data-chat-input-target="container" class="editor-container" data-toasty-editor-target="editor"></div>
+      <%= form.hidden_field :content, {'data-chat-input-target': 'textarea', 'data-toasty-editor-target': 'textarea'} %>
     </div>
 
     <div id="form_message_submit">
