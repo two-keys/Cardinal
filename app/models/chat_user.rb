@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class ChatUser < ApplicationRecord
+class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
+  include Entitlementable
+
   belongs_to :user
   belongs_to :pseudonym, optional: true
   belongs_to :chat
@@ -20,10 +22,14 @@ class ChatUser < ApplicationRecord
   }
 
   before_validation :generate_icon, on: :create
+  after_create_commit :generate_icon_entitlement
 
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
+  validate :check_icon, on: :update
   validate :authorization, on: %i[create update]
+
+  attribute :skip_check_icon
 
   ## This is kind of forced to have high complexity, there's a lot that
   ## goes into determining the user's notification status.
@@ -45,9 +51,51 @@ class ChatUser < ApplicationRecord
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
 
+  def available_icons
+    emoji_entitlements = user.entitlements.where(flag: 'emoji', object_id: nil, object_type: nil)
+                             .or(user.entitlements.where(flag: 'emoji', object: self))
+    emoji_entitlements.map(&:data)
+  end
+
+  def change_icon(new_icon, force: false, grant: false)
+    prev_icon = icon
+    return false unless prev_icon != new_icon
+
+    self.skip_check_icon = force
+    self.icon = new_icon
+    save!
+    self.skip_check_icon = false
+
+    if grant
+      entitlement = Entitlement.find_or_create_by(object: self, flag: 'emoji', data: new_icon)
+      user.entitlements << entitlement
+    end
+
+    message_content = "#{prev_icon} is now #{icon}."
+    chat.messages << Message.new(content: message_content)
+
+    true
+  end
+
+  def generate_entitlement
+    if chat.chat_users.count == 1
+      owner_entitlement = Entitlement.find_or_create_by(object: self, flag: 'permission', data: 'owner')
+      user.entitlements << owner_entitlement if user.entitlements.exclude?(owner_entitlement)
+    end
+    read_entitlement = Entitlement.find_or_create_by(object: self, flag: 'permission', data: 'read')
+    user.entitlements << read_entitlement if user.entitlements.exclude?(read_entitlement)
+    write_entitlement = Entitlement.find_or_create_by(object: self, flag: 'permission', data: 'write')
+    user.entitlements << write_entitlement if user.entitlements.exclude?(write_entitlement)
+    5.times do
+      emoji = generate_random_emoji
+      emoji_entitlement = Entitlement.find_or_create_by(object: self, flag: 'emoji', data: emoji)
+      user.entitlements << emoji_entitlement if user.entitlements.exclude?(emoji_entitlement)
+    end
+  end
+
   private
 
-  def generate_icon
+  def generate_random_emoji
     used_emoji = chat.chat_users.map(&:icon).compact
     all_emoji = []
     # rubocop:disable Rails/FindEach
@@ -57,7 +105,31 @@ class ChatUser < ApplicationRecord
     # rubocop:enable Rails/FindEach
     blacklisted_emoji = CardinalSettings::Icons.icon_blacklist
     available_emoji = all_emoji - blacklisted_emoji
-    self.icon = available_emoji.sample
+    available_emoji.sample
+  end
+
+  def generate_icon
+    self.icon = generate_random_emoji
+  end
+
+  def generate_icon_entitlement
+    emoji_entitlement = Entitlement.find_or_create_by(object: self, flag: 'emoji', data: icon)
+    user.entitlements << emoji_entitlement if user.entitlements.exclude?(emoji_entitlement)
+  end
+
+  def check_icon
+    return if skip_check_icon
+    return unless icon != icon_was
+
+    blacklisted_icons = CardinalSettings::Icons.icon_blacklist
+    user_available_icons = available_icons
+
+    blacklist_bypass = user_available_icons.intersect?(blacklisted_icons)
+
+    return if user_available_icons.include?(icon)
+    return if blacklisted_icons.include?(icon) && blacklist_bypass
+
+    errors.add(:icon, 'You are not entitled to this icon.')
   end
 
   def authorization

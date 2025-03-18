@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+entitlement_one:
+  object: user (Pseudoynm)
+  object_type: Pseudonym
+  flag: pseudonym
+  data: user
+
+entitlement_two:
+  object: user_two (Pseudoynm)
+  object_type: Pseudonym
+  flag: pseudonym
+  data: user_two
+
+entitlement_two:
+  object: user_two (Pseudoynm)
+  object_type: Pseudonym
+  flag: pseudonym
+  data: user_two2

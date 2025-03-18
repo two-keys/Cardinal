@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+user_entitlement_one:
+  user: user
+  entitlement: entitlement_one
+
+user_entitlement_one:
+  user: user_two
+  entitlement: entitlement_two

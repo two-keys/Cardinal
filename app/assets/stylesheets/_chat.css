@@ -171,6 +171,20 @@
     background-color: var(--main-bg-color);
 }
 
+.sidebar_user_icon.selected {
+  background-color: var(--unread-color);
+}
+
+.sidebar_user_icon.current {
+  background-color: var(--unanswered-color);
+}
+
+.icon-selector {
+  display: flex;
+  padding: 8px;
+  gap: 4px;
+}
+
 
 .chat-actions {
     display: flex;

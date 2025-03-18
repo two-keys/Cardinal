@@ -64,7 +64,9 @@ class UsersTest < ApplicationSystemTestCase
     fill_in 'Username', with: 'nonexistent'
     fill_in 'Password', with: 123_456
     fill_in 'Password confirmation', with: 123_456
-    click_button 'Sign up'
+    assert_changes('UserEntitlement.count', 1) do
+      click_button 'Sign up'
+    end
 
     assert_text 'Welcome! You have signed up successfully.'
   end

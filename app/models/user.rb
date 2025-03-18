@@ -27,7 +27,11 @@ class User < ApplicationRecord
                              inverse_of: 'handled_by'
   has_many :themes, dependent: :nullify
   has_many :push_subscriptions, dependent: :delete_all
+  has_many :user_entitlements, dependent: :delete_all
+  has_many :entitlements, through: :user_entitlements
   belongs_to :theme, optional: true
+
+  after_create_commit :generate_pseudonym_entitlement
 
   delegate :can?, :cannot?, to: :ability
 
@@ -37,6 +41,10 @@ class User < ApplicationRecord
       pseudonyms: instance.pseudonyms,
       characters: instance.characters
     }
+  end
+
+  def generate_pseudonym_entitlement
+    entitlements << Entitlement.create!(flag: 'pseudonym', data: username)
   end
 
   def after_database_authentication

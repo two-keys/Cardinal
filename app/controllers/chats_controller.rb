@@ -56,11 +56,15 @@ class ChatsController < ApplicationController
   # PATCH/PUT /chats/1 or /chats/1.json
   def update
     respond_to do |format|
+      prev_icon = @chat_info.icon
       if @chat_info.update({
                              title: params[:chat][:title],
                              description: params[:chat][:description],
-                             pseudonym_id: params[:chat][:pseudonym_id]
+                             pseudonym_id: params[:chat][:pseudonym_id],
+                             icon: params[:chat][:icon]
                            })
+        message_content = "#{prev_icon} is now #{params[:chat][:icon]}."
+        @chat.messages << Message.new(content: message_content) if prev_icon != params[:chat][:icon]
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully updated.' }
         format.json { render :show, status: :ok, location: @chat.uuid }
       else
@@ -156,7 +160,7 @@ class ChatsController < ApplicationController
   end
 
   def edit_chat_params
-    params.require(:chat).permit(:title, :description, :pseudonym_id)
+    params.require(:chat).permit(:title, :description, :pseudonym_id, :icon)
   end
 
   def auth_redirect

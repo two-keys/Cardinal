@@ -75,6 +75,9 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   # POST /themes/1/apply or /themes/1/apply.json
   def apply
+    if @theme.system? && @theme.entitlement && current_user.entitlements.exclude?(@theme.entitlement)
+      current_user.entitlements << @theme.entitlement
+    end
     respond_to do |format|
       if current_user.update(theme: @theme)
         format.html { redirect_to themes_url, notice: 'Theme was successfully applied.' }

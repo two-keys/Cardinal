@@ -48,24 +48,28 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update chat' do
     sign_in(@user)
-    patch chat_path(@chat.uuid), params: { chat: { title: 'test', description: 'test', pseudonym_id: nil } }
+    chat_user = @chat.chat_users.where(user: @user).first
+    patch chat_path(@chat.uuid),
+          params: { chat: { title: 'test', description: 'test', pseudonym_id: nil, icon: chat_user.icon } }
     assert_redirected_to chat_path(@chat.uuid)
   end
 
   test 'should update chat to have pseudonym' do
     sign_in(@user)
+    chat_user = @chat.chat_users.where(user: @user).first
     assert_changes('@chat_user.reload.pseudonym.name') do
       patch chat_path(@chat.uuid), params: {
-        chat: { title: 'test', description: 'test', pseudonym_id: @user_pseud2.id }
+        chat: { title: 'test', description: 'test', pseudonym_id: @user_pseud2.id, icon: chat_user.icon }
       }
     end
   end
 
   test 'should not update chat to have someone elses pseudonym' do
     sign_in(@user)
+    chat_user = @chat.chat_users.where(user: @user).first
     assert_no_changes('@chat_user.reload.pseudonym.name') do
       patch chat_path(@chat.uuid), params: {
-        chat: { title: 'test', description: 'test', pseudonym_id: @user2_pseud.id }
+        chat: { title: 'test', description: 'test', pseudonym_id: @user2_pseud.id, icon: chat_user.icon }
       }
     end
   end
