@@ -68,14 +68,14 @@ module Admin
         if user.nil?
           respond_to do |format|
             format.html do
-              redirect_to edit_admin_entitlement(@entitlement), notice: 'Username not found.'
+              redirect_to edit_admin_entitlement_path(@entitlement), notice: 'Username not found.'
             end
           end
         else
           @entitlement.users << user
           respond_to do |format|
             format.html do
-              redirect_to edit_admin_entitlement(@entitlement), notice: 'Entitlement given to user.'
+              redirect_to edit_admin_entitlement_path(@entitlement), notice: 'Entitlement given to user.'
             end
           end
         end
@@ -84,13 +84,13 @@ module Admin
         user = User.find_by(username: entitlement_params[:username])
         if user.nil?
           format.html do
-            redirect_to edit_admin_entitlement(@entitlement), notice: 'Username not found.'
+            redirect_to edit_admin_entitlement_path(@entitlement), notice: 'Username not found.'
           end
         else
-          UserEntitlement.where(user: user, entitlement: @entitlement).destroy
+          UserEntitlement.where(user: user, entitlement: @entitlement).destroy_all
           respond_to do |format|
             format.html do
-              redirect_to edit_admin_entitlement(@entitlement), notice: 'Entitlement removed from user.'
+              redirect_to edit_admin_entitlement_path(@entitlement), notice: 'Entitlement removed from user.'
             end
           end
         end
