@@ -7,6 +7,12 @@ class FiltersController < ApplicationController
 
   load_and_authorize_resource
 
+  include SearchableController
+
+  def self.search_keys
+    %i[group]
+  end
+
   # GET /filters or /filters.json
   def index
     query = Filter.accessible_by(current_ability).order(group: :asc, priority: :desc)

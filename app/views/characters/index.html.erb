@@ -1,7 +1,7 @@
 <h1>Characters</h1>
 
-<%= render partial: 'characters/characters_sidebar', layout: 'directory/left_sidebar',
-    locals: { with_search: true }
-%>
+<%= render partial: 'characters/characters_sidebar', locals: {
+    with_search: true
+} %>
 
 <%= render partial: 'characters/characters', locals: {characters: @characters} %>

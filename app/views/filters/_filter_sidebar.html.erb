@@ -1,8 +1,11 @@
-<% if local_assigns[:with_search] %>
-  <div class="directory-actions">
-    <div data-controller="filteractions">
-      <input data-filteractions-target="group" type="text">
-      <button class="button" data-action="click->filteractions#add">Change Group</button>
-    </div>
+<% content_for :special_search_actions do %>
+  <div data-controller="filteractions">
+    <input data-filteractions-target="group" type="text">
+    <button class="button" data-action="click->filteractions#add">Change Group</button>
   </div>
 <% end %>
+
+<%= render partial: 'directory/left_sidebar', locals: {
+    with_search: true,
+    search_keys: FiltersController.search_keys
+} %>

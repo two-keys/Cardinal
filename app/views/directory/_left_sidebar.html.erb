@@ -14,6 +14,12 @@
             </ul>
             <hr />
             <%= yield %>
+            <% if defined?(with_search) && with_search %>
+                <%= render partial: 'directory/search_actions', locals: {
+                    adv_search_path: defined?(adv_search_path) ? adv_search_path : nil,
+                    search_keys:
+                } %>
+            <% end %>
         </div>
     </div>
 <% end %>

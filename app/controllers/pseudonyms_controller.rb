@@ -11,6 +11,10 @@ class PseudonymsController < ApplicationController
 
   include SearchableController
 
+  def self.search_keys
+    %i[before]
+  end
+
   # GET /pseudonyms
   def index
     query = Pseudonym.accessible_by(current_ability)
@@ -81,6 +85,6 @@ class PseudonymsController < ApplicationController
   end
 
   def search_params
-    params.permit(:before)
+    params.permit(*PseudonymsController.search_keys)
   end
 end

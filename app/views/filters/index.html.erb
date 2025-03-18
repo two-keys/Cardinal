@@ -1,7 +1,5 @@
 <h1>Filters</h1>
 
-<%= render partial: 'filters/filter_sidebar', layout: 'directory/left_sidebar',
-    locals: { with_search: true }
-%>
+<%= render partial: 'filters/filter_sidebar' %>
 
 <%= render partial: 'filters/filters', locals: {filters: @filters} %>

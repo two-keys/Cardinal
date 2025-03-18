@@ -22,6 +22,10 @@ class PromptsController < ApplicationController
   include CharacterizedController
   include AuditableController
 
+  def self.search_keys
+    %i[before tags nottags managed ismine]
+  end
+
   # GET /prompts
   def index
     query = add_search(Prompt)
@@ -32,8 +36,8 @@ class PromptsController < ApplicationController
     query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
 
     # is this your prompt?
-    if search_params.key?(:myprompts)
-      query = if search_params[:myprompts] == 'true'
+    if search_params.key?(:ismine)
+      query = if search_params[:ismine] == 'true'
                 query.where(user: current_user)
               else
                 query.where.not(user: current_user)
@@ -196,7 +200,7 @@ class PromptsController < ApplicationController
   end
 
   def search_params
-    params.permit(:before, :tags, :nottags, :managed, :myprompts)
+    params.permit(*PromptsController.search_keys)
   end
 
   def track_create

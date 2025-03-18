@@ -17,6 +17,10 @@ class CharactersController < ApplicationController
   include SearchableController
   include PseudableController
 
+  def self.search_keys
+    %i[before tags nottags]
+  end
+
   # GET /characters
   def index
     query = add_search(Character)
@@ -100,7 +104,7 @@ class CharactersController < ApplicationController
   end
 
   def search_params
-    params.permit(:before, :tags, :nottags)
+    params.permit(*CharactersController.search_keys)
   end
 
   def track_create
