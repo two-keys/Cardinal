@@ -127,6 +127,9 @@ gem 'roadie-rails'
 # Javascript Bundling
 gem 'jsbundling-rails'
 
+# Spam prevention
+gem 'recaptcha'
+
 # Upgrades
 gem 'next_rails'
 

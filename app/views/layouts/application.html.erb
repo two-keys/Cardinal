@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
 
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.2/dist/es-module-shims.js" data-turbo-track="reload"></script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js" async="" defer=""></script>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     
     <script
@@ -100,19 +101,8 @@
         </a>
       </header>
       <%= render 'navbar' %>
-      <% if notice || alert %>
-        <div class="site-alert">
-          <% if notice %>
-            <div class="notice">
-              <%= notice %>
-            </div>
-          <% end %>
-          <% if alert %>
-            <div class="alert">
-              <%= alert %>
-            </div>
-          <% end %>
-        </div>
+      <%= turbo_frame_tag :flashes do %>
+        <%= render 'shared/flashes' %>
       <% end %>
       <div id="site_container">
         <div id="left_sidebar">

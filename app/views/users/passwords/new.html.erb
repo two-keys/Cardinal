@@ -12,7 +12,12 @@
     <div class="actions">
       <%= f.submit "Send me reset password instructions" %>
     </div>
+    
+    <%= turbo_frame_tag 'recaptchas' do %>
+      <%= recaptcha_v3(action: 'password/reset')%>
+    <% end %>
   <% end %>
+  <br/>
 </div>
 
 <div class="card">

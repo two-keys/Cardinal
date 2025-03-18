@@ -257,6 +257,7 @@ GEM
     rake (13.2.1)
     rdoc (6.8.1)
       psych (>= 4.0.0)
+    recaptcha (5.19.0)
     redcarpet (3.6.0)
     redis (4.8.1)
     regexp_parser (2.9.3)
@@ -396,6 +397,7 @@ DEPENDENCIES
   rack-cors (~> 2.0)
   rails (~> 7.2.2)
   rails-html-sanitizer (>= 1.6.1)
+  recaptcha
   redcarpet
   redis (~> 4.0)
   roadie-rails

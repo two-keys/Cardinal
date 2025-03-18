@@ -1,7 +1,7 @@
 <h2>Sign up</h2>
 
 <div class="card secondary">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: {turbo: false}) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= render "users/shared/error_messages", resource: resource %>
 
     <div class="field">
@@ -30,6 +30,11 @@
     <div class="actions">
       <%= f.submit "Sign up" %>
     </div>
+    
+    <%= turbo_frame_tag 'recaptchas' do %>
+      <%= recaptcha_v3(action: 'signin') %>
+    <% end %>
+    <br/>
   <% end %>
 
   <%= render "users/shared/links" %>

@@ -7,5 +7,7 @@
       </div>
       <div id="theme_options">Options Placeholder</div>
     </div>
-    <span id="render_time"><%= sprintf('%.3f', (Time.now.to_f - @start_time) ) %> s</span>
+    <% if @start_time %>
+      <span id="render_time"><%= sprintf('%.3f', (Time.now.to_f - @start_time) ) %> s</span>
+    <% end %>
 </footer> 

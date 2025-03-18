@@ -2,35 +2,20 @@
 
 module Users
   class PasswordsController < Devise::PasswordsController
-    # GET /resource/password/new
-    # def new
-    #   super
-    # end
+    # TODO: Fix this. it's broken, we're not using it right now.
+    prepend_before_action :validate_recaptchas, only: [:create]
 
-    # POST /resource/password
-    # def create
-    #   super
-    # end
+    private
 
-    # GET /resource/password/edit?reset_password_token=abcdef
-    # def edit
-    #   super
-    # end
+    def validate_recaptchas
+      v3_verify = verify_recaptcha(action: 'password/reset',
+                                   minimum_score: 0.7,
+                                   secret_key: ENV.fetch('RECAPTCHA_SECRET_KEY', nil))
+      v2_verify = verify_recaptcha(secret_key: ENV.fetch('RECAPTCHA_SECRET_KEY_V2', nil))
+      return if v3_verify || v2_verify
 
-    # PUT /resource/password
-    # def update
-    #   super
-    # end
-
-    # protected
-
-    # def after_resetting_password_path_for(resource)
-    #   super(resource)
-    # end
-
-    # The path used after sending reset password instructions
-    # def after_sending_reset_password_instructions_path_for(resource_name)
-    #   super(resource_name)
-    # end
+      self.resource = resource_class.new resource_params
+      respond_with_navigational(resource) { render :new }
+    end
   end
 end
