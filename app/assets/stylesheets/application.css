@@ -139,7 +139,7 @@ div + [data-readmore-toggle], div[data-readmore] {
     width: 100%;
 }
 
-a:hover:not(#nav a), #nav li:hover {
+a:hover:not(#nav a), #nav li:hover, input[type="submit"]:hover, button:hover {
     filter: invert(0.8) hue-rotate(180deg) contrast(1.4) brightness(1.4);
     transition: filter 0.08s ease;
 }
