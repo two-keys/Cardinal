@@ -5,6 +5,8 @@ module ApplicationHelper
   require 'digest'
 
   def icon_for(text)
+    return text if text.nil?
+
     name = name_for_icon(text)
     if text.start_with? '@'
       return ActionController::Base.helpers.image_tag("/#{text.sub('@', '')}.png", class: 'emoji',
@@ -21,6 +23,7 @@ module ApplicationHelper
   end
 
   def name_for_icon(text)
+    return text if text.nil?
     return text.sub('@', '').capitalize if text.start_with? '@'
     return text.split('|').first.sub('!', '').capitalize if text.start_with? '!'
     return text.split('|').first.sub('?', '').capitalize if text.start_with? '?'
