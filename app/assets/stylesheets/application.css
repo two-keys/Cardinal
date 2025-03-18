@@ -139,12 +139,25 @@ div + [data-readmore-toggle], div[data-readmore] {
     width: 100%;
 }
 
+a:hover:not(#nav a), #nav li:hover {
+    filter: invert(0.8) hue-rotate(180deg) contrast(1.4) brightness(1.4);
+    transition: filter 0.08s ease;
+}
+
+a {
+    color: var(--card-text-color);
+}
+
+a:visited {
+    color: var(--card-text-color);
+}
+
 #site img.emoji {
     height: 1.1em;
     width: 1.1em;
     margin: 0 .05em 0 .1em;
     vertical-align: -0.1em;
- }
+}
 
 #site {
     position: relative;
@@ -169,7 +182,6 @@ div + [data-readmore-toggle], div[data-readmore] {
     margin-right: 2rem;
     max-width: 97vw;
 }
-
 
 #main {
     color: var(--main-text-color);

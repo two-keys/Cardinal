@@ -17,6 +17,11 @@
     background-color: var(--main-bg-color);
 }
 
+#nav li:hover {
+    filter: invert(0.8) hue-rotate(180deg) contrast(1.4) brightness(1.4);
+    transition: filter 0.08s ease;
+}
+
 #nav li.disabled {
     opacity: 0.5;
 }

@@ -21,14 +21,6 @@
     border-color: var(--main-text-color);
 }
 
-a {
-    color: var(--card-text-color);
-}
-
-a:visited {
-    color: var(--card-text-color);
-}
-
 .card textarea, .card input, .card button {
     background-color: var(--card-textarea-bg-color);
     color: var(--card-textarea-text-color);
