@@ -44,6 +44,8 @@ class User < ApplicationRecord
   end
 
   def generate_pseudonym_entitlement
+    return if Entitlement.where(flag: 'pseudonym', data: username).any?
+
     entitlements << Entitlement.create!(flag: 'pseudonym', data: username)
   end
 

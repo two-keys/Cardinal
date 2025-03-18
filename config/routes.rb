@@ -81,6 +81,9 @@ Rails.application.routes.draw do
     resources :users, only: %i[index edit update destroy] do
       concerns :auditable
     end
+    resources :entitlements do
+      concerns :auditable
+    end
     resources :reports, only: %i[index show edit update destroy]
     resources :messages, only: %i[create]
     get 'messages/search' => 'messages#search', as: 'messages_search'

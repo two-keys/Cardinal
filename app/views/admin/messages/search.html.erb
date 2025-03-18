@@ -9,7 +9,7 @@
     <div class="card secondary">
         <div id="messages_container">
             <% if @messages.count > 0 %>
-                <% for message in @messages.reverse %>
+                <% for message in @messages %>
                     <div class="card secondary">
                         <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>
                         <% if message.chat %>

@@ -1,0 +1,39 @@
+<%= form_with(model: [:admin, entitlement]) do |form| %>
+    <% if entitlement.errors.any? %>
+        <div style="color: red">
+        <h2><%= pluralize(entitlement.errors.count, "error") %> prohibited this entitlement from being saved:</h2>
+
+        <ul>
+            <% entitlement.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
+
+
+    <div class="card">
+        <%= render entitlement %>
+    </div>
+
+    <div class="card">
+        <div>
+            <%= form.label :flag %>
+            <%= form.text_field :flag %>
+        </div>
+        <div>
+            <%= form.label :data %>
+            <%= form.text_field :data %>
+        </div>
+        <div>
+            <%= form.submit 'Update' %>
+        </div>
+    </div>
+
+    <div class="card">
+        <%= form.label :username %>
+        <%= form.text_field :username, placeholder: "optional" %>
+        <%= form.submit 'Add' %>
+        <%= form.submit 'Remove' %>
+    </div>
+<% end %>

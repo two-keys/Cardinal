@@ -5,7 +5,7 @@
   <%= form_with url: admin_audit_logs_path, method: :get, class: 'filter-form' do |f| %>
     <div class="filters">
       <%= f.select :item_type, 
-                  [['All Types', ''], 'Alert', 'Announcement', 'Character', 'Message', 'Prompt', 'User'], 
+                  [['All Types', ''], 'Alert', 'Announcement', 'Character', 'Message', 'Prompt', 'User', 'Entitlement'], 
                   { selected: params[:item_type] } %>
                   
       <%= f.select :event, 
@@ -53,7 +53,11 @@
               <td><%= link_to "View", [:admin, version.item], class: "button" %></td>
             <% end %>
           <% else %>
-            <td><%= link_to "View", version.item, class: "button" %></td>
+            <% if Rails.application.routes.url_helpers.respond_to?("#{version.item_type.underscore.to_s}_path".to_sym) %>
+              <td><%= link_to "View", version.item, class: "button" %></td>
+            <% else %>
+              <td>N/A</td>
+            <% end %>
           <% end %>
         </tr>
       <% end %>

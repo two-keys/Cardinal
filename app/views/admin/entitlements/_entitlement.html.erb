@@ -1,0 +1,28 @@
+
+<div>
+    <% if entitlement.object %>
+        <p>Item (<%= entitlement.object_type %>):</p>
+        <%= render entitlement.object %>
+    <% end %>
+    <% if entitlement.flag %>
+        <br/>
+        <span>Flag: </span>
+        <%= entitlement.flag %>
+    <% end %>
+    <% if entitlement.data %>
+        <br/>
+        <span>Data: </span>
+        <%= entitlement.data %>
+    <% end %>
+    <br/>
+    
+    Users
+    <ul>
+        <% entitlement.user_entitlements.each do |ue| %>
+            <li><%= link_to ue.user.username, edit_admin_user_path(ue.user) %></li>
+        <% end %>
+    </ul>
+
+    <br/>
+    <%= link_to "Edit", edit_admin_entitlement_path(entitlement) %>
+</div>

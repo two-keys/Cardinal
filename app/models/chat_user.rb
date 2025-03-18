@@ -51,9 +51,18 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
 
+  def icon_entitlements
+    user.entitlements.where(flag: 'emoji', object_id: nil, object_type: nil)
+        .or(user.entitlements.where(flag: 'emoji', object: self))
+  end
+
+  def permission_entitlements
+    user.entitlements.where(flag: 'permission', object_id: nil, object_type: nil)
+        .or(user.entitlements.where(flag: 'permission', object: self))
+  end
+
   def available_icons
-    emoji_entitlements = user.entitlements.where(flag: 'emoji', object_id: nil, object_type: nil)
-                             .or(user.entitlements.where(flag: 'emoji', object: self))
+    emoji_entitlements = icon_entitlements
     emoji_entitlements.map(&:data)
   end
 

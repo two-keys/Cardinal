@@ -13,7 +13,7 @@ module Admin
       @interval = params[:interval] || 'day'
       now = DateTime.now
 
-      @begin_date = params[:date_from].present? ? DateTime.iso8601(params[:date_from]) : (now - 1.day)
+      @begin_date = params[:date_from].present? ? DateTime.iso8601(params[:date_from]) : (now - 1.week)
       @end_date = params[:date_to].present? ? DateTime.iso8601(params[:date_to]) : now
 
       @range = @begin_date...@end_date

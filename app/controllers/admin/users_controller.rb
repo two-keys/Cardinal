@@ -23,13 +23,23 @@ module Admin
     end
 
     # GET /admin/users/1/edit
-    def edit
+    def edit # rubocop:disable Metrics/CyclomaticComplexity
       @pagy_prompts, @prompts = pagy(@user.prompts, items: 5, page: params[:prompts_page])
       @pagy_sent_reports, @sent_reports = pagy(@user.sent_reports, items: 5, page: params[:made_reports_page])
       @pagy_received_reports, @received_reports = pagy(@user.received_reports, items: 5,
                                                                                page: params[:received_reports_page])
       @pagy_handled_reports, @handled_reports = pagy(@user.handled_reports, items: 5,
                                                                             page: params[:handled_reports_page])
+      query = @user.entitlements.order(created_at: :desc)
+      if params[:object_type].present?
+        query = query.where(object_type: params[:object_type] == 'None' ? nil : params[:object_type])
+      end
+      query = query.where(object_id: params[:object_id]) if params[:object_id].present?
+      query = query.where(flag: params[:flag]) if params[:flag].present?
+      query = query.where(data: params[:data]) if params[:data].present?
+      query = query.where(created_at: Date.parse(params[:date_from]).beginning_of_day..) if params[:date_from].present?
+      query = query.where(created_at: ..Date.parse(params[:date_to]).end_of_day) if params[:date_to].present?
+      @pagy_entitlements, @entitlements = pagy(query, items: 5, page: params[:entitlements_page])
     end
 
     # POST /admin/users or /admin/users.json
