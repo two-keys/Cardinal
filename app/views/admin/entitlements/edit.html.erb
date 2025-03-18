@@ -5,5 +5,5 @@
 <br>
 
 <div class="card">
-  <%= link_to "Show this entitlement", [:admin, @entitlement], class: "button" %>
+  <%= link_to "Show this entitlement", [:admin, @entitlement], class: "button" %> | <%= button_to "Destroy", [:admin, @entitlement], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
 </div>

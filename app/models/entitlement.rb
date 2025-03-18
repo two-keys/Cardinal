@@ -10,6 +10,12 @@ class Entitlement < ApplicationRecord
   validates :object_id, uniqueness: { scope: %i[object_type flag data], allow_blank: true }
   validate :any_present?
 
+  before_destroy :destroy_user_entitlements
+
+  def destroy_user_entitlements
+    user_entitlements.destroy_all
+  end
+
   def any_present?
     return false unless %w[flag object_id object_type].all? { |attr| self[attr].blank? || self[attr].nil? }
 

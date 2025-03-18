@@ -1,0 +1,12 @@
+<div class="card primary">
+  <h1>New entitlement</h1>
+</div>
+
+<div class="card secondary">
+  <%= render "form", entitlement: @entitlement %>
+</div>
+<br>
+
+<div class="card primary">
+  <%= link_to "Back to entitlement", admin_entitlements_path, class: "button" %>
+</div>

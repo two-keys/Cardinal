@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class EntitlementsController < ApplicationController # rubocop:disable Metrics/ClassLength
+  class EntitlementsController < ApplicationController
     include Pagy::Backend
     include ApplicationHelper
 
@@ -99,10 +99,7 @@ module Admin
 
     # DELETE /admin/entitlements/1 or /admin/entitlements/1.json
     def destroy
-      @entitlement.handled = true
-      @entitlement.handled_by = current_user
-      @entitlement.save
-      ahoy.track 'Entitlement Resolved', { entitlement_id: @entitlement.id, handler_id: current_user.id }
+      @entitlement.destroy
 
       respond_to do |format|
         format.html do

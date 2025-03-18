@@ -11,10 +11,12 @@
         </div>
     <% end %>
 
-
-    <div class="card">
-        <%= render entitlement %>
-    </div>
+    
+    <% if entitlement.id %>
+        <div class="card">
+            <%= render entitlement %>
+        </div>
+    <% end %>
 
     <div class="card">
         <div>
@@ -26,14 +28,16 @@
             <%= form.text_field :data %>
         </div>
         <div>
-            <%= form.submit 'Update' %>
+            <%= form.submit %>
         </div>
     </div>
-
-    <div class="card">
-        <%= form.label :username %>
-        <%= form.text_field :username, placeholder: "optional" %>
-        <%= form.submit 'Add' %>
-        <%= form.submit 'Remove' %>
-    </div>
+     
+    <% if entitlement.id %>
+        <div class="card">
+            <%= form.label :username %>
+            <%= form.text_field :username, placeholder: "optional" %>
+            <%= form.submit 'Add' %>
+            <%= form.submit 'Remove' %>
+        </div>
+    <% end %>
 <% end %>

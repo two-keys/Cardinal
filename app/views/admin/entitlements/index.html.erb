@@ -1,4 +1,8 @@
 <div class="card">
+  <%= link_to "New Entitlement", new_admin_entitlement_path, class: "button" %>
+</div>
+
+<div class="card">
   <h2>Entitlements</h2>
   
   <%= form_with url: admin_entitlements_path, method: :get, class: 'filter-form' do |f| %>
