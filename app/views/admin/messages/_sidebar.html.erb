@@ -5,11 +5,11 @@
                 <!-- Special case: Append fake Cardinal user  -->
                 <% locals[:users_data].append({id: -1, icon: "🐦"}) %>
                 <% for user_data in locals[:users_data] %>
-                    <% name = Emoji.find_by_unicode(user_data[:icon]).name.capitalize().gsub("_", " ") %>
+                    <% name = name_for_icon user_data[:icon] %>
                     <% is_loc_user =  locals[:user].id == user_data[:id] || user_data[:id] == -1 %>
                     <li>
                         <div class="sidebar_user_icon">
-                            <span><%= user_data[:icon] %></span>
+                            <span><%= icon_for user_data[:icon] %></span>
                         </div>
                         <%= name  + (is_loc_user ? " (you)" : "") %>
                         <div class="chat-admin-actions">

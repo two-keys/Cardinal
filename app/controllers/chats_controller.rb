@@ -63,7 +63,7 @@ class ChatsController < ApplicationController
                              pseudonym_id: params[:chat][:pseudonym_id],
                              icon: params[:chat][:icon]
                            })
-        message_content = "#{prev_icon} is now #{params[:chat][:icon]}."
+        message_content = "#{icon_for prev_icon} is now #{icon_for params[:chat][:icon]}."
         @chat.messages << Message.new(content: message_content) if prev_icon != params[:chat][:icon]
         format.html { redirect_to chat_path(@chat.uuid), notice: 'Chat was successfully updated.' }
         format.json { render :show, status: :ok, location: @chat.uuid }

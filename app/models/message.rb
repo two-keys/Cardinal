@@ -12,7 +12,7 @@ class Message < ApplicationRecord
   belongs_to :user, optional: true
 
   validates_with MessageContentValidator
-  validates :icon, presence: true, length: { maximum: 70 }
+  validates :icon, presence: true, length: { maximum: 4000 }
   validate :authorization, on: :create
   validate :authorization, on: :update
 

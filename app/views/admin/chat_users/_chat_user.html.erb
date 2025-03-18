@@ -4,7 +4,7 @@
     <span>Icon: </span>
     <br/>
     <div class="sidebar_user_icon">
-        <span><%= chat_user.icon %></span>
+        <span><%= icon_for chat_user.icon %></span>
     </div>
     <br/>
     <span>Icon Entitlements: </span>
@@ -13,7 +13,7 @@
         <div class="sidebar_user_icon">
             <span>
                 <%= link_to [:admin, icon_entitlement] do %>
-                    <%= icon_entitlement.data %>
+                    <%= icon_for icon_entitlement.data %>
                 <% end %>
             </span>
         </div>

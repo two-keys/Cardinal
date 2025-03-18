@@ -1,5 +1,8 @@
 
 <div class="card">
+    <% if entitlement.title %>
+        <h3><%= entitlement.title %></h3>
+    <% end %>
     <% if entitlement.object %>
         <p>Item (<%= entitlement.object_type %>):</p>
         <%= render entitlement.object %>
@@ -12,7 +15,15 @@
     <% if entitlement.data %>
         <br/>
         <span>Data: </span>
-        <%= entitlement.data %>
+        <% if entitlement.flag == "emoji" %>
+            <br/>
+            <span>Emoji Title: <%= name_for_icon entitlement.data %></span>
+            <br/>
+            <div class="sidebar_user_icon">
+                <span><%= icon_for entitlement.data %></span>
+            </div>
+        <% end %>
+        <p style="text-wrap: wrap; max-width: 100%; white-space: pre-wrap; word-wrap: break-word;"><%= entitlement.data %></p>
     <% end %>
     <br/>
     

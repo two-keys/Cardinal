@@ -25,7 +25,7 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
   after_create_commit :generate_icon_entitlement
 
   validates :user_id, uniqueness: { scope: :chat_id }
-  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 70 }, presence: true
+  validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 4000 }, presence: true
   validate :check_icon, on: :update
   validate :authorization, on: %i[create update]
 
@@ -80,7 +80,7 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
       user.entitlements << entitlement
     end
 
-    message_content = "#{prev_icon} is now #{icon}."
+    message_content = "#{icon_for prev_icon} is now #{icon_for icon}."
     chat.messages << Message.new(content: message_content)
 
     true

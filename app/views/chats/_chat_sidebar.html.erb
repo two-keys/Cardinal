@@ -7,11 +7,11 @@
             </div>
             <ul id="sidebar_users">
                 <% for user_data in locals[:users_data] %>
-                    <% name = Emoji.find_by_unicode(user_data[:icon]).name.capitalize().gsub("_", " ") %>
+                    <% name = name_for_icon user_data[:icon] %>
                     <% is_loc_user =  locals[:user].id == user_data[:id] %>
                     <li class="user-<%= is_loc_user ? "you" : "other" %>">
                         <div class="sidebar_user_icon">
-                            <span><%= user_data[:icon] %></span>
+                            <span><%= icon_for user_data[:icon] %></span>
                         </div>
                         <%= name  + (is_loc_user ? " (you)" : "") %>
                         <div class="chat-admin-actions">

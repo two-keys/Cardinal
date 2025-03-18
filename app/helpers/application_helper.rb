@@ -4,6 +4,30 @@ module ApplicationHelper
   include Pagy::Frontend
   require 'digest'
 
+  def icon_for(text)
+    name = name_for_icon(text)
+    if text.start_with? '@'
+      return ActionController::Base.helpers.image_tag("/#{text.sub('@', '')}.png", class: 'emoji',
+                                                                                   draggable: false,
+                                                                                   alt: name)
+    end
+    if text.start_with?('!') || text.start_with?('?')
+      return ActionController::Base.helpers.image_tag(text.split('|').last.to_s, class: 'emoji',
+                                                                                 draggable: false,
+                                                                                 alt: name)
+    end
+
+    text
+  end
+
+  def name_for_icon(text)
+    return text.sub('@', '').capitalize if text.start_with? '@'
+    return text.split('|').first.sub('!', '').capitalize if text.start_with? '!'
+    return text.split('|').first.sub('?', '').capitalize if text.start_with? '?'
+
+    Emoji.find_by_unicode(text).name.capitalize.gsub('_', ' ') # rubocop:disable Rails/DynamicFindBy
+  end
+
   def pluralize_without_count(count, noun, text = nil)
     return unless count != 0
 

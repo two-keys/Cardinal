@@ -53,7 +53,7 @@ module Admin
     # PATCH/PUT /admin/entitlements/1 or /admin/entitlements/1.json
     def update
       case params[:commit]
-      when 'Update'
+      when 'Update Entitlement'
         respond_to do |format|
           if @entitlement.update(entitlement_params.except(:username))
             format.html { redirect_to [:admin, @entitlement], notice: 'Entitlement was successfully updated.' }
@@ -122,7 +122,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def entitlement_params
-      params.require(:entitlement).permit(:object_type, :object_id, :flag, :data, :username).compact_blank!
+      params.require(:entitlement).permit(:object_type, :object_id, :flag, :data, :title, :username).compact_blank!
     end
   end
 end
