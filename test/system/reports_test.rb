@@ -24,7 +24,7 @@ class ReportsTest < ApplicationSystemTestCase
 
   test 'should update Report' do
     visit report_url(@report)
-    click_on 'Edit this report', match: :first
+    click_on 'Edit', match: :first
 
     click_on 'Update Report'
 
@@ -34,7 +34,7 @@ class ReportsTest < ApplicationSystemTestCase
 
   test 'should destroy Report' do
     visit report_url(@report)
-    click_on 'Destroy this report', match: :first
+    click_on 'Destroy', match: :first
 
     assert_text 'Report was successfully destroyed'
   end

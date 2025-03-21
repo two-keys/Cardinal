@@ -1,5 +1,5 @@
 
-<div class="card">
+<div class="card primary">
     <% if entitlement.title %>
         <h3><%= entitlement.title %></h3>
     <% end %>
@@ -8,32 +8,24 @@
         <%= render entitlement.object %>
     <% end %>
     <% if entitlement.flag %>
-        <br/>
-        <span>Flag: </span>
-        <%= entitlement.flag %>
+        <span>Flag: <%= entitlement.flag %></span>
     <% end %>
     <% if entitlement.data %>
-        <br/>
         <span>Data: </span>
         <% if entitlement.flag == "emoji" %>
-            <br/>
             <span>Emoji Title: <%= name_for_icon entitlement.data %></span>
-            <br/>
-            <div class="sidebar_user_icon">
+            <div class="sidebar-user-icon">
                 <span><%= icon_for entitlement.data %></span>
             </div>
         <% end %>
-        <p style="text-wrap: wrap; max-width: 100%; white-space: pre-wrap; word-wrap: break-word;"><%= entitlement.data %></p>
+        <p class="entitlement-data"><%= entitlement.data %></p>
     <% end %>
-    <br/>
-    
-    Users
+    <span>Users</span>
     <ul>
         <% entitlement.user_entitlements.each do |ue| %>
             <li><%= link_to ue.user.username, edit_admin_user_path(ue.user) %></li>
         <% end %>
     </ul>
-
-    <br/>
+    <hr>
     <%= link_to "Edit", edit_admin_entitlement_path(entitlement) %>
 </div>

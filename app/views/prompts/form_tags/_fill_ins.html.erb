@@ -1,9 +1,9 @@
 <% if autocomplete %>
-  <div class="fill_ins" data-controller="tagautocomplete" data-tagautocomplete-tagtype-value="<%=tag_type%>" data-tagautocomplete-polarity-value="<%=polarity%>">
-    <%= p_form.select "#{tag_type}", options_for_select(entries, selected: entries), {}, {class: "tags_autocomplete", multiple: "multiple"} %>
+  <div class="fill-ins" data-controller="tagautocomplete" data-tagautocomplete-tagtype-value="<%=tag_type%>" data-tagautocomplete-polarity-value="<%=polarity%>">
+    <%= p_form.select "#{tag_type}", options_for_select(entries, selected: entries), {}, {class: "tags-autocomplete", multiple: "multiple"} %>
   </div>
 <% else %>
-  <div class="fill_ins" >
+  <div class="fill-ins" >
     <%= p_form.text_field "#{tag_type}", value: entries.join(', '), multiple: true, autocomplete: "off" %>
   </div>
 <% end %>

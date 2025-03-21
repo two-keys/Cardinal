@@ -3,7 +3,7 @@
 <%= render @prompt %>
 
 <div class="card primary">
-  <p>This prompt has <strong><%= @pagy.count %></strong> joinable <%= @pagy.count > 1 ? pluralize_without_count(@pagy.count, "chat") : "chats" %>.</p>
+  <span>This prompt has <strong><%= @pagy.count %></strong> joinable <%= @pagy.count > 1 ? pluralize_without_count(@pagy.count, "chat") : "chats" %>.</span>
   <%== pagy_nav @pagy %>
   <% @chats.each do |chat| %>
     <% connect_code = chat.connect_code %>
@@ -27,13 +27,15 @@
   <% end %>
 </div>
 
-<div class="card">
-  <% if can? :update, @prompt %>
-    <%= link_to "Edit this prompt", edit_prompt_path(@prompt), class: "button" %> |
-  <% end %>
-  <%= link_to "Back to prompts", prompts_path, class: "button" %>
+<div class="card primary">
+  <div class="input-group">
+    <% if can? :update, @prompt %>
+      <%= link_to "Edit", edit_prompt_path(@prompt), class: "button" %>
+    <% end %>
+    <%= link_to "Back", prompts_path, class: "button" %>
 
-  <% if can? :destroy, @prompt %>
-    <%= button_to "Destroy this prompt", @prompt, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
-  <% end %>
+    <% if can? :destroy, @prompt %>
+      <%= button_to "Destroy", @prompt, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <% end %>
+  </div>
 </div>

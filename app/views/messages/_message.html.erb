@@ -4,8 +4,8 @@
 <% message = defined?(locals) ? locals[:message] : message %>
 <%= turbo_frame_tag message do %>
     <div class="message<%= " sys" if message.type == 'system' %><%= " ooc" if message.ooc %><%= " you" if message.user == current_user %>" data-controller="twemoji">
-      <span class="user_icon"><%= icon_for message.icon %></span>
-      <span class="type_notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+      <span class="user-icon"><%= icon_for message.icon %></span>
+      <span class="type-notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
         <% if message.type == 'system' %>
           SYS
         <% end %>
@@ -13,29 +13,39 @@
           OOC
         <% end %>
       </span>
-      <%= message.markdown %>
-      <span class="message_created_at">
-        <!-- Display the date and time of the message -->
-         <% if defined?(locals) && !locals[:reporting] %>
-          <% is_reportable = message.type != 'system' && message.user != current_user %>
-          <% if is_reportable %>
-            <%= link_to "⚠️", new_report_path(reportable_id: message.id, reportable_type: message.class.name), data: { turbo: false }, class: "report_link" %>
-          <% end %>
-        <% end %>
-        Sent <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
-      </span>
-      <% if (can? :edit, message) && defined?(locals) %>
-          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link button" %>
-      <% end %>
-      <% if message.updated_at > message.created_at %>
-          <% if (can? :edit, message) %>
-            <%= link_to history_message_path(message), data: {turbo: false}, class: "message_history_link" do %>
-              <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
+      <div class="message-content">
+        <%= message.markdown %>
+      </div>
+      <hr class="message-break"/>
+      <div class="message-footer">
+        <span class="message-created-at">
+          <!-- Display the date and time of the message -->
+          Sent <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
+          <% if message.updated_at > message.created_at %>
+            <% if (can? :edit, message) %>
+              <%= link_to history_message_path(message), data: {turbo: false}, class: "message-history-link" do %>
+                <span class="message-edited-at">(edited)</span>
+              <% end %>
+            <% else %>
+              <span class="message-edited-at">(edited)</span>
             <% end %>
-          <% else %>
-            <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
           <% end %>
-      <% end %>
-      <hr class="message_break"/>
+        </span>
+        <div class="message-actions">
+          <% if defined?(locals) && !locals[:reporting] %>
+            <% is_reportable = message.type != 'system' && message.user != current_user %>
+            <% if is_reportable %>
+                <%= link_to new_report_path(reportable_id: message.id, reportable_type: message.class.name), data: { turbo: false }, class: "report-link" do %>
+                  🚩
+                <% end %>
+            <% end %>
+          <% end %>
+          <% if (can? :edit, message) && defined?(locals) %>
+              <%= link_to edit_message_path(message), class: "message-edit-link" do %>
+                ✏️
+              <% end %>
+          <% end %>
+        </div>
+      </div>
   </div>
 <% end %>

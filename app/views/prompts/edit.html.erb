@@ -1,17 +1,19 @@
 <%= render partial: 'prompts/prompts_sidebar' %>
 
-<div class="card">
+<div class="card primary">
   <h1>Editing tags</h1>
 
   <%= render "form_tags", prompt: @prompt, character_options: @character_options %>
 </div>
 
-<div class="card">
+<div class="card primary">
   <h1>Editing starter/ooc</h1>
 
   <%= render "form", prompt: @prompt, with_tags: false, pseudonym_options: @pseudonym_options %>
   <div>
-    <%= link_to "Show this prompt", @prompt, class: "button" %> |
-    <%= link_to "Back to prompts", prompts_path, class: "button" %>
+    <div class="input-group">
+      <%= link_to "Show", @prompt, class: "button" %>
+      <%= link_to "Back", prompts_path, class: "button" %>
+    </div>
   </div>
 </div>

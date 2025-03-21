@@ -27,8 +27,10 @@
 
 <div>
   <%= form.label :status, style: "display: block" %>
-  <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
-  <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>
+  <div>
+    <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
+    <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>
+  <div>
 </div>
 
 <div>

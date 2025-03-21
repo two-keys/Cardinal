@@ -102,6 +102,7 @@ Rails.application.routes.draw do
 
   resources :themes
   post 'themess/:id/apply', to: 'themes#apply', as: 'apply_theme'
+  post 'themess/:id/unapply', to: 'themes#unapply', as: 'unapply_theme'
 
   get 'serviceworker' => 'pwa#service_worker', :as => :pwa_serviceworker, :constraints => { format: 'js' }
   get 'manifest' => 'pwa#manifest', as: :pwa_manifest, :constraints => { format: 'json' }

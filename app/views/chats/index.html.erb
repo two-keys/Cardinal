@@ -1,10 +1,10 @@
-<div id="chats">
+<div class="flex-container" id="chats">
   <h1>Chats</h1>
   <div class="card primary">
     <% if (can? :create, Chat) && (can? :create, ConnectCode) %>
-      <%= form_with url: url_for(connect_code_consume_path), method: :patch, id: "connect_code_form" do |f| %>
+      <%= form_with url: url_for(connect_code_consume_path), method: :patch, id: "connect_code_form", class: "input-group" do |f| %>
         <%= f.label :connect_code %>
-        <%= f.text_field :connect_code, class: "form-control" %>
+        <%= f.text_field :connect_code, class: "form-control input-main", autocomplete: "connectcode" %>
         <%= f.submit 'Use' %>
       <% end %>
       <%= button_to "New", chats_path, method: :post, class: "button" %>

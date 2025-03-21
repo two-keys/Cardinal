@@ -1,26 +1,22 @@
 <div class="card secondary">
-    <span>User: </span><%= link_to chat_user.user.username, [:admin, chat_user.user] %>
-    <br/>
+    <span>User: <%= link_to chat_user.user.username, [:admin, chat_user.user] %></span>
     <span>Icon: </span>
-    <br/>
-    <div class="sidebar_user_icon">
+    <div class="sidebar-user-icon">
         <span><%= icon_for chat_user.icon %></span>
     </div>
-    <br/>
     <span>Icon Entitlements: </span>
-    <br/>
-    <% chat_user.icon_entitlements.each do |icon_entitlement| %>
-        <div class="sidebar_user_icon">
-            <span>
-                <%= link_to [:admin, icon_entitlement] do %>
-                    <%= icon_for icon_entitlement.data %>
-                <% end %>
-            </span>
-        </div>
-    <% end %>
-    <br/>
+    <div class="icon-selector">
+        <% chat_user.icon_entitlements.each do |icon_entitlement| %>
+            <div class="sidebar-user-icon">
+                <span>
+                    <%= link_to [:admin, icon_entitlement] do %>
+                        <%= icon_for icon_entitlement.data %>
+                    <% end %>
+                </span>
+            </div>
+        <% end %>
+    </div>
     <span>Permission Entitlements: </span>
-    <br/>
     <ul>
     <% chat_user.permission_entitlements.each do |permission_entitlement| %>
         <li><%= permission_entitlement.data %><%= "(global)" if permission_entitlement.object.nil? %></li>

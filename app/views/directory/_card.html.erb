@@ -1,6 +1,6 @@
 <% class_name = model.class.name.downcase %>
 <div id="<%= dom_id model %>" class="card primary <%= class_name %> mini<%= yield :card_classes %>">
-  <div class="<%= class_name %>_info">
+  <div class="<%= class_name %>-info">
     <%= render partial: 'directory/metainfo', locals: { model: } %>
     <% if defined? model.name %>
       <div>
@@ -30,9 +30,9 @@
   
   <hr />
 
-  <div class="card_footer">
+  <div class="card-footer">
     <% if defined? model.created_at %>
-      <span class="<%= class_name %>_date_time timestamp">
+      <span class="<%= class_name %>-date-time timestamp">
         <!-- Display the date and time of the model  -->
         <% if content_for?("timestamp_#{model.id}") %>
           <%= yield "timestamp_#{model.id}" %>
@@ -42,22 +42,22 @@
       </span>
     <% end %>
     <div class="actions">
-      <ul class="actions_left">
+      <ul class="actions-left">
         <% if can?(:hide, model) %>
-          <li><%= button_to "Hide", hide_tag_path(model), method: :post, class: "button" %></li>
+          <li><%= button_to "🫣", hide_tag_path(model), method: :post, class: "hide-button" %></li>
         <% end %>
 
         <% if defined?(model.user) && model.user != current_user %>
-          <li><%= link_to "Report", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report_link button" %></li>
+          <li><%= link_to "🚩", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report-link" %></li>
         <% end %>
 
         <% if can? :edit, model %>
-          <li><%= link_to "Edit", "#{url_for(model)}/edit", class: "#{class_name}_edit_link button" %></li>
+          <li><%= link_to "✏️", "#{url_for(model)}/edit", class: "#{class_name}-edit-link" %></li>
         <% end %>
 
         <%= yield "card_actions_left_#{model.id}" %>
       </ul>
-      <ul class="actions_right">
+      <ul class="actions-right">
         <%= yield "card_actions_right_#{model.id}" %>
       </ul>
     </div>

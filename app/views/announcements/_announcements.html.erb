@@ -1,9 +1,9 @@
-<div id="announcements_container">
+<div class="flex-container" id="announcements_container">
     <div class="card primary">
+        <% if can? :create, Announcement %>
+            <%= link_to "New announcement", new_announcement_path, class: "button" %>
+        <% end %>
         <div class="pagination">
-            <% if can? :create, Announcement %>
-                <%= link_to "New announcement", new_announcement_path, class: "button" %>
-            <% end %>
             <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
         </div>
     </div>

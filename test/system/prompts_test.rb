@@ -122,7 +122,7 @@ class PromptsTest < ApplicationSystemTestCase
     fill_in 'Starter', with: '1234929adwjwo totally unique prompt starter'
     click_on 'Submit'
 
-    assert_text 'Edit this prompt'
+    assert_text 'Edit'
     click_on 'Back'
   end
 
@@ -206,13 +206,13 @@ class PromptsTest < ApplicationSystemTestCase
 
   test 'should update Prompt starter and ooc' do
     visit prompt_url(@prompt)
-    click_on 'Edit this prompt', match: :first
+    click_on 'Edit', match: :first
 
     fill_in 'Ooc', with: @prompt.ooc
     fill_in 'Starter', with: @prompt.starter
     click_on 'Submit', match: :first
 
-    assert_text 'Edit this prompt'
+    assert_text 'Edit'
     click_on 'Back'
   end
 
@@ -226,7 +226,7 @@ class PromptsTest < ApplicationSystemTestCase
 
   test 'should destroy Prompt' do
     visit prompt_url(@prompt)
-    click_on 'Destroy this prompt', match: :first
+    click_on 'Destroy', match: :first
 
     assert_text 'Prompt was successfully destroyed'
   end

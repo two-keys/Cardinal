@@ -23,7 +23,7 @@ class TicketsTest < ApplicationSystemTestCase
 
     visit ticket_url(@ticket)
 
-    click_on 'Destroy this ticket', match: :first
+    click_on 'Destroy', match: :first
     assert_text 'Ticket was successfully destroyed'
   end
 end

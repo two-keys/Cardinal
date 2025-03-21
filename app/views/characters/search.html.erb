@@ -2,15 +2,15 @@
 
 <%= render partial: 'characters/characters_sidebar' %>
 
-<div class="card">
+<div class="card primary">
   <h1>Editing tags</h1>
 
   <%= render partial: 'characters/form_search' %>
 
-  <br>
-
   <div>
-    <%= link_to "Show this character", @character, class: "button" %> |
-    <%= link_to "Back to characters", characters_path, class: "button" %>
+    <div class="input-group">
+      <%= link_to "Show", @character, class: "button" %>
+      <%= link_to "Back", characters_path, class: "button" %>
+    </div>
   </div>
 </div>

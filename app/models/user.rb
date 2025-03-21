@@ -29,7 +29,12 @@ class User < ApplicationRecord
   has_many :push_subscriptions, dependent: :delete_all
   has_many :user_entitlements, dependent: :delete_all
   has_many :entitlements, through: :user_entitlements
+
+  # TODO: Remove after migration
   belongs_to :theme, optional: true
+
+  has_many :user_themes, dependent: :delete_all
+  has_many :applied_themes, through: :user_themes, source: :theme, class_name: 'Theme', foreign_key: 'theme_id'
 
   after_create_commit :generate_pseudonym_entitlement
 

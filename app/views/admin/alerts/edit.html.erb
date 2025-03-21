@@ -9,6 +9,8 @@
 <br>
 
 <div class="card primary">
-  <%= link_to "Show this alert", [:admin, @alert], class: "button" %> |
-  <%= link_to "Back to alerts", admin_alerts_path, class: "button" %>
+  <div class="input-group">
+    <%= link_to "Show", [:admin, @alert], class: "button" %>
+    <%= link_to "Back", admin_alerts_path, class: "button" %>
+  </div>
 </div>

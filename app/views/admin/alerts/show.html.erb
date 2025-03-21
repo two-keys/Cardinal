@@ -3,8 +3,9 @@
 </div>
 
 <div class="card primary">
-  <%= link_to "Edit this alert", edit_admin_alert_path(@alert), class: "button" %> |
-  <%= link_to "Back to alerts", admin_alerts_path, class: "button" %>
-
-  <%= button_to "Destroy this alert", [:admin, @alert], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+  <div class="input-group">
+    <%= link_to "Edit", edit_admin_alert_path(@alert), class: "button" %>
+    <%= link_to "Back", admin_alerts_path, class: "button" %>
+    <%= button_to "Destroy ", [:admin, @alert], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+  </div>
 </div>

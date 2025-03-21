@@ -1,6 +1,6 @@
 <%= render partial: 'prompts/prompts_sidebar' %>
 
-<div class="card">
+<div class="card primary">
   <h1>New prompt</h1>
 
   <%= render "form", prompt: @prompt, with_tags: true, character_options: @character_options, pseudonym_options: @pseudonym_options %>

@@ -3,15 +3,17 @@
 <%= render @character %>
 
 <div class="card primary">
-  <% if can? :update, @character %>
-    <%= link_to "Edit this character", edit_character_path(@character), class: "button" %> |
-  <% end %>
-  <% if can? :history, @character %>
-    <%= link_to "History", history_character_path(@character), class: "button" %> |
-  <% end %>
-  <%= link_to "Back to characters", characters_path, class: "button" %>
+  <div class="input-group">
+    <% if can? :update, @character %>
+      <%= link_to "Edit", edit_character_path(@character), class: "button" %>
+    <% end %>
+    <% if can? :history, @character %>
+      <%= link_to "History", history_character_path(@character), class: "button" %>
+    <% end %>
+    <%= link_to "Back", characters_path, class: "button" %>
 
-  <% if can? :destroy, @character %>
-    <%= button_to "Destroy this character", @character, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
-  <% end %>
+    <% if can? :destroy, @character %>
+      <%= button_to "Destroy", @character, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <% end %>
+  </div>
 </div>

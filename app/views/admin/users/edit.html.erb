@@ -1,6 +1,6 @@
 <h1>Editing user</h1>
 
-<div class="card">
+<div class="card primary">
   <%= render "form", user: @user %>
   <% if @user.handled_reports.any? %>
     <p>Reports this admin has resolved:</p>

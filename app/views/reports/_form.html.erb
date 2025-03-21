@@ -35,7 +35,7 @@
     <div id="<%= dom_id @report.reportable %>" class="report">
         <% if @report.reportable_type == "Message" %>
             <div class="card secondary">
-                <div id="messages_container">
+                <div class="flex-container" id="messages_container">
                     <%= render @report.reportable, locals: {reporting: true, reportable: @report.reportable} %>
                 </div>
             </div>

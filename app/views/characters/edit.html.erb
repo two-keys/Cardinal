@@ -1,20 +1,20 @@
 <%= render partial: 'characters/characters_sidebar' %>
 
-<div class="card">
+<div class="card primary">
   <h1>Editing description</h1>
 
   <%= render "form", character: @character, with_tags: false, pseudonym_options: @pseudonym_options %>
 </div>
 
-<div class="card">
+<div class="card primary">
   <h1>Editing tags</h1>
 
   <%= render "form_tags", character: @character %>
 
-  <br>
-
   <div>
-    <%= link_to "Show this character", @character, class: "button" %> |
-    <%= link_to "Back to characters", characters_path, class: "button" %>
+  <div class="input-group">
+    <%= link_to "Show", @character, class: "button" %>
+    <%= link_to "Back", characters_path, class: "button" %>
+  </div>
   </div>
 </div>

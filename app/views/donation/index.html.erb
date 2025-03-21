@@ -1,8 +1,8 @@
-<div id="donation_container">
+<div class="flex-container" id="donation_container">
   <div class="card primary">
     <h1>CURRENT GOAL</h1>
     <div class="status">$<%= @total %> / $<%= @current_goal['cost'] %> </div>
-    <p>The next goal is <strong><%= @current_goal['name'] %></strong></p>
+    <span>The next goal is <strong><%= @current_goal['name'] %></strong></span>
     <p><%= @current_goal['markdown'] %></p>
     <div class="progress" data-controller="goal">
       <h3>Funding Breakdown</h3>

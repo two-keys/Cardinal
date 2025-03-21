@@ -2,9 +2,7 @@
 
 <h1>Themes</h1>
 
-<div class="card">
-  <input id="theme_enable" type="checkbox" data-controller="theme-selector">
-  <label for="theme_enable">Enable Custom Theme</label>
+<div class="card primary">
   <% if can? :create, Theme %>
     <%= link_to "New theme", new_theme_path, class: "button" %><br/>
   <% end %>

@@ -1,18 +1,15 @@
 <div class="directory-actions">
     <% if defined?(adv_search_path) && !adv_search_path.nil? %>
-        <%= link_to '(Advanced Search)', adv_search_path, class: "button" %>
-        <br />
+        <%= link_to 'Advanced Search', adv_search_path, class: "button" %>
     <% end %>
     <% if search_keys.include?(:before) %>
-        <%= link_to 'Update timestamp', params.permit(*search_keys).merge(before: 1.second.from_now), class: "button" %>
-        <br />
+        <%= link_to 'Update Timestamp', params.permit(*search_keys).merge(before: 1.second.from_now), class: "button" %>
     <% end %>
     <% if search_keys.include?(:managed) %>
         <%= link_to 'Toggle Managed', params.permit(*search_keys).merge(
                 managed: params[:managed] == 'false' ? 'true' : 'false'
             ), class: "button"
         %>
-        <br />
     <% end %>
     <% if search_keys.include?(:ismine) %>
         <% ismine_text = (params[:ismine] == 'true') ? 'Hide Mine' : 'Show Mine' %> 
@@ -23,21 +20,24 @@
     <% end %>
     <%= yield :special_search_actions %>
     <% if search_keys.include?(:tags) || search_keys.include?(:nottags) %>
-        <div data-controller="tagactions">
-            <div data-controller="polaritytype">
-                <%= select 'tag', 'polarity', CardinalSettings::Tags.polarities, {}, data: { 
-                "tagactions-target": "polarity",
-                "polaritytype-target": "polarity", action: "polaritytype#changePolarity"
-                } %>
-                <%= select 'tag', 'type', CardinalSettings::Tags.types.keys, {}, data: {
-                "tagactions-target": "tagType",
-                "polaritytype-target": "tagType"
-                } %>
+        <div class="tag-actions" data-controller="tagactions">
+            <div class="tag-actions-input">
+                <div class="tag-polarity-types" data-controller="polaritytype">
+                    <%= select 'tag', 'polarity', CardinalSettings::Tags.polarities, {}, data: { 
+                    "tagactions-target": "polarity",
+                    "polaritytype-target": "polarity", action: "polaritytype#changePolarity"
+                    } %>
+                    <%= select 'tag', 'type', CardinalSettings::Tags.types.keys, {}, data: {
+                    "tagactions-target": "tagType",
+                    "polaritytype-target": "tagType"
+                    } %>
+                </div>
+                <input data-tagactions-target="name" type="text">
             </div>
-            <input data-tagactions-target="name" type="text">
-            <button class="button" data-action="click->tagactions#add">Add</button>
-            <button class="button" data-action="click->tagactions#exclude">Exclude</button>
+            <div class="tag-actions-buttons">
+                <button class="button" data-action="click->tagactions#add">Add</button>
+                <button class="button" data-action="click->tagactions#exclude">Exclude</button>
+            </div>
         </div>
-        <br />
     <% end %>
 </div>

@@ -1,5 +1,5 @@
 <% content_for :left_sidebar do %>
-  <div class="card">
+  <div class="card primary">
     Admin Pages
     <ul>
       <li>
@@ -24,18 +24,21 @@
   </div>
 <% end %>
 
-<div id="admin_panel_container">
+<div class="flex-container" id="admin_panel_container">
   <div class="card primary">
     <%= form_with url: admin_root_path, method: :get, class: 'analytics-form' do |f| %>
-      <div class="filters">
+      <div class="filters input-group">
         <%= f.select :interval, @intervals, 
                     { selected: params[:interval] ? params[:interval] : 'day'} %>
-
-        <%= f.datetime_field :date_from, value: @begin_date %>
-        <%= f.datetime_field :date_to, value: @end_date %>
-
-        <%= f.submit 'Filter' %>
+        
+        <div class="input-group input-main">
+          <%= f.datetime_field :date_from, value: @begin_date, class: "input-main" %>
+          <span>-></span>
+          <%= f.datetime_field :date_to, value: @end_date, class: "input-main" %>
+        </div>
       </div>
+      <%= f.submit 'Filter', class: "input-main" %>
+
     <% end %>
     <div class="card secondary">
       <h2>Reports</h2>

@@ -11,25 +11,30 @@
     </div>
   <% end %>
 
-  <div class="sidebar_user_icon current">
+  <div class="sidebar-user-icon current">
     <span><%= icon_for chat_info.icon %></span>
   </div>
-  <br/>
-
-  <%= form.label :title %>
-  <%= form.text_field :title, value: chat_info.title %>
-
-  <%= form.label :description %>
-  <%= form.text_area :description, value: chat_info.description %>
-
-  <%= form.label :new_icon %>
-  <div class="icon-selector" data-controller="icon-selector">
-    <% chat_info.available_icons.each do |icon| %>
-      <div class="sidebar_user_icon<%= " selected" if icon == chat_info.icon %>" data-icon="<%= icon %>" data-icon-selector-target="icons">
-        <span data-icon="<%= name_for_icon icon %>"><%= icon_for icon %></span>
-      </div>
-    <% end %>
-    <%= form.hidden_field :icon, {'data-icon-selector-target': "input", value: chat_info.icon} %>
+  
+  <div>
+    <%= form.label :title %>
+    <%= form.text_field :title, value: chat_info.title %>
+  </div>
+  
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description, value: chat_info.description %>
+  </div>
+  
+  <div>
+    <%= form.label :new_icon %>
+    <div class="icon-selector" data-controller="icon-selector">
+      <% chat_info.available_icons.each do |icon| %>
+        <div class="sidebar-user-icon<%= " selected" if icon == chat_info.icon %>" data-icon="<%= icon %>" data-icon-selector-target="icons">
+          <span data-icon="<%= name_for_icon icon %>"><%= icon_for icon %></span>
+        </div>
+      <% end %>
+      <%= form.hidden_field :icon, {'data-icon-selector-target': "input", value: chat_info.icon} %>
+    </div>
   </div>
 
   <div>

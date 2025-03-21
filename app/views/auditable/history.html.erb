@@ -1,9 +1,9 @@
-<div id="<%= @item_model_class_name %>_container">
+<div class="flex-container" id="<%= @item_model_class_name %>_container">
   <div class="card primary">
     <div class="pagination">
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
-      This <%= @item_model_class_name %> has <strong><%= @pagy.count %></strong> <%= pluralize_without_count(@pagy.count, 'version') %>.
     </div>
+    <span>This <%= @item_model_class_name %> has <strong><%= @pagy.count %></strong> <%= pluralize_without_count(@pagy.count, 'version') %>.</span>
   </div>
   <div class="card secondary">
     <% if instance_variable_get("@#{@item_model_class_name}") %>

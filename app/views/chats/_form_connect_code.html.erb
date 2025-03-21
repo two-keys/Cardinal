@@ -31,12 +31,12 @@
     <%= f.number_field :remaining_uses, greater_than_or_equal: 0, value: connect_code.remaining_uses %>
   </div>
 
-  <br />
-
   <div>
     <%= f.label :status, style: "display: block" %>
-    <%= f.radio_button :status, 'unlisted', :checked => (connect_code.status == 'unlisted') %><%= label_tag(:connect_code_status_unlisted, 'unlisted') %>
-    <%= f.radio_button :status, 'listed', :checked => (connect_code.status == 'listed') %><%= label_tag(:connect_code_status_listed, 'listed') %>
+    <div>
+      <%= f.radio_button :status, 'unlisted', :checked => (connect_code.status == 'unlisted') %><%= label_tag(:connect_code_status_unlisted, 'unlisted') %>
+      <%= f.radio_button :status, 'listed', :checked => (connect_code.status == 'listed') %><%= label_tag(:connect_code_status_listed, 'listed') %>
+    </div>
   </div>
 
   <div>

@@ -1,9 +1,9 @@
-<div id="tickets_container">
+<div class="flex-container" id="tickets_container">
   <div class="card primary">
     <div class="pagination">
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
-      Your search has <strong><%= @pagy.count %></strong> total tickets!
     </div>
+    <span>Your search has <strong><%= @pagy.count %></strong> total tickets!</span>
   </div>
   <%= render partial: 'tickets/mini', collection: @tickets, as: :ticket %>
   <div class="card primary">

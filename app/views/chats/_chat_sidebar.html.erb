@@ -1,19 +1,19 @@
 <%= turbo_frame_tag "chat_#{locals[:chat_id]}_user_#{locals[:user].id}_userlist" do %>
-    <div id="<%= "chat_#{locals[:chat_id]}_users"%>" class="chat_left_sidebar">
-        <div class="card primary">
+    <div id="<%= "chat_#{locals[:chat_id]}_users"%>" class="chat-right-sidebar">
+        <div class="card primary chat-sidebar">
             <div class="chat-actions">
                 <%= link_to "Edit", edit_chat_path(locals[:chat_uuid]), data: {turbo_frame: '_top' }, class: "button" %>
                 <%= button_to "Delete", chat_path(locals[:chat_uuid]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?"}  %>
             </div>
-            <ul id="sidebar_users">
+            <ul class="sidebar-users" id="sidebar_users">
                 <% for user_data in locals[:users_data] %>
                     <% name = name_for_icon user_data[:icon] %>
                     <% is_loc_user =  locals[:user].id == user_data[:id] %>
-                    <li class="user-<%= is_loc_user ? "you" : "other" %>">
-                        <div class="sidebar_user_icon">
+                    <li class="user user-<%= is_loc_user ? "you" : "other" %>">
+                        <div class="sidebar-user-icon">
                             <span><%= icon_for user_data[:icon] %></span>
                         </div>
-                        <%= name  + (is_loc_user ? " (you)" : "") %>
+                        <span class="icon-name"><%= name  + (is_loc_user ? " (you)" : "") %></span>
                         <div class="chat-admin-actions">
                             <% if !is_loc_user && can?(:chat_kick, @chat) %>
                                 <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?" }  %>

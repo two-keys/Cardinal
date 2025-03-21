@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_18_085603) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -166,6 +166,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_085603) do
     t.string "title"
     t.index ["flag", "data"], name: "index_entitlements_on_flag_and_data"
     t.index ["flag"], name: "index_entitlements_on_flag"
+    t.index ["object_id", "object_type", "flag", "data"], name: "idx_on_object_id_object_type_flag_data_01f8cbf101"
     t.index ["object_id", "object_type"], name: "index_entitlements_on_object_id_and_object_type"
     t.index ["object_id"], name: "index_entitlements_on_object_id"
     t.index ["object_type", "object_id"], name: "index_entitlements_on_object"
@@ -362,6 +363,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_085603) do
     t.index ["user_id"], name: "index_user_entitlements_on_user_id"
   end
 
+  create_table "user_themes", force: :cascade do |t|
+    t.boolean "enabled", default: false, null: false
+    t.bigint "user_id", null: false
+    t.bigint "theme_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "priority", default: 0
+    t.index ["enabled"], name: "index_user_themes_on_enabled"
+    t.index ["theme_id"], name: "index_user_themes_on_theme_id"
+    t.index ["user_id"], name: "index_user_themes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -387,6 +400,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_085603) do
     t.datetime "delete_at"
     t.bigint "theme_id"
     t.boolean "push_announcements", default: true, null: false
+    t.boolean "themes_enabled", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -414,5 +428,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_18_085603) do
   add_foreign_key "tickets", "users"
   add_foreign_key "user_entitlements", "entitlements"
   add_foreign_key "user_entitlements", "users"
+  add_foreign_key "user_themes", "themes"
+  add_foreign_key "user_themes", "users"
   add_foreign_key "users", "themes"
 end

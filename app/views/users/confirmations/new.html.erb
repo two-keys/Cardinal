@@ -1,20 +1,16 @@
-<h2>Resend confirmation instructions</h2>
-
-<div class="card">
+<div class="card secondary">
+  <h2>Resend confirmation instructions</h2>
   <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
     <%= render "users/shared/error_messages", resource: resource %>
 
     <div class="field">
-      <%= f.label :email %><br />
+      <%= f.label :email %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
     </div>
 
-    <div class="actions">
-      <%= f.submit "Resend confirmation instructions" %>
+    <div class="actions input-group">
+      <%= f.submit "Resend" %>
+      <%= render "users/shared/links" %>
     </div>
   <% end %>
-</div>
-
-<div class="card">
-  <%= render "users/shared/links" %>
 </div>

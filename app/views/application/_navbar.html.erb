@@ -1,32 +1,5 @@
-<nav id="nav">
-  <ul>
-    <li class="nav_item nav_home"><a href="/">Home</a></li>
-    <% if user_signed_in? %>
-      <li class="nav_item nav_directory"> <%= link_to "Directory", prompts_path %> </li>
-      <li class="nav_item nav_notifications">
-        <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
-        <%= render 'notifications', notifications: current_user.notifications %>
-      </li>
-      <% if current_user.admin? %>
-        <li class="nav_item nav_admin">
-          <%= link_to "Admin", "/admin" %>
-        </li>
-      <% end %>
-      <li class="nav_item nav_user"> <%= link_to current_user.username, edit_user_registration_path %> </li>
-    <% else %>
-      <li class="nav_item nav_login"><a href= <%= new_user_session_path %>>Sign In</a></li>
-      <li class="nav_item nav_register"><a href= <%= new_user_registration_path %>>Sign Up</a></li>
-    <% end %>
-    <li class="nav_item nav_donate"><%= link_to "Donate", donation_url %></li>
-    <li class="nav_item nav_use"> <%= link_to "Site Use", use_page_path %> </li>
-    <li class="disabled nav_item nav_discord"><a href="/">Discord</a></li>
-    <% if user_signed_in? %>
-      <li class="nav_item nav_logout"><%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %></li>
-    <% end %>
-    <% if !Rails.env.test? %>
-      <li id="online_count" class="nav_item nav_online">
-        <span><a href="#">Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %></a></span>
-      </li>
-    <% end %>
-  </ul>
-</nav>
+<% if current_user %>
+    <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
+<% end %>
+<%= render "navbar_desktop" %>
+<%= render "navbar_mobile" %>

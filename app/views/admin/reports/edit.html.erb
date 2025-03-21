@@ -2,9 +2,9 @@
 
 <%= render "form", report: @report %>
 
-<br>
-
 <div>
-  <%= link_to "Show this report", [:admin, @report], class: "button" %> |
-  <%= link_to "Back to reports", admin_reports_path, class: "button" %>
+  <div class="input-group">
+    <%= link_to "Show", [:admin, @report], class: "button" %>
+    <%= link_to "Back", admin_reports_path, class: "button" %>
+  </div>
 </div>

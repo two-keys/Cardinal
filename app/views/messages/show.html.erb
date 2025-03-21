@@ -1,8 +1,10 @@
 <%= render @message %>
 
-<div class="card">
-  <%= link_to "Edit this message", edit_message_path(@message), class: "button" %> |
-  <%= link_to "Back to messages", messages_path, class: "button" %>
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Edit", edit_message_path(@message), class: "button" %>
+    <%= link_to "Back", messages_path, class: "button" %>
 
-  <%= button_to "Destroy this message", @message, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
+    <%= button_to "Destroye", @message, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
+  </div>
 </div>

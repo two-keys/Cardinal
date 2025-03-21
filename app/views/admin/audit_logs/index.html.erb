@@ -1,22 +1,25 @@
 <!-- Admin view for audit logs -->
-<div class="card">
+<div class="card primary">
   <h2>Audit Log</h2>
   
   <%= form_with url: admin_audit_logs_path, method: :get, class: 'filter-form' do |f| %>
     <div class="filters">
-      <%= f.select :item_type, 
-                  [['All Types', ''], 'Alert', 'Announcement', 'Character', 'Message', 'Prompt', 'User', 'Entitlement'], 
-                  { selected: params[:item_type] } %>
-                  
-      <%= f.select :event, 
-                  [['All Events', ''], 'create', 'update', 'destroy'], 
-                  { selected: params[:event] } %>
-                  
-      <%= f.text_field :whodunnit, value: params[:whodunnit], placeholder: 'Username' %>
-                             
-      <%= f.date_field :date_from, value: params[:date_from] %>
-      <%= f.date_field :date_to, value: params[:date_to] %>
+      <div class="input-group">
+        <%= f.select :item_type, 
+                    [['All Types', ''], 'Alert', 'Announcement', 'Character', 'Message', 'Prompt', 'User', 'Entitlement'], 
+                    { selected: params[:item_type] } %>
+                    
+        <%= f.select :event, 
+                    [['All Events', ''], 'create', 'update', 'destroy'], 
+                    { selected: params[:event] } %>
+        <%= f.text_field :whodunnit, value: params[:whodunnit], placeholder: 'Username', class: "input-main" %>
+      </div>
       
+      <div class="input-group">
+        <%= f.date_field :date_from, value: params[:date_from], class: "input-main" %>
+        <span>-></span> 
+        <%= f.date_field :date_to, value: params[:date_to], class: "input-main" %>
+      </div>
       <%= f.submit 'Filter' %>
     </div>
   <% end %>

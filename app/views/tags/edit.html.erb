@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card primary">
   <h1>Editing tag</h1>
 
   <%= render "form", tag: @tag %>
@@ -6,7 +6,9 @@
   <br>
 
   <div>
-    <%= link_to "Show this tag", @tag, class: "button" %> |
-    <%= link_to "Back to tags", tags_path, class: "button" %>
+    <div class="input-group">
+      <%= link_to "Show", @tag, class: "button" %>
+      <%= link_to "Back", tags_path, class: "button" %>
+    </div>
   </div>
 </div>

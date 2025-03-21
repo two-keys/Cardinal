@@ -12,7 +12,7 @@ export default class extends Controller {
     for (const icon of icons) {
         icon.addEventListener("click", () => {
             input.value = icon.dataset.icon;
-            let elements = $(".sidebar_user_icon.selected");
+            let elements = $(".sidebar-user-icon.selected");
             for (const el of elements) {
                 $(el).removeClass("selected");
             }

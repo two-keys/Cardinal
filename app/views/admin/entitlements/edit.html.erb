@@ -4,6 +4,9 @@
 
 <br>
 
-<div class="card">
-  <%= link_to "Show this entitlement", [:admin, @entitlement], class: "button" %> | <%= button_to "Destroy", [:admin, @entitlement], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Show", [:admin, @entitlement], class: "button" %>
+    <%= button_to "Destroy", [:admin, @entitlement], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+  </div>  
 </div>

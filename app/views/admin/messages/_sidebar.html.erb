@@ -8,7 +8,7 @@
                     <% name = name_for_icon user_data[:icon] %>
                     <% is_loc_user =  locals[:user].id == user_data[:id] || user_data[:id] == -1 %>
                     <li>
-                        <div class="sidebar_user_icon">
+                        <div class="sidebar-user-icon">
                             <span><%= icon_for user_data[:icon] %></span>
                         </div>
                         <%= name  + (is_loc_user ? " (you)" : "") %>

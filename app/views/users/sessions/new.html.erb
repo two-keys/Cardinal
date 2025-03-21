@@ -1,32 +1,32 @@
-<h2>Log in</h2>
-
 <div class="card secondary">
+  <h2>Log in</h2>
+  
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
-      <%= f.label :username %><br />
+      <%= f.label :username %>
       <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
     </div>
 
     <div class="field">
-      <%= f.label :password %><br />
+      <%= f.label :password %>
       <%= f.password_field :password, autocomplete: "current-password" %>
     </div>
 
     <% if devise_mapping.rememberable? %>
       <div class="field">
-        <%= f.check_box :remember_me %>
-        <%= f.label :remember_me %>
+        <div>
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
       </div>
     <% end %>
 
-    <div class="actions">
+    <div class="actions input-group">
       <%= f.submit "Log in" %>
+      <%= render "users/shared/links" %>
     </div>
     <%= turbo_frame_tag 'recaptchas' do %>
       <%= recaptcha_v3(action: 'signup') %>
     <% end %>
-    <br/>
   <% end %>
-
-  <%= render "users/shared/links" %>
 </div>

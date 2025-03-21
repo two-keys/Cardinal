@@ -31,7 +31,7 @@ class AnnouncementsTest < ApplicationSystemTestCase
 
   test 'should update Announcement' do
     visit announcement_url(@announcement)
-    click_on 'Edit this announcement', match: :first
+    click_on 'Edit', match: :first
 
     fill_in 'Content', with: @announcement.content
     fill_in 'Title', with: @announcement.title
@@ -43,7 +43,7 @@ class AnnouncementsTest < ApplicationSystemTestCase
 
   test 'should destroy Announcement' do
     visit announcement_url(@announcement)
-    click_on 'Destroy this announcement', match: :first
+    click_on 'Destroy', match: :first
 
     assert_text 'Announcement was successfully destroyed'
   end

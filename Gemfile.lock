@@ -88,6 +88,7 @@ GEM
     bcrypt (3.1.20)
     benchmark (0.4.0)
     bigdecimal (3.1.8)
+    bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     brakeman (6.2.2)
@@ -115,6 +116,8 @@ GEM
     crass (1.0.6)
     css_parser (1.21.1)
       addressable
+    cssbundling-rails (1.4.3)
+      railties (>= 6.0.0)
     date (3.4.1)
     debug (1.9.2)
       irb (~> 1.10)
@@ -133,12 +136,19 @@ GEM
     erubi (1.13.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-arm64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
     gemoji (4.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.5.1)
       activesupport (>= 7)
     hiredis (0.6.3)
+    hotwire-livereload (2.0.0)
+      actioncable (>= 7.0.0)
+      listen (>= 3.0.0)
+      railties (>= 7.0.0)
     http-accept (1.7.0)
     http-cookie (1.0.8)
       domain_name (~> 0.5)
@@ -157,6 +167,9 @@ GEM
     jwt (2.10.1)
       base64
     language_server-protocol (3.17.0.3)
+    listen (3.9.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.6.2)
     loofah (2.23.1)
       crass (~> 1.0.2)
@@ -255,6 +268,9 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.11.1)
+      ffi (~> 1.0)
     rdoc (6.8.1)
       psych (>= 4.0.0)
     recaptcha (5.19.0)
@@ -342,6 +358,11 @@ GEM
     useragent (0.16.11)
     warden (1.2.9)
       rack (>= 2.0.9)
+    web-console (4.2.1)
+      actionview (>= 6.0.0)
+      activemodel (>= 6.0.0)
+      bindex (>= 0.4.0)
+      railties (>= 6.0.0)
     web-push (3.0.1)
       jwt (~> 2.0)
       openssl (~> 3.0)
@@ -377,12 +398,14 @@ DEPENDENCIES
   capybara
   chartkick
   clockwork
+  cssbundling-rails
   debug
   devise
   discordrb-webhooks
   faker
   gemoji
   hiredis
+  hotwire-livereload (~> 2.0)
   jbuilder
   jsbundling-rails
   minitest (!= 5.25.0)
@@ -414,6 +437,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   unleash (~> 4.0.0)
+  web-console
   web-push
   webdrivers
 

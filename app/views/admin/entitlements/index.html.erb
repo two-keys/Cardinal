@@ -1,24 +1,26 @@
-<div class="card">
+<div class="card primary">
   <%= link_to "New Entitlement", new_admin_entitlement_path, class: "button" %>
 </div>
 
-<div class="card">
+<div class="card primary">
   <h2>Entitlements</h2>
   
   <%= form_with url: admin_entitlements_path, method: :get, class: 'filter-form' do |f| %>
     <div class="filters">
-      <%= f.select :object_type, 
-                  [['All Types', ''], 'Theme', 'ChatUser', 'Pseudonym', ['Global', 'None']], 
-                  { selected: params[:object_type] } %>
-                  
-      <%= f.select :flag, 
-                  [['All Flags', ''], 'emoji', 'permission', 'pseudonym'], 
-                  { selected: params[:flag] } %>
- 
-      <%= f.text_field :username, value: params[:username], placeholder: 'Username' %>
-                             
-      <%= f.date_field :date_from, value: params[:date_from] %>
-      <%= f.date_field :date_to, value: params[:date_to] %>
+      <div class="input-group">
+        <%= f.select :object_type, 
+                    [['All Types', ''], 'Theme', 'ChatUser', 'Pseudonym', ['Global', 'None']], 
+                    { selected: params[:object_type] } %>
+                    
+        <%= f.select :flag, 
+                    [['All Flags', ''], 'emoji', 'permission', 'pseudonym'], 
+                    { selected: params[:flag] } %>
+        <%= f.text_field :username, value: params[:username], placeholder: 'Username' %>
+      </div>
+      <div class="input-group">                       
+        <%= f.date_field :date_from, value: params[:date_from] %>
+        <%= f.date_field :date_to, value: params[:date_to] %>
+      </div>
       
       <%= f.submit 'Filter' %>
     </div>

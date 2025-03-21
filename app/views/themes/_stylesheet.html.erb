@@ -1,9 +1,15 @@
-<%= turbo_frame_tag "theme" do %>
-  <style type="text/css">
-    <% user = Current.user ? Current.user : current_user %>
-    <%== sanitize_user_css(user.theme.css) %>
-  </style>
-  <div style="display: none">
-    <%== sanitize_user_css(user.theme.css) %>
-  </div>
+<% user = Current.user ? Current.user : current_user %>
+
+<% if user %>
+  <% user.applied_themes.each do |theme| %>
+    <%= turbo_frame_tag dom_id(theme) do %>
+      <style type="text/tailwindcss">
+        <%== File.read(Rails.root.join('public', 'stylesheets', 'references.css')) %>
+
+        @layer <%= dom_id(theme) %>_<%= theme.title.downcase.gsub(" ", "_") %> {
+          <%== sanitize_user_css(theme.css) %>
+        }
+      </style>
+    <% end %>
+  <% end %>
 <% end %>

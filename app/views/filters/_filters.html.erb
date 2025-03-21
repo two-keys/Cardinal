@@ -1,9 +1,9 @@
-<div id="filters_container">
+<div class="flex-container" id="filters_container">
   <div class="card primary">
+    <% if can? :create, Filter %>
+      <%= link_to "New filter", new_filter_path, class: "button" %>
+    <% end %>
     <div class="pagination">
-      <% if can? :create, Filter %>
-        <%= link_to "New filter", new_filter_path, class: "button" %>
-      <% end %>
       <%= render partial: 'pagy/nav', locals: {pagy: @pagy} %>
     </div>
   </div>

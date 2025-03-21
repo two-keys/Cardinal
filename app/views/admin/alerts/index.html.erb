@@ -10,9 +10,9 @@
   <% @alerts.each do |alert| %>
     <div class="card secondary">
       <%= render alert %>
-      <p>
-        <%= link_to "Show this alert", url_for([:admin, alert]), class: "button" %>
-      </p>
+      <div class="input-group">
+        <%= link_to "Show", url_for([:admin, alert]), class: "button" %>
+      </div>
     </div>
   <% end %>
 </div>

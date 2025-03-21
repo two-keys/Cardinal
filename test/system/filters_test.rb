@@ -37,7 +37,7 @@ class FiltersTest < ApplicationSystemTestCase
 
   test 'should update Filter' do
     visit filter_url(@filter)
-    click_on 'Edit this filter', match: :first
+    click_on 'Edit', match: :first
 
     select @filter.filter_type, from: 'Filter type'
     fill_in 'Group', with: @filter.group
@@ -55,7 +55,7 @@ class FiltersTest < ApplicationSystemTestCase
 
   test 'should destroy Filter' do
     visit filter_url(@filter)
-    click_on 'Destroy this filter', match: :first
+    click_on 'Destroy', match: :first
 
     assert_text 'Filter was successfully destroyed'
   end

@@ -1,6 +1,6 @@
-<h1>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="card primary">
+  <h1>Edit <%= resource_name.to_s.humanize %></h2>
 
-<div class="card">
   <% if admin? %>
     <%= link_to "Admin Edit", edit_admin_user_path(resource), class: "button" %>
   <% end %>
@@ -17,7 +17,6 @@
       <div class="field">
         <%= f.label :email %> <br />
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-        <br/>
         <% if resource.confirmed? %>
           <span>Confirmed at <%= resource.confirmed_at %></span>
         <% end %>
@@ -32,7 +31,6 @@
         <%= f.label :new_password %> <i>(leave blank if you don't want to change it)</i><br />
         <%= f.password_field :password, autocomplete: "new-password" %>
         <% if @minimum_password_length %>
-          <br />
           <em><%= @minimum_password_length %> characters minimum</em>
         <% end %>
       </div>
@@ -59,12 +57,20 @@
   <% end %>
   <h3>Themes</h3>
   <div class="card secondary">
-    <input id="theme_enable" type="checkbox" data-controller="theme-selector">
-    <label for="theme_enable">Enable Custom Theme</label><br/>
-    <% if can? :create, Theme %>
-      <%= link_to "New Theme", new_theme_path, class: "button" %> |
+    <div class="input-group">
+      <% if can? :create, Theme %>
+        <%= link_to "New", new_theme_path, class: "button" %>
+      <% end %>
+      <%= link_to "Themes", themes_path, class: "button" %>
+    </div>
+    
+    <h4>Applied</h4>
+    <% if current_user.applied_themes.count == 0 %>
+      <p>You have no applied themes.</b>
     <% end %>
-    <%= link_to "Themes", themes_path, class: "button" %>
+    <% current_user.applied_themes.each do |theme| %>
+      <%= render partial: "/themes/theme", locals: {theme: theme} %>
+    <% end %>
   </div>
   <h3>Notifications</h3>
   <div class="card secondary">

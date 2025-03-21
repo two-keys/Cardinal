@@ -1,14 +1,14 @@
 <div id="<%= dom_id prompt %>" class="card primary prompt">
-  <div class="prompt_info">
+  <div class="prompt-info">
     <%= render partial: 'directory/metainfo', locals: { model: prompt} %>
     <div class="tags">
       <%= render partial: 'prompts/tags', locals: { prompt: prompt} %>
     </div>
     <span class="slots">
       <strong><u><%= prompt.default_slots %></u> SLOTS</strong>
-    </span>
-    <span class="managed">
-      <strong><% unless prompt.managed? %>UN-<% end %>MANAGED</strong>
+      <span class="managed">
+        <strong><% unless prompt.managed? %>UN-<% end %>MANAGED</strong>
+      </span>
     </span>
   </div>
 

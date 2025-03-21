@@ -9,9 +9,9 @@
 <% if variant == "mini" %>
   <% container_class = " mini" %>
 <% end %>
-<div id="<%= dom_id chat %>_container" class="admin_chat<%= container_class %>">
+<div class="flex-container" id="<%= dom_id chat %>_container" class="admin-chat<%= container_class %>">
     <div class="card secondary">
-        <div id="messages_container">
+        <div class="flex-container" id="messages_container">
             <% for message in messages.reverse %>
                 <%= turbo_frame_tag message do %>
                   <% css = "message" %>
@@ -22,8 +22,8 @@
                       <% css += " reported" %>
                   <% end %>
                     <div class="<%= css %>">
-                      <span class="user_icon"><%= icon_for message.icon %></span>
-                      <span class="type_notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+                      <span class="user-icon"><%= icon_for message.icon %></span>
+                      <span class="type-notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
                         <% if message.type == 'system' %>
                           SYS
                         <% end %>
@@ -37,7 +37,8 @@
                         <% end %>
                       </span>
                       <%= message.markdown %>
-                      <span class="message_created_at">
+                      <hr class="message-break"/>
+                      <span class="message-created-at">
                         <!-- Display the date and time of the message -->
                         <% if message.user %>
                           Sent by <%= link_to message.user.username, edit_admin_user_path(message.user) %> at <%= message.created_at.strftime("%Y-%m-%d %k:%M:%S") %>
@@ -46,12 +47,11 @@
                         <% end %>
                       </span>
                       <% if can? :edit, message %>
-                          <%= link_to "Edit", edit_message_path(message), class: "message_edit_link button" %>
+                          <%= link_to "Edit", edit_message_path(message), class: "message-edit-link button" %>
                       <% end %>
                       <% if message.updated_at > message.created_at %>
-                          <span class="message_edited_at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
+                          <span class="message-edited-at">(edited <%= time_ago_in_words(message.updated_at) %> ago)</span>
                       <% end %>
-                      <hr class="message_break"/>
                   </div>
                 <% end %>
             <% end %>

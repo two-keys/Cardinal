@@ -6,7 +6,9 @@
 
 <br>
 
-<div class="card">
-  <%= link_to "Show this theme", @theme, class: "button" %> |
-  <%= link_to "Back to themes", themes_path, class: "button" %>
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Show", @theme, class: "button" %>
+    <%= link_to "Back", themes_path, class: "button" %>
+  </div>
 </div>

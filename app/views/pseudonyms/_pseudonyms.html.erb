@@ -1,10 +1,10 @@
-<div id="pseudonyms_container">
+<div class="flex-container" id="pseudonyms_container">
   <div class="card primary">
+    <%= link_to "New Pseudonym", new_pseudonym_path, class: "button" %>
     <div class="pagination">
-      <%= link_to "New Pseudonym", new_pseudonym_path, class: "button" %>
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
-      Your search has <strong><%= @pagy.count %></strong> total pseudonyms!
     </div>
+    <span>Your search has <strong><%= @pagy.count %></strong> total pseudonyms!</span>
   </div>
   <%= render partial: 'pseudonyms/mini', collection: @pseudonyms, as: :pseudonym %>
   <div class="card primary">

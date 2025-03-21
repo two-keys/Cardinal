@@ -1,25 +1,21 @@
-<h2>Forgot your password?</h2>
-
-<div class="card">
+<div class="card secondary">
+  <h2>Forgot your password?</h2>
+  
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
     <%= render "users/shared/error_messages", resource: resource %>
 
     <div class="field">
-      <%= f.label :email %><br />
+      <%= f.label :email %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
     </div>
 
-    <div class="actions">
+    <div class="actions input-group">
       <%= f.submit "Send me reset password instructions" %>
+      <%= render "users/shared/links" %>
     </div>
     
     <%= turbo_frame_tag 'recaptchas' do %>
       <%= recaptcha_v3(action: 'password/reset')%>
     <% end %>
   <% end %>
-  <br/>
-</div>
-
-<div class="card">
-  <%= render "users/shared/links" %>
 </div>

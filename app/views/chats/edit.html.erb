@@ -1,13 +1,11 @@
 <h1>Editing chat</h1>
 
-<div class="card">
+<div class="card primary">
   <%= render "form", chat: @chat, chat_info: @chat_info %>
 
-  <br />
-
-  <div>
-    <%= link_to "Show this chat", chat_path(@chat.uuid), class: "button" %> |
-    <%= link_to "Back to chats", chats_path, class: "button" %>
+  <div class="input-group">
+    <%= link_to "Show", chat_path(@chat.uuid), class: "button" %>
+    <%= link_to "Back", chats_path, class: "button" %>
   </div>
 </div>
 

@@ -1,0 +1,25 @@
+<nav class="nav nav-desktop">
+  <%= link_to "Home", root_path, class: "nav-item nav-home" %>
+  <% if user_signed_in? %>
+    <%= link_to "Directory", prompts_path, class: "nav-item nav-directory" %>
+    <span class="nav-item nav-notifications"><%= render 'notifications', notifications: current_user.notifications %></span>
+    <% if current_user.admin? %>
+      <%= link_to "Admin", "/admin", class: "nav-item nav-admin" %>
+    <% end %>
+    <%= link_to current_user.username, edit_user_registration_path, class: "nav-item nav-user" %>
+  <% else %>
+    <%= link_to 'Sign In', new_user_session_path, class: "nav-item nav-login" %>
+    <%= link_to 'Sign Up', new_user_registration_path, class: "nav-item nav-register" %>
+  <% end %>
+  <%= link_to 'Donate', donation_url, class: "nav-item nav-donate" %>
+  <%= link_to 'Site Use', use_page_path, class: "nav-item nav-use" %>
+  <%= link_to 'Discord', '#', class: "nav-item nav-discord disabled" %>
+  <% if user_signed_in? %>
+    <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-item nav-logout", data: {turbo_confirm: "Are you sure?"} %>
+  <% end %>
+  <% if !Rails.env.test? %>
+    <%= link_to "#", class: "nav-item nav-online" do %>
+      Online: <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %>
+    <% end %>
+  <% end %>
+</nav>

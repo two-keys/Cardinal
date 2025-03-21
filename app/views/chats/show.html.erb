@@ -1,16 +1,20 @@
 <% content_for :info_top do %>
-    <div id="chat_info_top" class="card secondary">
+    <div class="chat-info-top card secondary thin" id="chat_info_top">
         <% if @chat_info %>
-            <p><%= @chat_info.title %></p>
-            <p><%= @chat_info.description %></p>
+            <% if @chat_info.title %>
+                <p><%= @chat_info.title %></p>
+            <% end %>
+            <% if @chat_info.description %>
+                <p><%= @chat_info.description %></p>
+            <% end %>
         <% end %>
         <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
     </div>
 <% end %>
 
-<div id="<%= dom_id @chat %>_container">
+<div class="flex-container" id="<%= dom_id @chat %>_container">
     <div class="card secondary">
-        <div id="messages_container">
+        <div class="flex-container" id="messages_container">
             <% if @pagy.page == 1 %>
                 <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat)) %>
             <% else %>
@@ -32,11 +36,11 @@
 <% end %>
 
 <% content_for :info_bottom do %>
-    <div class="card secondary">
+    <div class="card secondary thin">
         <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
     </div>
     <% if @pagy.page == 1 %>
-        <div class="card secondary">
+        <div class="card secondary thin">
             <%= turbo_frame_tag "message_form_frame" do %>
                 <%= render 'messages/form', locals: {message: Message.new, chat_id: @chat.id} %>
             <% end %>

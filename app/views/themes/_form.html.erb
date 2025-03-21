@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card primary">
   <%= form_with(model: theme) do |form| %>
     <% if theme.errors.any? %>
       <div style="color: red">
@@ -19,14 +19,16 @@
 
     <% if admin? %>
       <div>
-        <%= form.label :system, style: "display: block" %>
-        <%= form.check_box :system  %>
+        <div>
+          <%= form.label :system, style: "display: block" %>
+          <%= form.check_box :system  %>
+        </div>
       </div>
     <% end %>
 
     <div>
       <%= form.hidden_field :css, id: "css_hidden" %>
-      <div id="css_editor"><%= theme.css %></div>
+      <div class="css-editor" id="css_editor"><%= theme.css %></div>
     </div>
 
     <div>

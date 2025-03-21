@@ -1,5 +1,5 @@
 <% content_for :info_top do %>
-    <div id="chat_info_top" class="card secondary">
+    <div class="chat-info-top card secondary" id="chat_info_top">
         <% if @chat_info %>
             <p><%= @chat_info.title %></p>
             <p><%= @chat_info.description %></p>
@@ -10,9 +10,9 @@
     </div>
 <% end %>
 
-<div id="<%= dom_id @chat %>_container">
+<div class="flex-container" id="<%= dom_id @chat %>_container">
     <div class="card secondary">
-        <div id="messages_container">
+        <div class="flex-container" id="messages_container">
             <% if @messages.count > 0 %>
                 <% for message in @messages.reverse %>
                     <%= render 'messages/message', locals: { message: message, current_user_id: current_user.id } %>

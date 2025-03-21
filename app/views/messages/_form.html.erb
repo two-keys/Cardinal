@@ -16,7 +16,7 @@
       <h3 class="alert" data-chat-input-target="alert"></h3>
     </div>
 
-    <div id="form_message_ooc">
+    <div class="ooc-input" id="form_message_ooc">
       <%= form.label :ooc, 'OOC' %>
       <%= form.check_box :ooc, data: {'chat-input-target': 'ooc'} %>
     </div>
@@ -26,7 +26,7 @@
       <%= form.hidden_field :content, {'data-chat-input-target': 'textarea', 'data-toasty-editor-target': 'textarea'} %>
     </div>
 
-    <div id="form_message_submit">
+    <div class="form-submit" id="form_message_submit">
       <%= form.submit value: 'Send' %>
     </div>
 

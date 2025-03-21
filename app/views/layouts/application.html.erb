@@ -8,15 +8,20 @@
     <%= tag.meta name: "vapid-public-key", content: ENV.fetch('WEBPUSH_PUBLIC_KEY', nil) %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
+    <%= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
+
+    <% if current_user && current_user.applied_themes.count > 0 %>
+      <%= turbo_stream_from dom_id(current_user)  + "_theme" %>
+      <%= render partial: 'themes/stylesheet' %>
+    <% end %>
 
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.2/dist/es-module-shims.js" data-turbo-track="reload"></script>
+
     <script src="https://www.recaptcha.net/recaptcha/api.js" async="" defer=""></script>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-    
+    <% if Rails.env.development? || (current_user && current_user.applied_themes.count > 0) %>
+      <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <% end %>
     <script
       src="https://js.sentry-cdn.com/561d51d4da53e5e5ad60cab12cbe3039.min.js"
       crossorigin="anonymous"
@@ -47,38 +52,38 @@
 
       function checkTheme() {
         const theme = localStorage.getItem('theme');
-        if (theme) {
-          document.documentElement.className = theme;
+        if (theme == "light" || theme == "dark") {
+          document.documentElement.setAttribute('data-theme', theme);
         } else {
           if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.className = 'dark-cardinal';
+            document.documentElement.setAttribute('data-theme', 'dark');
           } else {
-            document.documentElement.className = 'light-cardinal';
+            document.documentElement.setAttribute('data-theme', 'ligh');
           }
         }
       }
       checkTheme();
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         const newColorScheme = e.matches ? "dark" : "light";
-        if (document.documentElement.className.startsWith("dark-") && newColorScheme === "light") {
-          document.documentElement.className = document.documentElement.className.replace("dark-", "light-");
-        } else if (document.documentElement.className.startsWith("light-") && newColorScheme === "dark") {
-          document.documentElement.className = document.documentElement.className.replace("light-", "dark-");
+        if (newColorScheme === "light") {
+          document.documentElement.setAttribute('data-theme', "light");
+        } else if (newColorScheme === "dark") {
+          document.documentElement.setAttribute('data-theme', "dark");
         }
       });
 
       function changeTheme(theme) {
-        document.documentElement.className = theme;
+        document.documentElement.setAttribute('data-theme', theme)
         if (checkLocalStorage()) {
           localStorage.setItem('theme', theme);
         }
       }
 
       function toggleDarkMode() {
-        if (document.documentElement.className.startsWith("dark-")) {
-          changeTheme(document.documentElement.className.replace("dark-", "light-"));
-        } else if (document.documentElement.className.startsWith("light-")) {
-          changeTheme(document.documentElement.className.replace("light-", "dark-"));
+        if (document.documentElement.getAttribute('data-theme') == "dark") {
+          changeTheme(document.documentElement.getAttribute('data-theme').replace("dark", "light"));
+        } else {
+          changeTheme(document.documentElement.getAttribute('data-theme').replace("light", "dark"));
         }
       }
     </script>
@@ -86,39 +91,36 @@
     <%= javascript_include_tag 'ace-colorpicker.min.js' %>
     <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/ace-builds@1.39.0/css/ace.min.css" rel="stylesheet">
-    <% if user_signed_in? && current_user.theme %>
-      <%= turbo_stream_from dom_id(current_user)  + "_theme" %>
-      <%= render partial: 'themes/stylesheet' %>
-    <% end %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body data-controller="twemoji" id="<%= controller_name %>-page">
+  <body data-controller="twemoji" class="<%= controller_name %>-page">
     <div id="site">
-      <header id="header">
-        <a href="/">
+      <header class="header">
+        <a href="/", class='header-image'>
           <%= image_tag 'titlebar.png' %>
         </a>
       </header>
       <%= render 'navbar' %>
-      <%= turbo_frame_tag :flashes do %>
+      <%= turbo_frame_tag :flashes, class: "flashes" do %>
         <%= render 'shared/flashes' %>
       <% end %>
-      <div id="site_container">
-        <div id="left_sidebar">
+      <div class="site-container">
+        <div class="top-left-filler"></div>
+        <div class="left-sidebar">
           <%= yield :left_sidebar %>
         </div>
-        <div id="info_top">
+        <div class="top-right-filler"></div>
+        <div class="right-sidebar">
+          <%= yield :right_sidebar %>
+        </div>
+        <div class="info-top">
           <%= yield :info_top %>
         </div>
-        <div id="info_bottom">
-          <%= yield :info_bottom %>
-        </div>
-        <div id="main">
+        <div class="main">
           <%= yield %>
         </div>
-        <div id="right_sidebar">
-          <%= yield :right_sidebar %>
+        <div class="info-bottom">
+          <%= yield :info_bottom %>
         </div>
       </div>
       <%= render 'footer' %>

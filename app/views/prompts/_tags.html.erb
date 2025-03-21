@@ -9,7 +9,8 @@
     <% end %>
     <% if !tags_for_polarity.nil? %>
       <% tags_for_polarity.each do |tag_type, tags| %>
-        <ul id="<%= tag_type %>" class="type"><%= "#{readable_tag_type tag_type}:" %>
+        <span class="tag-type"><%= "#{readable_tag_type tag_type}:" %></span>
+        <ul id="<%= tag_type %>" class="tag-list type">
           <% tags.each do |tag| %>
             <li id="<%= tag.id %>" class="<%= tag_type %> tag">
               <%= link_to tag.name, tag_url(tag) %>

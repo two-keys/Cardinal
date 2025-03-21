@@ -2,13 +2,15 @@
 
 <%= render @filter %>
 
-<div class="card">
-  <% if can? :update, @filter %>
-    <%= link_to "Edit this filter", edit_filter_path(@filter), class: "button" %> |
-  <% end %>
-  <%= link_to "Back to filters", filters_path, class: "button" %>
+<div class="card primary">
+  <div class="input-group">
+    <% if can? :update, @filter %>
+      <%= link_to "Edit", edit_filter_path(@filter), class: "button" %>
+    <% end %>
+    <%= link_to "Back", filters_path, class: "button" %>
 
-  <% if can? :destroy, @filter %>
-    <%= button_to "Destroy this filter", @filter, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
-  <% end %>
+    <% if can? :destroy, @filter %>
+      <%= button_to "Destroy", @filter, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <% end %>
+  </div>
 </div>
