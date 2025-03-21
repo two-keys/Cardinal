@@ -10,7 +10,7 @@ class CreateUserThemes < ActiveRecord::Migration[7.2]
     add_index :user_themes, :enabled
 
     User.all.each do |user|
-      user.user_themes << user.theme if user.theme
+      user.applied_themes << user.theme if user.theme
     end
     
     add_column :users, :themes_enabled, :boolean, null: false, default: false
