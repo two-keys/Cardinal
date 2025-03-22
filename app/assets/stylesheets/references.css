@@ -3151,7 +3151,11 @@
     }
     
     .notif-value {
-        @apply px-1;
+        @apply px-1 h-full w-full;
+    }
+
+    .notif-value-inner {
+        @apply w-full h-full;
     }
     
     .notif-value.alone {

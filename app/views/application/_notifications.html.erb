@@ -8,7 +8,7 @@
                     <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
                     <span class="notif-unread notif-value <%= unread_class %>">
                         <span class="notif-unread-pulser"></span>
-                        <span class="notif-unread-inner"><%= notifications[:unread] %></span>
+                        <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] %></span>
                     </span>
                 <% end %>
                 <% if notifications[:unanswered] > 0 %>
@@ -39,7 +39,7 @@
                             <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
                             <span class="notif-unread notif-value <%= unread_class %>">
                                 <span class="notif-unread-pulser"></span>
-                                <span class="notif-unread-inner"><%= notifications[:unread] %></span>
+                                <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] %></span>
                             </span>
                         <% end %>
                         <% if notifications[:unanswered] > 0 %>
