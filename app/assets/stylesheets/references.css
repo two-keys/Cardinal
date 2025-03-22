@@ -3150,32 +3150,36 @@
         @apply rounded-4xl block overflow-visible bg-primary text-primary-content;
     }
     
-    .notif-value {
-        @apply px-1 h-full w-full;
+    .notif-value-outer {
+        @apply w-6 h-6 inline-block text-center -mx-1;
     }
 
     .notif-value-inner {
-        @apply w-full h-full;
+        @apply w-full h-full text-center;
     }
-    
-    .notif-value.alone {
+
+    .notif-value-outer.alone {
         @apply rounded-4xl;
     }
     
-    .notif-value.rightmost {
+    .notif-value-outer.rightmost {
         @apply rounded-r-4xl;
     }
     
-    .notif-value.leftmost {
+    .notif-value-outer.leftmost {
         @apply rounded-l-4xl;
     }
     
     .notif-unread { 
         @apply bg-unread relative inline-flex overflow-visible;
     }
+
+    .notif-pulser {
+        @apply w-full h-full rounded-full opacity-75 inline-flex absolute z-40 left-0 right-0 pointer-events-none;
+    }
     
     .notif-unread-pulser {
-        @apply bg-unread left-0 right-0 w-full h-full rounded-full opacity-75 inline-flex animate-ping absolute z-40 pointer-events-none;
+        @apply bg-unread animate-ping;
     }
     
     .notif-unanswered {
