@@ -141,6 +141,7 @@ class Ability
     can :apply, Theme, user: user
     can :apply, Theme, public: true
     can :apply, Theme, system: true
+    can :unapply, Theme
 
     unless user.active_for_authentication?
       # Things which banned users cannot do
