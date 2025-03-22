@@ -6,6 +6,7 @@ class Theme < ApplicationRecord
 
   belongs_to :user
   has_many :users, dependent: :nullify
+  has_many :user_themes, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 64 }
 
