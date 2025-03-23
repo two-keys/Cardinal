@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Message < ApplicationRecord
   include PgSearch::Model
   include Markdownable
   include Reportable
   include Alertable
   include Auditable
   MAX_CONTENT_LENGTH = 65_536
-
-  attr_accessor :transfer
 
   belongs_to :chat
   belongs_to :user, optional: true
@@ -18,8 +16,6 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :authorization, on: :create
   validate :authorization, on: :update
-
-  after_initialize :set_attr
   before_validation :set_icon, on: :create
 
   scope :display, -> { order('created_at DESC') }
@@ -30,20 +26,10 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   after_update_commit :broadcast_update
   after_save_commit :search_reindex
 
-  after_save :unset_attr
-
   multisearchable(
     against: [:content],
     additional_attributes: ->(message) { { chat_id: message.chat_id, user_id: message.user_id } }
   )
-
-  def set_attr
-    self.transfer = false unless transfer
-  end
-
-  def unset_attr
-    self.transfer = nil
-  end
 
   def alertable_fields
     %i[content]
@@ -59,11 +45,11 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def update_chat
-    chat.message_sent unless transfer
+    chat.message_sent unless Current.transfer
   end
 
   def broadcast_create
-    return if transfer
+    return if Current.transfer
 
     chat.active_chat_users.each do |active_user|
       if chat.messages.count > 20
@@ -76,7 +62,7 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def broadcast_update
-    return if transfer
+    return if Current.transfer
 
     chat.active_chat_users.each do |active_user|
       broadcast_replace_later_to("user_#{active_user.id}_chat_#{chat.id}",
