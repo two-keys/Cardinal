@@ -20,7 +20,9 @@ class ConnectCodeController < ApplicationController
                        "Connect code is: #{@connect_code.code}. It has #{@connect_code.remaining_uses} uses left."
     @chat.messages << Message.new(content: creation_message)
     @connect_code.use(current_user)
-    current_user.chat_users.find_by(chat: @chat).ongoing!
+    chat_user = current_user.chat_users.find_by(chat: @chat)
+    chat_user.ongoing!
+    chat_user.role = ChatUser.roles[:chat_admin]
     respond_to do |format|
       format.html { redirect_to chat_path(@chat.uuid) }
       format.json { render :show, status: :created, location: @chat.uuid }

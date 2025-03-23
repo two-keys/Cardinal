@@ -6,7 +6,6 @@ class Announcement < ApplicationRecord
 
   after_create_commit :push_to_users
 
-  validates :title, presence: true
   validates :content, presence: true
 
   default_scope { order('created_at DESC') }

@@ -23,7 +23,7 @@
   <%= yield "card_content_#{model.id}" %>
  
   <% if defined? model.description %>
-    <div class="description">
+    <div style="<%= "color: #{model.color};" if (defined? model.color && model.color != '#000000' ) %>" class="description">
       <%= model.mark_description %>
     </div>
   <% end %>

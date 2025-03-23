@@ -50,7 +50,8 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
     chat_user = @chat.chat_users.where(user: @user).first
     patch chat_path(@chat.uuid),
-          params: { chat: { title: 'test', description: 'test', pseudonym_id: nil, icon: chat_user.icon } }
+          params: { chat: { title: 'test', description: 'test', pseudonym_id: nil, icon: chat_user.icon,
+                            color: '#000000' } }
     assert_redirected_to chat_path(@chat.uuid)
   end
 
@@ -59,7 +60,8 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     chat_user = @chat.chat_users.where(user: @user).first
     assert_changes('@chat_user.reload.pseudonym.name') do
       patch chat_path(@chat.uuid), params: {
-        chat: { title: 'test', description: 'test', pseudonym_id: @user_pseud2.id, icon: chat_user.icon }
+        chat: { title: 'test', description: 'test', pseudonym_id: @user_pseud2.id, icon: chat_user.icon,
+                color: '#000000' }
       }
     end
   end

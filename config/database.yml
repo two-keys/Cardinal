@@ -22,6 +22,12 @@ default: &default
   url: <%= ENV.fetch("DATABASE_URL") { "postgres://localhost:5432" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+legacy:
+  adapter: postgresql
+  encoding: UTF8
+  url: <%= ENV.fetch("LEGACY_DATABASE_URL") { "postgres://localhost:5432/legacy" } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
 development:
   <<: *default
   database: Cardinal_development

@@ -10,12 +10,13 @@ class User < ApplicationRecord
          :confirmable, :trackable
 
   validates :username, presence: true, uniqueness: true
+  validates :email, uniqueness: { allow_blank: true }
 
-  has_many :pseudonyms, dependent: :delete_all
-  has_many :chat_users, dependent: :delete_all
+  has_many :pseudonyms, dependent: :destroy
+  has_many :chat_users, dependent: :destroy
   has_many :chats, through: :chat_users
-  has_many :prompts, dependent: :delete_all
-  has_many :characters, dependent: :delete_all
+  has_many :prompts, dependent: :destroy
+  has_many :characters, dependent: :destroy
   has_many :messages, dependent: :delete_all
   has_many :connect_codes, dependent: :destroy
   has_many :tickets, dependent: :delete_all
@@ -90,6 +91,10 @@ class User < ApplicationRecord
 
   def active_for_authentication?
     super && !delete_at && unbannable?
+  end
+
+  def email_required?
+    true unless legacy? && email.blank?
   end
 
   def unbannable?

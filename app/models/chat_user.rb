@@ -26,6 +26,7 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   validates :user_id, uniqueness: { scope: :chat_id }
   validates :icon, uniqueness: { scope: :chat_id }, length: { maximum: 4000 }, presence: true
+  validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :check_icon, on: :update
   validate :authorization, on: %i[create update]
 
