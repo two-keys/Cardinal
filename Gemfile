@@ -136,7 +136,7 @@ gem 'recaptcha'
 gem 'next_rails'
 
 gem 'net-imap', '>= 0.5.6'
-gem 'nokogiri', '>= 1.18.3'
+gem 'nokogiri', '>= 1.18.4'
 gem 'rack', '~> 2.2.13'
 
 gem 'rack-cors', '~> 2.0'
