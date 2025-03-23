@@ -10,6 +10,7 @@ end
 
 desc 'Migrates data from the Cherp database to Cardinal format'
 task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
+  Current.transfer = true
   @progressbar = ProgressBar.create
 
   existing_users = User.all.map(&:id)
@@ -125,7 +126,6 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     @processed_characters += 1
     # @progressbar.log "Migrating Character #{@processed_characters} / #{@migration_characters_count} ( #{@processed_characters.percent_of(@migration_characters_count)}% ) - #{legacy_character.id}." # rubocop:disable Layout/LineLength
     new_character = Character.new
-    new_character.transfer = true
     new_character.id = legacy_character.id
     new_character.created_at = legacy_character.posted
     new_character.updated_at = legacy_character.edited || legacy_character.posted
@@ -142,7 +142,6 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     @processed_prompts += 1
     # @progressbar.log "Migrating Prompt #{@processed_prompts} / #{@migration_prompts_count} ( #{@processed_prompts.percent_of(@migration_prompts_count)}% ) - #{legacy_prompt.id}." # rubocop:disable Layout/LineLength
     new_prompt = Prompt.new
-    new_prompt.transfer = true
     new_prompt.id = legacy_prompt.id
     new_prompt.created_at = legacy_prompt.posted
     new_prompt.updated_at = legacy_prompt.edited || legacy_prompt.posted
@@ -203,10 +202,9 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       @processed_messages += 1
       # @progressbar.log "Migrating Message #{@processed_messages} / #{@migration_messages_count} ( #{@processed_messages.percent_of(@migration_messages_count)}% ) - #{legacy_message.id}." # rubocop:disable Layout/LineLength
       new_message = Message.new
-      new_message.transfer = true
       new_message.id = legacy_message.id
       new_message.chat_id = legacy_message.chat_id
-      new_message.user_id = legacy_message.message_sender
+      new_message.user_id = legacy_message.message_sender.zero? ? nil : legacy_message.message_sender
       new_message.content = legacy_message.message_content
       new_message.color = legacy_message.colour
       new_message.created_at = legacy_message.timestamp

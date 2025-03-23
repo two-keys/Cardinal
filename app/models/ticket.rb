@@ -18,7 +18,7 @@ class Ticket < ApplicationRecord
   end
 
   def self.spend(spend_item)
-    return true if spend_item.transfer
+    return true if Current.transfer
 
     ahoy = Ahoy.instance
     ticket = Ticket.create!(user: spend_item.user, item: spend_item)

@@ -7,4 +7,5 @@ class Current < ActiveSupport::CurrentAttributes
   attribute :user_agent
   attribute :controller_name
   attribute :action_name
+  attribute :transfer
 end
