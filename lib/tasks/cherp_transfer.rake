@@ -11,7 +11,10 @@ end
 desc 'Migrates data from the Cherp database to Cardinal format'
 task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   Current.transfer = true
+  Devise::Mailer.perform_deliveries = false
+
   @progressbar = ProgressBar.create
+  @progressbar_format = '%a %e |%b>>%i| %P%% %t'
 
   existing_users = User.all.map(&:id)
   @progressbar.log "Existing Users: #{existing_users.count}"
@@ -60,12 +63,10 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   @migration_alerts_count = @migration_alerts.count
   @progressbar.log "Alerts left to Migrate: #{@migration_alerts_count}"
 
-  @progressbar_format = '%a %e |%b>>%i| %P%% %t'
-
   @processed_alerts = 0
   def migrate_alert(legacy_alert)
     @processed_alerts += 1
-    @progressbar.log "Migrating Alert #{@processed_alerts} / #{@migration_alerts_count} ( #{@processed_alerts.percent_of(@migration_alerts_count)}% ) - #{legacy_alert.id}" # rubocop:disable Layout/LineLength
+    # @progressbar.log "Migrating Alert #{@processed_alerts} / #{@migration_alerts_count} ( #{@processed_alerts.percent_of(@migration_alerts_count)}% ) - #{legacy_alert.id}" # rubocop:disable Layout/LineLength
     new_alert = Alert.new
     now = Time.zone.now
     new_alert.id = legacy_alert.id
@@ -212,11 +213,14 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       new_message.created_at = legacy_message.timestamp
       new_message.updated_at = legacy_message.edited_on
       new_message.ooc = legacy_message.message_type == 'ooc'
-      new_message.save
+
+      begin
+        new_message.save
+      rescue ActiveRecord::RecordNotUnique
+        @progressbar.log "WARN: Message #{new_message.id} already exists. Skipping."
+      end
     end
   end
-
-  Devise::Mailer.perform_deliveries = false
 
   if @migration_users_count.positive?
     @progressbar.log 'Begin migrating users.'
@@ -267,7 +271,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       migrate_chat(legacy_chat)
       @progressbar.increment
     end
-    @progressbar.log 'End migrating  chats.'
+    @progressbar.log 'End migrating chats.'
 
     @progressbar.log 'Begin migrating chat_users.'
     @progressbar = ProgressBar.create(title: 'Chats (ChatUsers)', format: @progressbar_format,
