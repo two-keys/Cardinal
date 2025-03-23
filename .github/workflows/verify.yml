@@ -93,6 +93,7 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
+          LEGACY_DATABASE_URL: postgresql://Cardinal:cardinal@localhost/Cardinal_test
         run: |
           bin/rails test -v
 
