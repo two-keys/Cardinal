@@ -172,6 +172,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   @processed_chat_users_chats = 0
   def migrate_chat_users(legacy_chat)
     @processed_chat_users_chats += 1
+    new_chat_user = nil
     ActiveRecord::Base.transaction do
       legacy_chat.participants.each do |participant_id|
         @processed_chat_users += 1
@@ -193,6 +194,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       end
     end
     migrate_messages(legacy_chat.messages)
+    new_chat_user.chat.update(updated_at: new_chat_user.chat.messages.last.created_at)
   end
 
   @processed_messages = 0
