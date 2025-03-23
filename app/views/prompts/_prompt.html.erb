@@ -28,7 +28,7 @@
   <% end %>
 
   <% if prompt.starter.present? %>
-    <div id="<%= dom_id prompt %>_starter" class="show-more prompt-content" data-controller="show-more" data-read-smore-words="70">
+    <div style="<%= "color: #{prompt.color};" if prompt.color != '#000000' %>" id="<%= dom_id prompt %>_starter" class="show-more prompt-content" data-controller="show-more" data-read-smore-words="70">
       <%= prompt.mark_starter %>
     </div>
   <% end %>

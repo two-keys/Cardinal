@@ -16,7 +16,10 @@
 </div>
 
 <div class="card secondary">
-  <%= form.label :starter, style: "display: block" %>
+  <div class="input-group">
+    <%= form.label :starter, style: "display: block" %>
+    <%= form.color_field :color %>
+  </div>
   <%= form.text_area :starter, id: "prompt_#{prompt.id ? prompt.id : "new"}_starter" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
 </div>
 

@@ -427,6 +427,7 @@ DEPENDENCIES
   rollups
   rubocop
   rubocop-rails
+  ruby-progressbar (~> 1.13)
   sanitize
   selenium-webdriver
   sentry-rails

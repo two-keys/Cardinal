@@ -61,7 +61,8 @@ class ChatsController < ApplicationController
                              title: params[:chat][:title],
                              description: params[:chat][:description],
                              pseudonym_id: params[:chat][:pseudonym_id],
-                             icon: params[:chat][:icon]
+                             icon: params[:chat][:icon],
+                             color: params[:chat][:color]
                            })
         message_content = "#{icon_for prev_icon} is now #{icon_for params[:chat][:icon]}."
         @chat.messages << Message.new(content: message_content) if prev_icon != params[:chat][:icon]
@@ -160,7 +161,7 @@ class ChatsController < ApplicationController
   end
 
   def edit_chat_params
-    params.require(:chat).permit(:title, :description, :pseudonym_id, :icon)
+    params.require(:chat).permit(:title, :description, :pseudonym_id, :icon, :color)
   end
 
   def auth_redirect

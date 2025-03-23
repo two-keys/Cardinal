@@ -16,9 +16,16 @@
       <h3 class="alert" data-chat-input-target="alert"></h3>
     </div>
 
-    <div class="ooc-input" id="form_message_ooc">
-      <%= form.label :ooc, 'OOC' %>
-      <%= form.check_box :ooc, data: {'chat-input-target': 'ooc'} %>
+
+    <div class="input-group">
+      <div class="ooc-input" id="form_message_ooc">
+        <%= form.label :ooc, 'OOC' %>
+        <%= form.check_box :ooc, data: {'chat-input-target': 'ooc'} %>
+      </div>
+
+      <div>
+        <%= form.color_field :color %>
+      </div>
     </div>
 
     <div id="form_message_content" data-controller="toasty-editor" class="message-input">

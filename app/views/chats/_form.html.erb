@@ -24,6 +24,11 @@
     <%= form.label :description %>
     <%= form.text_area :description, value: chat_info.description %>
   </div>
+
+  <div class="input-group">
+    <%= form.label :color, style: "display: block" %>
+    <%= form.color_field :color %>
+  </div>
   
   <div>
     <%= form.label :new_icon %>

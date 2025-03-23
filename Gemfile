@@ -141,6 +141,9 @@ gem 'rack', '~> 2.2.13'
 
 gem 'rack-cors', '~> 2.0'
 
+# For Data transfer time estimate
+gem 'ruby-progressbar', '~> 1.13'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
 

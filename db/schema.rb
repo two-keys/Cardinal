@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_22_100914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -112,6 +112,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "pseudonym_id"
+    t.text "color", default: "#000000", null: false
     t.index ["pseudonym_id"], name: "index_characters_on_pseudonym_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
@@ -125,6 +126,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
     t.string "icon"
     t.integer "role", default: 0
     t.bigint "pseudonym_id"
+    t.text "color", default: "#000000", null: false
     t.index ["chat_id"], name: "index_chat_users_on_chat_id"
     t.index ["pseudonym_id"], name: "index_chat_users_on_pseudonym_id"
     t.index ["role"], name: "index_chat_users_on_role"
@@ -194,6 +196,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "icon"
+    t.text "color", default: "#000000", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
@@ -239,6 +242,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
     t.integer "default_slots", default: 2, null: false
     t.boolean "managed", default: false, null: false
     t.bigint "pseudonym_id"
+    t.text "color", default: "#000000", null: false
     t.index ["default_slots"], name: "index_prompts_on_default_slots"
     t.index ["managed"], name: "index_prompts_on_managed"
     t.index ["pseudonym_id"], name: "index_prompts_on_pseudonym_id"
@@ -376,7 +380,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
+    t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -401,8 +405,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_21_041635) do
     t.bigint "theme_id"
     t.boolean "push_announcements", default: true, null: false
     t.boolean "themes_enabled", default: false, null: false
+    t.boolean "legacy", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["theme_id"], name: "index_users_on_theme_id"
   end
