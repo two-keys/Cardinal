@@ -13,6 +13,9 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   Current.transfer = true
   Devise::Mailer.perform_deliveries = false
 
+  # used to avoid instantiating every legacy record
+  batch_size = 1000
+
   @progressbar = ProgressBar.create
   @progressbar_format = '%a %e |%b>>%i| %P%% %t'
 
@@ -225,7 +228,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   if @migration_users_count.positive?
     @progressbar.log 'Begin migrating users.'
     @progressbar = ProgressBar.create(title: 'Users', format: @progressbar_format, total: @migration_users_count)
-    @migration_users.each do |legacy_user|
+    @migration_users.find_each(batch_size:) do |legacy_user|
       migrate_user(legacy_user)
       @progressbar.increment
     end
@@ -247,7 +250,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     @progressbar.log 'Begin migrating characters.'
     @progressbar = ProgressBar.create(title: 'Characters', format: @progressbar_format,
                                       total: @migration_characters_count)
-    @migration_characters.each do |legacy_character|
+    @migration_characters.find_each(batch_size:) do |legacy_character|
       migrate_character(legacy_character)
       @progressbar.increment
     end
@@ -257,7 +260,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   if @migration_prompts_count.positive?
     @progressbar.log 'Begin migrating prompts.'
     @progressbar = ProgressBar.create(title: 'Prompts', format: @progressbar_format, total: @migration_prompts_count)
-    @migration_prompts.each do |legacy_prompt|
+    @migration_prompts.find_each(batch_size:) do |legacy_prompt|
       migrate_prompt(legacy_prompt)
       @progressbar.increment
     end
@@ -267,7 +270,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   if @migration_chats_count.positive?
     @progressbar.log 'Begin migrating chats.'
     @progressbar = ProgressBar.create(title: 'Chats', format: @progressbar_format, total: @migration_chats_count)
-    @migration_chats.each do |legacy_chat|
+    @migration_chats.find_each(batch_size:) do |legacy_chat|
       migrate_chat(legacy_chat)
       @progressbar.increment
     end
@@ -276,7 +279,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     @progressbar.log 'Begin migrating chat_users.'
     @progressbar = ProgressBar.create(title: 'Chats (ChatUsers)', format: @progressbar_format,
                                       total: @migration_chats_count)
-    @migration_chats.each do |legacy_chat|
+    @migration_chats.find_each(batch_size:) do |legacy_chat|
       migrate_chat_users(legacy_chat)
       @progressbar.increment
     end
@@ -286,7 +289,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   if @empty_chats_count.positive?
     @progressbar.log 'Begin migrating chat_users for empty existing.'
     @progressbar = ProgressBar.create(title: 'Chats (Empty)', format: @progressbar_format, total: @empty_chats_count)
-    @empty_chats_legacy.each do |legacy_chat|
+    @empty_chats_legacy.find_each(batch_size:) do |legacy_chat|
       migrate_chat_users(legacy_chat)
       @progressbar.increment
     end
