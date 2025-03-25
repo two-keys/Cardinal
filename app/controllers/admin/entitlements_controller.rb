@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class EntitlementsController < ApplicationController
+  class EntitlementsController < ApplicationController # rubocop:disable Metrics/ClassLength
     include Pagy::Backend
     include ApplicationHelper
 
@@ -51,7 +51,7 @@ module Admin
     end
 
     # PATCH/PUT /admin/entitlements/1 or /admin/entitlements/1.json
-    def update
+    def update # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       case params[:commit]
       when 'Update Entitlement'
         respond_to do |format|
@@ -72,7 +72,13 @@ module Admin
             end
           end
         else
-          @entitlement.users << user
+          user_entitlement = user.user_entitlements.find_by(entitlement: @entitlement) || UserEntitlement.new
+          user_entitlement.entitlement = @entitlement
+          user_entitlement.user = user
+          if entitlement_params[:expires_on].present?
+            user_entitlement.expires_on = helpers.system_time_from_form(entitlement_params[:expires_on])
+          end
+          user_entitlement.save!
           respond_to do |format|
             format.html do
               redirect_to edit_admin_entitlement_path(@entitlement), notice: 'Entitlement given to user.'
@@ -122,7 +128,8 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def entitlement_params
-      params.require(:entitlement).permit(:object_type, :object_id, :flag, :data, :title, :username).compact_blank!
+      params.require(:entitlement).permit(:object_type, :object_id, :flag, :data, :title, :username,
+                                          :expires_on).compact_blank!
     end
   end
 end

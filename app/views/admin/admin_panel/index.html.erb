@@ -6,6 +6,9 @@
         <strong><%= link_to "Users", admin_users_path %></strong>
       </li>
       <li>
+        <strong><%= link_to "Ads", admin_ads_path(pending: true) %></strong>
+      </li>
+      <li>
         <strong><%= link_to "Message Search", admin_messages_search_path %></strong>
       </li>
       <li>
@@ -38,7 +41,6 @@
         </div>
       </div>
       <%= f.submit 'Filter', class: "input-main" %>
-
     <% end %>
     <div class="card secondary">
       <h2>Reports</h2>
@@ -67,6 +69,10 @@
     <div class="card secondary">
       <h2>Connect Codes</h2>
       <%= line_chart @connect_code_analytics %>
+    </div>
+    <div class="card secondary">
+      <h2>Ads</h2>
+      <%= line_chart @ad_analytics %>
     </div>
     <div class="card secondary">
       <h2>Tag Popularity</h2>

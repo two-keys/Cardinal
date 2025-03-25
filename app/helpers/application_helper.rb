@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+class Integer
+  def to_filesize
+    {
+      'B' => 1024,
+      'KB' => 1024 * 1024,
+      'MB' => 1024 * 1024 * 1024,
+      'GB' => 1024 * 1024 * 1024 * 1024,
+      'TB' => 1024 * 1024 * 1024 * 1024 * 1024
+    }.each_pair { |e, s| return "#{(to_f / (s / 1024)).round(2)}#{e}" if self < s }
+  end
+end
+
 module ApplicationHelper
   include Pagy::Frontend
   require 'digest'
@@ -29,6 +41,19 @@ module ApplicationHelper
     return text.split('|').first.sub('?', '').capitalize if text.start_with? '?'
 
     Emoji.find_by_unicode(text).name.capitalize.gsub('_', ' ') # rubocop:disable Rails/DynamicFindBy
+  end
+
+  def user_time(time)
+    time.in_time_zone(current_user.time_zone)
+  end
+
+  def system_time(time)
+    time.in_time_zone(Time.zone)
+  end
+
+  def system_time_from_form(dt_param)
+    dt = DateTime.iso8601(dt_param).strftime('%F %T')
+    ActiveSupport::TimeZone[current_user.time_zone].parse(dt)
   end
 
   def pluralize_without_count(count, noun, text = nil)

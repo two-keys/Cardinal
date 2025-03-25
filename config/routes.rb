@@ -89,6 +89,9 @@ Rails.application.routes.draw do
     get 'messages/search' => 'messages#search', as: 'messages_search'
     resources :alerts
     resources :audit_logs, only: %i[index]
+    resources :ads, only: %i[index]
+    post 'ads/:id/approve' => 'ads#approve', as: 'approve_ad'
+    delete 'ads/:id' => 'ads#destroy', as: 'ad'
     root 'admin_panel#index'
   end
 
@@ -103,6 +106,9 @@ Rails.application.routes.draw do
   resources :themes
   post 'themess/:id/apply', to: 'themes#apply', as: 'apply_theme'
   post 'themess/:id/unapply', to: 'themes#unapply', as: 'unapply_theme'
+
+  resources :ads
+  get 'ads/:id/click', to: 'ads#click', ad: 'click_ad'
 
   get 'serviceworker' => 'pwa#service_worker', :as => :pwa_serviceworker, :constraints => { format: 'js' }
   get 'manifest' => 'pwa#manifest', as: :pwa_manifest, :constraints => { format: 'json' }

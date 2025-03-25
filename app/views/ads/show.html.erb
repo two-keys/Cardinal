@@ -1,0 +1,29 @@
+<div class="card secondary">
+  <div class="card secondary">
+    <%= form_with url: ad_path(@ad), method: :get, class: 'analytics-form' do |f| %>
+      <div class="filters input-group">
+        <%= f.select :interval, @intervals, 
+                    { selected: params[:interval] ? params[:interval] : '5m'} %>
+        
+        <div class="input-group input-main">
+          <%= f.datetime_field :date_from, value: @begin_date, class: "input-main" %>
+          <span>-></span>
+          <%= f.datetime_field :date_to, value: @end_date, class: "input-main" %>
+        </div>
+      </div>
+      <%= f.submit 'Filter', class: "input-main" %>
+    <% end %>
+    <%= line_chart @ad_analytics %>
+  </div>
+  <%= render @ad %>
+</div>
+
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Edit", edit_ad_path(@ad), class: "button" %>
+    <%= link_to "Back", ads_path, class: "button" %>
+    <%= button_to "Destroy", @ad, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+  </div>
+</div>
+
+<%= render partial: 'ad_render', locals: {ad: @ad} %>

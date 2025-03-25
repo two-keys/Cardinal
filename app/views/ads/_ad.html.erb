@@ -1,0 +1,92 @@
+<div id="<%= dom_id ad %>">
+  <div>
+    <% if ad.image.representable? && ad.pending_approval %>
+      <div class="card secondary">
+        <h3><strong>Pending Approval</strong></h3>
+        <div class="flex place-content-center">
+          <%= image_tag ad.image.variant(:show) %>
+        </div>
+        <div>
+          <% width = ad.image.metadata[:width] %>
+          <% height = ad.image.metadata[:height] %>
+          <% if width && height %>
+            <% expected_width = Ad::VARIANT_SIZES[ad.variant.to_sym][:w].to_f %>
+            <% expected_height = Ad::VARIANT_SIZES[ad.variant.to_sym][:h].to_f %>
+            <% expected_ratio = expected_width / expected_height %>
+            <% current_ratio = width / height %>
+            <% if current_ratio != expected_ratio %>
+              <div>
+                <p>Warning: Your image was not in the correct radio, and has been resized.</p>
+                <p>Make sure your image is a multiple of <%= Ad::VARIANT_SIZES[ad.variant.to_sym][:w] %>x<%= Ad::VARIANT_SIZES[ad.variant.to_sym][:h] %></p>
+              </div>
+            <% end %>
+          <% else %>
+            <div>
+              <p>Your image hasn't been processed yet. Reload for more information.</p>
+            </div>
+          <% end %>
+        </div>
+        <div class="input-group">
+          <div>
+            <strong>Variant:</strong>
+            <%= ad.variant %>
+          </div>
+          
+          <div>
+            <strong>Url:</strong>
+            <%= link_to ad.url.blank? ? "Not Defined" : ad.url, ad.url.blank? ? "#" : ad.url %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if ad.approved_image.representable? %>
+      <div class="card secondary">
+        <h3><strong>Approved</strong></h3>
+        <div class="flex place-content-center">
+          <%= image_tag ad.approved_image.variant(:show) %>
+        </div>
+        <div>
+          <% width = ad.approved_image.metadata[:width] %>
+          <% height = ad.approved_image.metadata[:height] %>
+          <% if width && height %>
+            <% expected_width = Ad::VARIANT_SIZES[ad.variant.to_sym][:w].to_f %>
+            <% expected_height = Ad::VARIANT_SIZES[ad.variant.to_sym][:h].to_f %>
+            <% expected_ratio = expected_width / expected_height %>
+            <% current_ratio = width / height %>
+            <% if current_ratio != expected_ratio %>
+              <div>
+                <p>Warning: Your image was not in the correct radio, and has been resized.</p>
+                <p>Make sure your image is a multiple of <%= Ad::VARIANT_SIZES[ad.variant.to_sym][:w] %>x<%= Ad::VARIANT_SIZES[ad.variant.to_sym][:h] %></p>
+              </div>
+            <% end %>
+          <% else %>
+            <div>
+              <p>Your image hasn't been processed yet. Reload for more information.</p>
+            </div>
+          <% end %>
+        </div>
+        <div class="input-group">
+          <div>
+            <strong>Variant:</strong>
+            <%= ad.variant %>
+          </div>
+          
+          <div>
+            <strong>Url:</strong>
+            <%= link_to ad.approved_url.blank? ? "Not Defined" : ad.approved_url, ad.approved_url.blank? ? "#" : ad.approved_url %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <strong>Impressions:</strong>
+    <%= ad.impressions %>
+  </div>
+  <div>
+    <strong>Clicks:</strong>
+    <%= ad.clicks %>
+  </div>
+</div>
+

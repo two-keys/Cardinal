@@ -13,8 +13,8 @@ module Admin
       @interval = params[:interval] || 'day'
       now = DateTime.now
 
-      @begin_date = params[:date_from].present? ? DateTime.iso8601(params[:date_from]) : (now - 1.week)
-      @end_date = params[:date_to].present? ? DateTime.iso8601(params[:date_to]) : now
+      @begin_date = params[:date_from].present? ? helpers.system_time_from_form(params[:date_from]) : (now - 1.week)
+      @end_date = params[:date_to].present? ? helpers.system_time_from_form(params[:date_to]) : now
 
       @range = @begin_date...@end_date
 
@@ -48,6 +48,10 @@ module Admin
       @connect_code_analytics = [
         { name: 'New', data: Rollup.where(time: @range).series('ConnectCode creates', interval: @interval) },
         { name: 'Used', data: Rollup.where(time: @range).series('ConnectCode consumes', interval: @interval) }
+      ]
+      @ad_analytics = [
+        { name: 'Views', data: Rollup.where(time: @range).series('Ad views', interval: @interval) },
+        { name: 'Clicks', data: Rollup.where(time: @range).series('Ad clicks', interval: @interval) }
       ]
 
       @tags = {}

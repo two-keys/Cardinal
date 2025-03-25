@@ -1,0 +1,47 @@
+<%= form_with(model: ad) do |form| %>
+  <% if ad.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ad.errors.count, "error") %> prohibited this ad from being saved:</h2>
+
+      <ul>
+        <% ad.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="input-group">
+    <div>Footer Ads: <%= "#{@ad_usage[:footer][:used]}/#{@ad_usage[:footer][:entitled]}" %></div>
+    <div>Sidebar Ads: <%= "#{@ad_usage[:sidebar][:used]}/#{@ad_usage[:sidebar][:entitled]}" %></div>
+    <div>Sticky Ads: <%= "#{@ad_usage[:sticky][:used]}/#{@ad_usage[:sticky][:entitled]}" %></div>
+  </div>
+
+  <div>
+    <%= form.label :image, style: "display: block" %>
+    <%= form.file_field :image %>
+  </div>
+
+
+  <div class="input-group">
+    <% if ad.id.nil? %>
+      <div>
+        <% disabled_fields = [] %>
+        <% disabled_fields << 'footer' if @ad_usage[:footer][:used] >= @ad_usage[:footer][:entitled] %>
+        <% disabled_fields << 'sidebar' if @ad_usage[:sidebar][:used] >= @ad_usage[:sidebar][:entitled] %>
+        <% disabled_fields << 'sticky' if @ad_usage[:sticky][:used] >= @ad_usage[:sticky][:entitled] %>
+        <%= form.label :variant, style: "display: block" %>
+        <%= form.select :variant, Ad.variants.map {|k, _v| [k.humanize.capitalize, k]}, disabled: disabled_fields %>
+      </div>
+    <% end %>
+
+    <div class="input-main flex flex-col">
+      <%= form.label :url, style: "display: block" %>
+      <%= form.text_field :url, class: "input-main" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

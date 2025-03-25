@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+def number_or_zero(string)
+  Integer(string || '')
+rescue ArgumentError
+  0
+end
+
 # rubocop:disable Metrics/ClassLength
 class Ability
   include CanCan::Ability
@@ -41,6 +47,11 @@ class Ability
       user_valid && reportee_valid
     end
     can :create, Theme
+    can :create, Ad do |_ad|
+      ad_usage = user.ad_usage
+
+      ad_usage[:entitled].positive? && (ad_usage[:entitled] > ad_usage[:used])
+    end
     can :create, PushSubscription
 
     ## Reading
@@ -66,6 +77,7 @@ class Ability
     can :read, Theme, user: user
     can :read, Theme, public: true
     can :read, Theme, system: true
+    can :read, Ad, user: user
 
     ## Updating
     can :update, Message do |message|
@@ -86,6 +98,7 @@ class Ability
     can :update, Character, user: user
     can :update, User, user: user
     can :update, Theme, user: user
+    can :update, Ad, user: user
 
     ## Destroying
     can :destroy, Chat do |chat|
@@ -106,6 +119,7 @@ class Ability
     end
     can :destroy, User, user: user
     can :destroy, Theme, user: user
+    can :destroy, Ad, user: user
     can :destroy, PushSubscription, user: user
 
     ## Non-CRUD Actions

@@ -4,7 +4,7 @@
   <% if admin? %>
     <%= link_to "Admin Edit", edit_admin_user_path(resource), class: "button" %>
   <% end %>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
     <h3>Profile</h3>
     <%= render "users/shared/error_messages", resource: resource %>
 
@@ -41,6 +41,11 @@
       </div>
 
       <div class="field">
+        <%= f.label :time_zone %><br />
+        <%= f.time_zone_select(:time_zone, ActiveSupport::TimeZone.all.sort, model: ActiveSupport::TimeZone) %>
+      </div>
+
+      <div class="field">
         <%= f.label "Announcements trigger Web Push?" %><br />
         <%= f.check_box :push_announcements %>
       </div>
@@ -49,12 +54,17 @@
           <%= f.submit "Update" %>
         </div>
       <% end %>
+    </div>
+  <% end %>
+  <h3>Danger Zone</h3>
+  <div class="card secondary">
+    <div class="input-group">
       <%= link_to "Log Out", destroy_user_session_path, class: "button", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure?' } %>
       <% if can? :destroy, resource %>
         <%= link_to "Delete Account", registration_path(resource_name), class: "button danger", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure you want to delete your account?' } %>
       <% end %>
     </div>
-  <% end %>
+  </div>
   <h3>Themes</h3>
   <div class="card secondary">
     <div class="input-group">
@@ -75,8 +85,8 @@
   <h3>Notifications</h3>
   <div class="card secondary">
     <div data-controller="web-push-subscription" class="web-push-subscription">
-      <button disabled data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
-      <button disabled data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
+      <button disabled class="button" data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
+      <button disabled class="button" data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
     </div>
     <div class="push_subscriptions">
       <% current_user.push_subscriptions.each do |subscription| %>
@@ -86,6 +96,10 @@
         </div>
       <% end %>
     </div>
+  </div>
+  <h3>Ads</h3>
+  <div class="card secondary">
+    <%= link_to "Your Ads", ads_path, class: "button" %>
   </div>
   <h3>My Reports</h3>
   <div class="card secondary">

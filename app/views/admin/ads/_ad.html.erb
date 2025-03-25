@@ -1,0 +1,11 @@
+<div class="card secondary">
+  <span><strong>User: </strong><%= link_to ad.user.username, edit_admin_user_path(ad.user) %></span>
+  <%= render partial: 'ads/ad', locals: {ad: ad} %>
+  <div class="input-group">
+      <%= link_to "Show", ad, class: "button" %>
+      <% if ad.pending_approval %>
+        <%= button_to "Approve", admin_approve_ad_path(ad), method: :post, class: "button" %>
+      <% end %>
+      <%= button_to "Destroy", [:admin, ad], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+  </div>
+</div>

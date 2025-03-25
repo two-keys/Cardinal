@@ -7,3 +7,19 @@ user_entitlement_one:
 user_entitlement_one:
   user: user_two
   entitlement: entitlement_two
+
+user_ads_entitlement:
+  user: user
+  entitlement: ad_tier_one
+
+user_two_ads_entitlement:
+  user: user_two
+  entitlement: ad_tier_two
+
+user_three_ads_entitlement:
+  user: user_three
+  entitlement: ad_tier_three
+
+user_john_ads_entitlement:
+  user: john
+  entitlement: ad_tier_unlimited

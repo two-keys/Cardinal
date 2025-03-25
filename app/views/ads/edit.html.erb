@@ -1,0 +1,15 @@
+<% content_for :title, "Editing ad" %>
+
+<h1>Editing ad</h1>
+
+
+<div class="card secondary">
+  <%= render "form", ad: @ad %>
+</div>
+
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Show", @ad, class: "button" %>
+    <%= link_to "Back", ads_path, class: "button" %>
+  </div>
+</div>

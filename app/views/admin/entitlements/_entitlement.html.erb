@@ -18,12 +18,25 @@
                 <span><%= icon_for entitlement.data %></span>
             </div>
         <% end %>
+        <% if entitlement.flag == "ad-tier"%>
+            <% if Ad::TIERS.include?(entitlement.data.to_sym)%>
+                <div class="input-group">
+                    <div>Footer Ads: <%= Ad::TIERS[entitlement.data.to_sym][:footer] %></div>
+                    <div>Sidebar Ads: <%= Ad::TIERS[entitlement.data.to_sym][:sidebar] %></div>
+                    <div>Sticky Ads: <%= Ad::TIERS[entitlement.data.to_sym][:sticky] %></div>
+                </div>
+            <% else %>
+                <div class="input-group">
+                    <div>Data invalid, must be one of: <%= Ad::TIERS.keys.map {|k| k.to_s } %></div>
+                </div>
+            <% end %>
+        <% end %>
         <p class="entitlement-data"><%= entitlement.data %></p>
     <% end %>
     <span>Users</span>
     <ul>
         <% entitlement.user_entitlements.each do |ue| %>
-            <li><%= link_to ue.user.username, edit_admin_user_path(ue.user) %></li>
+            <li><%= link_to ue.user.username, edit_admin_user_path(ue.user) %><%= " #{ue.expires_on >= Time.now ? 'Expires' : 'Expired'} #{distance_of_time_in_words(user_time(ue.expires_on), Time.now, include_seconds: true)} #{ue.expires_on >= Time.now ? 'from now' : 'ago'}" if ue.expires_on %></li>
         <% end %>
     </ul>
     <hr>

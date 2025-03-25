@@ -1,0 +1,42 @@
+<% content_for :title, "Ads" %>
+
+<h1>Ads</h1>
+
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Ads Guide", "/use/adguide", class: "button" %>
+    <% if can?(:create, Ad.new(user: current_user)) %>
+      <%= link_to "New", new_ad_path, class: "button" %>
+    <% end %>
+  </div>
+  <div class="input-group">
+    <div>Footer Ads: <%= "#{@ad_usage[:footer][:used]}/#{@ad_usage[:footer][:entitled]}" %></div>
+    <div>Sidebar Ads: <%= "#{@ad_usage[:sidebar][:used]}/#{@ad_usage[:sidebar][:entitled]}" %></div>
+    <div>Sticky Ads: <%= "#{@ad_usage[:sticky][:used]}/#{@ad_usage[:sticky][:entitled]}" %></div>
+  </div>
+</div>
+
+<div class="card primary">
+  <div class="pagination">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+  <div class="input-group">
+    <%= link_to "All", ads_path, class: "button" %>
+    <%= link_to "Pending", ads_path(pending: true), class: "button" %>
+    <%= link_to "Approved", ads_path(approved: true), class: "button" %>
+    <%= link_to "Unapproved", ads_path(unapproved: true), class: "button" %>
+  </div>
+</div>
+
+<div class="card secondary ads">
+  <% @ads.each do |ad| %>
+    <%= render ad %>
+    <%= link_to "Show", ad, class: "button" %>
+  <% end %>
+</div>
+
+<div class="card primary">
+  <div class="pagination">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+</div>

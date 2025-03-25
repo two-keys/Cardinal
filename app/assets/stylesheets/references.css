@@ -2976,6 +2976,16 @@
     button[type='submit']:hover .emoji {
         @apply hover:invert;
     }
+
+    button:disabled,
+    button[disabled] {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    .button:disabled,
+    .button[disabled] {
+        @apply cursor-not-allowed opacity-50;
+    }
     
     .button, select, input {
         @apply px-1 bg-input text-input-content rounded-primary border border-input-content;
@@ -3208,6 +3218,38 @@
     
     .card.secondary {
         @apply bg-tertiary text-tertiary-content border border-secondary;
+    }
+
+    .ad {
+        @apply text-center place-self-center w-full h-full max-h-[200px] max-w-[600px];
+    }
+
+    .ad.ad-footer {
+        @apply w-[600px] h-[100px];
+    }
+
+    .ad.ad-sidebar {
+        @apply w-[300px] h-[200px];
+    }
+
+    .ad.ad-sticky {
+        @apply w-[300px] h-[100px];
+    }
+
+    .ad img {
+        @apply w-full h-full;
+    }
+
+    .ad img.unfocused {
+        @apply grayscale brightness-50;
+    }
+
+    .ad .ad-text-container {
+        @apply flex flex-wrap items-center h-0 w-full left-0 right-0 bottom-1/2 top-1/2 relative overflow-visible;
+    }
+
+    .ad .ad-text {
+        @apply w-full text-white absolute z-20 grow;
     }
     
     .card.ongoing {

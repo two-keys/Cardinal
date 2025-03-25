@@ -42,3 +42,5 @@ dynamic_settings.yml
 !/app/assets/builds/.keep
 
 /node_modules
+
+/storage

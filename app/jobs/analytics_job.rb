@@ -45,6 +45,9 @@ class AnalyticsJob < ApplicationJob
       Ahoy::Event.where(name: 'Message Created').rollup('Message creates', column: :time, interval: interval)
       Ahoy::Event.where(name: 'Message Edits').rollup('Message edits', column: :time, interval: interval)
 
+      Ahoy::Event.where(name: 'Ad Viewed').rollup('Ad views', column: :time, interval: interval)
+      Ahoy::Event.where(name: 'Ad Clicked').rollup('Ad clicks', column: :time, interval: interval)
+
       Ahoy::Event.where(name: 'ConnectCode Created').rollup('ConnectCode creates', column: :time, interval: interval)
       Ahoy::Event.where(name: 'ConnectCode Consumed').rollup('ConnectCode consumes', column: :time, interval: interval)
     end

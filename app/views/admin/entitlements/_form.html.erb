@@ -40,8 +40,12 @@
         <div class="card primary">
             <%= form.label :username %>
             <%= form.text_field :username, placeholder: "optional" %>
-            <%= form.submit 'Add' %>
-            <%= form.submit 'Remove' %>
+            <%= form.label :expires_on %>
+            <%= form.datetime_field :expires_on %>
+            <div class="input-group">
+                <%= form.submit 'Add' %>
+                <%= form.submit 'Remove' %>
+            </div>
         </div>
     <% end %>
 <% end %>

@@ -11,32 +11,6 @@
       <% end %>
     </ul>
   <% end %>
-  <p>Entitlements:</p>
-  <%= form_with url: edit_admin_user_path(@user), method: :get, class: 'filter-form' do |f| %>
-    <%= f.select :object_type, 
-                    [['All Types', ''], 'Theme', 'ChatUser', 'Pseudonym', ['Global', 'None']], 
-                    { selected: params[:object_type] } %>
-                    
-    <%= f.select :flag, 
-                [['All Flags', ''], 'emoji', 'permission', 'pseudonym'], 
-                { selected: params[:flag] } %>
-    <%= f.text_field :username, value: params[:username], placeholder: 'Username' %>
-                          
-    <%= f.date_field :date_from, value: params[:date_from] %>
-    <%= f.date_field :date_to, value: params[:date_to] %>
-
-    <%= f.submit 'Filter' %>
-  <% end %>
-  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_entitlements}%>
-  <ul>
-    <% @entitlements.each do |entitlement| %>
-      <li>
-        <div class="card secondary">
-          <%= render entitlement %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
   <p>Content this user has Reported:</p>
   <%== render partial: 'pagy/nav', locals: {pagy: @pagy_sent_reports} %>
   <ul>
@@ -51,6 +25,42 @@
       <li><%= render report, variant: "mini" %></li>
     <% end %>
   </ul>
+  <p>Entitlements:</p>
+  
+  <%= form_with url: edit_admin_user_path(@user), method: :get, class: 'filter-form' do |f| %>
+    <div class="filters">
+      <div class="input-group">
+        <%= f.select :object_type, 
+                    [['All Types', ''], 'Theme', 'ChatUser', 'Pseudonym', ['Global', 'None']], 
+                    { selected: params[:object_type] } %>
+                    
+        <%= f.select :flag, 
+                    [['All Flags', ''], 'emoji', 'permission', 'pseudonym', 'ad-tier'], 
+                    { selected: params[:flag] } %>
+      </div>
+      <div class="input-group">                       
+        <%= f.date_field :date_from, value: params[:date_from] %>
+        <%= f.date_field :date_to, value: params[:date_to] %>
+      </div>
+      
+      <%= f.submit 'Filter' %>
+    </div>
+  <% end %>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_entitlements}%>
+  <ul>
+    <% @entitlements.each do |entitlement| %>
+      <li>
+        <div class="card secondary">
+          <%= render entitlement %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <p>Ads:</p>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy_ads} %>
+  <div>
+    <%= render @ads %>
+  </div>
   <p>Prompts:</p>
   <%== render partial: 'pagy/nav', locals: {pagy: @pagy_prompts} %>
   <div>

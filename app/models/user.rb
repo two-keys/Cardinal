@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :push_subscriptions, dependent: :delete_all
   has_many :user_entitlements, dependent: :delete_all
   has_many :entitlements, through: :user_entitlements
+  has_many :ads, dependent: :delete_all
 
   # TODO: Remove after migration
   belongs_to :theme, optional: true
@@ -46,6 +47,33 @@ class User < ApplicationRecord
       pseudonyms: instance.pseudonyms,
       characters: instance.characters
     }
+  end
+
+  def ad_usage
+    footer_ads = ads.where(variant: 'footer').count
+    sidebar_ads = ads.where(variant: 'sidebar').count
+    sticky_ads = ads.where(variant: 'sticky').count
+
+    ad_entitlements = entitlements.where(flag: 'ad-tier').where.not(data: nil)
+
+    usage = {
+      footer: { used: footer_ads, entitled: 0 },
+      sidebar: { used: sidebar_ads, entitled: 0 },
+      sticky: { used: sticky_ads, entitled: 0 },
+      used: footer_ads + sidebar_ads + sticky_ads,
+      entitled: 0
+    }
+
+    ad_entitlements.each do |entitlement|
+      usage[:footer][:entitled] += Ad::TIERS[entitlement.data.to_sym][:footer]
+      usage[:entitled] += usage[:footer][:entitled]
+      usage[:sidebar][:entitled] += Ad::TIERS[entitlement.data.to_sym][:sidebar]
+      usage[:entitled] += usage[:sidebar][:entitled]
+      usage[:sticky][:entitled] += Ad::TIERS[entitlement.data.to_sym][:sticky]
+      usage[:entitled] += usage[:sticky][:entitled]
+    end
+
+    usage
   end
 
   def generate_pseudonym_entitlement

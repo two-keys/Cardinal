@@ -1,0 +1,27 @@
+<% content_for :title, "Ads" %>
+
+<h1>Ads</h1>
+
+<div class="card primary">
+  <div class="pagination">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+  <div class="input-group">
+    <%= link_to "All", admin_ads_path, class: "button" %>
+    <%= link_to "Pending", admin_ads_path(pending: true), class: "button" %>
+    <%= link_to "Approved", admin_ads_path(approved: true), class: "button" %>
+    <%= link_to "Unapproved", admin_ads_path(unapproved: true), class: "button" %>
+  </div>
+</div>
+
+<div class="card secondary ads">
+  <% @ads.each do |ad| %>
+    <%= render ad %>
+  <% end %>
+</div>
+
+<div class="card primary">
+  <div class="pagination">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+</div>

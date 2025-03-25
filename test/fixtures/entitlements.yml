@@ -17,3 +17,19 @@ entitlement_two:
   object_type: Pseudonym
   flag: pseudonym
   data: user_two2
+
+ad_tier_one:
+  flag: ad-tier
+  data: one
+
+ad_tier_two:
+  flag: ad-tier
+  data: two
+
+ad_tier_three:
+  flag: ad-tier
+  data: three
+
+ad_tier_unlimited:
+  flag: ad-tier
+  data: unlimited

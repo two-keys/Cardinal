@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  around_action :set_time_zone, if: :current_user
   before_action :set_start_time
   before_action :set_sentry_context
   before_action :set_unleash_context
@@ -67,6 +68,12 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: [:push_announcements])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[push_announcements time_zone])
+  end
+
+  private
+
+  def set_time_zone(&)
+    Time.use_zone(current_user.time_zone, &)
   end
 end
