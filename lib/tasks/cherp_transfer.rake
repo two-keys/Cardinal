@@ -43,6 +43,21 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   @migration_prompts_count = @migration_prompts.count
   @progressbar.log "Prompts left to Migrate: #{@migration_prompts_count}"
 
+  acceptable_types = %w[fandom character gender characteristic]
+  existing_tags = Tag.where(tag_type: acceptable_types)
+                     .distinct
+                     .pluck(Arel.sql('
+                      (CASE polarity
+                        WHEN \'seeking\' THEN tag_type || \'_wanted\'
+                        ELSE tag_type
+                        END || \':\' || lower)
+                      '))
+  @progressbar.log "Existing Tags: #{existing_tags.count}"
+  @migration_tags = Legacy::Tag.where.not('(type || \':\'|| lowercased) IN (?)', existing_tags)
+                               .where(type: acceptable_types + acceptable_types.map { |tg| "#{tg}_wanted" })
+  @migration_tags_count = @migration_tags.count
+  @progressbar.log "Tags left to Migrate: #{@migration_tags_count}"
+
   existing_chats = Chat.all.map(&:id)
   @progressbar.log "Existing Chats: #{existing_chats.count}"
   @migration_chats = Legacy::Chat.where.not(id: existing_chats).order(id: :desc)
@@ -158,6 +173,70 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_prompt.save(validate: false)
   end
 
+  @processed_tags = 0
+  def migrate_tag(legacy_tag)
+    get_polarity = lambda do |tag_type|
+      has_wanted = tag_type.include?('wanted')
+
+      polarity = nil
+
+      if has_wanted
+        polarity = 'seeking'
+      else
+        polarity_key = {
+          fandom: 'playing',
+          character: 'playing',
+          gender: 'playing',
+          characteristic: 'playing'
+        }
+
+        polarity = polarity_key[tag_type.to_sym]
+      end
+
+      polarity
+    end
+
+    get_type = lambda do |tag_type|
+      new_type = tag_type
+
+      new_type.slice!('_wanted') if tag_type.include?('_wanted')
+
+      new_type
+    end
+
+    @processed_tags += 1
+    nt_polarity = get_polarity.call(legacy_tag.type)
+    if nt_polarity
+      new_tag = Tag.find_or_create_with_downcase(
+        polarity: nt_polarity,
+        tag_type: get_type.call(legacy_tag.type),
+        name: legacy_tag.name # lowercase is automatically handled
+      )
+
+      unless legacy_tag.synonym.nil? || (legacy_tag.id == legacy_tag.synonym.id)
+        legacy_synonym = legacy_tag.synonym
+
+        ns_polarity = get_polarity.call(legacy_synonym.type)
+        if ns_polarity
+          # synonym chains are automatically crunched
+          new_synonym = Tag.find_or_create_with_downcase(
+            polarity: ns_polarity,
+            tag_type: get_type.call(legacy_synonym.type),
+            name: legacy_synonym.name # lowercase is automatically handled
+          )
+
+          new_tag.synonym = new_synonym
+        else
+          @progressbar.log "WARN: Synonym type #{legacy_synonym.type} does not map to polarity, skipping"
+        end
+      end
+
+      new_tag.save
+    else
+      @progressbar.log "WARN: Tag type #{legacy_tag.type} does not map to polarity, skipping"
+    end
+  end
+
   @processed_chats = 0
   def migrate_chat(legacy_chat)
     @processed_chats += 1
@@ -265,6 +344,16 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       @progressbar.increment
     end
     @progressbar.log 'End migrating prompts.'
+  end
+
+  if @migration_tags_count.positive?
+    @progressbar.log 'Begin migrating tags.'
+    @progressbar = ProgressBar.create(title: 'Tags', format: @progressbar_format, total: @migration_tags_count)
+    @migration_tags.find_each(batch_size:) do |legacy_tag|
+      migrate_tag(legacy_tag)
+      @progressbar.increment
+    end
+    @progressbar.log 'End migrating tags.'
   end
 
   if @migration_chats_count.positive?
