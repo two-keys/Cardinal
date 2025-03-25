@@ -4,7 +4,7 @@
       <div class="card secondary">
         <h3><strong>Pending Approval</strong></h3>
         <div class="flex place-content-center">
-          <%= image_tag ad.image.variant(:show) %>
+          <%= image_tag polymorphic_url(ad.image.variant(:show)) %>
         </div>
         <div>
           <% width = ad.image.metadata[:width] %>
@@ -43,7 +43,7 @@
       <div class="card secondary">
         <h3><strong>Approved</strong></h3>
         <div class="flex place-content-center">
-          <%= image_tag ad.approved_image.variant(:show) %>
+          <%= image_tag polymorphic_url(ad.approved_image.variant(:show)) %>
         </div>
         <div>
           <% width = ad.approved_image.metadata[:width] %>

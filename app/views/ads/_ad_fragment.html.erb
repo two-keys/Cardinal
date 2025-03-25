@@ -9,6 +9,6 @@
             <span data-ad-target="yes">Yes</span> | <span data-ad-target="no">No<span>
         </div>
     </div>
-    <%= image_tag ad.approved_image.variant(ad.variant.to_sym), {'data-ad-target': "image"} %>
+    <%= image_tag polymorphic_url(ad.approved_image.variant(ad.variant.to_sym)), {'data-ad-target': "image"} %>
   </div>
 <% end %>
