@@ -93,13 +93,13 @@ class Ad < ApplicationRecord
 
   def create_click
     ahoy = Ahoy.instance
-    ahoy.track 'Ad Clicked', { user_id: Current.user.id, owner_id: user.id, ad_id: id }
+    ahoy.track 'Ad Clicked', { user_id: Current.user&.id, owner_id: user.id, ad_id: id }
     increment!(:clicks) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def create_impression
     ahoy = Ahoy.instance
-    ahoy.track 'Ad Viewed', { user_id: Current.user.id, owner_id: user.id, ad_id: id }
+    ahoy.track 'Ad Viewed', { user_id: Current.user&.id, owner_id: user.id, ad_id: id }
     increment!(:impressions) # rubocop:disable Rails/SkipsModelValidations
   end
 end
