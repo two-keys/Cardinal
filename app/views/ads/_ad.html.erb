@@ -16,7 +16,7 @@
             <% current_ratio = width / height %>
             <% if current_ratio != expected_ratio %>
               <div>
-                <p>Warning: Your image was not in the correct radio, and has been resized.</p>
+                <p>Warning: Your image was not in the correct ratio, and has been resized.</p>
                 <p>Make sure your image is a multiple of <%= Ad::VARIANT_SIZES[ad.variant.to_sym][:w] %>x<%= Ad::VARIANT_SIZES[ad.variant.to_sym][:h] %></p>
               </div>
             <% end %>
@@ -55,7 +55,7 @@
             <% current_ratio = width / height %>
             <% if current_ratio != expected_ratio %>
               <div>
-                <p>Warning: Your image was not in the correct radio, and has been resized.</p>
+                <p>Warning: Your image was not in the correct ratio, and has been resized.</p>
                 <p>Make sure your image is a multiple of <%= Ad::VARIANT_SIZES[ad.variant.to_sym][:w] %>x<%= Ad::VARIANT_SIZES[ad.variant.to_sym][:h] %></p>
               </div>
             <% end %>
