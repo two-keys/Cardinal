@@ -108,14 +108,14 @@
         <div class="top-right-filler"></div>
         <div class="right-sidebar">
           <%= yield :right_sidebar %>
-          <% ads_for(:sticky, 2).each do |ad| %>
+          <% ads_for(:sidebar, 2).each do |ad| %>
             <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
           <% end %>
         </div>
         <div class="top-left-filler"></div>
         <div class="left-sidebar">
           <%= yield :left_sidebar %>
-          <% ads_for(:sidebar, 2).each do |ad| %>
+          <% ads_for(:sticky, 2).each do |ad| %>
             <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
           <% end %>
         </div>
