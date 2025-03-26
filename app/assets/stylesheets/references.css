@@ -3024,7 +3024,7 @@
     }
 
     .footer {
-        @apply h-8 px-1 place-items-end my-1 absolute top-10 md:bottom-0 md:top-auto left-0 right-0 flex flex-row place-content-between z-50;
+        @apply h-8 px-1 place-items-end my-1 absolute lg:fixed top-10 lg:bottom-0 lg:top-auto left-0 right-0 flex flex-row place-content-between z-50;
     }
 
     .footer .theme-selector {
