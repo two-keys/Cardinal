@@ -3028,11 +3028,11 @@
     }
 
     .footer .theme-selector {
-        @apply h-8 w-8;
+        @apply h-8 w-8 select-none;
     }
 
     .footer .render-time {
-        @apply text-secondary;
+        @apply text-secondary pointer-events-none select-none;
     }
 
     .theme-button, .theme-button svg {
@@ -3052,7 +3052,7 @@
     }
     
     .nav {
-        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-hidden;
+        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex place-content-center justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-hidden;
     }
     
     .nav-desktop {
@@ -3060,8 +3060,9 @@
     }
     
     .nav-mobile {
-        @apply h-20 pt-4 grid grid-rows-1 grid-cols-7 place-items-center content-center md:hidden overflow-hidden bg-nav text-nav-content;
+        @apply h-20 pl-6 flex flex-row flex-wrap items-center justify-between justify-items-center place-content-around md:hidden overflow-hidden bg-nav text-nav-content;
     }
+
     
     .nav-item {
         @apply px-2 rounded-xl bg-primary text-primary-content hover:invert;
@@ -3081,7 +3082,7 @@
     }
     
     .nav-mobile > a {
-        @apply leading-[40px] p-0;
+        @apply p-0;
     }
     
     .nav-mobile > button, .nav-mobile > a, .nav-mobile > span {
