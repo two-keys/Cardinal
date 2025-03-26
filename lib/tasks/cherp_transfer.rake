@@ -217,12 +217,18 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         name: legacy_tag.name # lowercase is automatically handled
       )
 
+      skipped_synonym = false
       unless legacy_tag.synonym.nil? || (legacy_tag.id == legacy_tag.synonym.id)
         legacy_synonym = legacy_tag.synonym
 
         ns_polarity = get_polarity.call(legacy_synonym.type)
         if legacy_tag.synonym.lowercased == 'nullify tag'
           new_tag.enabled = false
+
+          full_name = legacy_tag.type + legacy_tag.name
+          @progressbar.log "WARN: Synonym is nullify tag, disabling #{full_name}"
+
+          skipped_synonym = true
         elsif ns_polarity
           # synonym chains are automatically crunched
           new_synonym = Tag.find_or_create_with_downcase(
@@ -235,6 +241,27 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         else
           full_name = legacy_synonym.type + legacy_synonym.name
           @progressbar.log "WARN: Synonym type #{legacy_synonym.type} does not map to polarity, skipping #{full_name}"
+
+          skipped_synonym = true
+        end
+      end
+
+      # ancestry processing
+      if skipped_synonym && !(legacy_tag.parent.nil? || legacy_tag.id == legacy_tag.parent.id)
+        legacy_parent = legacy_tag.parent
+
+        np_polarity = get_polarity.call(legacy_parent.type)
+        if np_polarity
+          new_parent = Tag.find_or_create_with_downcase(
+            polarity: np_polarity,
+            tag_type: get_type.call(legacy_parent.type),
+            name: legacy_parent.name # lowercase is automatically handled
+          )
+
+          new_tag.parent = new_parent
+        else
+          full_name = legacy_parent.type + legacy_parent.name
+          @progressbar.log "WARN: Parent type #{legacy_parent.type} does not map to polarity, skipping #{full_name}"
         end
       end
 
