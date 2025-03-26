@@ -24,7 +24,7 @@
 
       <% if devise_mapping.confirmable? && (!resource.confirmed? || resource.pending_reconfirmation?) %>
         <div>Currently waiting confirmation for: <%= resource.unconfirmed_email ? resource.unconfirmed_email : resource.email %></div>
-        <%= link_to "Resend", resend_confirmation_path, class: 'button', data: { turbo_method: :post } %>
+        <%= link_to "Resend", resend_confirmation_path, class: 'button', data: { turbo: true, 'turbo-method' => :post } %>
       <% end %>
 
       <div class="field">
