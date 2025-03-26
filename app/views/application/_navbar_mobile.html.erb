@@ -22,7 +22,7 @@
   <% end %>
   <% if !Rails.env.test? %>
     <%= link_to "#", class: "nav-item nav-online" do %>
-      <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %>
+      <%= ActionCable.server.pubsub.send(:redis_connection).pubsub("channels", "user_*_notifications").count %> Online
     <% end %>
   <% end %>
 </nav>
