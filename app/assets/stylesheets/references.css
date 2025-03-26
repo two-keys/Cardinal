@@ -3004,11 +3004,11 @@
     }
 
     .flashes {
-        @apply pt-20 place-content-center; 
+        @apply place-content-center; 
     }
 
     .site-alert {
-        @apply px-40 pt-20 rounded-secondary text-center;
+        @apply rounded-secondary text-center;
     }
 
     .site-alert * {

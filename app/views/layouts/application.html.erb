@@ -101,9 +101,6 @@
         </a>
       </header>
       <%= render 'navbar' %>
-      <%= turbo_frame_tag :flashes, class: "flashes" do %>
-        <%= render 'shared/flashes' %>
-      <% end %>
       <div class="site-container">
         <div class="top-right-filler"></div>
         <div class="right-sidebar">
@@ -120,6 +117,9 @@
           <% end %>
         </div>
         <div class="info-top">
+          <%= turbo_frame_tag :flashes, class: "flashes" do %>
+            <%= render 'shared/flashes' %>
+          <% end %>
           <%= yield :info_top %>
         </div>
         <div class="main">
