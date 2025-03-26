@@ -2920,8 +2920,8 @@
         grid-area: top_2;
     }
 
-    p img.emoji {
-        @apply h-[1.1em] w-[1.1em];
+    img.emoji {
+        @apply h-[1em] w-[1em];
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
     }
@@ -3229,6 +3229,18 @@
         @apply bg-tertiary text-tertiary-content border border-secondary;
     }
 
+    .markdown.prose {
+        @apply prose-headings:!text-primary-content
+               prose-h1:!text-primary-content
+               prose-p:!text-primary-content
+               prose-strong:!text-primary-content
+               prose-lead:!text-primary-content;
+    }
+
+    .prose img.emoji {
+        @apply inline-block;
+    }
+
     .ad {
         @apply text-center place-self-center w-full h-full max-h-[200px] max-w-[600px];
     }
@@ -3309,6 +3321,10 @@
         @apply w-full h-full;
     }
 
+    .sidebar-user-icon img.emoji {
+        @apply w-full h-full m-0;
+    }
+
     .chat-sidebar {
         @apply flex flex-col gap-4;
     }
@@ -3369,10 +3385,6 @@
         @apply inline-block;
     }
 
-    .message .user-icon .emoji {
-        @apply block;
-    }
-
     .message .message-content {
         @apply flex flex-col gap-6;
     }
@@ -3394,15 +3406,15 @@
     }
 
     .message .user-icon {
-        @apply block 
-               w-8 
+        @apply w-8 
                h-8
-               p-2
+               p-px
                rounded-full
                border
                border-ongoing
                bg-input
                text-input-content
+               overflow-hidden
                lg:-mt-12
                lg:-left-16
                lg:top-10
@@ -3411,6 +3423,10 @@
                lg:relative
                lg:rounded-r-none
                lg:border-r-0;
+    }
+
+    .message .user-icon img.emoji {
+        @apply w-full h-full m-0;
     }
 
     .message.ooc .user-icon {

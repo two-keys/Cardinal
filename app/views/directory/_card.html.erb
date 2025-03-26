@@ -23,7 +23,7 @@
   <%= yield "card_content_#{model.id}" %>
  
   <% if defined? model.description %>
-    <div class="description">
+    <div class="description markdown prose">
       <%= model.mark_description %>
     </div>
   <% end %>

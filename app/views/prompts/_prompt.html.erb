@@ -18,7 +18,7 @@
 <% end %>
 <% content_for "card_content_#{prompt.id}" do %>
   <% if prompt.ooc.present? %>
-    <div id="<%= dom_id prompt %>_ooc" class="show-more prompt-content" data-controller="show-more" data-read-smore-words="70">
+    <div id="<%= dom_id prompt %>_ooc" class="show-more prompt-content prompt-ooc markdown prose" data-controller="show-more" data-read-smore-words="70">
       <%= prompt.mark_ooc %>
     </div>
   <% end %>
@@ -28,7 +28,7 @@
   <% end %>
 
   <% if prompt.starter.present? %>
-    <div id="<%= dom_id prompt %>_starter" class="show-more prompt-content" data-controller="show-more" data-read-smore-words="70">
+    <div id="<%= dom_id prompt %>_starter" class="show-more prompt-content prompt-starter markdown prose" data-controller="show-more" data-read-smore-words="70">
       <%= prompt.mark_starter %>
     </div>
   <% end %>
