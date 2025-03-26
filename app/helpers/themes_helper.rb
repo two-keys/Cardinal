@@ -63,7 +63,6 @@ module ThemesHelper
       --admin-image
       --user-image
       --donate-image
-      --user-image
       --use-image
       --discord-image
       --logout-image
