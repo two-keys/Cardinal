@@ -3238,7 +3238,7 @@
     }
 
     .ad.ad-footer {
-        @apply w-[600px] h-[100px];
+        @apply w-[600px] h-[100px] max-w-full;
     }
 
     .ad.ad-sidebar {
