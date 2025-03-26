@@ -3024,7 +3024,7 @@
     }
 
     .footer {
-        @apply h-8 px-1 my-1 fixed top-0 md:bottom-0 md:top-auto left-0 right-0 flex flex-row place-content-between z-50;
+        @apply h-8 px-1 place-items-end my-1 absolute top-10 md:bottom-0 md:top-auto left-0 right-0 flex flex-row place-content-between z-50;
     }
 
     .footer .theme-selector {
@@ -3052,15 +3052,15 @@
     }
     
     .nav {
-        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex justify-items-center gap-2 whitespace-nowrap overflow-x-auto;
+        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-hidden;
     }
     
     .nav-desktop {
-        @apply hidden md:flex flex-row place-content-center bg-nav text-nav-content;
+        @apply hidden md:flex flex-row place-content-center bg-nav text-nav-content overflow-y-hidden;
     }
     
     .nav-mobile {
-        @apply grid grid-rows-2 grid-cols-5 md:hidden overflow-visible bg-nav text-nav-content;
+        @apply h-20 pt-4 grid grid-rows-1 grid-cols-7 place-items-center content-center md:hidden overflow-hidden bg-nav text-nav-content;
     }
     
     .nav-item {
@@ -3142,7 +3142,7 @@
     }
 
     .nav-mobile .nav-logout {
-        @apply bg-no-repeat;
+        @apply bg-no-repeat absolute right-0 -top-20 bg-transparent;
         background-image: var(--logout-image);
         background-position-x: 10px;
         background-position-y: 10px;
@@ -3157,7 +3157,7 @@
     }
 
     .nav-mobile .nav-online {
-        @apply text-unread font-black text-center align-text-bottom cursor-default;
+        @apply text-nav bg-transparent font-black text-center align-text-bottom cursor-default absolute left-0 -top-20;
     }
     
     button.nav-item {
