@@ -53,8 +53,12 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
                         END || \':\' || lower)
                       '))
   @progressbar.log "Existing Tags: #{existing_tags.count}"
-  @migration_tags = Legacy::Tag.where.not('(type || \':\'|| lowercased) IN (?)', existing_tags)
-                               .where(type: acceptable_types + acceptable_types.map { |tg| "#{tg}_wanted" })
+  @migration_tags = Legacy::Tag.where(type: acceptable_types + acceptable_types.map { |tg| "#{tg}_wanted" })
+  if existing_tags.count.positive?
+    @migration_tags = @migration_tags.where.not(
+      '(type || \':\'|| lowercased) IN (?)', existing_tags
+    )
+  end
   @migration_tags_count = @migration_tags.count
   @progressbar.log "Tags left to Migrate: #{@migration_tags_count}"
 
@@ -217,7 +221,9 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         legacy_synonym = legacy_tag.synonym
 
         ns_polarity = get_polarity.call(legacy_synonym.type)
-        if ns_polarity
+        if legacy_tag.synonym.lowercased == 'nullify tag'
+          new_tag.enabled = false
+        elsif ns_polarity
           # synonym chains are automatically crunched
           new_synonym = Tag.find_or_create_with_downcase(
             polarity: ns_polarity,
@@ -227,7 +233,8 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
 
           new_tag.synonym = new_synonym
         else
-          @progressbar.log "WARN: Synonym type #{legacy_synonym.type} does not map to polarity, skipping"
+          full_name = legacy_synonym.type + legacy_synonym.name
+          @progressbar.log "WARN: Synonym type #{legacy_synonym.type} does not map to polarity, skipping #{full_name}"
         end
       end
 
@@ -289,7 +296,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       new_message = Message.new
       new_message.id = legacy_message.id
       new_message.chat_id = legacy_message.chat_id
-      new_message.user_id = legacy_message.message_sender.zero? ? nil : legacy_message.message_sender
+      new_message.user_id = legacy_message.message_type == 'system' ? nil : legacy_message.message_sender
       new_message.content = legacy_message.message_content
       new_message.color = legacy_message.colour
       new_message.created_at = legacy_message.timestamp
