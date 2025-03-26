@@ -177,51 +177,51 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_prompt.save(validate: false)
   end
 
+  def get_polarity(tag_type)
+    has_wanted = tag_type.include?('wanted')
+
+    polarity = nil
+
+    if has_wanted
+      polarity = 'seeking'
+    else
+      polarity_key = {
+        fandom: 'playing',
+        character: 'playing',
+        gender: 'playing',
+        characteristic: 'playing'
+      }
+
+      polarity = polarity_key[tag_type.to_sym]
+    end
+
+    polarity
+  end
+
+  def get_type(tag_type)
+    new_type = tag_type
+
+    new_type.slice!('_wanted') if tag_type.include?('_wanted')
+
+    new_type
+  end
+
   @processed_tags = 0
-  def migrate_tag(legacy_tag)
-    get_polarity = lambda do |tag_type|
-      has_wanted = tag_type.include?('wanted')
-
-      polarity = nil
-
-      if has_wanted
-        polarity = 'seeking'
-      else
-        polarity_key = {
-          fandom: 'playing',
-          character: 'playing',
-          gender: 'playing',
-          characteristic: 'playing'
-        }
-
-        polarity = polarity_key[tag_type.to_sym]
-      end
-
-      polarity
-    end
-
-    get_type = lambda do |tag_type|
-      new_type = tag_type
-
-      new_type.slice!('_wanted') if tag_type.include?('_wanted')
-
-      new_type
-    end
-
+  def migrate_tag(legacy_tag) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @processed_tags += 1
-    nt_polarity = get_polarity.call(legacy_tag.type)
+    nt_polarity = get_polarity(legacy_tag.type)
     if nt_polarity
       new_tag = Tag.find_or_create_with_downcase(
         polarity: nt_polarity,
-        tag_type: get_type.call(legacy_tag.type),
+        tag_type: get_type(legacy_tag.type),
         name: legacy_tag.name # lowercase is automatically handled
       )
 
-      skipped_synonym = false
-      unless legacy_tag.synonym.nil? || (legacy_tag.id == legacy_tag.synonym.id)
+      skipped_synonym = legacy_tag.synonym.nil? || (legacy_tag.id == legacy_tag.synonym.id)
+      unless skipped_synonym
         legacy_synonym = legacy_tag.synonym
 
-        ns_polarity = get_polarity.call(legacy_synonym.type)
+        ns_polarity = get_polarity(legacy_synonym.type)
         if legacy_tag.synonym.lowercased == 'nullify tag'
           new_tag.enabled = false
 
@@ -233,7 +233,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
           # synonym chains are automatically crunched
           new_synonym = Tag.find_or_create_with_downcase(
             polarity: ns_polarity,
-            tag_type: get_type.call(legacy_synonym.type),
+            tag_type: get_type(legacy_synonym.type),
             name: legacy_synonym.name # lowercase is automatically handled
           )
 
@@ -250,11 +250,11 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       if skipped_synonym && !(legacy_tag.parent.nil? || legacy_tag.id == legacy_tag.parent.id)
         legacy_parent = legacy_tag.parent
 
-        np_polarity = get_polarity.call(legacy_parent.type)
+        np_polarity = get_polarity(legacy_parent.type)
         if np_polarity
           new_parent = Tag.find_or_create_with_downcase(
             polarity: np_polarity,
-            tag_type: get_type.call(legacy_parent.type),
+            tag_type: get_type(legacy_parent.type),
             name: legacy_parent.name # lowercase is automatically handled
           )
 
