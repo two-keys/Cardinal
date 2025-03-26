@@ -3052,7 +3052,7 @@
     }
     
     .nav {
-        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex place-content-center justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-hidden;
+        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex place-content-center justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-visible;
     }
     
     .nav-desktop {
@@ -3060,7 +3060,7 @@
     }
     
     .nav-mobile {
-        @apply h-20 pl-6 flex flex-row items-center justify-between justify-items-center place-content-around md:hidden overflow-x-scroll overflow-y-visible bg-nav text-nav-content;
+        @apply h-20 pl-6 flex flex-row items-center justify-between justify-items-center place-content-around md:hidden overflow-x-visible overflow-y-visible bg-nav text-nav-content gap-px;
     }
 
     
@@ -3077,7 +3077,7 @@
     }
     
     .nav-mobile .nav-item {
-        @apply inline-block h-12 w-12;
+        @apply inline-block h-10 w-10 aspect-square;
         background-size: 30px;
     }
     
@@ -3086,7 +3086,7 @@
     }
     
     .nav-mobile > button, .nav-mobile > a, .nav-mobile > span {
-        @apply bg-no-repeat relative w-12 min-w-12;
+        @apply bg-no-repeat relative aspect-square;
         background-position: 50%;
     }
     
