@@ -123,6 +123,9 @@ gem 'web-push'
 # Text Search
 gem 'pg_search', '~> 2.3', '>= 2.3.2'
 
+# Tailwind
+gem 'tailwindcss-rails', '~> 4.0'
+
 # Mail CSS
 gem 'roadie-rails'
 

@@ -7,8 +7,7 @@
     <%= csp_meta_tag %>
     <%= tag.meta name: "vapid-public-key", content: ENV.fetch('WEBPUSH_PUBLIC_KEY', nil) %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 
     <% if current_user && current_user.applied_themes.count > 0 %>
       <%= turbo_stream_from dom_id(current_user)  + "_theme" %>

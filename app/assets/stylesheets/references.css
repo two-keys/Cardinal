@@ -3229,14 +3229,6 @@
         @apply bg-tertiary text-tertiary-content border border-secondary;
     }
 
-    .markdown.prose {
-        @apply prose-headings:!text-primary-content
-               prose-h1:!text-primary-content
-               prose-p:!text-primary-content
-               prose-strong:!text-primary-content
-               prose-lead:!text-primary-content;
-    }
-
     .prose img.emoji {
         @apply inline-block;
     }
