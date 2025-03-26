@@ -3060,7 +3060,7 @@
     }
     
     .nav-mobile {
-        @apply h-20 pl-6 flex flex-row flex-wrap items-center justify-between justify-items-center place-content-around md:hidden overflow-visible bg-nav text-nav-content;
+        @apply h-20 pl-6 flex flex-row items-center justify-between justify-items-center place-content-around md:hidden overflow-x-scroll overflow-y-visible bg-nav text-nav-content;
     }
 
     
