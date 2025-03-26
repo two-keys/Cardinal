@@ -1,13 +1,13 @@
 <div id="<%= dom_id announcement %>" class="card primary">
-  <div class="announcement_info">
+  <div class="announcement-info">
     <strong><%= link_to announcement.title, announcement %></strong>
     <br />
     <span><%= announcement.created_at.strftime("%l:%M %p %b %d %Y") %></span>
     <% if announcement.updated_at > announcement.created_at %>
-      <h6 class="announcement_edited">(Edited <%= announcement.updated_at.strftime("%l:%M %p %b %d %Y") %>)</h6>
+      <h6 class="announcement-edited">(Edited <%= announcement.updated_at.strftime("%l:%M %p %b %d %Y") %>)</h6>
     <% end %>
   </div>
-  <div class="announcement_body">
+  <div class="announcement-body markdown prose">
     <%= announcement.markdown %>
   </div>
 </div>

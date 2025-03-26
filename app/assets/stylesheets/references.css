@@ -2920,8 +2920,8 @@
         grid-area: top_2;
     }
 
-    p img.emoji {
-        @apply h-[1.1em] w-[1.1em];
+    img.emoji {
+        @apply h-[1em] w-[1em];
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
     }
@@ -3004,11 +3004,11 @@
     }
 
     .flashes {
-        @apply pt-20 place-content-center; 
+        @apply place-content-center; 
     }
 
     .site-alert {
-        @apply px-40 pt-20 rounded-secondary text-center;
+        @apply rounded-secondary text-center;
     }
 
     .site-alert * {
@@ -3024,15 +3024,15 @@
     }
 
     .footer {
-        @apply h-8 px-1 my-1 fixed top-0 md:bottom-0 md:top-auto left-0 right-0 flex flex-row place-content-between z-50;
+        @apply h-8 px-1 place-items-end my-1 absolute lg:fixed top-10 lg:bottom-0 lg:top-auto left-0 right-0 flex flex-row place-content-between z-50;
     }
 
     .footer .theme-selector {
-        @apply h-8 w-8;
+        @apply h-8 w-8 select-none;
     }
 
     .footer .render-time {
-        @apply text-secondary;
+        @apply text-secondary pointer-events-none select-none;
     }
 
     .theme-button, .theme-button svg {
@@ -3040,7 +3040,11 @@
     }
     
     .notifications-desktop {
-        @apply md:flex flex-row hidden overflow-visible;
+        @apply md:flex flex-row hidden overflow-visible pr-2;
+    }
+
+    .notifications-desktop .notif-values {
+        @apply -mr-2;
     }
     
     .notifications-mobile {
@@ -3048,16 +3052,17 @@
     }
     
     .nav {
-        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex justify-items-center gap-2 whitespace-nowrap overflow-x-auto;
+        @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex place-content-center justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-visible;
     }
     
     .nav-desktop {
-        @apply hidden md:flex flex-row place-content-center bg-nav text-nav-content;
+        @apply hidden md:flex flex-row place-content-center bg-nav text-nav-content overflow-y-hidden;
     }
     
     .nav-mobile {
-        @apply grid grid-rows-2 grid-cols-5 md:hidden overflow-visible bg-nav text-nav-content;
+        @apply h-20 pl-6 flex flex-row items-center justify-between justify-items-center place-content-around md:hidden overflow-x-visible overflow-y-visible bg-nav text-nav-content gap-px;
     }
+
     
     .nav-item {
         @apply px-2 rounded-xl bg-primary text-primary-content hover:invert;
@@ -3072,16 +3077,16 @@
     }
     
     .nav-mobile .nav-item {
-        @apply inline-block h-12 w-12;
+        @apply inline-block h-10 w-10 aspect-square;
         background-size: 30px;
     }
     
     .nav-mobile > a {
-        @apply leading-[40px] p-0;
+        @apply p-0;
     }
     
     .nav-mobile > button, .nav-mobile > a, .nav-mobile > span {
-        @apply bg-no-repeat relative w-12 min-w-12;
+        @apply bg-no-repeat relative aspect-square;
         background-position: 50%;
     }
     
@@ -3138,7 +3143,7 @@
     }
 
     .nav-mobile .nav-logout {
-        @apply bg-no-repeat;
+        @apply bg-no-repeat absolute right-0 -top-20 bg-transparent;
         background-image: var(--logout-image);
         background-position-x: 10px;
         background-position-y: 10px;
@@ -3153,7 +3158,7 @@
     }
 
     .nav-mobile .nav-online {
-        @apply text-unread font-black text-center align-text-bottom cursor-default;
+        @apply text-nav bg-transparent font-black text-center align-text-bottom cursor-default absolute left-0 -top-20;
     }
     
     button.nav-item {
@@ -3224,12 +3229,16 @@
         @apply bg-tertiary text-tertiary-content border border-secondary;
     }
 
+    .prose img.emoji {
+        @apply inline-block;
+    }
+
     .ad {
         @apply text-center place-self-center w-full h-full max-h-[200px] max-w-[600px];
     }
 
     .ad.ad-footer {
-        @apply w-[600px] h-[100px];
+        @apply w-[600px] h-[100px] max-w-full;
     }
 
     .ad.ad-sidebar {
@@ -3304,6 +3313,10 @@
         @apply w-full h-full;
     }
 
+    .sidebar-user-icon img.emoji {
+        @apply w-full h-full m-0;
+    }
+
     .chat-sidebar {
         @apply flex flex-col gap-4;
     }
@@ -3364,10 +3377,6 @@
         @apply inline-block;
     }
 
-    .message .user-icon .emoji {
-        @apply block;
-    }
-
     .message .message-content {
         @apply flex flex-col gap-6;
     }
@@ -3389,15 +3398,15 @@
     }
 
     .message .user-icon {
-        @apply block 
-               w-8 
+        @apply w-8 
                h-8
-               p-2
+               p-px
                rounded-full
                border
                border-ongoing
                bg-input
                text-input-content
+               overflow-hidden
                lg:-mt-12
                lg:-left-16
                lg:top-10
@@ -3406,6 +3415,10 @@
                lg:relative
                lg:rounded-r-none
                lg:border-r-0;
+    }
+
+    .message .user-icon img.emoji {
+        @apply w-full h-full m-0;
     }
 
     .message.ooc .user-icon {

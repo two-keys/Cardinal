@@ -16,21 +16,9 @@ class AdCreationValidator < ActiveModel::Validator
     local_errors
   end
 
-  def self.acceptable_image(image)
-    local_errors = []
-
-    local_errors << 'must be provided' unless image.attached?
-    local_errors << "must not exceed #{Ad::MAX_FILESIZE.to_filesize}" unless image.blob.byte_size <= Ad::MAX_FILESIZE
-
-    local_errors
-  end
-
   def validate(record)
     check_existing(record.variant, record.user).each do |error|
       record.errors.add(:base, error)
-    end
-    acceptable_image(record.image).each do |error|
-      record.errors.add(:image, error)
     end
   end
 end

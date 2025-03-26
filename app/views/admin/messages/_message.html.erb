@@ -36,7 +36,9 @@
                           REPORTED FOR RULES <%= rule_violations.to_sentence(last_word_connector: " AND ") %> BY <%= message.reports.count %> USER(S)
                         <% end %>
                       </span>
-                      <%= message.markdown %>
+                      <div class="markdown prose">
+                        <%= message.markdown %>
+                      </div>
                       <hr class="message-break"/>
                       <span class="message-created-at">
                         <!-- Display the date and time of the message -->

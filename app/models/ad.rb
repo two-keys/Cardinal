@@ -86,9 +86,11 @@ class Ad < ApplicationRecord
   end
 
   def check_filesize
-    AdCreationValidator.acceptable_image(image).each do |error|
-      errors.add(:image, error)
-    end
+    errors.add(:image, 'must be provided') unless image.attached?
+    return if image.blob.byte_size <= Ad::MAX_FILESIZE
+
+    errors.add(:image,
+               "must not exceed #{Ad::MAX_FILESIZE.to_filesize}")
   end
 
   def create_click
