@@ -16,22 +16,24 @@
     <%= form.text_field :title, value: ip_ban.title %>
   </div>
 
-  <div>
-    <%= form.label :addr, style: "display: block" %>
-    <%= form.text_field :addr, value: "#{ip_ban.addr}#{ip_ban.addr && ip_ban.addr.prefix != 32 ? "/#{ip_ban.addr&.prefix}" : ""}" %>
-  </div>
+  <div class="input-group">
+    <div class="input-main">
+      <%= form.label :addr, style: "display: block" %>
+      <%= form.text_field :addr, class: "w-full", value: "#{ip_ban.addr}#{ip_ban.addr && ip_ban.addr.prefix != 32 ? "/#{ip_ban.addr&.prefix}" : ""}" %>
+    </div>
 
-  <div>
-    <%= form.label :expires_on, style: "display: block" %>
-    <%= form.datetime_field :expires_on, value: ip_ban.expires_on, class: "input-main" %>
+    <div>
+      <%= form.label :expires_on, style: "display: block" %>
+      <%= form.datetime_field :expires_on, value: ip_ban.expires_on, class: "input-main" %>
+    </div>
   </div>
 
   <div>
     <%= form.label :context, style: "display: block" %>
-    <%= form.text_area :context, value: ip_ban.context %>
+    <%= form.text_area :context, class: "h-24", value: ip_ban.context %>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Create IP Ban" %>
   </div>
 <% end %>
