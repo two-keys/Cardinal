@@ -1,0 +1,21 @@
+<div id="<%= dom_id ip_ban %>">
+  <h2><strong><%= ip_ban.title %></strong></h2>
+
+  <p>
+    <strong>Addr:</strong>
+    <%= ip_ban.addr %><%= ip_ban.addr.prefix != 32 ? "/#{ip_ban.addr.prefix}" : "" %>
+  </p>
+
+  <p>
+    <strong>Expires:</strong>
+    <%= ip_ban.expires_on ? "#{distance_of_time_in_words(Time.zone.now, ip_ban.expires_on)} #{ip_ban.expires_on > Time.zone.now ? "from now" : "ago"}" : "Never" %>
+  </p>
+
+  <p>
+    <strong>Context:</strong>
+    <div>
+      <%= ip_ban.context %>
+    </div>
+  </p>
+
+</div>

@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     resources :alerts
     resources :audit_logs, only: %i[index]
     resources :ads, only: %i[index]
+    resources :ip_bans
     post 'ads/:id/approve' => 'ads#approve', as: 'approve_ad'
     delete 'ads/:id' => 'ads#destroy', as: 'ad'
     root 'admin_panel#index'

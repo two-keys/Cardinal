@@ -45,6 +45,9 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+    active_record_extended (3.3.0)
+      activerecord (>= 5.2, < 8.0.0)
+      pg (< 3.0)
     active_snapshot (1.0.0)
       activerecord (>= 6.1)
       railties
@@ -234,6 +237,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.13)
+    rack-attack (6.7.0)
+      rack (>= 1.0, < 4)
     rack-cors (2.0.2)
       rack (>= 2.0.0)
     rack-session (1.0.2)
@@ -402,6 +407,7 @@ PLATFORMS
 
 DEPENDENCIES
   actionpack (>= 7.0.8.7)
+  active_record_extended
   active_snapshot
   ahoy_matey
   ancestry
@@ -433,6 +439,7 @@ DEPENDENCIES
   pg_search (~> 2.3, >= 2.3.2)
   puma (~> 5.0)
   rack (~> 2.2.13)
+  rack-attack
   rack-cors (~> 2.0)
   rails (~> 7.2.2)
   rails-html-sanitizer (>= 1.6.1)

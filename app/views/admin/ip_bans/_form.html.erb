@@ -1,0 +1,37 @@
+<%= form_with(model: [:admin, ip_ban]) do |form| %>
+  <% if ip_ban.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ip_ban.errors.count, "error") %> prohibited this ip ban from being saved:</h2>
+
+      <ul>
+        <% ip_ban.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title, value: ip_ban.title %>
+  </div>
+
+  <div>
+    <%= form.label :addr, style: "display: block" %>
+    <%= form.text_field :addr, value: "#{ip_ban.addr}#{ip_ban.addr && ip_ban.addr.prefix != 32 ? "/#{ip_ban.addr&.prefix}" : ""}" %>
+  </div>
+
+  <div>
+    <%= form.label :expires_on, style: "display: block" %>
+    <%= form.datetime_field :expires_on, value: ip_ban.expires_on, class: "input-main" %>
+  </div>
+
+  <div>
+    <%= form.label :context, style: "display: block" %>
+    <%= form.text_area :context, value: ip_ban.context %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

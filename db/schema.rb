@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_24_233244) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_27_044851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -199,6 +199,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_24_233244) do
     t.index ["target_type", "target_id", "group", "user_id"], name: "idx_on_target_type_target_id_group_user_id_394635f237", unique: true
     t.index ["target_type", "target_id"], name: "index_filters_on_target"
     t.index ["user_id"], name: "index_filters_on_user_id"
+  end
+
+  create_table "ip_bans", force: :cascade do |t|
+    t.string "title"
+    t.text "context"
+    t.inet "addr", null: false
+    t.datetime "expires_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addr"], name: "index_ip_bans_on_addr", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
@@ -418,6 +428,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_24_233244) do
     t.bigint "theme_id"
     t.boolean "push_announcements", default: true, null: false
     t.boolean "themes_enabled", default: false, null: false
+    t.boolean "legacy", default: false, null: false
     t.string "time_zone", default: "UTC", null: false
     t.boolean "legacy", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
