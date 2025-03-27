@@ -17,7 +17,7 @@
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input-main" %>
       <%= link_to "Force Confirm", admin_force_confirm_user_path(user), class: "button", data: { turbo: true, 'turbo-method' => :post } %>
     </div>
-    <% if !user.confirmed? || user.email.blank? && !user.unconfirmed_email.blank? %>
+    <% if !user.confirmed? || user.email.blank? || !user.unconfirmed_email.blank? %>
       <b>(unconfirmed) <%= user.unconfirmed_email %></b>
     <% end %>
   </div>
