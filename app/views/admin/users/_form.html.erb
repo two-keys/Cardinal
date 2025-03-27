@@ -12,38 +12,54 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.label :email %>
+    <div class="input-group">
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input-main" %>
+      <%= link_to "Force Confirm", admin_force_confirm_user_path(user), class: "button", data: { turbo: true, 'turbo-method' => :post } %>
+    </div>
+    <% if !user.confirmed? || user.email.blank? && !user.unconfirmed_email.blank? %>
+      <b>(unconfirmed) <%= user.unconfirmed_email %></b>
+    <% end %>
   </div>
 
   <div class="username">
-    <%= f.label :username %><br />
+    <%= f.label :username %>
     <%= f.text_field :username, autocomplete: "username" %>
   </div>
 
-  <div class="field">
-    <%= f.label :verified %><br />
-    <%= f.check_box :verified %>
-  </div>
-
-  <div class="field">
-    <%= f.label :admin %><br />
-    <%= f.check_box :admin, disabled: true %>
   <div>
+    <div class="input-group">
+      <div>
+        <%= f.label :verified %>
+        <%= f.check_box :verified %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :unban_at %><br />
-    <%= f.datetime_select :unban_at, :include_blank => true, class: "datepicker" %>
+    <div class="input-group">
+      <div>
+        <%= f.label :admin %>
+        <%= f.check_box :admin, disabled: true %>
+      </div>
+    </div>
   </div>
+  
+  <div class="input-group">
+    <div class="field">
+      <%= f.label :unban_at %><br />
+      <%= f.datetime_field :unban_at, :include_blank => true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :ban_reason %><br />
-    <%= f.text_field :ban_reason %>
+    <div class="input-group">
+      <div class="field">
+        <%= f.label :ban_reason %><br />
+        <%= f.text_field :ban_reason %>
+      </div>
+      <div class="field">
+        <%= f.label :delete_at %><br />
+        <%= f.datetime_field :delete_at, :include_blank => true %>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :delete_at %><br />
-    <%= f.datetime_select :delete_at, :include_blank => true, class: "datepicker" %>
-  </div>
+  <br />
   <%= f.submit %>
 <% end %>
