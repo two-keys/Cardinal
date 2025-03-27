@@ -1,6 +1,20 @@
-<div id="users">
+<div class="card primary" id="users">
 
   <h1>Users</h1>
+
+  <%= form_with url: admin_users_path, method: :get, class: 'filter-form' do |f| %>
+    <div class="filters">
+      <div class="input-group">
+        <%= f.text_field :username, value: params[:username], placeholder: 'Username' %>
+        <%= f.text_field :ip, value: params[:ip], placeholder: 'ip' %>
+      </div>
+      <div class="input-group">
+        <%= f.label :banned %>
+        <%= f.check_box :banned, value: params[:banned], include_hidden: false %>
+      </div>
+      <%= f.submit 'Filter' %>
+    </div>
+  <% end %>
 
   <div id="users">
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>

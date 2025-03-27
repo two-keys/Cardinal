@@ -1,0 +1,16 @@
+<div class="card primary">
+  <h1>Editing IP Ban</h1>
+</div>
+
+<div class="card secondary">
+  <%= render "form", ip_ban: @ip_ban %>
+</div>
+
+<br>
+
+<div class="card primary">
+  <div class="input-group">
+    <%= link_to "Show", [:admin, @ip_ban], class: "button" %>
+    <%= link_to "Back", admin_ip_bans_path, class: "button" %>
+  </div>
+</div>

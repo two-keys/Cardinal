@@ -135,6 +135,12 @@ gem 'jsbundling-rails'
 # Spam prevention
 gem 'recaptcha'
 
+# Fancy activerecord postgres features
+gem 'active_record_extended'
+
+# IP Banning
+gem 'rack-attack'
+
 # Upgrades
 gem 'next_rails'
 

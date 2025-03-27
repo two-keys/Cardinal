@@ -2,6 +2,13 @@
   <p>
     <b>Username:</b> <strong><%= link_to user.username, edit_admin_user_path(user) %></strong><br/>
     <b>Email:</b> <%= user.email %><br/>
+    <b>Last IP:</b> <%= user.last_sign_in_ip %><br/>
+    <b>Current IP:</b> <%= user.current_sign_in_ip %><br/>
+    <% if user.unban_at != nil %>
+      <strong><b>Banned</b></strong><br/>
+      <b>Unbanned At:</b> <%= distance_of_time_in_words(user.unban_at) %> ( <%= user.unban_at %> )<br/>
+      <b>Reason:</b> <%= user.ban_reason || "Unspecified." %><br/>
+    <% end %>
     <b>Created:</b> <span><%= user.created_at.strftime("%l:%M %p %b %d %Y") %></span><br/>
     <b>Pseudonyms:</b><br/>
     <ul>

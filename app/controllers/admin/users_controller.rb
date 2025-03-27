@@ -10,8 +10,25 @@ module Admin
     before_action :set_user, only: %i[show edit update destroy]
 
     # GET /admin/users or /admin/users.json
-    def index
-      @pagy, @users = pagy(User.all, items: 5)
+    def index # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      query = User.all
+      params = request.query_parameters
+      params = params.compact_blank if params
+      params[:banned] = nil if params[:banned].present? && params[:banned] != '1'
+      if params
+        query = query.where(username: params[:username]) if params[:username].present?
+        if params[:ip].present?
+          query = query.where(last_sign_in_ip: params[:ip]).or(query.where(current_sign_in_ip: params[:ip]))
+        end
+        if params[:banned].present?
+          query = if params[:banned] == '1'
+                    query.where.not(unban_at: nil)
+                  else
+                    query.where(unban_at: nil)
+                  end
+        end
+      end
+      @pagy, @users = pagy(query, items: 5)
     end
 
     # GET /admin/users/1 or /admin/users/1.json
