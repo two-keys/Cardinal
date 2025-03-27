@@ -102,7 +102,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   end
 
   @processed_users = 0
-  def migrate_user(legacy_user)
+  def migrate_user(legacy_user) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @processed_users += 1
     # @progressbar.log "Migrating User #{@processed_users} / #{@migration_users_count} ( #{@processed_users.percent_of(@migration_users_count)}% )- #{legacy_user.user_name}." # rubocop:disable Layout/LineLength
     new_count = User.where('username LIKE :name', name: "#{legacy_user.user_name}%").count
@@ -118,6 +118,8 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_user.id = legacy_user.id
     new_user.created_at = legacy_user.created
     new_user.verified = legacy_user.verified
+    new_user.unban_at = legacy_user.unban_date || 9000.years.from_now if legacy_user.account_type == 'banned'
+    new_user.ban_reason = legacy_user.ban_reason if legacy_user.account_type == 'banned'
     new_user.encrypted_password = legacy_user.password
 
     result = new_user.save
