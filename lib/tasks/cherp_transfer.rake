@@ -85,6 +85,12 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   @migration_alerts_count = @migration_alerts.count
   @progressbar.log "Alerts left to Migrate: #{@migration_alerts_count}"
 
+  existing_ip_bans = IpBan.all.map(&:id)
+  @progressbar.log "Existing IP Bans: #{existing_ip_bans.count}"
+  @migration_ip_bans = Legacy::IpBan.where.not(id: existing_ip_bans)
+  @migration_ip_bans_count = @migration_ip_bans.count
+  @progressbar.log "IP Bans left to Migrate: #{@migration_ip_bans_count}"
+
   @processed_alerts = 0
   def migrate_alert(legacy_alert)
     @processed_alerts += 1
@@ -99,6 +105,19 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_alert.created_at = now
     new_alert.updated_at = now
     new_alert.save
+  end
+
+  @processed_ip_bans = 0
+  def migrate_ip_ban(legacy_ip_ban)
+    @processed_ip_bans += 1
+    new_ip_ban = IpBan.new
+    now = Time.zone.now
+    new_ip_ban.id = legacy_ip_ban.id
+    new_ip_ban.context = legacy_ip_ban.reason
+    new_ip_ban.addr = legacy_ip_ban.ip_address
+    new_ip_ban.created_at = now
+    new_ip_ban.updated_at = now
+    new_ip_ban.save
   end
 
   @processed_users = 0
@@ -338,6 +357,16 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         @progressbar.log "WARN: Message #{new_message.id} already exists. Skipping."
       end
     end
+  end
+
+  if @migration_ip_bans_count.positive?
+    @progressbar.log 'Begin migrating IP bans.'
+    @progressbar = ProgressBar.create(title: 'IP Bans', format: @progressbar_format, total: @migration_ip_bans_count)
+    @migration_ip_bans.find_each(batch_size:) do |legacy_ip_ban|
+      migrate_ip_ban(legacy_ip_ban)
+      @progressbar.increment
+    end
+    @progressbar.log 'End migrating IP bans.'
   end
 
   if @migration_users_count.positive?

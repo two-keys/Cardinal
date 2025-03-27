@@ -430,7 +430,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_044851) do
     t.boolean "themes_enabled", default: false, null: false
     t.boolean "legacy", default: false, null: false
     t.string "time_zone", default: "UTC", null: false
-    t.boolean "legacy", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
