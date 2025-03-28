@@ -4062,7 +4062,6 @@
     }
 
     .markdown.prose {
-        @apply prose-xl;
         --tw-prose-body: var(--color-primary-content);
         --tw-prose-headings: var(--color-primary-content);
         --tw-prose-lead: var(--color-primary-content);
