@@ -16,7 +16,9 @@
 <div id="page_<%= params[:page] %>" class="card primary">
   <br />
   <p>
-    <%= @markdown %>
+    <div class="markdown prose">
+      <%= @markdown %>
+    </div>
     <ol>
       <% @entries.each do |entry| %>
         <li><%= entry %></li>
