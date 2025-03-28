@@ -2,9 +2,10 @@
 
 class CardinalMarkdownRenderer < Redcarpet::Render::HTML
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::SanitizeHelper
 
   def paragraph(text)
-    process_custom_tags("<p>#{text.strip}</p>\n")
+    process_custom_tags("<p>#{text.gsub("\n", '<br/>')}</p>\n")
   end
 
   def list_item(text, _params)
@@ -29,6 +30,8 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
 
   # A generic class method for site-wide, safe markdown.
   def self.generic_render(text)
+    sanitized_text = ActionController::Base.helpers.sanitize(text, tags: %w[span br img],
+                                                                   attributes: %w[style src draggable alt class])
     renderer = CardinalMarkdownRenderer.new(hard_wrap: true, link_attributes: { target: '_blank' })
     options = {
       autolink: true,
@@ -42,7 +45,7 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
       footnotes: true,
       space_after_headers: true
     }
-    Redcarpet::Markdown.new(renderer, options).render(text).html_safe
+    Redcarpet::Markdown.new(renderer, options).render(sanitized_text).html_safe
   end
   # rubocop:enable Rails/OutputSafety
 end

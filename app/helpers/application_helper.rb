@@ -21,12 +21,12 @@ module ApplicationHelper
 
     name = name_for_icon(text)
     if text.start_with? '@'
-      return ActionController::Base.helpers.image_tag("/#{text.sub('@', '')}.png", class: 'emoji',
+      return ActionController::Base.helpers.image_tag("/#{text.sub('@', '')}.png", class: 'emoji not-prose',
                                                                                    draggable: false,
                                                                                    alt: name)
     end
     if text.start_with?('!') || text.start_with?('?')
-      return ActionController::Base.helpers.image_tag(text.split('|').last.to_s, class: 'emoji',
+      return ActionController::Base.helpers.image_tag(text.split('|').last.to_s, class: 'emoji not-prose',
                                                                                  draggable: false,
                                                                                  alt: name)
     end

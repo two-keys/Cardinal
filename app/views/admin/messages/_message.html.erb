@@ -36,7 +36,7 @@
                           REPORTED FOR RULES <%= rule_violations.to_sentence(last_word_connector: " AND ") %> BY <%= message.reports.count %> USER(S)
                         <% end %>
                       </span>
-                      <div class="markdown prose prose-xl">
+                      <div class="markdown prose max-w-none">
                         <%= message.markdown %>
                       </div>
                       <hr class="message-break"/>
