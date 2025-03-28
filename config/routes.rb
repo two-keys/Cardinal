@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[index edit update destroy] do
       concerns :auditable
     end
+    post 'users/:id/force_confirm' => 'users#force_confirm', as: 'force_confirm_user'
     resources :entitlements do
       concerns :auditable
     end

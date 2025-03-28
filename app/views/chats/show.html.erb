@@ -2,10 +2,10 @@
     <div class="chat-info-top card secondary thin" id="chat_info_top">
         <% if @chat_info %>
             <% if @chat_info.title %>
-                <p><%= @chat_info.title %></p>
+                <strong><p class="chat-title"><%= @chat_info.title %></p></strong>
             <% end %>
             <% if @chat_info.description %>
-                <p><%= @chat_info.description %></p>
+                <p class="chat-description"><%= @chat_info.description %></p>
             <% end %>
         <% end %>
         <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>

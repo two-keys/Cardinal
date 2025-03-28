@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Admin
-  class UsersController < ApplicationController
+  class UsersController < ApplicationController # rubocop:disable Metrics/ClassLength
     include Pagy::Backend
     include ApplicationHelper
     include AuditableController
 
     before_action :require_admin
-    before_action :set_user, only: %i[show edit update destroy]
+    before_action :set_user, only: %i[show edit update destroy force_confirm]
 
     # GET /admin/users or /admin/users.json
     def index # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
@@ -90,6 +90,18 @@ module Admin
       end
     end
 
+    def force_confirm
+      respond_to do |format|
+        if @user.confirm
+          format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
     # DELETE /admin/users/1 or /admin/users/1.json
     def destroy
       @user.delete_at = 30.days.from_now
@@ -109,6 +121,7 @@ module Admin
 
     # Use callbacks to share common setup or constraints between actions.
     def set_user
+      Rails.logger.debug params
       @user = User.find(params[:id])
     end
 

@@ -19,12 +19,12 @@
     <div class="card secondary">
     <% end %>
       <% if settings.title %>
-        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid), class: "chat-title" %>
       <% else %>
-        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid), class: "chat-title" %>
       <% end %>
       <% if settings.description %>
-        <p><%= settings.description %></p>
+        <p class="chat-description"><%= settings.description %></p>
       <% end %>
       <hr />
       <% if chat.messages.last %>
@@ -38,4 +38,26 @@
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>
 </div>
+
+<% content_for :left_sidebar do %>
+  <div class="card primary">
+    <ul>
+      <li>
+        <strong><%= link_to "All", chats_path %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Unread", chats_path(filter: 'unread') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Unanswered", chats_path(filter: 'unanswered') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Ongoing", chats_path(filter: 'ongoing') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Ended", chats_path(filter: 'ended') %></strong>
+      </li>
+    </ul>
+  </div>
+<% end %>
 

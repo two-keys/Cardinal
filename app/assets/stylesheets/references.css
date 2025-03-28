@@ -3341,6 +3341,10 @@
         @apply flex flex-col;
     }
 
+    .chat-title, .chat-description {
+        @apply flex;
+    }
+
     .search-form {
         @apply w-full flex flex-row;
     }
@@ -4055,5 +4059,69 @@
     
         --color-nav: var(--color-secondary); 
         --color-nav-content: var(--color-secondary-content);
+    }
+
+    .markdown.prose {
+        @apply prose-xl;
+        --tw-prose-body: var(--color-primary-content);
+        --tw-prose-headings: var(--color-primary-content);
+        --tw-prose-lead: var(--color-primary-content);
+        --tw-prose-links: var(--color-header);
+        --tw-prose-bold: var(--color-primary-content);
+        --tw-prose-counters: var(--color-primary-content);
+        --tw-prose-bullets: var(--color-primary-content);
+        --tw-prose-hr: var(--color-primary-content);
+        --tw-prose-quotes: var(--color-primary-content);
+        --tw-prose-quote-borders: var(--color-nav);
+        --tw-prose-captions: var(--color-primary-content);
+        --tw-prose-kbd: var(--color-primary-content);
+        --tw-prose-kbd-shadows: NaN NaN NaN;
+        --tw-prose-code: var(--color-primary-content);
+        --tw-prose-pre-code: var(--color-primary-content);
+        --tw-prose-pre-bg: var(--color-primary);
+        --tw-prose-th-borders: var(--color-primary-content);
+        --tw-prose-td-borders: var(--color-primary-content);
+    }
+
+    .primary .markdown.prose {
+        --tw-prose-body: var(--color-secondary-content);
+        --tw-prose-headings: var(--color-secondary-content);
+        --tw-prose-lead: var(--color-secondary-content);
+        --tw-prose-links: var(--color-header);
+        --tw-prose-bold: var(--color-secondary-content);
+        --tw-prose-counters: var(--color-secondary-content);
+        --tw-prose-bullets: var(--color-secondary-content);
+        --tw-prose-hr: var(--color-secondary-content);
+        --tw-prose-quotes: var(--color-secondary-content);
+        --tw-prose-quote-borders: var(--color-nav);
+        --tw-prose-captions: var(--color-secondary-content);
+        --tw-prose-kbd: var(--color-secondary-content);
+        --tw-prose-kbd-shadows: NaN NaN NaN;
+        --tw-prose-code: var(--color-secondary-content);
+        --tw-prose-pre-code: var(--color-secondary-content);
+        --tw-prose-pre-bg: var(--color-secondary);
+        --tw-prose-th-borders: var(--color-secondary-content);
+        --tw-prose-td-borders: var(--color-secondary-content);
+    }
+
+    .secondary .markdown.prose {
+        --tw-prose-body: var(--color-tertiary-content);
+        --tw-prose-headings: var(--color-tertiary-content);
+        --tw-prose-lead: var(--color-tertiary-content);
+        --tw-prose-links: var(--color-header);
+        --tw-prose-bold: var(--color-tertiary-content);
+        --tw-prose-counters: var(--color-tertiary-content);
+        --tw-prose-bullets: var(--color-tertiary-content);
+        --tw-prose-hr: var(--color-tertiary-content);
+        --tw-prose-quotes: var(--color-tertiary-content);
+        --tw-prose-quote-borders: var(--color-nav);
+        --tw-prose-captions: var(--color-tertiary-content);
+        --tw-prose-kbd: var(--color-tertiary-content);
+        --tw-prose-kbd-shadows: NaN NaN NaN;
+        --tw-prose-code: var(--color-tertiary-content);
+        --tw-prose-pre-code: var(--color-tertiary-content);
+        --tw-prose-pre-bg: var(--color-tertiary);
+        --tw-prose-th-borders: var(--color-tertiary-content);
+        --tw-prose-td-borders: var(--color-tertiary-content);
     }
 }
