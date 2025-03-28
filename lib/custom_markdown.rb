@@ -5,7 +5,7 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
   include ActionView::Helpers::SanitizeHelper
 
   def paragraph(text)
-    process_custom_tags("<p>#{text.strip}</p>\n")
+    process_custom_tags("<p>#{text.gsub("\n", '<br/>')}</p>\n")
   end
 
   def list_item(text, _params)
