@@ -39,3 +39,25 @@
   </div>
 </div>
 
+<% content_for :left_sidebar do %>
+  <div class="card primary">
+    <ul>
+      <li>
+        <strong><%= link_to "All", chats_path %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Unread", chats_path(filter: 'unread') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Unanswered", chats_path(filter: 'unanswered') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Ongoing", chats_path(filter: 'ongoing') %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Ended", chats_path(filter: 'ended') %></strong>
+      </li>
+    </ul>
+  </div>
+<% end %>
+

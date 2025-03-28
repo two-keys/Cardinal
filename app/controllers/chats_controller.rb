@@ -12,7 +12,17 @@ class ChatsController < ApplicationController
 
   # GET /chats or /chats.json
   def index
-    @pagy, @chats = pagy(current_user.chats.order('updated_at DESC'), items: 20)
+    query = current_user.chat_users
+    if params[:filter] && ChatUser.statuses.include?(params[:filter])
+      query = if params[:filter] == 'ended' # Special case for ended / ended_viewed
+                query.where(status: %w[ended ended_viewed])
+              else
+                query.where(status: params[:filter])
+              end
+    end
+    chat_ids = query.map(&:chat_id)
+    chats_query = Chat.where(id: chat_ids)
+    @pagy, @chats = pagy(chats_query.order('updated_at DESC'), items: 20)
     respond_to do |format|
       format.html
       format.json { render json: @chats }
