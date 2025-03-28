@@ -33,6 +33,7 @@
 #local stuff
 /vendor/bundle
 dynamic_settings.yml
+dynamic_tag_schema.yml
 .env.local
 .vscode
 /doc
