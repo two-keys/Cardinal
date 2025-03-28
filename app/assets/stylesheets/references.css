@@ -3341,6 +3341,10 @@
         @apply flex flex-col;
     }
 
+    .chat-title, .chat-description {
+        @apply flex;
+    }
+
     .search-form {
         @apply w-full flex flex-row;
     }

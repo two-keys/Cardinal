@@ -19,12 +19,12 @@
     <div class="card secondary">
     <% end %>
       <% if settings.title %>
-        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+        <%= link_to settings.title + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid), class: "chat-title" %>
       <% else %>
-        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid) %>
+        <%= link_to chat.uuid + " (" + (settings.status == "ended_viewed" ? "ended" : settings.status) + ")", chat_path(chat.uuid), class: "chat-title" %>
       <% end %>
       <% if settings.description %>
-        <p><%= settings.description %></p>
+        <p class="chat-description"><%= settings.description %></p>
       <% end %>
       <hr />
       <% if chat.messages.last %>
