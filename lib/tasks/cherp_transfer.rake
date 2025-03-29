@@ -119,42 +119,39 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_ip_ban.updated_at = now
     new_ip_ban.save
   end
-
-  @duplicates_encountered = {}
+  
   @processed_users = 0
   def migrate_user(legacy_user) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @processed_users += 1
     # @progressbar.log "Migrating User #{@processed_users} / #{@migration_users_count} ( #{@processed_users.percent_of(@migration_users_count)}% )- #{legacy_user.user_name}." # rubocop:disable Layout/LineLength
-    new_count = User.where('username LIKE :name', name: "#{legacy_user.user_name}%").count
-    calculated_username = legacy_user.user_name
     new_user = User.new
     new_user.password = 'placeholder'
     new_user.password_confirmation = 'placeholder'
     new_user.legacy = true
     new_user.skip_confirmation!
-    if new_count.positive?
-      @duplicates_encountered[legacy_user.user_name] = 0 unless @duplicates_encountered[legacy_user.user_name].present?
-      if @duplicates_encountered[legacy_user.user_name] > 0
-        calculated_username = "#{calculated_username}_#{@duplicates_encountered[legacy_user.user_name]}"
-        @progressbar.log "WARN: Duplicate username #{legacy_user.user_name}, translating to #{calculated_username}" # rubocop:disable Layout/LineLength
-      end
-      @duplicates_encountered[legacy_user.user_name] = @duplicates_encountered[legacy_user.user_name] + 1
-    end
-    new_user.username = calculated_username
+    new_user.username = legacy_user.user_name
     new_user.id = legacy_user.id
     new_user.created_at = legacy_user.created
     new_user.verified = legacy_user.verified
     new_user.unban_at = legacy_user.unban_date || 9000.years.from_now if legacy_user.account_type == 'banned'
     new_user.ban_reason = legacy_user.ban_reason if legacy_user.account_type == 'banned'
     new_user.encrypted_password = legacy_user.password
+    
+    retries = 0
+    while !did_save
+      result = new_user.save
 
-    result = new_user.save
-
-    if result
-      new_user.update!(encrypted_password: legacy_user.password)
-    else
-      new_user.errors.full_messages.each do |message|
-        @progressbar.log message
+      if result
+        new_user.update!(encrypted_password: legacy_user.password)
+        break
+      else
+        retries++
+        new_user.username = legacy_user.username + "_#{retries}"
+        @progressbar.log "WARN: Duplicate username #{new_user.username}, attempting #{new_user.username}"
+      end
+      if retries >= 50
+        @progressbar.log "WARN: Attempted to migrate user #{retries} times. Skipping."
+        break
       end
     end
   end
