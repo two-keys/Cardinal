@@ -31,7 +31,7 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Filter.count') do
       post filters_url, params: {
         filter: { filter_type: 'Rejection', group: 'default', priority: 0 },
-        tag: { polarity: 'misc', tag_type: 'misc', name: 'Tag I don\'t Like' }
+        tag: { polarity: 'misc', tag_type: 'detail', name: 'Tag I don\'t Like' }
       }
     end
 
@@ -71,7 +71,7 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
 
     patch filter_url(@filter), params: {
       filter: { filter_type: @filter.filter_type, group: @filter.group, priority: @filter.priority },
-      tag: { polarity: 'misc', tag_type: 'misc', name: 'Tag I don\'t Like' }
+      tag: { polarity: 'misc', tag_type: 'detail', name: 'Tag I don\'t Like' }
     }
     assert_redirected_to filter_url(@filter)
   end
@@ -81,7 +81,7 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
 
     patch filter_url(@filter), params: {
       filter: { filter_type: @filter.filter_type, group: @filter.group, priority: @filter.priority },
-      tag: { polarity: 'misc', tag_type: 'misc', name: 'Tag I don\'t Like' }
+      tag: { polarity: 'misc', tag_type: 'detail', name: 'Tag I don\'t Like' }
     }
 
     assert_response :missing

@@ -23,7 +23,7 @@ class TagTest < ActiveSupport::TestCase
   test 'can get children from parent tag' do
     parent_tag = Tag.create(
       name: 'parent',
-      tag_type: 'misc',
+      tag_type: 'detail',
       polarity: 'misc'
     )
 
@@ -31,7 +31,7 @@ class TagTest < ActiveSupport::TestCase
     (1..3).each do |n|
       temp_child = Tag.create(
         name: "#{parent_tag.name} child ##{n}",
-        tag_type: 'misc',
+        tag_type: 'detail',
         polarity: 'misc',
         parent: parent_tag
       )
@@ -54,7 +54,7 @@ class TagTest < ActiveSupport::TestCase
 
     test_tag = Tag.new(
       name: really_long_string,
-      tag_type: 'misc',
+      tag_type: 'detail',
       polarity: 'misc',
       synonym: nil,
       parent: nil
@@ -83,7 +83,7 @@ class TagTest < ActiveSupport::TestCase
     Tag.create!(
       name: 'My New Tag',
       polarity: 'misc',
-      tag_type: 'misc',
+      tag_type: 'detail',
       synonym: nil,
       parent: nil
     )
@@ -91,7 +91,7 @@ class TagTest < ActiveSupport::TestCase
     dupe_tag = Tag.new(
       name: 'My New TAG',
       polarity: 'misc',
-      tag_type: 'misc',
+      tag_type: 'detail',
       synonym: nil,
       parent: nil
     )

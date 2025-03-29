@@ -3,6 +3,6 @@
 class SchemaController < ApplicationController
   # GET /schema/types
   def types
-    render json: CardinalSettings::Tags.types, status: :ok
+    render json: TagSchema::TAG_SCHEMA_HASH, status: :ok
   end
 end

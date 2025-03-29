@@ -33,6 +33,16 @@ module TagSchema
     schema
   end
 
+  def self.polarities
+    polarities = []
+
+    TagSchema::TAG_SCHEMA_HASH['tag_models'].each do |_m_key, model|
+      polarities.concat(model['polarities'].keys)
+    end
+
+    polarities.uniq
+  end
+
   def self.allowed_types
     types = []
 
@@ -64,11 +74,24 @@ module TagSchema
     entries
   end
 
+  def self.fillable?(tag_type)
+    type_hash = TagSchema::TAG_SCHEMA_HASH['tag_types'][tag_type]
+    type_hash['fill_in']
+  end
+
   class BaseTagSchema
     @class_obj = nil
 
     def self.model_hash
       TAG_SCHEMA_HASH['tag_models'][@class_obj.downcase]
+    end
+
+    def self.types
+      all_types = []
+      polarities.each do |polarity|
+        all_types.concat(types_for(polarity))
+      end
+      all_types
     end
 
     def self.polarities

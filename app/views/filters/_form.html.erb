@@ -37,11 +37,11 @@
       <div data-controller="polaritytype">
         <div>
           <%= tag_form.label :polarity, style: "display: block"  %>
-          <%= tag_form.select :polarity, CardinalSettings::Tags.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
+          <%= tag_form.select :polarity, TagSchema.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
         </div>
         <div>
           <%= tag_form.label :tag_type, style: "display: block"  %>
-          <%= tag_form.select :tag_type, CardinalSettings::Tags.types, {}, data: { "polaritytype-target": "tagType" } %>
+          <%= tag_form.select :tag_type, TagSchema.allowed_types, {}, data: { "polaritytype-target": "tagType" } %>
         </div>
       </div>
       <%= tag_form.label :name %>     <%= tag_form.text_field :name %>

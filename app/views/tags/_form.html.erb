@@ -14,12 +14,12 @@
   <div data-controller="polaritytype">
     <div>
       <%= form.label :polarity, style: "display: block" %>
-      <%= form.select :polarity, CardinalSettings::Tags.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
+      <%= form.select :polarity, TagSchema.polarities, {}, data: { "polaritytype-target": "polarity", action: "polaritytype#changePolarity" } %>
     </div>
   
     <div>
       <%= form.label :tag_type, style: "display: block" %>
-      <%= form.select :tag_type, CardinalSettings::Tags.types, {}, data: { "polaritytype-target": "tagType" } %>
+      <%= form.select :tag_type, TagSchema.allowed_types, {}, data: { "polaritytype-target": "tagType" } %>
     </div>
   </div>
   <div>

@@ -5,56 +5,44 @@ module Taggable
 
   def tags_for(polarity)
     polarity_tags = {}
-    raw_polarity_tags = tags.where(
-      polarity:
-    )
 
-    CardinalSettings::Tags.types.each do |tag_type, tag_hash|
-      next unless tag_hash['polarities'].include? polarity
-
-      polarity_type_tags = raw_polarity_tags.filter do |tag|
-        tag.tag_type == tag_type
-      end
-      polarity_tags[tag_type] = polarity_type_tags unless polarity_type_tags.empty?
+    tag_schema = TagSchema.get_schema(model_name.plural)
+    # get valid tag types for this model's polarity section
+    tag_schema.types_for(polarity).each do |tag_type|
+      # add those tags falling under polarity -> tag type
+      polarity_tags[tag_type] = tags.where(polarity:, tag_type:)
     end
 
     polarity_tags
   end
 
-  def self.tags_for(polarity, tags)
-    return nil if tags.nil?
+  def self.tags_for(polarity, tagset)
+    return nil if tagset.nil?
 
     polarity_tags = {}
-    tag_ids = tags.map(&:tag_id)
 
+    tag_ids = tagset.map(&:tag_id)
     raw_tags = Tag.where(
       id: tag_ids
     )
-    raw_polarity_tags = raw_tags.where(
-      polarity:
-    )
 
-    CardinalSettings::Tags.types.each do |tag_type, tag_hash|
-      next unless tag_hash['polarities'].include? polarity
-
-      polarity_type_tags = raw_polarity_tags.filter do |tag|
-        tag.tag_type == tag_type
-      end
-      polarity_tags[tag_type] = polarity_type_tags unless polarity_type_tags.empty?
+    tag_schema = TagSchema.get_schema(model_name.plural)
+    # get valid tag types for this model's polarity section
+    tag_schema.types_for(polarity).each do |tag_type|
+      # add those tags falling under polarity -> tag type
+      polarity_tags[tag_type] = raw_tags.where(polarity:, tag_type:)
     end
-
-    Rails.logger.debug polarity_tags
 
     polarity_tags
   end
 
   def entries_for(polarity, tag_type)
     checked_entries = tags.where(
-      name: CardinalSettings::Tags.types[tag_type]['entries']
+      name: TagSchema.entries_for(tag_type)
     ).where(
       polarity:, tag_type:
     ).pluck(:name)
-    CardinalSettings::Tags.types[tag_type]['entries'].map do |entry|
+    TagSchema.entries_for(tag_type).map do |entry|
       {
         name: entry,
         checked: checked_entries.include?(entry)
@@ -64,7 +52,7 @@ module Taggable
 
   def fill_ins_for(polarity, tag_type)
     tags.where.not(
-      name: CardinalSettings::Tags.types[tag_type]['entries']
+      name: TagSchema.entries_for(tag_type)
     ).where(
       polarity:, tag_type:
     ).pluck(:name)
@@ -97,20 +85,25 @@ module Taggable
 
   # Adds tags outside of the normal synonym/parent ecosystem.
   def add_meta_tags
+    tag_schema = TagSchema.get_schema(model_name.plural)
+
     # An array of strings representing the tag types present in this prompt
-    calculated_types = tags.pluck(:tag_type)
-    # A hash of type hashes from our site settings. Only includes those with parents
-    cardinal_types = CardinalSettings::Tags.types.select do |_k, v|
-      v['parent'].present?
+    calculated_types = tags.pluck(:tag_type).to_a.uniq
+
+    tag_type_hashes = TagSchema::TAG_SCHEMA_HASH['tag_types']
+
+    # an array of tag types with parents
+    cardinal_types = tag_schema.types.select do |tag_type|
+      tag_type_hashes[tag_type]['parent'].present?
     end
 
     calculated_types.each do |calc_type|
-      has_parent = cardinal_types.key?(calc_type)
+      has_parent = cardinal_types.include?(calc_type)
       # logger.debug "#{calc_type} has_parent = #{has_parent}"
       next unless has_parent
 
-      # Array of form [<tag_type>, <tag_lower_name>]
-      tag_components = cardinal_types[calc_type]['parent']
+      # get pieces of parent
+      tag_components = tag_type_hashes[calc_type]['parent']
 
       new_parent = Tag.find_or_create_with_downcase(
         polarity: tag_components['polarity'],

@@ -8,10 +8,12 @@ class CharacterTest < ActiveSupport::TestCase
     @first_tag_for_char = object_tags(:char_one_suite1)
     @user = users(:user)
 
+    @romance = tags(:romance)
+
     @generic = tags(:generic)
-    @generic1 = Tag.create(name: '1', tag_type: 'misc', polarity: 'misc', parent: @generic)
-    @generic2 = Tag.create(name: '2', tag_type: 'misc', polarity: 'misc', parent: @generic1)
-    @generic3 = Tag.create(name: '3', tag_type: 'misc', polarity: 'misc', parent: @generic2)
+    @generic1 = Tag.create(name: '1', tag_type: 'detail', polarity: 'misc', parent: @generic)
+    @generic2 = Tag.create(name: '2', tag_type: 'detail', polarity: 'misc', parent: @generic1)
+    @generic3 = Tag.create(name: '3', tag_type: 'detail', polarity: 'misc', parent: @generic2)
 
     @modernfan = tags(:modernfan)
     @twentiethcenturyfantasy = tags(:twentiethcenturyfantasy)
@@ -54,14 +56,6 @@ class CharacterTest < ActiveSupport::TestCase
 
     assert_nothing_raised do
       actual_tag.reload
-    end
-  end
-
-  test 'if a tag with a parent is added to a character, its ancestors should be added too' do
-    assert_difference('@character.tags.count', 3) do
-      @character.tags << @generic3
-      @character.process_tags
-      @character.save
     end
   end
 

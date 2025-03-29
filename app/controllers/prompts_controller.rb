@@ -17,6 +17,7 @@ class PromptsController < ApplicationController
 
   authorize_resource
 
+  include TaggableController
   include SearchableController
   include PseudableController
   include CharacterizedController

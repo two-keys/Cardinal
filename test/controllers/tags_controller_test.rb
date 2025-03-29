@@ -77,7 +77,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@admin)
     assert_difference('Tag.count') do
       post tags_url, params: {
-        tag: { name: 'new tag', tag_type: 'misc', polarity: 'misc' },
+        tag: { name: 'new tag', tag_type: 'detail', polarity: 'misc' },
         parent: { name: '', tag_type: '' }, synonym: { name: '', tag_type: '' }
       }
     end
@@ -94,7 +94,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Tag.count', 2) do
       post tags_url, params: {
         tag: { name: 'new tag', tag_type: @capital.tag_type, polarity: @capital.polarity },
-        parent: { name: 'new parent', tag_type: 'misc', polarity: 'misc' },
+        parent: { name: 'new parent', tag_type: 'detail', polarity: 'misc' },
         synonym: { name: '', tag_type: '', polarity: '' }
       }
     end
@@ -112,7 +112,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
       post tags_url, params: {
         tag: { name: 'new tag', tag_type: @capital.tag_type, polarity: @capital.polarity },
         parent: { name: '', tag_type: '', polarity: '' },
-        synonym: { name: 'new parent', tag_type: 'misc', polarity: 'misc' }
+        synonym: { name: 'new synonymm', tag_type: 'detail', polarity: 'misc' }
       }
     end
 
@@ -150,7 +150,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@admin)
     patch tag_url(@capital), params: {
       tag: { name: @capital.name, tag_type: @capital.tag_type },
-      parent: { name: 'Country', tag_type: 'misc', polarity: 'misc' }, synonym: { name: '', tag_type: '', polarity: '' }
+      parent: { name: 'Country', tag_type: 'detail', polarity: 'misc' }, synonym: { name: '', tag_type: '', polarity: '' }
     }
     assert_redirected_to tag_url(@capital)
 
@@ -164,7 +164,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@admin)
     patch tag_url(@capital), params: {
       tag: { name: @capital.name, tag_type: @capital.tag_type },
-      parent: { name: '', tag_type: '' }, synonym: { name: 'St. Louis', tag_type: 'misc', polarity: 'misc' }
+      parent: { name: '', tag_type: '' }, synonym: { name: 'St. Louis', tag_type: 'detail', polarity: 'misc' }
     }
     assert_redirected_to tag_url(@capital)
 

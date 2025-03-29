@@ -68,7 +68,7 @@ class TagSynonymTest < ActiveSupport::TestCase
   test 'can get duplicates from real tag' do
     real_tag = Tag.create(
       name: 'real',
-      tag_type: 'misc',
+      tag_type: 'detail',
       polarity: 'misc'
     )
 
@@ -76,7 +76,7 @@ class TagSynonymTest < ActiveSupport::TestCase
     (1..2).each do |n|
       temp_dupe = Tag.create(
         name: "#{real_tag.name} dupe ##{n}",
-        tag_type: 'misc',
+        tag_type: 'detail',
         polarity: 'misc',
         synonym: real_tag
       )

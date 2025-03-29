@@ -60,7 +60,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
       {
         tags: {
           meta: {
-            type: ['Some generic type tag, Another type tag']
+            genre: ['Romance']
           },
           playing: {
             fandom: ['A piece of media'],
@@ -70,10 +70,10 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::CharacterTagSchema.allowed_type_params)
 
     assert permitted.key?(:meta)
-    assert permitted[:meta].key?(:type)
+    assert permitted[:meta].key?(:genre)
 
     assert permitted.key?(:playing)
     assert permitted[:playing].key?(:fandom)
@@ -92,7 +92,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::CharacterTagSchema.allowed_type_params)
 
     assert_not permitted.key?(:not_a_valid_key)
     assert_not permitted[:meta][0].key?(:not_a_good_key)
@@ -102,30 +102,32 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     params = ActionController::Parameters.new(
       {
         tags: {
-          meta: { bad_value: 'hi' },
+          meta: { bad_value: 'hi', fandom: ['Huh?'] },
           playing: [['bad'], ['value']],
           seeking: [tag: { character_id: 1, user_id: 99 }],
-          misc: { fandom: ['Huh?'] }
         }
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::CharacterTagSchema.allowed_type_params)
 
     assert_not permitted[:meta].key?(:bad_value)
+    assert_not permitted[:meta].key?(:fandom)
     assert permitted[:playing].empty?
-    assert_not permitted[:seeking][0].key?(:tag)
-    assert_not permitted[:misc].key?(:fandom)
+    assert_not permitted.key?(:seeking)
   end
 
   test 'should create character' do
     sign_in(@user)
     assert_difference('Character.count') do
       post characters_url, params: {
-        character: { description: 'Some unique description text', starter: 'Some unique starter text' },
+        character: { description: 'Some unique description text' },
         tags: {
-          misc: {
-            misc: ['This is a misc tag']
+          meta: {
+            genre: ['Romance']
+          },
+          playing: {
+            gender: ['Cis Male']
           }
         }
       }
@@ -140,8 +142,8 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
       post characters_url, params: {
         character: { description: 'Some unique description text' },
         tags: {
-          misc: {
-            misc: ['This is a misc tag']
+          meta: {
+            genre: ['Romance']
           }
         }
       }
@@ -155,8 +157,8 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     post characters_url, params: {
       character: { starter: 'Some unique starter text' },
       tags: {
-        misc: {
-          misc: ["This tag is really#{' really' * 500} long"]
+        playing: {
+          fandom: ["This tag is really#{' really' * 500} long"]
         }
       }
     }
@@ -211,21 +213,13 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
   test 'should update character to have tags' do
     sign_in(@user)
 
-    assert_difference('ObjectTag.count', 7) do
+    assert_difference('ObjectTag.count', 3) do
       patch character_tags_url(@character_without_tags), params: {
         tags: {
           playing: {
             fandom: ['Some Fandom?'], # 1
             character: ['A Guy'], # 2
             characteristic: ['Short'] # 3
-          },
-          seeking: {
-            fandom: ['Some Other Fandom?'], # 4
-            character: ['Another guy'], # 5
-            characteristic: ['Tall'] # 6
-          },
-          misc: {
-            misc: ['This is a misc tag'] # 7
           }
         }
       }
@@ -247,8 +241,8 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     ) do
       patch character_tags_url(@character), params: {
         tags: {
-          misc: {
-            misc: ['This is a misc tag'] # 1
+          meta: {
+            genre: ['Romance']
           }
         }
       }

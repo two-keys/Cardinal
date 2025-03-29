@@ -110,9 +110,8 @@ class TagsController < ApplicationController
     end
 
     # Exclude things we make checkboxes for
-    CardinalSettings::Tags.types[params[:tag_type]]['entries']&.map do |entry|
-      @tags = @tags.where.not(name: entry)
-    end
+    entry_tags = TagSchema.entries_for(params[:tag_type])
+    @tags = @tags.where.not(name: entry_tags)
 
     respond_to do |format|
       format.turbo_stream do
