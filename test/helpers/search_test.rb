@@ -19,11 +19,11 @@ class SearchTest < ActiveSupport::TestCase
     )
     @blockable = Tag.create!(
       polarity: 'misc',
-      tag_type: 'misc',
-      name: 'Blockable'
+      tag_type: 'detail',
+      name: 'Romancelike'
     )
     @blockable_prompt.tags << @blockable
-    @exceptable = Tag.create!(polarity: 'misc', tag_type: 'misc', name: 'Exceptable')
+    @exceptable = Tag.create!(polarity: 'meta', tag_type: 'genre', name: 'Action')
     @blockable_prompt.tags << @exceptable
 
     Filter.create!(user: @user, target: @blockable, filter_type: 'Rejection')

@@ -9,9 +9,9 @@ class PromptTest < ActiveSupport::TestCase
     @user = users(:user)
 
     @generic = tags(:generic)
-    @generic1 = Tag.create(name: '1', tag_type: 'misc', polarity: 'misc', parent: @generic)
-    @generic2 = Tag.create(name: '2', tag_type: 'misc', polarity: 'misc', parent: @generic1)
-    @generic3 = Tag.create(name: '3', tag_type: 'misc', polarity: 'misc', parent: @generic2)
+    @generic1 = Tag.create(name: '1', tag_type: 'detail', polarity: 'misc', parent: @generic)
+    @generic2 = Tag.create(name: '2', tag_type: 'detail', polarity: 'misc', parent: @generic1)
+    @generic3 = Tag.create(name: '3', tag_type: 'detail', polarity: 'misc', parent: @generic2)
 
     @modernfan = tags(:modernfan)
     @twentiethcenturyfantasy = tags(:twentiethcenturyfantasy)

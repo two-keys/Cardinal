@@ -14,6 +14,7 @@ class CharactersController < ApplicationController
 
   authorize_resource
 
+  include TaggableController
   include SearchableController
   include PseudableController
 
@@ -97,10 +98,6 @@ class CharactersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def character_params
     params.require(:character).permit(:name, :description, :color, :status, :default_slots, :pseudonym_id)
-  end
-
-  def tag_params
-    params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
   end
 
   def search_params

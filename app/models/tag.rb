@@ -19,7 +19,7 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 254 }
   validates :lower, presence: true, length: { maximum: 254 }, uniqueness: { scope: %i[polarity tag_type] }
-  validates :tag_type, presence: true, length: { maximum: 25 }, inclusion: CardinalSettings::Tags.types.keys
+  validates :tag_type, presence: true, length: { maximum: 25 }, inclusion: TagSchema.allowed_types
 
   validates :polarity, presence: true
   validate :polarity_must_match_tag_type
@@ -145,7 +145,7 @@ class Tag < ApplicationRecord
   private
 
   def polarity_must_match_tag_type
-    return if CardinalSettings::Tags.polarities_for(tag_type).include? polarity
+    return if TagSchema.allowed_types_for(polarity).include?(tag_type)
 
     errors.add(:polarity, 'Must be a valid polarity for the given tag type')
   end

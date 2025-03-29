@@ -23,11 +23,11 @@
         <div class="tag-actions" data-controller="tagactions">
             <div class="tag-actions-input">
                 <div class="tag-polarity-types" data-controller="polaritytype">
-                    <%= select 'tag', 'polarity', CardinalSettings::Tags.polarities, {}, data: { 
+                    <%= select 'tag', 'polarity', TagSchema.polarities, {}, data: { 
                     "tagactions-target": "polarity",
                     "polaritytype-target": "polarity", action: "polaritytype#changePolarity"
                     } %>
-                    <%= select 'tag', 'type', CardinalSettings::Tags.types.keys, {}, data: {
+                    <%= select 'tag', 'type', TagSchema.allowed_types, {}, data: {
                     "tagactions-target": "tagType",
                     "polaritytype-target": "tagType"
                     } %>

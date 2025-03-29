@@ -1,18 +1,17 @@
+<% tag_schema = TagSchema.get_schema('characters') %>
 <%= fields_for :tags do |tag_form| %>
   <% @autocomplete = !Rails.env.test? %>
-  <% CardinalSettings::Tags.polarities.each do |polarity| %>
+  <% tag_schema.polarities.each do |polarity| %>
     <div class="polarity">
       <h3><%= tag_form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
-      <% CardinalSettings::Tags.types.each do |tag_type, tag_hash| %>
-        <% if tag_hash['polarities'].include?(polarity) %>
-          <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
-            <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
-            <% if tag_hash.key? 'entries' %>
-              <%= render partial: 'characters/form_tags/entries', locals: { entries: character.entries_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
-            <% end %>
-            <% if tag_hash['fill_in'] %>
-              <%= render partial: 'characters/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: character.fill_ins_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
-            <% end %>
+      <% tag_schema.types_for(polarity).each do |tag_type| %>
+        <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
+          <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
+          <% unless TagSchema.entries_for(tag_type).empty? %>
+            <%= render partial: 'characters/form_tags/entries', locals: { entries: character.entries_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+          <% end %>
+          <% if TagSchema.fillable?(tag_type) %>
+            <%= render partial: 'characters/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: character.fill_ins_for(polarity, tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
           <% end %>
         <% end %>
       <% end %>

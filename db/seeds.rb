@@ -69,12 +69,12 @@ user_arr << temp_user
 # Tags
 log_to_console logger, 'Starting to seed tags'
 
-CardinalSettings::Tags.types.map do |tag_type_key, type_hash|
+TagSchema.allowed_types.map do |tag_type_key|
   type_hash['polarities'].each do |polarity|
     log_to_console logger, "creating tags for #{polarity}, #{tag_type_key}", 2
     created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
 
-    if type_hash['fill_in']
+    if TagSchema.fillable?(tag_type_key)
       # randomly generated fill_ins
 
       rand(1..5).times do
