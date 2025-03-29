@@ -72,7 +72,9 @@ COPY --from=build /app /app
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails
 RUN useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
-RUN chown -R rails:rails db log tmp
+RUN find db -print | xargs --max-args=1 --max-procs=100 chown -R rails:rails
+RUN find log -print | xargs --max-args=1 --max-procs=100 chown -R rails:rails
+RUN find tmp -print | xargs --max-args=1 --max-procs=100 chown -R rails:rails
 
 USER 1000:1000
 
