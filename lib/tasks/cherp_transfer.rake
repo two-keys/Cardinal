@@ -361,6 +361,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       message_array << new_message
       progressbar.increment
     end
+    progressbar.log 'Begin Messages.insert_all, this might take a while'
     Message.insert_all(message_array)
   end
 
