@@ -235,6 +235,10 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   @processed_tags = 0
   def migrate_tag(legacy_tag) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @processed_tags += 1
+    if legacy_tag.name.blank?
+      @progressbar.log "WARN: Legacy::Tag #{legacy_tag.id} is blank. Skipping."
+      return
+    end
     nt_polarity = get_polarity(legacy_tag.type)
     if nt_polarity
       new_tag = Tag.find_or_create_with_downcase(
