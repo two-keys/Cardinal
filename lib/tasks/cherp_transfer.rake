@@ -147,8 +147,8 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         break
       else
         retries++
-        new_user.username = legacy_user.username + "_#{retries}"
-        @progressbar.log "WARN: Duplicate username #{new_user.username}, attempting #{new_user.username}"
+        new_user.username = legacy_user.user_name + "_#{retries}"
+        @progressbar.log "WARN: Duplicate username, attempting #{new_user.username}"
       end
       if retries >= 50
         @progressbar.log "WARN: Attempted to migrate user #{retries} times. Skipping."
