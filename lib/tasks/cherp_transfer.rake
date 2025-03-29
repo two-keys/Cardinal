@@ -146,7 +146,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         new_user.update!(encrypted_password: legacy_user.password)
         break
       else
-        @retries = retries + 1
+        @retries = @retries + 1
         new_user.username = "#{legacy_user.user_name}_#{@retries}"
         @progressbar.log "WARN: Duplicate username, attempting #{new_user.username}"
       end
