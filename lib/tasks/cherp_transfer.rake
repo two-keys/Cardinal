@@ -120,20 +120,27 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_ip_ban.save
   end
 
+  @duplicates_encountered = {}
   @processed_users = 0
   def migrate_user(legacy_user) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @processed_users += 1
     # @progressbar.log "Migrating User #{@processed_users} / #{@migration_users_count} ( #{@processed_users.percent_of(@migration_users_count)}% )- #{legacy_user.user_name}." # rubocop:disable Layout/LineLength
     new_count = User.where('username LIKE :name', name: "#{legacy_user.user_name}%").count
+    calculated_username = legacy_user.user_name
     new_user = User.new
     new_user.password = 'placeholder'
     new_user.password_confirmation = 'placeholder'
     new_user.legacy = true
     new_user.skip_confirmation!
     if new_count.positive?
-      @progressbar.log "WARN: Duplicate username #{legacy_user.user_name}, translating to #{legacy_user.user_name}_#{new_count}" # rubocop:disable Layout/LineLength
+      @duplicates_encountered[legacy_user.user_name] = 0 unless @duplicates_encountered[legacy_user.user_name].present?
+      if @duplicates_encountered[legacy_user.user_name] > 0
+        calculated_username = "#{calculated_username}_#{@duplicates_encountered[legacy_user.user_name]}"
+        @progressbar.log "WARN: Duplicate username #{legacy_user.user_name}, translating to #{calculated_username}" # rubocop:disable Layout/LineLength
+      end
+      @duplicates_encountered[legacy_user.user_name] = @duplicates_encountered[legacy_user.user_name] + 1
     end
-    new_user.username = new_count.zero? ? legacy_user.user_name : "#{legacy_user.user_name}_#{new_count}"
+    new_user.username = calculated_username
     new_user.id = legacy_user.id
     new_user.created_at = legacy_user.created
     new_user.verified = legacy_user.verified
