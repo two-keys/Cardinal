@@ -104,7 +104,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
         tags: {
           meta: { bad_value: 'hi', fandom: ['Huh?'] },
           playing: [['bad'], ['value']],
-          seeking: [tag: { character_id: 1, user_id: 99 }],
+          seeking: [tag: { character_id: 1, user_id: 99 }]
         }
       }
     )

@@ -150,7 +150,11 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@admin)
     patch tag_url(@capital), params: {
       tag: { name: @capital.name, tag_type: @capital.tag_type },
-      parent: { name: 'Country', tag_type: 'detail', polarity: 'misc' }, synonym: { name: '', tag_type: '', polarity: '' }
+      parent: {
+        name: 'Country',
+        tag_type: 'detail',
+        polarity: 'misc'
+      }, synonym: { name: '', tag_type: '', polarity: '' }
     }
     assert_redirected_to tag_url(@capital)
 

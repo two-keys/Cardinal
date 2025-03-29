@@ -36,7 +36,7 @@ module TagSchema
   def self.polarities
     polarities = []
 
-    TagSchema::TAG_SCHEMA_HASH['tag_models'].each do |_m_key, model|
+    TagSchema::TAG_SCHEMA_HASH['tag_models'].each_value do |model|
       polarities.concat(model['polarities'].keys)
     end
 
@@ -46,8 +46,8 @@ module TagSchema
   def self.allowed_types
     types = []
 
-    TagSchema::TAG_SCHEMA_HASH['tag_models'].each do |_m_key, model|
-      model['polarities'].each do |_p_key, polarity|
+    TagSchema::TAG_SCHEMA_HASH['tag_models'].each_value do |model|
+      model['polarities'].each_value do |polarity|
         types.concat(polarity['tag_types'])
       end
     end
@@ -58,7 +58,7 @@ module TagSchema
   def self.allowed_types_for(polarity)
     types = []
 
-    TagSchema::TAG_SCHEMA_HASH['tag_models'].each do |_m_key, model|
+    TagSchema::TAG_SCHEMA_HASH['tag_models'].each_value do |model|
       types.concat(model['polarities'][polarity]['tag_types']) if model['polarities'].include?(polarity)
     end
 
