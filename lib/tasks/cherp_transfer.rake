@@ -340,32 +340,28 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
         new_chat_user.save
       end
     end
-    migrate_messages(legacy_chat.messages)
-    new_chat_user.chat.update(updated_at: new_chat_user.chat.messages.last.created_at)
   end
 
   @processed_messages = 0
-  def migrate_messages(legacy_messages)
-    @processed_messages += 1
-    legacy_messages.each do |legacy_message|
+  def migrate_messages(legacy_messages, progressbar)
+    message_array = []
+    legacy_messages.find_each(batch_size:) do |legacy_message|
       @processed_messages += 1
       # @progressbar.log "Migrating Message #{@processed_messages} / #{@migration_messages_count} ( #{@processed_messages.percent_of(@migration_messages_count)}% ) - #{legacy_message.id}." # rubocop:disable Layout/LineLength
-      new_message = Message.new
-      new_message.id = legacy_message.id
-      new_message.chat_id = legacy_message.chat_id
-      new_message.user_id = legacy_message.message_type == 'system' ? nil : legacy_message.message_sender
-      new_message.content = legacy_message.message_content
-      new_message.color = legacy_message.colour
-      new_message.created_at = legacy_message.timestamp
-      new_message.updated_at = legacy_message.edited_on
-      new_message.ooc = legacy_message.message_type == 'ooc'
+      new_message = {}
+      new_message[:id] = legacy_message.id
+      new_message[:chat_id] = legacy_message.chat_id
+      new_message[:user_id] = legacy_message.message_type == 'system' ? nil : legacy_message.message_sender
+      new_message[:content] = legacy_message.message_content
+      new_message[:color] = legacy_message.colour
+      new_message[:created_at] = legacy_message.timestamp
+      new_message[:updated_at] = legacy_message.edited_on
+      new_message[:ooc] = legacy_message.message_type == 'ooc'
 
-      begin
-        new_message.save
-      rescue ActiveRecord::RecordNotUnique
-        @progressbar.log "WARN: Message #{new_message.id} already exists. Skipping."
-      end
+      message_array << new_message
+      progressbar.increment
     end
+    Message.insert_all(message_array)
   end
 
   if @migration_ip_bans_count.positive?
@@ -438,15 +434,6 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       @progressbar.increment
     end
     @progressbar.log 'End migrating chats.'
-
-    @progressbar.log 'Begin migrating chat_users.'
-    @progressbar = ProgressBar.create(title: 'Chats (ChatUsers)', format: @progressbar_format,
-                                      total: @migration_chats_count)
-    @migration_chats.find_each(batch_size:) do |legacy_chat|
-      migrate_chat_users(legacy_chat)
-      @progressbar.increment
-    end
-    @progressbar.log 'End migrating chat_users'
   end
 
   if @empty_chats_count.positive?
@@ -458,6 +445,19 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     end
     @progressbar.log 'End migrating chat_users for empty existing.'
   end
+
+  if @migration_messages_count.positive?
+    @progressbar.log 'Begin migrating messages.'
+    @progressbar = ProgressBar.create(title: 'Messages', format: @progressbar_format, total: @migration_messages_count)
+    migrate_messages(@migration_messages, @progressbar)
+    @progressbar.log 'End migrating messages.'
+  end
+
+  @progressbar.log "Setting updated_at for chat_users"
+  ChatUser.find_each(batch_size:) do |chat_user|
+    chat_user.chat.update(updated_at: chat_user.chat.messages.last.created_at) if chat_user.chat.messages.any?
+  end
+  @progressbar.log "End setting updated_at for chat_users"
 
   if @migration_alerts_count.positive?
     @progressbar.log 'Begin migrating alerts.'
