@@ -4,50 +4,6 @@
   icons:
     icon_blacklist: ["🐦"] 
     system_icon: "🐦"
-  tags:
-    nullify_tag: 
-      type: misc
-      name: nullify
-      polarity: misc
-    types: # The order of each 'type' here determines the order it'll be displayed in under each polarity (eg fandom tags before character tags)
-      type:
-        polarities: # determines which cards this goes into on the directory
-          - meta
-        fill_in: False # determines if users can define tags
-      fandom:
-        polarities:
-          - playing
-          - seeking
-        fill_in: True
-      character:
-        polarities:
-          - playing
-          - seeking
-        fill_in: True
-      gender:
-        polarities:
-          - playing
-          - seeking
-        fill_in: False
-      characteristic:
-        polarities:
-          - playing
-          - seeking
-        fill_in: True
-      misc:
-        polarities:
-          - misc
-        fill_in: True
-        entries: # default tags to display in the prompt creation screen. if entries is missing, no defaults are displayed
-          - "Some Content Optional(Check OOC Notes)"
-          - "Willing to play multiple characters"
-          - "Short Paragraph"
-          - "2-3 Paragraphs"
-          - "4+ paragraphs"
-          - "Original Characters Only"
-          - "OCs Accepted"
-          - "OCs Not Accepted"
-          - "Alternate Universe (specified in OOC Notes)"
   donation:
     prices:
       - cost: 5
