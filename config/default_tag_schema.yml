@@ -1,0 +1,141 @@
+---
+type: default
+version: 1.0.0
+tag_types:
+  light_warning: 
+    fill_in: true
+    entries:
+      - Alcohol Use
+      - Marijuana Use
+      - Backstory Death
+      - Injury
+      - Illness
+      - Violence
+      - Pregnancy
+      - Medical Themes
+  heavy_warning:
+    fill_in: true
+    entries:
+      - Rape
+      - Dubcon
+      - CSA
+      - Incest
+      - Bestiality
+      - Character Death
+      - Gore
+      - Self-harm
+      - Drug Abuse
+      - Alcohol Abuse
+      - Abuse
+      - Bigotry
+      - Filth/Unsanitary Themes
+      - Vore
+  genre:
+    fill_in: false
+    entries:
+      - Romance
+      - Action
+      - Angst
+      - Platonic
+      - Horror
+  fandom:
+    fill_in: true
+  character:
+    fill_in: true
+  gender:
+    fill_in: false
+    entries:
+      - Cis Male
+      - Cis Female
+      - Trans Male
+      - Trans Female
+      - Non-binary
+      - Genderless
+      - Genderbend
+      - Fantasy Morphology (Feminine)
+      - Fantasy Morphology (Masculine)
+      - Fantasy Morphology (Non-Binary)
+  characteristic:
+    fill_in: true
+  setting:
+    fill_in: true
+    entries:
+      - Canon
+      - Canon-Divergent
+      - Alternate Universe
+      - Original Setting
+  theme:
+    fill_in: true
+  detail:
+    fill_in: true
+    entries:
+      - Some Content Optional (Check OOC)
+      - No Offsite
+  post_length:
+    fill_in: false
+    entries:
+      - Short Paragraph
+      - 2-3 paragraph
+      - 4+ paragraphs
+  rp_length:
+    fill_in: false
+    entries:
+      - Short-Term
+      - Medium-Term
+      - Long-Term
+  character_pref:
+    fill_in: false
+    entries:
+      - Original Characters Accepted
+      - Canon Characters Accepted
+      - Willing to play as multiple characters
+  plotness:
+    fill_in: false
+    entries:
+      - No Plot
+      - Minimal Plot
+      - Plot-Driven
+      - Episodic Story
+      - Continuous Story
+tag_models:
+  prompt:
+    polarities: # order here = display order
+      meta:
+        tag_types: # order here = display order
+          - light_warning
+          - heavy_warning
+          - genre
+      playing:
+        tag_types:
+          - fandom
+          - character
+          - gender
+          - characteristic
+      seeking:
+        tag_types:
+          - fandom
+          - character
+          - gender
+          - characteristic
+      misc:
+        tag_types:
+          - setting
+          - theme
+          - detail
+          - post_length
+          - rp_length
+          - character_pref
+          - plotness
+  character:
+    polarities:
+      meta:
+        tag_types: 
+          - light_warning
+          - heavy_warning
+          - genre
+      playing:
+        tag_types:
+          - fandom
+          - character
+          - gender
+          - characteristic

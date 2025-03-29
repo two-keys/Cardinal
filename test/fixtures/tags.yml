@@ -3,43 +3,55 @@
 son:
   name: son
   lower: son
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 dad:
   name: dad
   lower: dad
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 capital:
   name: CAPITAL
   lower: capital
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 generic:
   name: Generic tag
   lower: generic tag
-  tag_type: misc
+  tag_type: detail
   polarity: misc
+
+kissing:
+  name: Kissing
+  lower: kissing
+  tag_type: detail
+  polarity: misc
+
+romance:
+  name: Romance
+  lower: romance
+  tag_type: genre
+  polarity: meta
 
 modernfan:
   name: Modern Fantasy
   lower: modern fantasy
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 twentiethcentury:
   name: 20th Century
   lower: 20th century
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 twentiethcenturyfantasy:
   name: 20th century Fantasy
   lower: 20th century fantasy
-  tag_type: misc
+  tag_type: detail
   polarity: misc
   synonym: modernfan
 
@@ -58,18 +70,18 @@ originalcharacter:
 disabled:
   name: Disabled tag
   lower: disabled tag
-  tag_type: misc
+  tag_type: detail
   polarity: misc
   enabled: false
 
 tagfordupefilters:
   name: Tag dupefilters
   lower: tag dupefilters
-  tag_type: misc
+  tag_type: detail
   polarity: misc
 
 camel_case:
   name: camelCase
   lower: camelcase
-  tag_type: misc
+  tag_type: detail
   polarity: misc

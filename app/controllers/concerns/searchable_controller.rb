@@ -70,10 +70,6 @@ module SearchableController
 
   private
 
-  def tag_params
-    params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
-  end
-
   def search_params
     params.permit(:before, :tags, :nottags)
   end

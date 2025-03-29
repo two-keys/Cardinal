@@ -63,7 +63,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       {
         tags: {
           meta: {
-            type: ['Some generic type tag, Another type tag']
+            genre: ['Romance']
           },
           playing: {
             fandom: ['A piece of media'],
@@ -73,10 +73,10 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::PromptTagSchema.allowed_type_params)
 
     assert permitted.key?(:meta)
-    assert permitted[:meta].key?(:type)
+    assert permitted[:meta].key?(:genre)
 
     assert permitted.key?(:playing)
     assert permitted[:playing].key?(:fandom)
@@ -95,7 +95,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::PromptTagSchema.allowed_type_params)
 
     assert_not permitted.key?(:not_a_valid_key)
     assert_not permitted[:meta][0].key?(:not_a_good_key)
@@ -113,7 +113,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       }
     )
 
-    permitted = params.require(:tags).permit(**CardinalSettings::Tags.allowed_type_params)
+    permitted = params.require(:tags).permit(**TagSchema::PromptTagSchema.allowed_type_params)
 
     assert_not permitted[:meta].key?(:bad_value)
     assert permitted[:playing].empty?
@@ -179,7 +179,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
       prompt: { starter: 'Some unique starter text' },
       tags: {
         misc: {
-          misc: ["This tag is really#{' really' * 500} long"]
+          detail: ["This tag is really#{' really' * 500} long"]
         }
       }
     }
@@ -299,7 +299,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
             characteristic: ['Tall'] # 6
           },
           misc: {
-            misc: ['This is a misc tag'] # 7
+            detail: ['This is a misc tag'] # 7
           }
         }
       }
@@ -371,7 +371,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
         characters: ['-1'],
         tags: {
           misc: {
-            misc: ['This is a misc tag'] # 1
+            detail: ['This is a misc tag'] # 1
           }
         }
       }

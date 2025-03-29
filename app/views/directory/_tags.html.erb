@@ -1,4 +1,5 @@
-<% CardinalSettings::Tags.polarities.each do |polarity| %>
+<% tag_schema = TagSchema.get_schema(model.model_name.plural) %>
+<% tag_schema.polarities.each do |polarity| %>
   <div id="<%= polarity %>" class="polarity">  
     <h4><%= polarity.upcase %></h4>
     <% tags_for_polarity = nil %>

@@ -25,7 +25,7 @@ class PromptsTest < ApplicationSystemTestCase
 
   test 'prompts with rejected tags should not show up' do
     bad_tag_objs = (1..3).map do |num|
-      { polarity: 'misc', tag_type: 'misc', name: "bad tag #{num}" }
+      { polarity: 'misc', tag_type: 'detail', name: "bad tag #{num}" }
     end
 
     bad_tags = []
@@ -133,8 +133,8 @@ class PromptsTest < ApplicationSystemTestCase
     tags_to_look_for = []
 
     fill_in 'Ooc', with: '1234928i383 totally unique prompt ooc'
-    CardinalSettings::Tags.types.each do |tag_type, type_hash|
-      next unless type_hash['fill_in']
+    TagSchema::PromptTagSchema.types.each do |tag_type|
+      next unless TagSchema.fillable?(tag_type)
 
       type_hash['polarities'].each do |polarity|
         text = "Totally unique #{polarity} #{tag_type} tag"
@@ -161,8 +161,8 @@ class PromptsTest < ApplicationSystemTestCase
     tags_to_look_for = []
 
     fill_in 'prompt_ooc', with: '1234928i383 totally unique prompt ooc'
-    CardinalSettings::Tags.types.each_value do |type_hash|
-      next unless type_hash['fill_in']
+    TagSchema::PromptTagSchema.types.each do |tag_type|
+      next unless TagSchema.fillable?(tag_type)
 
       input_node = find 'input#tags_misc_misc'
 
