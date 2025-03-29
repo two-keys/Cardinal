@@ -138,7 +138,8 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
     new_user.encrypted_password = legacy_user.password
     
     retries = 0
-    while !did_save
+
+    while true
       result = new_user.save
 
       if result
