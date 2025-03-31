@@ -139,7 +139,7 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
 
     @retries = 0
 
-    while true
+    loop do
       result = new_user.save
 
       if result
