@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_30_204554) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_31_175739) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_30_204554) do
     t.string "icon"
     t.text "color", default: "#000000", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["icon"], name: "index_messages_on_icon"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 

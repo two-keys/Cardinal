@@ -369,16 +369,6 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       Message.insert_all(chunk) # rubocop:disable Rails/SkipsModelValidations
       progressbar.increment
     end
-
-    progressbar.log 'Set Message Icons'
-    null_icons = Message.where(icon: nil)
-    progressbar = ProgressBar.create(title: 'Message Icons', format: @progressbar_format, total: null_icons.count)
-    null_icons.find_each(batch_size: @batch_size) do |message|
-      message.set_icon
-      message.save(validate: false)
-      progressbar.increment
-    end
-    progressbar.log 'End Set Message Icons'
   end
 
   if @migration_ip_bans_count.positive?
@@ -471,10 +461,47 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
   end
 
   @progressbar.log 'Setting updated_at for chat_users'
-  ChatUser.find_each(batch_size: @batch_size) do |chat_user|
-    chat_user.chat.update(updated_at: chat_user.chat.messages.last.created_at) if chat_user.chat.messages.any?
-  end
+  chats = ChatUser.where('
+    EXISTS(
+      SELECT id
+      FROM messages
+      WHERE messages.chat_id = chats.id
+    )
+  ')
+  chats_count = chats.count
+  @progressbar = ProgressBar.create(title: 'ChatUsers (updated_at)', format: @progressbar_format,
+                                    total: chats_count)
+  # rubocop:disable Rails/SkipsModelValidations
+  chats.update_all('
+    updated_at = COALESCE(
+      (SELECT MAX(created_at)
+        FROM messages
+        WHERE messages.chat_id = chats.id
+      ), updated_at
+    )
+  ')
+  # rubocop:enable Rails/SkipsModelValidations
   @progressbar.log 'End setting updated_at for chat_users'
+
+  @progressbar.log 'Set Message Icons'
+  null_icons = Message.where(icon: nil)
+  @progressbar = ProgressBar.create(title: 'Message Icons', format: @progressbar_format, total: null_icons.count)
+  # rubocop:disable Rails/SkipsModelValidations
+  null_icons.update_all('
+    icon = CASE
+      WHEN messages.user_id IS NULL
+        THEN \'bird\'
+      ELSE COALESCE(
+        (
+          SELECT cus.icon
+          FROM chat_users cus
+          WHERE cus.chat_id = messages.chat_id
+            AND cus.user_id = messages.user_id
+        ), \'bird\')
+      END
+  ')
+  # rubocop:enable Rails/SkipsModelValidations
+  @progressbar.log 'End Set Message Icons'
 
   if @migration_alerts_count.positive?
     @progressbar.log 'Begin migrating alerts.'
