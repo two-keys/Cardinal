@@ -13,7 +13,13 @@
                         <div class="sidebar-user-icon">
                             <span><%= icon_for user_data[:icon] %></span>
                         </div>
-                        <span class="icon-name"><%= name  + (is_loc_user ? " (you)" : "") %></span>
+                        <span class="icon-name">
+                            <% if locals[:user].admin? %>
+                                <%= link_to "#{name + (is_loc_user ? " (you)" : "")}", edit_admin_user_path(user_data[:id].positive? ? user_data[:id] : 0), target: "_blank"  %>
+                            <% else %>
+                                <%= name + (is_loc_user ? " (you)" : "") %>
+                            <% end %>
+                        </span>
                         <div class="chat-admin-actions">
                             <% if !is_loc_user && can?(:chat_kick, @chat) %>
                                 <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?" }  %>
