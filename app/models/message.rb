@@ -99,12 +99,6 @@ class Message < ApplicationRecord
     where(id: results)
   end
 
-  private
-
-  def search_reindex
-    update_pg_search_document
-  end
-
   def set_icon
     self.icon = if user_id.nil?
                   CardinalSettings::Icons.system_icon
@@ -112,6 +106,12 @@ class Message < ApplicationRecord
                   chat_user = user.chat_users.find_by(chat_id:)
                   chat_user ? chat_user.icon : CardinalSettings::Icons.system_icon
                 end
+  end
+
+  private
+
+  def search_reindex
+    update_pg_search_document
   end
 
   def authorization
