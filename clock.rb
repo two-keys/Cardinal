@@ -7,4 +7,5 @@ require './config/environment'
 
 module Clockwork
   every(5.minutes, 'analytics.refresh') { AnalyticsJob.perform_later }
+  every(10.minutes, 'subscribers.refresh') { SubscriptionRenewalsJob.perform_later }
 end

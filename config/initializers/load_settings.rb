@@ -33,6 +33,29 @@ module CardinalSettings
     end
   end
 
+  # A collection of methods simplifying access to the ads hash within SETTINGS_HASH
+  class Ads
+    def self.ads_hash
+      SETTINGS_HASH['ads']
+    end
+
+    def self.prices
+      ads_hash['prices']
+    end
+
+    def self.tier_one
+      prices['tier_one']
+    end
+
+    def self.tier_two
+      prices['tier_two']
+    end
+
+    def self.tier_three
+      prices['tier_three']
+    end
+  end
+
   # A collection of methods simplifying access to the donation hash within SETTINGS_HASH
   class Donation
     def self.donation_hash

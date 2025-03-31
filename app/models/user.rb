@@ -29,7 +29,13 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :themes, dependent: :nullify
   has_many :push_subscriptions, dependent: :delete_all
   has_many :user_entitlements, dependent: :delete_all
-  has_many :entitlements, through: :user_entitlements
+  has_many :entitlements, through: :user_entitlements do
+    def active(object: nil)
+      value = where("coalesce(user_entitlements.expires_on, 'infinity') > ?", Time.zone.now)
+      value = value.where(object: object) unless object.nil?
+      value
+    end
+  end
   has_many :ads, dependent: :delete_all
 
   # TODO: Remove after migration
@@ -87,6 +93,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return unless unbannable?
 
     unban
+  end
+
+  def valid_subscription?
+    entitlements.active.where(flag: 'subscription').any?
   end
 
   def active_for_authentication?
