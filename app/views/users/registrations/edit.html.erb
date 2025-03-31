@@ -14,6 +14,11 @@
     </div>
     
     <div class="card secondary">
+      <% if resource.valid_subscription? %>
+        <div class="subscriber-notice">
+          You have an active subscription!
+        </div>
+      <% end %>
       <div class="field">
         <%= f.label :email %> <br />
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>

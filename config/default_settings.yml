@@ -1,9 +1,41 @@
 ---
   type: default # 'default' or 'dynamic'
-  version: 1.4.4 # change every time this file is updated
+  version: 1.5.0 # change every time this file is updated
   icons:
     icon_blacklist: ["🐦"] 
     system_icon: "🐦"
+  ads:
+  prices:
+    tier_one:
+        week:
+          cost: 7
+          id: null
+        month:
+          cost: 20
+          id: null
+        three_months:
+          cost: 40
+          id: null
+    tier_two:
+        week:
+          cost: 10
+          id: null
+        month:
+          cost: 30
+          id: null
+        three_months:
+          cost: 60
+          id: null
+    tier_three:
+        week:
+          cost: 15
+          id: null
+        month:
+          cost: 45
+          id: null
+        three_months:
+          cost: 90
+          id: null
   donation:
     prices:
       - cost: 5
