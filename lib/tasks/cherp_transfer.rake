@@ -361,8 +361,14 @@ task cherp_transfer: [:environment] do # rubocop:disable Metrics/BlockLength
       message_array << new_message
       progressbar.increment
     end
-    progressbar.log 'Begin Messages.insert_all, this might take a while'
-    Message.insert_all(message_array) # rubocop:disable Rails/SkipsModelValidations
+
+    chunked_messages_array = message_array.each_slice(@batch_size).to_a
+    progressbar = ProgressBar.create(title: "Message (insert_all #{@batch_size})", format: @progressbar_format,
+                                     total: chunked_messages_array.count)
+    chunked_messages_array.each do |chunk|
+      Message.insert_all(chunk) # rubocop:disable Rails/SkipsModelValidations
+      progressbar.increment
+    end
 
     progressbar.log 'Set Message Icons'
     null_icons = Message.where(icon: nil)
