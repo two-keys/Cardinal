@@ -48,7 +48,7 @@ module Admin
                                                                                page: params[:received_reports_page])
       @pagy_handled_reports, @handled_reports = pagy(@user.handled_reports, items: 5,
                                                                             page: params[:handled_reports_page])
-      query = @user.entitlements.order(created_at: :desc)
+      query = @user.entitlements.includes(:object, :user_entitlements).order(created_at: :desc)
       if params[:object_type].present?
         query = query.where(object_type: params[:object_type] == 'None' ? nil : params[:object_type])
       end
@@ -57,8 +57,8 @@ module Admin
       query = query.where(data: params[:data]) if params[:data].present?
       query = query.where(created_at: Date.parse(params[:date_from]).beginning_of_day..) if params[:date_from].present?
       query = query.where(created_at: ..Date.parse(params[:date_to]).end_of_day) if params[:date_to].present?
-      @pagy_entitlements, @entitlements = pagy(query.includes(:object, :user_entitlements), items: 5,
-                                                                                            page: params[:entitlements_page]) # rubocop:disable Layout/LineLength
+      @pagy_entitlements, @entitlements = pagy(query, items: 5,
+                                                      page: params[:entitlements_page])
     end
 
     # POST /admin/users or /admin/users.json

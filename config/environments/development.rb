@@ -95,6 +95,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
     Bullet.add_footer = true
     Bullet.skip_html_injection = false
     Bullet.unused_eager_loading_enable = false
+    Bullet.add_safelist(type: :n_plus_one_query, class_name: 'Entitlement', association: :object)
     #Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
   end
 end
