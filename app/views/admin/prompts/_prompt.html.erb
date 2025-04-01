@@ -23,7 +23,7 @@
   <% end %>
 
   <% if prompt.starter.present? %>
-    <div class="starter markdown prose max-w-none">
+    <div style="<%= "color: #{prompt.color};" if prompt.color != "#000000" %>"  class="starter markdown prose max-w-none">
       <%= prompt.mark_starter %>
     </div>
   <% end %>

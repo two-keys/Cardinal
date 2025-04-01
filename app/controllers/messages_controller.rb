@@ -22,6 +22,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   def new
     @message = Message.new(message_params)
+    @message.color = ChatUser.find_by(user: @message.user, chat: @message.chat)&.color
   end
 
   # GET /messages/1/edit
@@ -34,8 +35,11 @@ class MessagesController < ApplicationController
     authorize! :create, @message
     respond_to do |format|
       if @message.save
+        ChatUser.find_by(chat: @message.chat, user: @message.user)&.update(color: @message.color)
         format.html do
-          render partial: 'messages/form', locals: { locals: { message: Message.new, chat_id: @message.chat.id } }
+          render partial: 'messages/form',
+                 locals: { locals: { message: Message.new(color: @message.color),
+                                     chat_id: @message.chat.id } }
         end
         format.json { render :show, status: :created, location: @message }
       else

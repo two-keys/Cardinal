@@ -13,7 +13,7 @@
           OOC
         <% end %>
       </span>
-      <div class="message-content markdown prose max-w-none">
+      <div style="<%= "color: #{message.color};" if message.color != "#000000" %>" class="message-content markdown prose max-w-none">
         <%= message.markdown %>
       </div>
       <hr class="message-break"/>
