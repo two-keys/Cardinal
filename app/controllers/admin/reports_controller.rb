@@ -10,7 +10,9 @@ module Admin
 
     # GET /admin/reports or /admin/reports.json
     def index
-      @pagy, @reports = pagy(Report.where(handled: params[:handled] == 'true').order(created_at: :desc))
+      @pagy, @reports = pagy(Report.where(handled: params[:handled] == 'true')
+                                   .includes(:reporter, :reportee)
+                                   .order(created_at: :desc))
     end
 
     # GET /admin/reports/1 or /admin/reports/1.json

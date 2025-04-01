@@ -16,6 +16,8 @@ class Theme < ApplicationRecord
   scope :publicized, -> { where(system: true).or(where(public: true)).order('system DESC, created_at DESC') }
   scope :available, ->(user) { entitled(user).or(publicized).order('system DESC, created_at DESC') }
 
+  default_scope { includes(:user) }
+
   after_update_commit :broadcast_changes
 
   def broadcast_changes

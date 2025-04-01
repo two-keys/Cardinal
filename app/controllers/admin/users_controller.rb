@@ -11,7 +11,7 @@ module Admin
 
     # GET /admin/users or /admin/users.json
     def index # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      query = User.all
+      query = User.includes(:pseudonyms, :characters)
       params = request.query_parameters
       params = params.compact_blank if params
       params[:banned] = nil if params[:banned].present? && params[:banned] != '1'
@@ -42,7 +42,7 @@ module Admin
     # GET /admin/users/1/edit
     def edit # rubocop:disable Metrics/CyclomaticComplexity
       @pagy_ads, @ads = pagy(@user.ads, items: 5, page: params[:ads_page])
-      @pagy_prompts, @prompts = pagy(@user.prompts, items: 5, page: params[:prompts_page])
+      @pagy_prompts, @prompts = pagy(@user.prompts.includes(:pseudonym), items: 5, page: params[:prompts_page])
       @pagy_sent_reports, @sent_reports = pagy(@user.sent_reports, items: 5, page: params[:made_reports_page])
       @pagy_received_reports, @received_reports = pagy(@user.received_reports, items: 5,
                                                                                page: params[:received_reports_page])
@@ -57,7 +57,8 @@ module Admin
       query = query.where(data: params[:data]) if params[:data].present?
       query = query.where(created_at: Date.parse(params[:date_from]).beginning_of_day..) if params[:date_from].present?
       query = query.where(created_at: ..Date.parse(params[:date_to]).end_of_day) if params[:date_to].present?
-      @pagy_entitlements, @entitlements = pagy(query, items: 5, page: params[:entitlements_page])
+      @pagy_entitlements, @entitlements = pagy(query.includes(:object, :user_entitlements), items: 5,
+                                                                                            page: params[:entitlements_page]) # rubocop:disable Layout/LineLength
     end
 
     # POST /admin/users or /admin/users.json

@@ -5,7 +5,7 @@ module Admin
     include Pagy::Backend
 
     def index
-      query = ActiveSnapshot::Snapshot.order(created_at: :desc)
+      query = ActiveSnapshot::Snapshot.order(created_at: :desc).includes(:user, :item)
 
       # Apply filters
       query = query.where(item_type: params[:item_type]) if params[:item_type].present?

@@ -7,6 +7,8 @@ class Entitlement < ApplicationRecord
   has_many :users, through: :user_entitlements
   belongs_to :object, polymorphic: true, optional: true
 
+  default_scope { includes(:object) }
+
   validates :object_id, uniqueness: { scope: %i[object_type flag data], allow_blank: true }
   validate :any_present?
 

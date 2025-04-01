@@ -19,7 +19,7 @@ class PseudonymsController < ApplicationController
   def index
     query = Pseudonym.accessible_by(current_ability)
 
-    @pagy, @pseudonyms = pagy(query, items: 5)
+    @pagy, @pseudonyms = pagy(query.includes(:user), items: 5)
   end
 
   # GET /pseudonyms/1

@@ -29,7 +29,7 @@ class CharactersController < ApplicationController
     # we could make this searchable like prompts
     # but that'll take some time to decouple prompt search logic
 
-    @pagy, @characters = pagy(query, items: 5)
+    @pagy, @characters = pagy(query.includes(:user, :pseudonym), items: 5)
   end
 
   # GET /characters/1

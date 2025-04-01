@@ -21,6 +21,8 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
     chat_admin: 2
   }
 
+  default_scope { includes(:chat, :user) }
+
   before_validation :generate_icon, on: :create
   after_create_commit :generate_icon_entitlement
 

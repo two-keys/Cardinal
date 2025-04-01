@@ -21,7 +21,7 @@ class ChatsController < ApplicationController
               end
     end
     chat_ids = query.map(&:chat_id)
-    chats_query = Chat.where(id: chat_ids)
+    chats_query = Chat.where(id: chat_ids).includes(messages: [:user])
     @pagy, @chats = pagy(chats_query.order('updated_at DESC'), items: 20)
     respond_to do |format|
       format.html
@@ -31,7 +31,7 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
-    @pagy, @messages = pagy(@chat.messages.display, items: 20)
+    @pagy, @messages = pagy(@chat.messages.display.includes(:user), items: 20)
     @chat.viewed!(current_user) if @pagy.page == 1
   end
 
@@ -142,7 +142,7 @@ class ChatsController < ApplicationController
   # GET /chats/1/search?q=text
   def search
     @query = params[:q]
-    results = params[:q].blank? ? @chat.messages.display : @chat.search(@query)
+    results = params[:q].blank? ? @chat.messages.display.includes(:user) : @chat.search(@query)
     @pagy, @messages = pagy(results, items: 20)
   end
 

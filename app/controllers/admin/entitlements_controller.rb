@@ -11,7 +11,7 @@ module Admin
     # GET /admin/entitlements or /admin/entitlements.json
     def index # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       user = User.find_by(username: params[:username])
-      query = Entitlement.order(created_at: :desc)
+      query = Entitlement.includes(:object, :user_entitlements).order(created_at: :desc)
       query = user.entitlements.order(created_at: :desc) if user.present?
       if params[:object_type].present?
         query = query.where(object_type: params[:object_type] == 'None' ? nil : params[:object_type])

@@ -45,7 +45,7 @@ class PromptsController < ApplicationController
               end
     end
 
-    @pagy, @prompts = pagy(query, items: 5)
+    @pagy, @prompts = pagy(query.includes(:user, :pseudonym), items: 5)
   end
 
   # GET /prompts/1
