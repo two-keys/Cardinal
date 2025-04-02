@@ -44,7 +44,7 @@
     <div class="actions">
       <ul class="actions-left">
         <% if can?(:hide, model) %>
-          <li><%= button_to "🫣", hide_tag_path(model), method: :post, class: "hide-button" %></li>
+          <li><%= button_to "Hide", hide_tag_path(model), method: :post, class: "hide-button" %></li>
         <% end %>
 
         <% if defined?(model.user) && model.user != current_user %>
