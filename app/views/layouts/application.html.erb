@@ -18,9 +18,7 @@
 
     <script src="https://www.recaptcha.net/recaptcha/api.js" async="" defer=""></script>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-    <% if Rails.env.development? || (current_user && current_user.applied_themes.count > 0) %>
-      <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <% end %>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script
       src="https://js.sentry-cdn.com/561d51d4da53e5e5ad60cab12cbe3039.min.js"
       crossorigin="anonymous"
