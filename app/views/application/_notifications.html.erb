@@ -8,7 +8,7 @@
                     <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
                     <span class="notif-unread notif-value-outer <%= unread_class %>">
                         <span class="notif-unread-pulser notif-pulser"></span>
-                        <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] %></span>
+                        <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] > 9 ? "9+": notifications[:unread] %></span>
                     </span>
                 <% end %>
                 <% if notifications[:unanswered] > 0 %>
@@ -17,7 +17,7 @@
                     <% unanswered_class = "leftmost" if notifications[:unread] == 0 && notifications[:ended] > 0 %>
                     <span class="notif-unanswered notif-value-outer <%= unanswered_class %>">
                         <span class="notif-ended-pulser notif-pulser"></span>
-                        <span class="notif-unanswered-inner notif-value-inner"><%= notifications[:unanswered] %></span>
+                        <span class="notif-unanswered-inner notif-value-inner"><%= notifications[:unanswered] > 9 ? "9+" : notifications[:unanswered] %></span>
                     </span>
                 <% end %>
                 <% if notifications[:ended] > 0 %>
@@ -25,7 +25,7 @@
                     <% ended_class = "rightmost" if notifications[:unread] > 0 || notifications[:unanswered] > 0 %>
                     <span class="notif-ended notif-value-outer <%= ended_class %>">
                         <span class="notif-ended-pulser notif-pulser"></span>
-                        <span class="notif-ended-inner notif-value-inner"><%= notifications[:ended] %></span>
+                        <span class="notif-ended-inner notif-value-inner"><%= notifications[:ended] > 9 ? "9+" : notifications[:ended] %></span>
                     </span>
                 <% end %>
             </span>
@@ -41,7 +41,7 @@
                             <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
                             <span class="notif-unread notif-value-outer <%= unread_class %>">
                                 <span class="notif-unread-pulser notif-pulser"></span>
-                                <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] %></span>
+                                <span class="notif-unread-inner notif-value-inner"><%= notifications[:unanswered] > 9 ? "9+" : notifications[:unanswered] %></span>
                             </span>
                         <% end %>
                         <% if notifications[:unanswered] > 0 %>
@@ -50,7 +50,7 @@
                             <% unanswered_class = "leftmost" if notifications[:unread] == 0 && notifications[:ended] > 0 %>
                             <span class="notif-unanswered notif-value-outer <%= unanswered_class %>">
                                 <span class="notif-unanswered-pulser notif-pulser"></span>
-                                <span class="notif-unanswered-inner notif-value-inner"><%= notifications[:unanswered] %></span>
+                                <span class="notif-unanswered-inner notif-value-inner"><%= notifications[:unanswered] > 9 ? "9+" : notifications[:unanswered] %></span>
                             </span>
                         <% end %>
                         <% if notifications[:ended] > 0 %>
@@ -58,7 +58,7 @@
                             <% ended_class = "rightmost" if notifications[:unread] > 0 || notifications[:unanswered] > 0 %>
                             <span class="notif-ended notif-value-outer <%= ended_class %>">
                                 <span class="notif-ended-pulser notif-pulser"></span>
-                                <span class="notif-ended-inner notif-value-inner"><%= notifications[:ended] %></span>
+                                <span class="notif-ended-inner notif-value-inner"><%= notifications[:ended] > 9 ? "9+" : notifications[:ended] %></span>
                             </span>
                         <% end %>
                     </span>

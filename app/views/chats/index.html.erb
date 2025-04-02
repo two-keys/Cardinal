@@ -10,6 +10,7 @@
       <%= button_to "New", chats_path, method: :post, class: "button" %>
     <% end %>
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    <span><strong><%= @pagy.count %></strong> <%= @pagy.count > 0 ? pluralize_without_count(@pagy.count, 'chat') : 'chats' %></span>
   </div>
   <% @chats.each do |chat| %>
     <% settings = chat.get_user_info(current_user) %>
