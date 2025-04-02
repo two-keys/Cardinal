@@ -41,7 +41,7 @@
                             <% unread_class = "leftmost" if notifications[:unanswered] > 0 || notifications[:ended] > 0 %> 
                             <span class="notif-unread notif-value-outer <%= unread_class %>">
                                 <span class="notif-unread-pulser notif-pulser"></span>
-                                <span class="notif-unread-inner notif-value-inner"><%= notifications[:unanswered] > 9 ? "9+" : notifications[:unanswered] %></span>
+                                <span class="notif-unread-inner notif-value-inner"><%= notifications[:unread] > 9 ? "9+" : notifications[:unread] %></span>
                             </span>
                         <% end %>
                         <% if notifications[:unanswered] > 0 %>
