@@ -11,9 +11,15 @@
         <% end %>
         <%= message.visibility.upcase %>
       </span>
-      <div style="<%= "color: #{message.color};" if message.color != "#000000" %>" class="message-content markdown prose max-w-none">
-        <%= message.markdown %>
-      </div>
+      <% if defined?(locals) && locals[:preview] %>
+        <div data-controller="show-more" style="<%= "color: #{message.color};" if message.color != "#000000" %>" class="message-content markdown prose max-w-none">
+          <%= message.markdown %>
+        </div>
+      <% else %>
+        <div style="<%= "color: #{message.color};" if message.color != "#000000" %>" class="message-content markdown prose max-w-none">
+          <%= message.markdown %>
+        </div>
+      <% end %>
       <hr class="message-break"/>
       <div class="message-footer">
         <span class="message-created-at">

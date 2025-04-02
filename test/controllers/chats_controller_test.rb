@@ -52,7 +52,7 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     patch chat_path(@chat.uuid),
           params: { chat: { title: 'test', description: 'test', pseudonym_id: nil, icon: chat_user.icon,
                             color: '#000000' } }
-    assert_redirected_to chat_path(@chat.uuid)
+    assert_redirected_to edit_chat_path(@chat.uuid)
   end
 
   test 'should update chat to have pseudonym' do

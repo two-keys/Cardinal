@@ -33,7 +33,7 @@
           <% modded_message.content = "```\n[REDACTED]\n````" %>
           <%= render 'messages/message', locals: { message: modded_message, current_user_id: current_user.id } %>
         <% else %>
-          <%= render 'messages/message', locals: { message: chat.messages.display.first, current_user_id: current_user.id } %>
+          <%= render 'messages/message', locals: { message: chat.messages.display.first, current_user_id: current_user.id, preview: true } %>
         <% end %>
       <% else %>
         <i>No messages yet.</i>
