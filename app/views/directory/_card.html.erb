@@ -58,6 +58,10 @@
         <%= yield "card_actions_left_#{model.id}" %>
       </ul>
       <ul class="actions-right">
+        <% if can? :destroy, model %>
+          <li><%= button_to "Destroy", model, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %></li>
+        <% end %>
+
         <%= yield "card_actions_right_#{model.id}" %>
       </ul>
     </div>
