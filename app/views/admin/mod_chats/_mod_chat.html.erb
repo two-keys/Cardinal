@@ -1,0 +1,7 @@
+<div id="<%= dom_id mod_chat %>" class="card primary">
+    <span><b><%= link_to mod_chat.chat.uuid, chat_path(mod_chat.chat.uuid), target: "_blank" %></b></span>
+    <span><b>User:</b> <%= link_to mod_chat.user.username, edit_admin_user_path(mod_chat.user), target: "_blank" %></span>
+    <span><b>Status:</b> <%= mod_chat.status %></span>
+    <span><b>Created:</b> <%= mod_chat.created_at %> <sub>(<%= time_ago_in_words(mod_chat.created_at) %> ago)</sub></span>
+    <span><b>Updated:</b> <%= mod_chat.updated_at %> <sub>(<%= time_ago_in_words(mod_chat.updated_at) %> ago)</sub></span>
+</div>

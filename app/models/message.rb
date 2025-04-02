@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Message < ApplicationRecord
+class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include PgSearch::Model
   include Markdownable
   include Reportable
@@ -16,15 +16,28 @@ class Message < ApplicationRecord
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :authorization, on: :create
   validate :authorization, on: :update
+  validate :visibility_change, on: :update
   before_validation :set_icon, on: :create
 
-  scope :display, -> { order('created_at DESC') }
+  scope :display, lambda {
+    return order('created_at DESC') if Current.user && Current.user.admin?
+
+    if Current.user
+      return where('visibility != ? OR user_id = ?', Message.visibilities[:hidden], Current.user.id).order('created_at DESC') # rubocop:disable Layout/LineLength
+    end
+
+    where.not(visibility: 'hidden').order('created_at DESC')
+  }
 
   after_create :update_timestamp
   after_create_commit :update_chat
   after_create_commit :broadcast_create
   after_update_commit :broadcast_update
   after_save_commit :search_reindex
+
+  enum :visibility, { ic: 0, ooc: 1, hidden: 2 }, validate: { allow_nil: true }
+
+  attribute :silent, :boolean, default: false
 
   multisearchable(
     against: [:content],
@@ -45,19 +58,33 @@ class Message < ApplicationRecord
   end
 
   def update_chat
-    chat.message_sent unless Current.transfer
+    chat.message_sent(self) unless Current.transfer
   end
 
-  def broadcast_create
+  def broadcast_create # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return if Current.transfer
 
     chat.active_chat_users.each do |active_user|
       if chat.messages.count > 20
-        broadcast_remove_to("user_#{active_user.id}_chat_#{chat.id}", target: "message_#{chat.messages[-21].id}")
+        if hidden?
+          if active_user.admin? || active_user.id == user_id
+            broadcast_remove_to("user_#{active_user.id}_chat_#{chat.id}", target: "message_#{chat.messages[-21].id}")
+          end
+        else
+          broadcast_remove_to("user_#{active_user.id}_chat_#{chat.id}", target: "message_#{chat.messages[-21].id}")
+        end
       end
-      broadcast_append_later_to("user_#{active_user.id}_chat_#{chat.id}",
-                                target: 'messages_container',
-                                partial: 'messages/message_frame', locals: { locals: { message: self } })
+      if hidden?
+        if active_user.admin? || active_user.id == user_id
+          broadcast_append_later_to("user_#{active_user.id}_chat_#{chat.id}",
+                                    target: 'messages_container',
+                                    partial: 'messages/message_frame', locals: { locals: { message: self } })
+        end
+      else
+        broadcast_append_later_to("user_#{active_user.id}_chat_#{chat.id}",
+                                  target: 'messages_container',
+                                  partial: 'messages/message_frame', locals: { locals: { message: self } })
+      end
     end
   end
 
@@ -91,8 +118,24 @@ class Message < ApplicationRecord
   end
 
   def self.rebuild_pg_search_documents
-    find_each(&:update_pg_search_document)
+    order(id: :DESC).find_each(&:update_pg_search_document)
   end
+
+  # def self.rebuild_pg_search_documents
+  #   connection.execute <<~SQL.squish
+  #    INSERT INTO pg_search_documents (searchable_type, searchable_id, content, created_at, updated_at)
+  #      SELECT 'Movie' AS searchable_type,
+  #             messages.id AS searchable_id,
+  #             CONCAT_WS(' ', messages.content, chats.id, users.id) AS content,
+  #             now() AS created_at,
+  #             now() AS updated_at
+  #      FROM messages
+  #      LEFT JOIN users
+  #        ON users.id = messages.user_id
+  #      LEFT JOIN chats
+  #        ON chats.id = messages.chat_id
+  #   SQL
+  # end
 
   def self.search(text)
     results = PgSearch.multisearch(text).where(searchable_type: 'Message').map(&:searchable_id)
@@ -100,6 +143,8 @@ class Message < ApplicationRecord
   end
 
   def set_icon
+    return unless icon.nil?
+
     self.icon = if user_id.nil?
                   CardinalSettings::Icons.system_icon
                 else
@@ -112,6 +157,14 @@ class Message < ApplicationRecord
 
   def search_reindex
     update_pg_search_document
+  end
+
+  def visibility_change
+    return if user_id.nil?
+    return if Current.user&.admin?
+    return unless visibility == 'hidden' && visibility_was != 'hidden'
+
+    errors.add(:status, 'cannot be changed to hidden from ic/ooc')
   end
 
   def authorization

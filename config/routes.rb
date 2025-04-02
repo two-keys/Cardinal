@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  get 'contact_us' => 'contact_us#index'
   get 'admin_panel/index'
   resources :filters
 
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
     concerns :auditable
   end
   resources :chats, except: %i[show]
+  post 'chats/mod_chat', to: 'chats#create_mod_chat', as: 'create_mod_chat'
   get 'chats/:id', to: 'chats#show'
   get 'chats/:id/search' => 'chats#search', as: 'chat_messages_search'
   get 'chats/:id/:page', to: 'chats#show'
@@ -61,6 +63,7 @@ Rails.application.routes.draw do
   patch 'connect_code/consume' => 'connect_code#consume'
 
   post 'chats/:id/forceongoing' => 'chats#forceongoing'
+  post 'chats/:id/resolve' => 'chats#resolve_mod_chat'
   delete 'chats/:id/:icon', to: 'chats#chat_kick', as: 'chat_kick'
 
   resources :reports, only: %i[new index show create]
@@ -91,6 +94,7 @@ Rails.application.routes.draw do
     resources :alerts
     resources :audit_logs, only: %i[index]
     resources :ads, only: %i[index]
+    resources :mod_chats, only: %i[index]
     resources :ip_bans
     post 'ads/:id/approve' => 'ads#approve', as: 'approve_ad'
     delete 'ads/:id' => 'ads#destroy', as: 'ad'

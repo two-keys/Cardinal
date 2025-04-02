@@ -28,7 +28,11 @@ class Ability
     ## Creating
     cannot :create, User # Logged in users can't make new users
     can :create, Message do |message|
-      user.chats.include?(message.chat) && user == message.user
+      return false unless user == message.user
+
+      chat_user = user.chat_users.find_by(chat: message.chat)
+
+      !(chat_user.nil? || chat_user.ended? || chat_user.ended_viewed?)
     end
     can :create, Chat
     can :create, ConnectCode
@@ -132,6 +136,12 @@ class Ability
     can :search, Chat do |chat|
       chat.users.include?(user)
     end
+    can :resolve_mod_chat, Chat do |chat|
+      return false if chat.mod_chat.blank?
+
+      !chat.mod_chat.resolved? && chat.users.include?(user) && chat.mod_chat.user = user
+    end
+    can :create_mod_chat, Chat
     can :notifications, Chat
     can :consume, ConnectCode
     can :bump, Prompt, user: user
@@ -165,6 +175,7 @@ class Ability
       cannot :destroy, :all
 
       ## Non-CRUD Actions
+      cannot :create_mod_chat, Chat
       cannot :bump, Prompt
       cannot :update_tags, Prompt
       cannot :update_tags, Character
@@ -184,6 +195,12 @@ class Ability
     can :apply, Theme
     cannot :hide, :all
     can :hide, Tag
+    cannot :resolve_mod_chat, Chat
+    can :resolve_mod_chat, Chat do |chat|
+      return false if chat.mod_chat.blank?
+
+      !chat.mod_chat.resolved?
+    end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity

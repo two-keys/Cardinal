@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DiscordHelper
+module DiscordHelper # rubocop:disable Metrics/ModuleLength
   include Rails.application.routes.url_helpers
 
   def send_discord_report(report)
@@ -75,6 +75,79 @@ module DiscordHelper
           value = alertable.send(field).to_s.truncate(200, omission: '...')
           embed.add_field(name: field.to_s.humanize, value: value, inline: false)
         end
+      end
+    end
+  end
+
+  def send_discord_new_modchat(modchat)
+    return if Rails.env.test?
+
+    Discord.webhook_client.execute do |builder|
+      builder.add_embed do |embed|
+        embed.color = 0x00FFFF
+        embed.timestamp = Time.zone.now
+
+        embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Modchat', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
+
+        embed.add_field(name: 'User',
+                        value: "[#{modchat.user.username}](#{edit_admin_user_url(modchat.user)})", inline: true)
+        embed.add_field(name: 'New Chat',
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        inline: true)
+      end
+    end
+  end
+
+  def send_discord_modchat_message(modchat, message)
+    return if Rails.env.test?
+    return unless message.user
+
+    Discord.webhook_client.execute do |builder|
+      builder.add_embed do |embed|
+        embed.color = 0x00FFFF
+        embed.timestamp = Time.zone.now
+
+        embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Modchat', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
+
+        if message.user.admin?
+          embed.add_field(name: 'User',
+                          value: "[#{message.user.username}](#{edit_admin_user_url(message.user)}) (Staff)", inline: true) # rubocop:disable Layout/LineLength
+        else
+          embed.add_field(name: 'User',
+                          value: "[#{message.user.username}](#{edit_admin_user_url(message.user)})", inline: true)
+        end
+        embed.add_field(name: 'Chat',
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        inline: true)
+        embed.add_field(name: 'Visibility', value: message.visibility)
+        embed.add_field(name: 'Message',
+                        value: message.content.truncate(1000))
+      end
+    end
+  end
+
+  def send_discord_modchat_status(modchat, user)
+    return unless user
+
+    Discord.webhook_client.execute do |builder|
+      builder.add_embed do |embed|
+        embed.color = 0x00FFFF
+        embed.timestamp = Time.zone.now
+
+        embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Modchat', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
+
+        if user.admin?
+          embed.add_field(name: 'User',
+                          value: "[#{user.username}](#{edit_admin_user_url(user)}) (Staff)", inline: true)
+        else
+          embed.add_field(name: 'User',
+                          value: "[#{user.username}](#{edit_admin_user_url(user)})", inline: true)
+        end
+        embed.add_field(name: 'Chat',
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        inline: true)
+        embed.add_field(name: 'Status',
+                        value: modchat.status)
       end
     end
   end

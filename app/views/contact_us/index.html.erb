@@ -1,0 +1,12 @@
+<% content_for :info_top do %>
+  <h1 class="font-bold text-4xl">Community</h1>
+<% end %>
+
+<div class="card primary">
+  <h2>Social</h2>
+  <p>If you're looking to chat with other users, here are some of our community links.</p>
+  <hr>
+  <h2>Help</h2>
+  <p>Need help with something or need clarification? You can contact the staff directly using the button below.</p>
+  <%= link_to "New Mod Chat", create_mod_chat_path, class: "button", data: {'turbo-method': :post, turbo_confirm: 'This will create a new mod chat. Are you sure?'} %>
+</div>

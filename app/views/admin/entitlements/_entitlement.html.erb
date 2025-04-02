@@ -12,7 +12,7 @@
     <% end %>
     <% if entitlement.data %>
         <span>Data: </span>
-        <% if entitlement.flag == "emoji" %>
+        <% if entitlement.flag == "emoji" || entitlement.flag == "modchat-emoji" %>
             <span>Emoji Title: <%= name_for_icon entitlement.data %></span>
             <div class="sidebar-user-icon">
                 <span><%= icon_for entitlement.data %></span>

@@ -38,7 +38,7 @@ class MessagesTest < ApplicationSystemTestCase
 
     pending = find("turbo-frame#message_#{@message.id}", wait: 5)
     pending.fill_in 'message_content', with: 'Totally definitely new text'
-    pending.check 'OOC' if @message.ooc
+    pending.check 'OOC' if @message.ooc?
     pending.click_on('Submit')
 
     refresh # turboframe wont reload unless we refresh ????

@@ -15,6 +15,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :pseudonyms, dependent: :destroy
   has_many :chat_users, dependent: :destroy
   has_many :chats, through: :chat_users
+  has_many :mod_chats, dependent: :destroy
   has_many :prompts, dependent: :destroy
   has_many :characters, dependent: :destroy
   has_many :messages, dependent: :delete_all

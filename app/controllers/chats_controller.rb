@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy chat_kick read forceongoing search]
+  before_action :set_chat, only: %i[show edit update destroy resolve_mod_chat chat_kick read forceongoing search]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
   authorize_resource
@@ -16,12 +16,13 @@ class ChatsController < ApplicationController
     if params[:filter] && ChatUser.statuses.include?(params[:filter])
       query = if params[:filter] == 'ended' # Special case for ended / ended_viewed
                 query.where(status: %w[ended ended_viewed])
-              else
+              elsif params[:filter] != 'mod' # Special case for Mod Chats
                 query.where(status: params[:filter])
               end
     end
     chat_ids = query.map(&:chat_id)
     chats_query = Chat.where(id: chat_ids).includes(messages: [:user])
+    chats_query = chats_query.where.associated(:mod_chat) if params[:filter] == 'mod'
     @pagy, @chats = pagy(chats_query.order('updated_at DESC'), items: 20)
     respond_to do |format|
       format.html
@@ -61,6 +62,34 @@ class ChatsController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @chat.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def create_mod_chat
+    @chat = Chat.new
+    @chat.users << current_user
+    respond_to do |format|
+      if @chat.save
+        @mod_chat = ModChat.new(user: current_user, chat: @chat)
+        @mod_chat.save!
+        creation_message = "Mod Chat created by #{current_user.chat_users.find_by(chat: @chat).icon}  \n" \
+                           'What do you need help with? Staff will respond.'
+        @chat.messages << Message.new(content: creation_message)
+        format.html { redirect_to chat_path(@chat.uuid), notice: 'Mod Chat was successfully created.' }
+        format.json { render :show, status: :created, location: @chat.uuid }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @chat.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def resolve_mod_chat
+    @chat.mod_chat.resolved!
+    @chat.mod_chat.alert_status_changed(current_user)
+    respond_to do |format|
+      format.html { redirect_to chat_path(@chat.uuid), notice: 'ModChat has been resolved.' }
+      format.json { render :show, status: :ok, location: @chat.uuid }
     end
   end
 

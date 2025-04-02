@@ -31,6 +31,17 @@
     <div class="card primary">
         <%= render partial: 'search_form' %>
     </div>
+<% end %>
+
+<% if @chat.mod_chat.present? %>
+    <% content_for :right_sidebar do %>
+        <div class="card primary">
+            <%= render 'chats/mod_chat_form', locals: {chat: @chat} %>
+        </div>
+    <% end %>
+<% end %>
+
+<% content_for :right_sidebar do %>
     <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
     <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
 <% end %>
@@ -39,7 +50,7 @@
     <div class="card secondary thin">
         <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
     </div>
-    <% if @pagy.page == 1 %>
+    <% if @pagy.page == 1 && can?(:create, Message.new(chat: @chat, user: current_user)) %>
         <div class="card secondary thin">
             <%= turbo_frame_tag "message_form_frame" do %>
                 <%= render 'messages/form', locals: {message: Message.new(color: @chat_user&.color), chat_id: @chat.id} %>

@@ -64,7 +64,7 @@ module ThemesHelper
       --user-image
       --donate-image
       --use-image
-      --discord-image
+      --community-image
       --logout-image
       --login-image
       --register-image

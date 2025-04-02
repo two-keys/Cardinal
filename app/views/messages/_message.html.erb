@@ -3,15 +3,13 @@
 <% end %>
 <% message = defined?(locals) ? locals[:message] : message %>
 <%= turbo_frame_tag message do %>
-    <div class="message<%= " sys" if message.type == 'system' %><%= " ooc" if message.ooc %><%= " you" if message.user == current_user %>" data-controller="twemoji">
+    <div class="message<%= " sys" if message.type == 'system' %><%= " visibility-#{message.visibility}" %><%= " you" if message.user == current_user %>" data-controller="twemoji">
       <span class="user-icon"><%= icon_for message.icon %></span>
-      <span class="type-notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+      <span class="type-notif <%= message.type %><%=  " visibility-#{message.visibility}" %>">
         <% if message.type == 'system' %>
           SYS
         <% end %>
-        <% if message.ooc %>
-          OOC
-        <% end %>
+        <%= message.visibility.upcase %>
       </span>
       <div style="<%= "color: #{message.color};" if message.color != "#000000" %>" class="message-content markdown prose max-w-none">
         <%= message.markdown %>
@@ -47,5 +45,10 @@
           <% end %>
         </div>
       </div>
+      <% if message.user && current_user.admin? %>
+        <div>
+          <span class="message-edited-at"><%= link_to message.user.username, edit_admin_user_path(message.user) %></span>
+        </div>
+      <% end %>
   </div>
 <% end %>

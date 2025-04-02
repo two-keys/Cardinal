@@ -1,0 +1,14 @@
+<div class="mod-chat flex flex-col gap-4">
+    <h2><strong>Mod Chat</strong></h2>
+    <% if current_user.admin? %>
+        <div>
+            <span><b>Creator:</b> <%= link_to locals[:chat].mod_chat.user.username, edit_admin_user_path(locals[:chat].mod_chat.user) %></span>
+        </div>
+    <% end %>
+    <div class="input-group">
+        <span><b>Status:</b> <%= locals[:chat].mod_chat.status %></span>
+        <% if can? :resolve_mod_chat, locals[:chat] %>
+            <%= button_to "Resolve", chats_path + "/" + locals[:chat].uuid + "/resolve", method: :post, class: "button", data: {turbo_confirm: 'Are you sure you want to resolve this mod chat?'}  %>
+        <% end %>
+    </div>
+</div>

@@ -64,6 +64,11 @@ module Rack
       end
     end
 
+    # Users can only create one mod chat every 5 minutes.
+    throttle('modchats/ip', limit: 1, period: 5.minutes) do |req|
+      req.ip if req.path == '/chats/mod_chat' && req.post?
+    end
+
     ### Custom Throttle Response ###
 
     # By default, Rack::Attack returns an HTTP 429 for throttled responses,
