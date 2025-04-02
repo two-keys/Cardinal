@@ -5,6 +5,8 @@
     <%= render "form", chat: @chat, chat_info: @chat_info %>
   <% end %>
 
+  <hr>
+
   <div class="input-group">
     <%= link_to "Show", chat_path(@chat.uuid), class: "button" %>
     <%= link_to "Back", chats_path, class: "button" %>

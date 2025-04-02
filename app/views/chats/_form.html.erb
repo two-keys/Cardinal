@@ -25,9 +25,11 @@
     <%= form.text_area :description, value: chat_info.description %>
   </div>
 
-  <div class="input-group">
-    <%= form.label :color, style: "display: block" %>
-    <%= form.color_field :color %>
+  <div class="input-group flex flex-col">
+    <div>
+      <%= form.label "Hide Latest Message in List" %>
+      <%= form.check_box :hide_latest, checked: chat_info.hide_latest %>
+    </div>
   </div>
   
   <div>
@@ -42,9 +44,8 @@
     </div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="input-group">
+    <%= form.submit "Update Chat", class: "input-main" %>
+    <%= link_to "Force Ongoing", chats_path + "/" + chat.uuid + "/forceongoing", class: "button", data: {turbo: true, 'turbo-method': :post } %>
   </div>
 <% end %>
-
-<%= button_to "Force Ongoing", chats_path + "/" + chat.uuid + "/forceongoing", method: :post, class: "button" %>

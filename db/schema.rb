@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_31_175739) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_02_135653) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -140,6 +140,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_31_175739) do
     t.integer "role", default: 0
     t.bigint "pseudonym_id"
     t.text "color", default: "#000000", null: false
+    t.boolean "hide_latest", default: false, null: false
     t.index ["chat_id"], name: "index_chat_users_on_chat_id"
     t.index ["pseudonym_id"], name: "index_chat_users_on_pseudonym_id"
     t.index ["role"], name: "index_chat_users_on_role"
