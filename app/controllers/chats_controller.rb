@@ -32,9 +32,15 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
-    @chat_user = @chat.chat_users.find_by(user: current_user)
-    @pagy, @messages = pagy(@chat.messages.display.includes(:user), items: 20)
-    @chat.viewed!(current_user) if @pagy.page == 1
+    if @chat.nil?
+      respond_to do |format|
+        format.html { redirect_to chats_url, notice: 'This chat does not exist.' }
+      end
+    else
+      @chat_user = @chat.chat_users.find_by(user: current_user)
+      @pagy, @messages = pagy(@chat.messages.display.includes(:user), items: 20)
+      @chat.viewed!(current_user) if @pagy.page == 1
+    end
   end
 
   # GET /chats/new
