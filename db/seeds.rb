@@ -69,19 +69,19 @@ user_arr << temp_user
 # Tags
 log_to_console logger, 'Starting to seed tags'
 
-TagSchema.allowed_types.map do |tag_type_key|
-  type_hash['polarities'].each do |polarity|
-    log_to_console logger, "creating tags for #{polarity}, #{tag_type_key}", 2
+TagSchema.polarities.map do |polarity|
+  TagSchema.allowed_types_for(polarity).map do |tag_type|
+    log_to_console logger, "creating tags for #{polarity}, #{tag_type}", 2
     created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
 
-    if TagSchema.fillable?(tag_type_key)
+    if TagSchema.fillable?(tag_type)
       # randomly generated fill_ins
 
       rand(1..5).times do
         created_edited = Faker::Time.between(from: DateTime.new(2019, 1, 1), to: DateTime.now)
         Tag.create!(
           name: Faker::Alphanumeric.alpha(number: 10).downcase,
-          tag_type: tag_type_key,
+          tag_type: tag_type,
           polarity: polarity
         )
 
@@ -90,12 +90,10 @@ TagSchema.allowed_types.map do |tag_type_key|
     end
 
     # generate entries
-    next unless type_hash.key?('entries')
-
-    type_hash['entries'].each do |entry|
+    TagSchema.entries_for(tag_type).each do |entry|
       Tag.create!(
         name: entry,
-        tag_type: tag_type_key,
+        tag_type: tag_type,
         polarity: polarity
       )
       ahoy.track 'Tag Created', {}, { time: created_edited }
