@@ -62,7 +62,7 @@ class TagTest < ActiveSupport::TestCase
 
     test_tag.validate
 
-    assert_includes test_tag.errors[:name], 'is too long (maximum is 254 characters)'
+    assert_includes test_tag.errors[:name], 'is too long (maximum is 64 characters)'
   end
 
   test 'can\t create tags with types not in CardinalSettings' do
