@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  get 'up' => 'rails/health#show', as: :rails_health_check
   get 'contact_us' => 'contact_us#index'
   get 'admin_panel/index'
   resources :filters
