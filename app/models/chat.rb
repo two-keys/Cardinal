@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Chat < ApplicationRecord
+class Chat < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Reportable
   require 'securerandom'
 
@@ -12,6 +12,7 @@ class Chat < ApplicationRecord
                    after_remove: :update_userlist,
                    after_add: :update_userlist
   has_one :connect_code, dependent: :destroy
+  has_one :mod_chat, dependent: :destroy
 
   before_validation :generate_uuid, on: :create
   validates :uuid, presence: true, uniqueness: true
@@ -62,22 +63,53 @@ class Chat < ApplicationRecord
     users.map { |user| { icon: chat_users.find_by(user_id: user.id).icon, id: user.id } }
   end
 
-  def message_sent
+  def message_sent(message) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return if messages.count == 1
+    return if message.silent?
 
     users_to_unread = chat_users.where.not(user: active_chat_users).where(status: %i[ongoing unanswered])
-    users_to_unread.each do |u|
-      u.update(status: :unread)
-      u.user.push_subscriptions.each do |s|
-        s.push('New Unread', 'Click to view', url: "/chats/#{uuid}")
+    if mod_chat.present?
+      users_to_unread.each do |u|
+        u.update(status: :unread)
+        u.user.push_subscriptions.each do |s|
+          s.push('New Modchat Unread', 'Click to view', url: "/chats/#{uuid}")
+        end
+      end
+      mod_chat.alert_new_message(message)
+
+      case mod_chat.status
+      when 'ongoing'
+        unless message.user&.admin?
+          mod_chat.unanswered!
+          mod_chat.alert_status_changed(message)
+        end
+      when 'unanswered'
+        if message.user&.admin? && !message.hidden?
+          mod_chat.ongoing!
+          mod_chat.alert_status_changed(message.user)
+        end
+      when 'resolved'
+        if message.user&.admin?
+          mod_chat.ongoing!
+        else
+          mod_chat.unanswered! unless message.user.nil?
+        end
+        mod_chat.alert_status_changed(message.user)
+      end
+    else
+      users_to_unread.each do |u|
+        u.update(status: :unread)
+        u.user.push_subscriptions.each do |s|
+          s.push('New Unread', 'Click to view', url: "/chats/#{uuid}")
+        end
       end
     end
 
-    users_to_unanswered = chat_users.where(user: active_chat_users - [messages.last.user])
+    users_to_unanswered = chat_users.where(user: active_chat_users - [message.user])
     users_to_unanswered.each { |u| u.update(status: :unanswered) }
 
-    users_to_ongoing = chat_users.where(user: messages.last.user)
-    users_to_ongoing.each { |u| u.update(status: :ongoing) }
+    users_to_ongoing = chat_users.where(user: message.user)
+    users_to_ongoing.each { |u| u.update(status: :ongoing) unless u.ended? || u.ended_viewed? }
 
     active_chat_users.each(&:reload)
     broadcast_status_to_users
@@ -85,7 +117,7 @@ class Chat < ApplicationRecord
 
   def viewed!(user)
     chat_user = chat_users.find_by(user:)
-    return unless chat_user
+    return unless chat_user && !chat_user.ended_viewed?
 
     chat_users.find_by(user:).viewed!
   end

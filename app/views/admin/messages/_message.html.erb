@@ -15,7 +15,7 @@
             <% for message in messages.reverse %>
                 <%= turbo_frame_tag message do %>
                   <% css = "message" %>
-                  <% if message.ooc %>
+                  <% if message.ooc? %>
                       <% css += " ooc" %>
                   <% end %>
                   <% if message.reports.count > 0 %>
@@ -23,13 +23,11 @@
                   <% end %>
                     <div class="<%= css %>">
                       <span class="user-icon"><%= icon_for message.icon %></span>
-                      <span class="type-notif <%= message.type %><%= message.ooc ? " ooc" : nil %>">
+                      <span class="type-notif <%= message.type %><%= " visibility-#{message.visibility}" %>">
                         <% if message.type == 'system' %>
                           SYS
                         <% end %>
-                        <% if message.ooc %>
-                          OOC
-                        <% end %>
+                        <%= message.visibility.upcase %>
                         <% if message.reports.where(handled: false).count > 0 %>
                           <!-- Collect all reported rules of all reports and create a list of unique rule entries -->
                           <% rule_violations = message.reports.map { |report| report.rules }.flatten.uniq %>

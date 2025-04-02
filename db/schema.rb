@@ -215,14 +215,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_31_175739) do
     t.bigint "chat_id"
     t.bigint "user_id"
     t.text "content", null: false
-    t.boolean "ooc", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "icon"
     t.text "color", default: "#000000", null: false
+    t.integer "visibility", default: 0, null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["icon"], name: "index_messages_on_icon"
     t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["visibility"], name: "index_messages_on_visibility"
+  end
+
+  create_table "mod_chats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_mod_chats_on_chat_id"
+    t.index ["status"], name: "index_mod_chats_on_status"
+    t.index ["user_id", "chat_id"], name: "index_mod_chats_on_user_id_and_chat_id"
+    t.index ["user_id"], name: "index_mod_chats_on_user_id"
   end
 
   create_table "object_characters", force: :cascade do |t|
@@ -447,6 +460,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_31_175739) do
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "users"
+  add_foreign_key "mod_chats", "chats"
+  add_foreign_key "mod_chats", "users"
   add_foreign_key "object_characters", "characters"
   add_foreign_key "object_tags", "tags"
   add_foreign_key "prompts", "pseudonyms"

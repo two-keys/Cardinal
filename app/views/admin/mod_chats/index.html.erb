@@ -1,0 +1,28 @@
+<!-- Admin view for audit logs -->
+<div class="card primary">
+  <h2>Mod Chats</h2>
+  
+  <%= form_with url: admin_mod_chats_path, method: :get, class: 'filter-form' do |f| %>
+    <div class="filters">
+      <div class="input-group">
+        <%= f.select :status, 
+                    [['All', ''], 'ongoing', 'unanswered', 'resolved'], 
+                    { selected: params[:status] } %>
+        <%= f.text_field :user, value: params[:user], placeholder: 'Username', class: "input-main" %>
+      </div>
+      <%= f.submit 'Filter' %>
+    </div>
+  <% end %>
+
+  <div class="card secondary">
+    <% if @mod_chats %>
+        <% @mod_chats.each do |mod_chat| %>
+            <%= render mod_chat %>
+        <% end %>
+    <% else %>
+        Your query has no results...
+    <% end %>
+  </div>
+  
+  <%== render partial: 'pagy/nav', locals: { pagy: @pagy } %>
+</div>

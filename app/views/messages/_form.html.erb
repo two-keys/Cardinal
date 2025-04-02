@@ -16,17 +16,38 @@
       <h3 class="alert" data-chat-input-target="alert"></h3>
     </div>
 
-
     <div class="input-group">
       <div class="ooc-input" id="form_message_ooc">
-        <%= form.label :ooc, 'OOC' %>
-        <%= form.check_box :ooc, data: {'chat-input-target': 'ooc'} %>
+        <%= form.label :visibility %>
+        <%= form.select :visibility, Message.visibilities.map {|k, _v| [k.humanize.capitalize, k]} %>
       </div>
 
       <div>
         <%= form.color_field :color %>
       </div>
     </div>
+
+    <% if current_user.admin? %>
+        <div>
+          <div class="icon-selector" data-controller="icon-selector">
+            <% chat_user = ChatUser.find_by(user: current_user, chat_id: locals[:chat_id]) %>
+            <% if chat_user %>
+              <div class="sidebar-user-icon<%= " selected" if chat_user %>" data-icon="<%= chat_user.icon %>" data-icon-selector-target="icons">
+                <span data-icon="<%= name_for_icon chat_user.icon %>"><%= icon_for chat_user.icon %></span>
+              </div>
+            <% end %>
+            <div class="sidebar-user-icon<%= " selected" if chat_user.nil? %>" data-icon="🐦" data-icon-selector-target="icons">
+              <span data-icon="<%= name_for_icon "🐦" %>"><%= icon_for "🐦" %></span>
+            </div>
+            <% current_user.entitlements.active.where(flag: 'modchat-emoji').each do |icon| %>
+              <div class="sidebar-user-icon" data-icon="<%= icon.data %>" data-icon-selector-target="icons">
+                <span data-icon="<%= name_for_icon icon.data %>"><%= icon_for icon.data %></span>
+              </div>
+            <% end %>
+            <%= form.hidden_field :icon, {'data-icon-selector-target': "input", value: nil} %>
+          </div>
+        </div>
+    <% end %>
 
     <div id="form_message_content" data-controller="toasty-editor" class="message-input">
       <div data-chat-input-target="container" class="editor-container" data-toasty-editor-target="editor"></div>

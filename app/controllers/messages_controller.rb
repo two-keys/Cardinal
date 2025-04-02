@@ -89,7 +89,9 @@ class MessagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def message_params
-    params.require(:message).permit(:content, :ooc, :chat_id, :color)
+    return params.require(:message).permit(:content, :visibility, :color, :chat_id, :icon) if Current.user&.admin?
+
+    params.require(:message).permit(:content, :visibility, :color, :chat_id)
   end
 
   def track_create
