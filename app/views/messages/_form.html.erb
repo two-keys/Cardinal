@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "message_form_frame_#{locals[:message].id ? locals[:message].id : 'new'}" do %>
-  <%= form_with(model: locals[:message], id: "message_form", class: "message-form", data: {controller: locals[:message].id ? '' : 'chat-input', action: locals[:message].id ? '' : 'chat-input#submitForm:prevent'}) do |form| %>
+  <%= form_with(model: locals[:message], id: "message_form", class: "message-form", data: {controller: locals[:message].id ? 'twemoji' : 'twemoji chat-input', action: locals[:message].id ? '' : 'chat-input#submitForm:prevent'}) do |form| %>
     <% if locals[:message].errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(locals[:message].errors.count, "error") %> prohibited this message from being saved:</h2>
@@ -30,13 +30,18 @@
     <% if current_user.admin? %>
         <div>
           <div class="icon-selector" data-controller="icon-selector">
+            <% if locals[:message].icon %>
+              <div class="sidebar-user-icon selected" data-icon="<%= locals[:message].icon %>" data-icon-selector-target="icons">
+                <span data-icon="<%= name_for_icon locals[:message].icon %>"><%= icon_for locals[:message].icon %></span>
+              </div>
+            <% end %>
             <% chat_user = ChatUser.find_by(user: current_user, chat_id: locals[:chat_id]) %>
             <% if chat_user %>
-              <div class="sidebar-user-icon<%= " selected" if chat_user %>" data-icon="<%= chat_user.icon %>" data-icon-selector-target="icons">
+              <div class="sidebar-user-icon<%= " selected" if (chat_user && locals[:message].icon.nil?) %>" data-icon="<%= chat_user.icon %>" data-icon-selector-target="icons">
                 <span data-icon="<%= name_for_icon chat_user.icon %>"><%= icon_for chat_user.icon %></span>
               </div>
             <% end %>
-            <div class="sidebar-user-icon<%= " selected" if chat_user.nil? %>" data-icon="🐦" data-icon-selector-target="icons">
+            <div class="sidebar-user-icon<%= " selected" if (chat_user.nil? && locals[:message].icon.nil?) %>" data-icon="🐦" data-icon-selector-target="icons">
               <span data-icon="<%= name_for_icon "🐦" %>"><%= icon_for "🐦" %></span>
             </div>
             <% current_user.entitlements.active.where(flag: 'modchat-emoji').each do |icon| %>
@@ -44,7 +49,7 @@
                 <span data-icon="<%= name_for_icon icon.data %>"><%= icon_for icon.data %></span>
               </div>
             <% end %>
-            <%= form.hidden_field :icon, {'data-icon-selector-target': "input", value: nil} %>
+            <%= form.hidden_field :icon, {'data-icon-selector-target': "input", value: locals[:message].icon } %>
           </div>
         </div>
     <% end %>
