@@ -17,8 +17,8 @@ class Tag < ApplicationRecord
 
   scope :with_public, -> { where(enabled: true) }
 
-  validates :name, presence: true, length: { maximum: 254 }
-  validates :lower, presence: true, length: { maximum: 254 }, uniqueness: { scope: %i[polarity tag_type] }
+  validates :name, presence: true, length: { maximum: 64 }
+  validates :lower, presence: true, length: { maximum: 64 }, uniqueness: { scope: %i[polarity tag_type] }
   validates :tag_type, presence: true, length: { maximum: 25 }, inclusion: TagSchema.allowed_types
 
   validates :polarity, presence: true
