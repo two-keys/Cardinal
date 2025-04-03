@@ -3361,16 +3361,30 @@
         @apply flex flex-col gap-2;
     }
 
+    .message-turbo:nth-of-type(odd) {
+        @apply bg-message-odd rounded-secondary;
+    }
+    .message-turbo:nth-of-type(even) {
+        @apply bg-message-even rounded-secondary;
+    }
+
+    .message-turbo:nth-of-type(odd) .user-icon {
+        @apply bg-message-odd;
+    }
+
+    .message-turbo:nth-of-type(even) .user-icon {
+        @apply bg-message-even;
+    }
+
     .message {
         @apply flex
                flex-col
                gap-2
-              bg-input
-               text-input-content 
-                rounded-secondary 
-                p-4 
-                border 
-                border-ongoing;
+             text-input-content 
+               rounded-secondary 
+               p-4 
+               border 
+             border-ongoing;
     }
 
     .message p {
@@ -3393,17 +3407,15 @@
         @apply h-6 w-6 cursor-pointer;
     }
 
-    .message.visibility-ooc {
-        @apply bg-tertiary 
-               text-tertiary-content 
+    .message.visibility-ooc { 
+        @apply text-tertiary-content 
                opacity-75 
                hover:opacity-100
                transition-opacity;
     }
 
     .message.visibility-hidden {
-        @apply bg-tertiary 
-               text-tertiary-content 
+        @apply text-tertiary-content 
                opacity-75 
                hover:opacity-100
                transition-opacity;
@@ -3416,7 +3428,6 @@
                rounded-full
                border
                border-ongoing
-               bg-input
                text-input-content
                overflow-hidden
                lg:-mt-12
@@ -3434,11 +3445,11 @@
     }
 
     .message.visibility-ooc .user-icon {
-        @apply bg-tertiary text-tertiary-content;
+        @apply  text-tertiary-content;
     }
 
     .message.visibility-hidden .user-icon {
-        @apply bg-tertiary text-tertiary-content;
+        @apply  text-tertiary-content;
     }
 
     .message .message-footer {
@@ -3941,6 +3952,9 @@
     --color-input: rgb(228, 228, 228);
     --color-input-content: #333;
 
+    --color-message-odd: white;
+    --color-message-even: whitesmoke;
+
     --color-ongoing: grey;
     --color-unread: cornflowerblue;
     --color-unanswered: #9acd32;
@@ -4045,6 +4059,9 @@
         --color-tertiary-content: #bebebe;
         --color-input: #333;
         --color-input-content: #bbb;
+
+        --color-message-odd: #222;
+        --color-message-even: #111;
     
         --color-generic: #772020;
         --color-generic-content: #fff;

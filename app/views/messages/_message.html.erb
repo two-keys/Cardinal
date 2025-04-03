@@ -2,7 +2,7 @@
   <% locals[:message] = locals[:reportable] %>
 <% end %>
 <% message = defined?(locals) ? locals[:message] : message %>
-<%= turbo_frame_tag message do %>
+<%= turbo_frame_tag message, class: "message-turbo" do %>
     <div class="message<%= " sys" if message.type == 'system' %><%= " visibility-#{message.visibility}" %><%= " you" if message.user == current_user %>" data-controller="twemoji">
       <span class="user-icon"><%= icon_for message.icon %></span>
       <span class="type-notif <%= message.type %><%=  " visibility-#{message.visibility}" %>">
