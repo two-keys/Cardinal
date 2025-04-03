@@ -21,7 +21,7 @@ class Pseudonym < ApplicationRecord
   }
 
   validates :status, inclusion: { in: Pseudonym.statuses }
-  validate :can_spend, on: %i[create update]
+  validate :can_spend, on: %i[create update], unless: -> { Current.user&.admin? && Current.user != user }
   validate :reserved?
 
   after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user != user }
