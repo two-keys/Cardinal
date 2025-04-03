@@ -8,9 +8,15 @@
         <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
           <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
           <% unless TagSchema.entries_for(tag_type).empty? %>
-            <%= render partial: 'prompts/form_tags/entries', locals: { entries: default_entries_for(tag_type), polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+            <% displayables = tag_display(
+                schema: TagSchema, polarity:, tag_type:, names: defaults[polarity][tag_type]
+            ) %>
+            <%= render partial: 'prompts/form_tags/entries', locals: { entries: displayables[:checkboxes], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
           <% end %>
           <% if TagSchema.fillable?(tag_type) %>
+            <% displayables = tag_display(
+                schema: TagSchema, polarity:, tag_type:, names: defaults[polarity][tag_type]
+            ) %>
             <%= render partial: 'prompts/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
           <% end %>
 

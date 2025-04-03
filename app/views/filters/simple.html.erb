@@ -3,7 +3,7 @@
 <div class="card primary">
   <h1><%= params[:variant].capitalize %></h1>
 
-  <%= render partial: 'filters/form_simple', locals: { variant: params[:variant] } %>
+  <%= render partial: 'filters/form_simple', locals: { variant: params[:variant], defaults: @default_simple } %>
 
   <br>
 
