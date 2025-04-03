@@ -92,7 +92,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.add_field(name: 'User',
                         value: "[#{modchat.user.username}](#{edit_admin_user_url(modchat.user)})", inline: true)
         embed.add_field(name: 'New Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
                         inline: true)
       end
     end
@@ -117,7 +117,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{message.user.username}](#{edit_admin_user_url(message.user)})", inline: true)
         end
         embed.add_field(name: 'Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
                         inline: true)
         embed.add_field(name: 'Visibility', value: message.visibility)
         embed.add_field(name: 'Message',
@@ -144,7 +144,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{user.username}](#{edit_admin_user_url(user)})", inline: true)
         end
         embed.add_field(name: 'Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat)})",
+                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
                         inline: true)
         embed.add_field(name: 'Status',
                         value: modchat.status)
