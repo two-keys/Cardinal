@@ -18,10 +18,12 @@ class Filter < ApplicationRecord
     filter_type = variant == 'whitelist' ? 'Exception' : 'Rejection'
     tagset = Tag.from_tag_params(tag_params)
 
-    Filter.where(user:, filter_type:, group: 'simple').destroy_all
+    ActiveRecord::Base.transaction do
+      Filter.where(user:, filter_type:, group: 'simple').destroy_all
 
-    tagset.each do |tag|
-      Filter.create!(user:, target: tag, filter_type:, priority: 0, group: 'simple')
+      tagset.each do |tag|
+        Filter.create!(user:, target: tag, filter_type:, priority: 0, group: 'simple')
+      end
     end
   end
 end
