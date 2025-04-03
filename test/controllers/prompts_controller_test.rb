@@ -277,7 +277,26 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update prompt' do
     sign_in(@user)
-    patch prompt_url(@prompt), params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+
+    assert_changes('@prompt.reload.ooc') do
+      patch prompt_url(@prompt), params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+    end
+    assert_redirected_to prompt_url(@prompt)
+  end
+
+  test 'should update prompt even after spending tickets' do
+    sign_in(@user)
+
+    (1..Ticket::MAX_PER_DAY).each do
+      Ticket.create!(user: @user, item: @prompt, created_at: 1.hour.ago)
+    end
+
+    assert_changes('@prompt.reload.ooc') do
+      patch prompt_url(@prompt), params: {
+        prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text', status: 'posted' }
+      }
+    end
+
     assert_redirected_to prompt_url(@prompt)
   end
 
