@@ -120,4 +120,40 @@ class FiltersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to filter_url(Filter.find_by(user: @user2, target: tag))
   end
+
+  test 'should get simple filters pages' do
+    sign_in(@user)
+
+    get filters_simple_path(variant: 'whitelist')
+    assert_response :success
+
+    get filters_simple_path(variant: 'blacklist')
+    assert_response :success
+  end
+
+  test 'should create simple filters' do
+    sign_in(@user2)
+
+    assert_difference('Filter.where(filter_type: \'Exception\', group: \'simple\').count', 1) do
+      post filters_simple_path, params: {
+        tags: {
+          playing: {
+            fandom: ['No Fandom']
+          }
+        }, variant: 'whitelist'
+      }
+    end
+
+    assert_difference('Filter.where(filter_type: \'Rejection\', group: \'simple\').count', 1) do
+      post filters_simple_path, params: {
+        tags: {
+          playing: {
+            fandom: ['Any Fandom']
+          }
+        }, variant: 'blacklist'
+      }
+    end
+
+    assert_redirected_to filters_url(group: 'simple')
+  end
 end

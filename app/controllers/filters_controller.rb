@@ -3,6 +3,7 @@
 class FiltersController < ApplicationController
   include Pagy::Backend
   before_action :set_filter, only: %i[show edit update destroy]
+  before_action :set_default_simple, only: %i[simple]
   before_action :authenticate_user!
 
   load_and_authorize_resource
@@ -60,7 +61,19 @@ class FiltersController < ApplicationController
 
   # POST /filters/simple
   def create_simple
+    tag_params = params.require(:tags).permit(**TagSchema.allowed_type_params)
 
+    success = Filter.from_tag_params(tag_params, Current.user, params[:variant])
+
+    respond_to do |format|
+      if success
+        format.html { redirect_to filters_path(group: 'simple'), notice: 'Filters were successfully created.' }
+        format.json { render :show, status: :ok, location: filters_path(group: 'simple') }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: 'There was an error creating your simple filters', status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /filters/1 or /filters/1.json
@@ -93,6 +106,27 @@ class FiltersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_filter
     @filter = Filter.find(params[:id])
+  end
+
+  def set_default_simple
+    filter_type = params[:variant] == 'whitelist' ? 'Exception' : 'Rejection'
+
+    @default_simple = {}
+    TagSchema.polarities.each do |pol|
+      @default_simple.store(pol, {})
+      TagSchema.allowed_types_for(pol).each do |a_type|
+        @default_simple[pol].store(a_type, [])
+      end
+    end
+
+    Tag.joins(:filters).where(filters: { user: Current.user, filter_type:, group: 'simple' }).each do |tag|
+      polarity = tag.polarity
+      tag_type = tag.tag_type
+
+      @default_simple[polarity][tag_type].push(tag.name)
+    end
+
+    @default_simple
   end
 
   def filter_params
