@@ -93,7 +93,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     return false unless save
 
-    spend_ticket
+    spend_ticket unless Current.user&.admin? && Current.user != user
   end
 
   # Should really only be called from controller
