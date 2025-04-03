@@ -37,7 +37,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validate :can_spend, on: %i[create update]
   validate :authorization, on: %i[create update]
 
-  after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user == user }
+  after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user != user }
 
   default_scope { order(bumped_at: :desc) }
 
