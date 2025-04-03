@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FiltersController < ApplicationController
+class FiltersController < ApplicationController # rubocop:disable Metrics/ClassLength
   include Pagy::Backend
   before_action :set_filter, only: %i[show edit update destroy]
   before_action :set_default_simple, only: %i[simple]
@@ -119,7 +119,9 @@ class FiltersController < ApplicationController
       end
     end
 
-    Tag.joins(:filters).where(filters: { user: Current.user, filter_type:, group: 'simple' }).each do |tag|
+    Tag.joins(:filters).where(
+      filters: { user: Current.user, filter_type:, group: 'simple' }
+    ).find_each do |tag|
       polarity = tag.polarity
       tag_type = tag.tag_type
 
