@@ -1,6 +1,7 @@
 <div class="card primary">
     <b>This report has <%= @report.handled ? "been handled" : "not been handled" %></b>
     <br />
+    <b>Context: </b><%= @report.context %>
     <b>Reported Rules: </b><%= @report.rules.to_sentence %>
 </div>
 <% if @report.reportable.present? %>

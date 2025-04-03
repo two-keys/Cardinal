@@ -18,6 +18,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.add_field(name: 'Reportee',
                         value: "[#{report.reportee.username}](#{edit_admin_user_url(report.reportee)})", inline: true)
         embed.add_field(name: 'Rules', value: report.rules.to_s, inline: true)
+        embed.add_field(name: 'Context', value: report.context)
         embed.add_field(name: 'Reported Content', value: "[#{report.reportable_type}](#{url_for([:admin, report])})")
       end
     end
@@ -92,7 +93,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.add_field(name: 'User',
                         value: "[#{modchat.user.username}](#{edit_admin_user_url(modchat.user)})", inline: true)
         embed.add_field(name: 'New Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
+                        value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",
                         inline: true)
       end
     end
@@ -117,7 +118,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{message.user.username}](#{edit_admin_user_url(message.user)})", inline: true)
         end
         embed.add_field(name: 'Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
+                        value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",
                         inline: true)
         embed.add_field(name: 'Visibility', value: message.visibility)
         embed.add_field(name: 'Message',
@@ -144,7 +145,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{user.username}](#{edit_admin_user_url(user)})", inline: true)
         end
         embed.add_field(name: 'Chat',
-                        value: "[#{modchat.chat.uuid}](#{url_for(modchat.chat.uuid)})",
+                        value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",
                         inline: true)
         embed.add_field(name: 'Status',
                         value: modchat.status)
