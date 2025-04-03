@@ -3394,9 +3394,17 @@
     [data-theme='light'] .prose p {
         color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 30%));
     }
-     
+    
     [data-theme='dark'] .prose p {
         color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 90%));
+    }
+    
+    [data-theme='light'] .prose p span {
+        filter: brightness(0.5);
+    }
+    
+    [data-theme='dark'] .prose p span {
+        filter: brightness(1.5);
     }
 
     .message .emoji {
