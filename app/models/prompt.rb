@@ -34,7 +34,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :can_bump, on: :update
-  validate :can_spend, on: %i[create update]
+  validate :can_spend, on: %i[create update], unless: -> { Current.user&.admin? && Current.user != user }
   validate :authorization, on: %i[create update]
 
   after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user != user }
@@ -92,8 +92,9 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self.bumped_at = DateTime.now
 
     return false unless save
+    return true if Current.user&.admin? && Current.user != user
 
-    spend_ticket unless Current.user&.admin? && Current.user != user
+    spend_ticket
   end
 
   # Should really only be called from controller
