@@ -1,0 +1,13 @@
+<%= render partial: 'filters/filter_sidebar' %>
+
+<div class="card primary">
+  <h1><%= params[:variant].capitalize %></h1>
+
+  <%= render partial: 'filters/form_simple', locals: { variant: params[:variant] } %>
+
+  <br>
+
+  <div>
+    <%= link_to "Back to filters", filters_path, class: "button" %>
+  </div>
+</div>

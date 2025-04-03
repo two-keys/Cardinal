@@ -1,8 +1,14 @@
 <% content_for :special_search_actions do %>
-  <div data-controller="filteractions">
-    <input data-filteractions-target="group" type="text">
-    <button class="button" data-action="click->filteractions#add">Change Group</button>
+  <div class="filter-group-actions" data-controller="filteractions">
+    <div class="filter-group-actions-input">
+      <input data-filteractions-target="group" type="text">
+    </div>
+    <div class="filter-group-actions-buttons">
+      <button class="button" data-action="click->filteractions#add">Change Group</button>
+    </div>
   </div>
+  <%= link_to 'Whitelist', filters_simple_path(variant: 'whitelist'), class: "button" %>
+  <%= link_to 'Blacklist', filters_simple_path(variant: 'blacklist'), class: "button" %>
 <% end %>
 
 <%= render partial: 'directory/left_sidebar', locals: {

@@ -55,6 +55,14 @@ class FiltersController < ApplicationController
     end
   end
 
+  # GET /filters/simple
+  def simple; end
+
+  # POST /filters/simple
+  def create_simple
+
+  end
+
   # PATCH/PUT /filters/1 or /filters/1.json
   def update
     @filter.assign_attributes(filter_params)
