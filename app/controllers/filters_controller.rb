@@ -95,10 +95,6 @@ class FiltersController < ApplicationController
     params.require(:tag).permit(:polarity, :tag_type, :name)
   end
 
-  def search_params
-    params.permit(:group)
-  end
-
   def auth_redirect
     filters_url
   end
