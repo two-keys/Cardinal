@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_02_160536) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_03_221702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -319,6 +319,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_02_160536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "handled_by_id"
+    t.string "context", default: "Unspecified", null: false
     t.index ["handled_by_id"], name: "index_reports_on_handled_by_id"
     t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
     t.index ["reportee_id"], name: "index_reports_on_reportee_id"

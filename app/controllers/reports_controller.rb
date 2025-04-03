@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
 
   # GET /reports/new
   def new
-    @report = Report.new
+    @report = Report.new(context: nil)
 
     if params[:reportable_id].nil? || params[:reportable_type].nil?
       redirect_to root_path, alert: 'Invalid reportable type or ID'
@@ -68,12 +68,12 @@ class ReportsController < ApplicationController
   # Only allow a list of trusted parameters through.
   # Reports are polymorphic covering Prompts, Messages, and Characters
   def report_params
-    params.require(:report).permit(:reportable_id, :reportable_type, rules: [])
+    params.require(:report).permit(:reportable_id, :reportable_type, :context, rules: [])
   end
 
   def sanitize_input_params
     # Convert strings to integers and remove any non-integer values
-    params[:report][:rules] = params[:report][:rules].map(&:to_i).select(&:positive?)
+    params[:report][:rules] = params[:report][:rules].map(&:to_i).select(&:positive?) if params[:report][:rules]&.any?
   end
 
   def track_create

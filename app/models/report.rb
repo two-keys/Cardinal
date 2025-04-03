@@ -7,6 +7,7 @@ class Report < ApplicationRecord
   belongs_to :reportable, polymorphic: true
 
   before_validation :sanitize_rules
+  validates :context, presence: true, length: { maximum: 128 }, unless: -> { Current.user&.admin? }
   validate :validate_rules
   validate :validate_users
   validate :validate_reportable

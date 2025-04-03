@@ -2926,6 +2926,10 @@
         vertical-align: -0.1em;
     }
 
+    .field_with_errors {
+        @apply flex;
+    }
+
     .pagination {
         @apply flex flex-row w-full place-content-center gap-1;
     }

@@ -11,20 +11,24 @@
       </div>
     <% end %>
     <%= form_with model: @report, local: true do |form| %>
-        <div class="actions">
-            <%= form.submit "Report", data: { turbo_confirm: "Are you sure this report is accurate?" } %>
-        </div>
-        <br />
+        <div>
+            <%= form.label :context %>
+            <%= form.text_field :context, autofocus: true, class: "grow" %>
+        </div><br/>
         <div class="field">
             <%= form.label :rules %>
-            <br />
             <% @rules.each do |rule| %>
                 <div>
-                    <span><%=check_box_tag 'report[rules][]', rule[1]%></span>
-                    <span><%= rule[0] %></span>
+                    <%= label_tag do %>
+                      <%= check_box_tag 'report[rules][]', rule[1], false %>
+                      <%= rule[0] %>
+                    <% end %>
                 </div>
             <% end %>
             <!--%= form.select :rules, options_for_select(@rules, 1), { :prompt => nil }, { :multiple => true }%-->
+        </div><br>
+        <div class="actions">
+            <%= form.submit "Report", data: { turbo_confirm: "Are you sure this report is accurate?" } %>
         </div>
     <%= form.hidden_field :reportable_id, value: @report.reportable_id %>
     <%= form.hidden_field :reportable_type, value: @report.reportable_type %>
