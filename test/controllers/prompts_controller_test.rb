@@ -279,7 +279,8 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user)
 
     assert_changes('@prompt.reload.ooc') do
-      patch prompt_url(@prompt), params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+      patch prompt_url(@prompt),
+            params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
     end
     assert_redirected_to prompt_url(@prompt)
   end
