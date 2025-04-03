@@ -3739,6 +3739,14 @@
         @apply flex gap-2;
     }
 
+    .directory-actions .filter-group-actions {
+        @apply col-span-2;
+    }
+
+    .directory-actions .filter-group-actions .filter-group-actions-input {
+        @apply flex flex-col gap-2;
+    }
+
     .tags {
         @apply flex flex-col;
     }

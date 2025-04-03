@@ -1,0 +1,31 @@
+<%= form_with do |form| %>
+  <% @autocomplete = !Rails.env.test? %>
+  <%= hidden_field_tag 'variant', variant %>
+  <% TagSchema.polarities.each do |polarity| %>
+    <div class="polarity">
+      <h3><%= form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
+      <% TagSchema.allowed_types_for(polarity).each do |tag_type| %>
+        <%= fields_for "tags[#{polarity}]" do |polarity_form| %>        
+          <%= polarity_form.label "#{tag_type}", "#{readable_tag_type tag_type}:" %>
+          <% unless TagSchema.entries_for(tag_type).empty? %>
+            <% displayables = tag_display(
+                schema: TagSchema, tag_type:, names: defaults[polarity][tag_type]
+            ) %>
+            <%= render partial: 'prompts/form_tags/entries', locals: { entries: displayables[:checkboxes], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+          <% end %>
+          <% if TagSchema.fillable?(tag_type) %>
+            <% displayables = tag_display(
+                schema: TagSchema, tag_type:, names: defaults[polarity][tag_type]
+            ) %>
+            <%= render partial: 'prompts/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit 'Submit Tags' %>
+  </div>
+<% end %>

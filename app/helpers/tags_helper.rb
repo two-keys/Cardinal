@@ -9,4 +9,21 @@ module TagsHelper
       }
     end
   end
+
+  def tag_display(schema: TagSchema, tag_type: nil, names: [])
+    entries = schema.entries_for(tag_type)
+    fill_ins = []
+
+    # logger.debug "#{polarity} #{tag_type}"
+    checkboxes = entries.map do |entry|
+      {
+        name: entry,
+        checked: names.include?(entry)
+      }
+    end
+
+    fill_ins = (names - entries) if TagSchema.fillable?(tag_type)
+
+    { checkboxes:, fill_ins: }
+  end
 end

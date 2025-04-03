@@ -83,8 +83,4 @@ class PseudonymsController < ApplicationController
   def pseudonym_params
     params.require(:pseudonym).permit(:name, :status)
   end
-
-  def search_params
-    params.permit(*PseudonymsController.search_keys)
-  end
 end

@@ -154,6 +154,8 @@ class Ability
     can :generate_search, Prompt
     can :generate_search, Character
     can :autocomplete, Tag
+    can :simple, Filter
+    can :create_simple, Filter
     can :lucky_dip, Prompt
     can :history, Prompt, user: user
     can :restore, Prompt, user: user

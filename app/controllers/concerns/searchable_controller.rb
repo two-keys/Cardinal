@@ -71,7 +71,7 @@ module SearchableController
   private
 
   def search_params
-    params.permit(:before, :tags, :nottags)
+    params.permit(*self.class.search_keys)
   end
 
   def set_searchable
