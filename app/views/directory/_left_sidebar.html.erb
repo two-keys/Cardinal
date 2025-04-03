@@ -1,6 +1,7 @@
 <% content_for :left_sidebar do %>
     <div class="directory-left-sidebar">
         <div class="card primary">
+            <p>You have <%= Ticket.remaining(Current.user) %> tickets remaining</p>
             <ul class='directory-links'>
                 <li><%= link_to 'Prompts', prompts_path, class: "button" %></li>
                 <li><%= link_to 'Characters', characters_path, class: "button" %></li>
