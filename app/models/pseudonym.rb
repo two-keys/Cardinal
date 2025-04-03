@@ -24,7 +24,7 @@ class Pseudonym < ApplicationRecord
   validate :can_spend, on: %i[create update]
   validate :reserved?
 
-  after_create :spend_ticket
+  after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user == user }
 
   default_scope { order(updated_at: :desc) }
 

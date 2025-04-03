@@ -73,7 +73,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   Rails.application.routes.default_url_options = { host: 'localhost', port: 3000 }
 
-  if ENV.fetch('SMTP_ENABLED', nil)
+  if ENV.fetch('SMTP_ENABLED', 0).to_i == 1
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       authentication: ENV.fetch('SMTP_AUTH', nil),
