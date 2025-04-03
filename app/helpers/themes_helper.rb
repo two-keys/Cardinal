@@ -19,6 +19,8 @@ module ThemesHelper
       --color-tertiary-content
       --color-input
       --color-input-content
+      --color-message-odd
+      --color-message-even
       --color-ongoing
       --color-unread
       --color-unanswered

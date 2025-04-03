@@ -126,6 +126,9 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
         --color-input: rgb(228, 228, 228);
         --color-input-content: #333;
 
+        --color-message-odd: white;
+        --color-message-even: whitesmoke;
+
         --color-ongoing: grey;
         --color-unread: cornflowerblue;
         --color-unanswered: #9acd32;
@@ -196,6 +199,9 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
         --color-tertiary-content: rgb(71, 71, 71);
         --color-input: rgb(228, 228, 228);
         --color-input-content: #333;
+
+        --color-message-odd: white;
+        --color-message-even: whitesmoke;
 
         --color-ongoing: grey;
         --color-unread: cornflowerblue;

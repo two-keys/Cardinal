@@ -4029,6 +4029,9 @@
         --color-tertiary-content: #000;
         --color-input: rgb(228, 228, 228);
         --color-input-content: #333;
+
+        --color-message-odd: white;
+        --color-message-even: whitesmoke;
     
         --color-generic: #a44747;
         --color-generic-content: #fff;
