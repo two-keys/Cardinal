@@ -3386,9 +3386,17 @@
                border 
              border-ongoing;
     }
-
+    
     .message p {
         @apply inline;
+    }
+
+    [data-theme='light'] .prose p {
+        color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 30%));
+    }
+     
+    [data-theme='dark'] .prose p {
+        color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 90%));
     }
 
     .message .emoji {
