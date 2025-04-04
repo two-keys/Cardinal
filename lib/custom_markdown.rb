@@ -39,7 +39,7 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
       strikethrough: true,
       superscript: true,
       tables: true,
-      quote: true,
+      quote: false,
       footnotes: true,
       space_after_headers: true
     }
