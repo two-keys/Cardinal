@@ -3261,7 +3261,7 @@
   }
 
   markdown-toolbar {
-    color: var(--color-nav-content);
+    color: var(--ms-color-neutral-900);
   }
   .ms\:\@container {
     container-type: inline-size;
@@ -3835,7 +3835,7 @@
     outline-offset: calc(1px * -1);
   }
   .ms\:outline-blue-500 {
-    outline-color: var(--ms-color-blue-500);
+    outline-color: var(--color-header);
   }
   .ms\:focus-within\:outline-2 {
     &:focus-within {
