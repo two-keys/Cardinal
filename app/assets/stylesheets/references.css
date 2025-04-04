@@ -3287,7 +3287,7 @@
       margin-bottom: 1.2em;
     }
     :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
-      color: var(--tw-prose-links);
+      color: var(--color-unread);
       text-decoration: underline;
       font-weight: 500;
     }
@@ -5939,7 +5939,7 @@
         --tw-prose-body: inherit;
         --tw-prose-headings: inherit;
         --tw-prose-lead: inherit;
-        --tw-prose-links: inherit;
+        --tw-prose-links: var(--color-unread);
         --tw-prose-bold: inherit;
         --tw-prose-counters: inherit;
         --tw-prose-bullets: inherit;
