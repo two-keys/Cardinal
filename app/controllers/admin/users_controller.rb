@@ -7,7 +7,7 @@ module Admin
     include AuditableController
 
     before_action :require_admin
-    before_action :set_user, only: %i[show edit update destroy force_confirm]
+    before_action :set_user, only: %i[show edit update destroy force_confirm generate_password_reset]
 
     # GET /admin/users or /admin/users.json
     def index # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
@@ -99,6 +99,22 @@ module Admin
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def generate_password_reset
+      @user.password_reset_url = Rails.application.routes.url_helpers.edit_user_password_url(reset_password_token: @user.send(:set_reset_password_token)) # rubocop:disable Layout/LineLength
+
+      respond_to do |format|
+        if @user.password_reset_url.blank?
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        else
+          format.html do
+            redirect_to edit_admin_user_path(@user), notice: 'Password Reset URL Generated. Please copy it.'
+          end
+          format.json { render :show, status: :ok, location: @user }
         end
       end
     end

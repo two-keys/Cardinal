@@ -20,6 +20,10 @@
     <% if !user.confirmed? || user.email.blank? || !user.unconfirmed_email.blank? %>
       <b>(unconfirmed) <%= user.unconfirmed_email %></b>
     <% end %>
+    <% if user.password_reset_url %>
+      <span><b>Password Reset: </b><%= link_to user.password_reset_url, user.password_reset_url %></span>
+    <% end %>
+    <%= link_to "Generate Password Reset Link", admin_reset_password_user_path(user), class: "button", data: {turbo: true, 'turbo-method' => :post } %>
   </div>
 
   <div class="username">
