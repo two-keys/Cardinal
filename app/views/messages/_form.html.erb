@@ -55,7 +55,7 @@
 
     <div class="input-group">
       <div>
-        <%= form.color_field :color %>
+        <%= form.text_field :color, {'data-controller': 'color-picker'} %>
       </div>
       <div class="ooc-input" id="form_message_ooc">
         <%= form.select :visibility, Message.visibilities.map {|k, _v| [k.humanize.capitalize, k]} %>

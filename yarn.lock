@@ -1022,6 +1022,11 @@
   resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.4.tgz#4d4ff677e1609214fc71c580125ddddd86abcabf"
   integrity sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==
 
+"@melloware/coloris@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@melloware/coloris/-/coloris-0.24.0.tgz#7714825cf421fdec50086152dec702c0a0d68a85"
+  integrity sha512-9RGKHqZJsUSsxb/0xaBCK5OKywobiK/xRtV8f4KQDmviqmVfkMLR3kK4DRuTTLSFdSOqkV0OQ/Niitu+rlXXYw==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"

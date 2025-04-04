@@ -18,7 +18,7 @@
 <div class="card secondary">
   <div class="input-group">
     <%= form.label :description, style: "display: block" %>
-    <%= form.color_field :color %>
+    <%= form.text_field :color, {'data-controller': 'color-picker'} %>
   </div>
   <%= form.text_area :description, id: "character_#{character.id ? character.id : "new"}_description" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
 </div>

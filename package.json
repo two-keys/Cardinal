@@ -17,6 +17,7 @@
     "@avo-hq/marksmith": "^0.4.0",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.13",
+    "@melloware/coloris": "^0.24.0",
     "@selectize/selectize": "^0.15.2",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
