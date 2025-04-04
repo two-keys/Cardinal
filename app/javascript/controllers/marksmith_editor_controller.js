@@ -9,6 +9,8 @@ export default class extends Controller {
   }
 
   connect() {
+    const naturallyStretchy = CSS && CSS.supports('field-sizing', 'content');
+    console.log(naturallyStretchy)
     if (!this.saveIdValue) {
         this.saveIdValue = this.element.id
     }
@@ -19,6 +21,10 @@ export default class extends Controller {
     let textArea = $(this.element).find('textarea')[0];
     let saveValue = this.saveValue
     let saveIdValue = this.saveIdValue
+
+    if (!naturallyStretchy) {
+      textArea.style.overflowY = "scroll";
+    }
 
     textArea.setHTML = function(input) {
         this.value = input;
