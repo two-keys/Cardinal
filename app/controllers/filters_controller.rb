@@ -21,7 +21,7 @@ class FiltersController < ApplicationController # rubocop:disable Metrics/ClassL
     # GET /filters?group=default
     query = query.where(group: search_params[:group]) if search_params.key?(:group)
 
-    @pagy, @filters = pagy(query.includes(:user, target: [:synonym]), items: 5)
+    @pagy, @filters = pagy(query.includes(:user, target: [:synonym]), items: 25)
   end
 
   # GET /filters/1 or /filters/1.json
