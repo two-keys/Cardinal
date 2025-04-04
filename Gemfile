@@ -150,6 +150,9 @@ gem 'rack', '~> 2.2.13'
 
 gem 'rack-cors', '~> 2.0'
 
+# Mailing
+gem 'postmark-rails'
+
 # For Data transfer time estimate
 gem 'ruby-progressbar', '~> 1.13'
 

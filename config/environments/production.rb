@@ -97,15 +97,12 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.action_mailer.default_url_options = { host: ENV.fetch('BASE_URL', nil) }
   Rails.application.routes.default_url_options = { host: ENV.fetch('BASE_URL', nil) }
 
-  if ENV.fetch('SMTP_ENABLED', 0).to_i == 1
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      authentication: ENV.fetch('SMTP_AUTH', nil),
-      address: ENV.fetch('SMTP_SERVER', nil),
-      port: ENV.fetch('SMTP_PORT', nil),
-      domain: ENV.fetch('SMTP_DOMAIN', nil),
-      user_name: ENV.fetch('SMTP_USER', nil),
-      password: ENV.fetch('SMTP_PASS', nil)
-    }
-  end
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.perform_deliveries = ENV.fetch('MAIL_ENABLED', 0).to_i == 1
+  config.action_mailer.default_options = {
+    from: ENV.fetch('EMAIL_SENDER', nil),
+    reply_to: ENV.fetch('EMAIL_SENDER', nil),
+    'MESSAGE-STREAM': 'broadcast'
+  }
+  config.action_mailer.postmark_settings = { api_token: ENV.fetch('POSTMARK_KEY', nil) }
 end
