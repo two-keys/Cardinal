@@ -200,10 +200,6 @@ class PromptsController < ApplicationController
     params.require(:prompt).permit(:starter, :ooc, :color, :status, :default_slots, :managed, :pseudonym_id)
   end
 
-  def search_params
-    params.permit(*PromptsController.search_keys)
-  end
-
   def track_create
     ahoy.track 'Prompt Created', { user_id: @prompt.user.id }
 

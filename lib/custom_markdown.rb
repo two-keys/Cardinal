@@ -26,8 +26,6 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
     content_tag(:span, text, style: "color: ##{color};")
   end
 
-  # rubocop:disable Rails/OutputSafety
-
   # A generic class method for site-wide, safe markdown.
   def self.generic_render(text)
     sanitized_text = ActionController::Base.helpers.sanitize(text, tags: %w[span br img],
@@ -45,7 +43,6 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
       footnotes: true,
       space_after_headers: true
     }
-    Redcarpet::Markdown.new(renderer, options).render(sanitized_text).html_safe
+    Redcarpet::Markdown.new(renderer, options).render(sanitized_text).html_safe # rubocop:disable Rails/OutputSafety
   end
-  # rubocop:enable Rails/OutputSafety
 end

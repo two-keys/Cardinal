@@ -144,6 +144,9 @@ gem 'rack-attack'
 # Upgrades
 gem 'next_rails'
 
+# Markdown Editor
+gem 'marksmith'
+
 gem 'net-imap', '>= 0.5.6'
 gem 'nokogiri', '>= 1.18.4'
 gem 'rack', '~> 2.2.13'

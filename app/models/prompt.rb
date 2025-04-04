@@ -34,7 +34,8 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :can_bump, on: :update
-  validate :can_spend, on: %i[create update], unless: -> { Current.user&.admin? && Current.user != user }
+  validate :can_spend, on: %i[create], unless: -> { Current.user&.admin? && Current.user != user }
+  validate :can_spend_up, on: %i[update], unless: -> { Current.user&.admin? && Current.user != user }
   validate :authorization, on: %i[create update]
 
   after_create :spend_ticket, unless: -> { Current.user&.admin? && Current.user != user }
@@ -51,14 +52,6 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def alertable_fields
     %i[starter ooc]
-  end
-
-  def mark_starter
-    markdown_concern(starter)
-  end
-
-  def mark_ooc
-    markdown_concern(ooc)
   end
 
   # Answers a prompt, creating a new chat
@@ -142,6 +135,12 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return unless bumped_at_changed?
 
     errors.add(:bump, "You must wait until #{bumped_at + 1.day} to bump this prompt.") unless bumpable?
+  end
+
+  def can_spend_up
+    return unless bumped_at_changed?
+
+    can_spend
   end
 
   def spend_ticket

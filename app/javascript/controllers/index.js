@@ -4,6 +4,11 @@
 
 import { application } from "./application"
 import controllers from "./**/*_controller.js"
+import { MarksmithController, ListContinuationController } from '@avo-hq/marksmith'
+
 controllers.forEach((controller) => {
   application.register(controller.name, controller.module.default)
 })
+
+application.register('marksmith', MarksmithController)
+application.register('list-continuation', ListContinuationController)

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Character < ApplicationRecord
-  include Markdownable
   include Taggable
   include Ticketable
   include Reportable
@@ -45,10 +44,6 @@ class Character < ApplicationRecord
 
   def alertable_fields
     %i[description]
-  end
-
-  def mark_description
-    markdown_concern(description)
   end
 
   # Should really only be called from controller

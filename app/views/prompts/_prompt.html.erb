@@ -19,7 +19,7 @@
 <% content_for "card_content_#{prompt.id}" do %>
   <% if prompt.ooc.present? %>
     <div id="<%= dom_id prompt %>_ooc" class="show-more prompt-content prompt-ooc markdown prose max-w-none" data-controller="show-more" data-read-smore-words="70">
-      <%= prompt.mark_ooc %>
+      <%== marksmithed prompt.ooc %>
     </div>
   <% end %>
 
@@ -29,7 +29,7 @@
 
   <% if prompt.starter.present? %>
     <div style="<%= "color: #{prompt.color};" if prompt.color != "#000000" %>" id="<%= dom_id prompt %>_starter" class="show-more prompt-content prompt-starter markdown prose max-w-none" data-controller="show-more" data-read-smore-words="70">
-      <%= prompt.mark_starter %>
+      <%== marksmithed prompt.starter %>
     </div>
   <% end %>
 <% end %>

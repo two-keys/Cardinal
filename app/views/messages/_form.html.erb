@@ -16,17 +16,6 @@
       <h3 class="alert" data-chat-input-target="alert"></h3>
     </div>
 
-    <div class="input-group">
-      <div class="ooc-input" id="form_message_ooc">
-        <%= form.label :visibility %>
-        <%= form.select :visibility, Message.visibilities.map {|k, _v| [k.humanize.capitalize, k]} %>
-      </div>
-
-      <div>
-        <%= form.color_field :color %>
-      </div>
-    </div>
-
     <% if current_user.admin? %>
         <div>
           <div class="icon-selector" data-controller="icon-selector">
@@ -53,14 +42,27 @@
           </div>
         </div>
     <% end %>
+    <% if UNLEASH.is_enabled?('marksmith_input', @unleash_context) %>
+      <div id="<%= "input_chat_#{locals[:chat_id]}_new" %>" data-chat-input-target="container" data-controller="marksmith-editor" data-marksmith-editor-save-value="<%= locals[:message].id ? "false" : "true" %>">
+        <%= form.marksmith :content, enable_file_uploads: false %>
+      </div>
+    <% else %>
+      <div id="form_message_content" data-controller="toasty-editor" class="message-input">
+        <div data-chat-input-target="container" class="editor-container" data-toasty-editor-target="editor"></div>
+        <%= form.hidden_field :content, {'data-chat-input-target': 'textarea', 'data-toasty-editor-target': 'textarea'} %>
+      </div>
+    <% end %>
 
-    <div id="form_message_content" data-controller="toasty-editor" class="message-input">
-      <div data-chat-input-target="container" class="editor-container" data-toasty-editor-target="editor"></div>
-      <%= form.hidden_field :content, {'data-chat-input-target': 'textarea', 'data-toasty-editor-target': 'textarea'} %>
-    </div>
-
-    <div class="form-submit" id="form_message_submit">
-      <%= form.submit value: 'Send' %>
+    <div class="input-group">
+      <div>
+        <%= form.color_field :color %>
+      </div>
+      <div class="ooc-input" id="form_message_ooc">
+        <%= form.select :visibility, Message.visibilities.map {|k, _v| [k.humanize.capitalize, k]} %>
+      </div>
+      <div class="form-submit input-main flex" id="form_message_submit">
+        <%= form.submit value: 'Send', class: "input-main" %>
+      </div>
     </div>
 
     <br />

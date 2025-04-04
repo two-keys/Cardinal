@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
   get 'contact_us' => 'contact_us#index'
   get 'admin_panel/index'
+
+  get 'filters/simple', to: 'filters#simple'
+  post 'filters/simple', to: 'filters#create_simple'
   resources :filters
 
   resources :tickets, only: %i[index show destroy]

@@ -100,10 +100,6 @@ class CharactersController < ApplicationController
     params.require(:character).permit(:name, :description, :color, :status, :default_slots, :pseudonym_id)
   end
 
-  def search_params
-    params.permit(*CharactersController.search_keys)
-  end
-
   def track_create
     ahoy.track 'Character Created', { user_id: @character.user.id }
   end
