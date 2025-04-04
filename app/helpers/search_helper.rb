@@ -42,14 +42,33 @@ module SearchHelper
     object_character_string = get_oc_string(obj_class)
 
     f2 = Filter.arel_table.alias
-    # ignore filters if this is your own taggable
-    query.where(user: current_user).or(
-      # not your taggable
-      obj_class.where.not(
-        # We want prompts that don't have a tag mathcing a Rejection filter
-        Filter.where(
-          # Do any of the prompt's tags hit the rejection filter?
-          '"filters"."target_type" = \'Tag\' AND "filters"."target_id" IN (?)',
+    query.where.not(
+      # We want prompts that don't have a tag mathcing a Rejection filter
+      Filter.where(
+        # Do any of the prompt's tags hit the rejection filter?
+        '"filters"."target_type" = \'Tag\' AND "filters"."target_id" IN (?)',
+        ObjectTag.where(object_tag_string).or(
+          # sub-search for character tags if characterized
+          ObjectTag.where('? = TRUE', characterized)
+          .where(
+            object_type: 'Character',
+            object_id: ObjectCharacter.where(
+              object_character_string
+            ).select(:character_id)
+          )
+        ).select(:tag_id)
+      ).where(
+        # We could theoretically let people specify the specific filters they want to match,
+        # but that sounds like a pain
+        # `group: ['default', etc...]`
+        filter_type: 'Rejection',
+        user: current_user
+      ).where.not(
+        # If a prompt DOES have a tag matching a Rejection filter,
+        # we can let that slide IF an Exception filter in the same group overrides that
+        Filter.from(f2).select('"filters_2".*').where(
+          # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
+          '"filters_2"."target_type" = \'Tag\' AND "filters_2"."target_id" IN (?)',
           ObjectTag.where(object_tag_string).or(
             # sub-search for character tags if characterized
             ObjectTag.where('? = TRUE', characterized)
@@ -61,39 +80,16 @@ module SearchHelper
             )
           ).select(:tag_id)
         ).where(
-          # We could theoretically let people specify the specific filters they want to match,
-          # but that sounds like a pain
-          # `group: ['default', etc...]`
-          filter_type: 'Rejection',
-          user: current_user
-        ).where.not(
-          # If a prompt DOES have a tag matching a Rejection filter,
-          # we can let that slide IF an Exception filter in the same group overrides that
-          Filter.from(f2).select('"filters_2".*').where(
-            # Same check as above, but Rails doesn't have a clean table alias feature even with arel_table
-            '"filters_2"."target_type" = \'Tag\' AND "filters_2"."target_id" IN (?)',
-            ObjectTag.where(object_tag_string).or(
-              # sub-search for character tags if characterized
-              ObjectTag.where('? = TRUE', characterized)
-              .where(
-                object_type: 'Character',
-                object_id: ObjectCharacter.where(
-                  object_character_string
-                ).select(:character_id)
-              )
-            ).select(:tag_id)
-          ).where(
-            '"filters_2"."filter_type" = ?', 'Exception'
-          ).where(
-            # as above so below
-            '"filters_2"."group" = "filters"."group"
-            AND "filters_2"."user_id" = "filters"."user_id"'
-          ).where(
-            # An exception filter with a higher priority always wins within a filter group
-            '"filters_2"."priority" >= "filters"."priority"'
-          ).arel.exists
+          '"filters_2"."filter_type" = ?', 'Exception'
+        ).where(
+          # as above so below
+          '"filters_2"."group" = "filters"."group"
+          AND "filters_2"."user_id" = "filters"."user_id"'
+        ).where(
+          # An exception filter with a higher priority always wins within a filter group
+          '"filters_2"."priority" >= "filters"."priority"'
         ).arel.exists
-      )
+      ).arel.exists
     )
   end
 

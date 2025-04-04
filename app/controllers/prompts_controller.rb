@@ -38,12 +38,10 @@ class PromptsController < ApplicationController
 
     # is this your prompt?
     if search_params.key?(:ismine)
-      query = case search_params[:ismine]
-              when 'true'
+      query = if search_params[:ismine] == 'true'
                 query.where(user: current_user)
-              when 'false'
+              else
                 query.where.not(user: current_user)
-              else query
               end
     end
 
