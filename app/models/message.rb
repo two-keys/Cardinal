@@ -29,6 +29,7 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
     where.not(visibility: 'hidden').order('created_at DESC')
   }
 
+  before_create :override_visibility
   after_create :update_timestamp
   after_create_commit :update_chat
   after_create_commit :broadcast_create
@@ -154,6 +155,10 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   private
+
+  def override_visibility
+    self.visibility = 'ooc' if content.start_with?('((')
+  end
 
   def search_reindex
     update_pg_search_document
