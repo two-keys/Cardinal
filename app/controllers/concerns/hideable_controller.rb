@@ -12,6 +12,7 @@ module HideableController
   def hide
     new_filter = Filter.create(
       user: current_user, target: @hideable,
+      group: 'simple',
       filter_type: 'Rejection', priority: 0
     )
 

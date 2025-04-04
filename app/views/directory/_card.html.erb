@@ -44,7 +44,7 @@
     <div class="actions">
       <ul class="actions-left">
         <% if can?(:hide, model) %>
-          <li><%= button_to "Hide", hide_tag_path(model), method: :post, class: "button" %></li>
+          <li><%= button_to "Block", hide_tag_path(model), method: :post, class: "button", data: {turbo_confirm: "Are you sure you want to add this #{class_name.capitalize} to your filters?"} %></li>
         <% end %>
 
         <% if defined?(model.user) && model.user != current_user %>
