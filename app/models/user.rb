@@ -118,6 +118,14 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     save
   end
 
+  def password_reset_url=(url)
+    Rails.cache.write("user_#{id}_reset_url", url, expires_in: 30.seconds)
+  end
+
+  def password_reset_url
+    Rails.cache.read("user_#{id}_reset_url")
+  end
+
   def inactive_message
     return unless delete_at || unban_at
 

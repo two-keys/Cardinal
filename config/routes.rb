@@ -89,6 +89,7 @@ Rails.application.routes.draw do
       concerns :auditable
     end
     post 'users/:id/force_confirm' => 'users#force_confirm', as: 'force_confirm_user'
+    post 'users/:id/generate_password_reset' => 'users#generate_password_reset', as: 'reset_password_user'
     resources :entitlements do
       concerns :auditable
     end
