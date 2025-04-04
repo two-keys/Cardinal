@@ -12,7 +12,7 @@
   
   <% if character.description.present? %>
     <div class="character-description markdown prose max-w-none">
-      <%= character.mark_description %>
+      <%== marksmithed character.description %>
     </div>
   <% end %>
   

@@ -1,13 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["ooc", "textarea", "alert", "container"];
+  static targets = ["ooc", "alert", "container"];
   connect() {
     //
   }
 
   submitForm(e){
-    const textArea = this.textareaTarget;
     const alertBox = this.alertTarget;
     const container = this.containerTarget;
     $.ajax({

@@ -54,14 +54,6 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     %i[starter ooc]
   end
 
-  def mark_starter
-    markdown_concern(starter)
-  end
-
-  def mark_ooc
-    markdown_concern(ooc)
-  end
-
   # Answers a prompt, creating a new chat
   def answer(as_user)
     @chat = Chat.new

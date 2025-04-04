@@ -14,7 +14,7 @@
 
   <% if prompt.ooc.present? %>
     <div class="ooc markdown prose max-w-none">
-      <%= prompt.mark_ooc %>
+      <%== marksmithed prompt.ooc %>
     </div>
   <% end %>
 
@@ -24,7 +24,7 @@
 
   <% if prompt.starter.present? %>
     <div style="<%= "color: #{prompt.color};" if prompt.color != "#000000" %>"  class="starter markdown prose max-w-none">
-      <%= prompt.mark_starter %>
+      <%== marksmithed prompt.starter %>
     </div>
   <% end %>
 
