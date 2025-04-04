@@ -4,6 +4,7 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
       <%= f.label :username %>
+      <%= f.invisible_captcha :org, autocomplete: SecureRandom.hex(8) %>
       <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
     </div>
 
@@ -25,8 +26,5 @@
       <%= f.submit "Log in" %>
       <%= render "users/shared/links" %>
     </div>
-    <%= turbo_frame_tag 'recaptchas' do %>
-      <%= recaptcha_v3(action: 'signup') %>
-    <% end %>
   <% end %>
 </div>

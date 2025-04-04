@@ -25,6 +25,6 @@ Rails.application.configure do
   #   # Report violations without enforcing the policy.
   #   # config.content_security_policy_report_only = true
   config.content_security_policy do |p|
-    p.frame_ancestors 'self', '*.recaptcha.net'
+    p.frame_ancestors 'self'
   end
 end

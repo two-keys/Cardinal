@@ -12,6 +12,7 @@
     <div class="username">
       <%= f.label :username %>
       <%= f.text_field :username, autocomplete: "username" %>
+      <%= f.invisible_captcha :nickname, autocomplete: SecureRandom.hex(8) %>
     </div>
 
     <div class="field">
@@ -31,10 +32,6 @@
       <%= f.submit "Sign up" %>
       <%= render "users/shared/links" %>
     </div>
-    
-    <%= turbo_frame_tag 'recaptchas' do %>
-      <%= recaptcha_v3(action: 'signin') %>
-    <% end %>
     <br/>
   <% end %>
 </div>

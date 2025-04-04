@@ -133,7 +133,7 @@ gem 'roadie-rails'
 gem 'jsbundling-rails'
 
 # Spam prevention
-gem 'recaptcha'
+gem 'invisible_captcha'
 
 # Fancy activerecord postgres features
 gem 'active_record_extended'
