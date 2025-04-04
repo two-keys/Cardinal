@@ -5210,12 +5210,28 @@
         filter: brightness(1.5);
     }
 
+    [data-theme='light'] .ms\:prose p {
+        color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 30%));
+    }
+    
+    [data-theme='dark'] .ms\:prose p {
+        color: color-mix(in srgb, currentColor 50%, hsl(from currentColor h s 90%));
+    }
+    
+    [data-theme='light'] .ms\:prose p span {
+        filter: brightness(0.5);
+    }
+    
+    [data-theme='dark'] .ms\:prose p span {
+        filter: brightness(1.5);
+    }
+
     .message .emoji {
         @apply inline-block;
     }
 
     .message .message-content {
-        @apply flex flex-col gap-6;
+        @apply flex flex-col;
     }
 
     .message .report-link {
@@ -5941,6 +5957,11 @@
     }
 
     .markdown.prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    [data-marksmith-target="previewPane"] :where(p):not(:where([class~=not-prose],[class~=not-prose] *)) {
         margin-top: 0;
         margin-bottom: 0;
     }

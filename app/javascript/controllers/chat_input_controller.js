@@ -1,14 +1,40 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["ooc", "alert", "container"];
+  static targets = ["ooc", "alert", "container", "colorpick"];
   connect() {
-    //
+    const color = this.colorpickTarget;
+    const container = this.containerTarget;
+    var marksmith = $(container).find('#markdown-preview-content');
+
+    if (marksmith[0] && color) {
+      var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+      var mutationHandler = function(mutationRecords) {
+        marksmith = $(container).find('#markdown-preview-content').children(':first');
+        $(marksmith[0]).css('color', color.value);
+        color.removeEventListener('input')
+        color.addEventListener('input', function() {
+          $(marksmith[0]).css('color', color.value);
+        })
+      }
+
+      var observer = new MutationObserver(mutationHandler);
+      var obsConfig = {
+        childList: true,
+        characterData: true,
+        attributes: true,
+        subtree: true
+      };
+
+      observer.observe(marksmith[0], obsConfig);
+    }
   }
 
   submitForm(e){
     const alertBox = this.alertTarget;
     const container = this.containerTarget;
+
     $.ajax({
         url : $(e.target).attr('action') || window.location.pathname,
         type: "POST",
