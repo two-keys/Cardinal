@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_04_160619) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_05_202426) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -199,18 +199,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_04_160619) do
     t.string "target_type"
     t.bigint "target_id"
     t.index ["filter_type"], name: "index_filters_on_filter_type"
+    t.index ["target_type", "target_id", "filter_type", "group", "user_id", "priority"], name: "idx_on_target_type_target_id_filter_type_group_user_85133e1bd9"
     t.index ["target_type", "target_id", "group", "user_id", "filter_type"], name: "idx_on_target_type_target_id_group_user_id_filter_t_81e55b05bc", unique: true
     t.index ["target_type", "target_id", "group", "user_id"], name: "idx_on_target_type_target_id_group_user_id_394635f237", unique: true
     t.index ["target_type", "target_id"], name: "index_filters_on_target"
     t.index ["user_id"], name: "index_filters_on_user_id"
-  end
-
-  create_table "global_entitlements", force: :cascade do |t|
-    t.string "title"
-    t.bigint "entitlement_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entitlement_id"], name: "index_global_entitlements_on_entitlement_id", unique: true
   end
 
   create_table "ip_bans", force: :cascade do |t|
@@ -292,6 +285,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_04_160619) do
     t.boolean "managed", default: false, null: false
     t.bigint "pseudonym_id"
     t.text "color", default: "#000000", null: false
+    t.index ["bumped_at", "status", "user_id", "managed"], name: "index_prompts_on_bumped_at_and_status_and_user_id_and_managed"
+    t.index ["bumped_at"], name: "index_prompts_on_bumped_at"
     t.index ["default_slots"], name: "index_prompts_on_default_slots"
     t.index ["managed"], name: "index_prompts_on_managed"
     t.index ["pseudonym_id"], name: "index_prompts_on_pseudonym_id"
@@ -475,7 +470,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_04_160619) do
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "users"
-  add_foreign_key "global_entitlements", "entitlements"
   add_foreign_key "mod_chats", "chats"
   add_foreign_key "mod_chats", "users"
   add_foreign_key "object_characters", "characters"
