@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Edit Chat (<%= @chat_info.title ? @chat_info.title : @chat_info.chat.uuid %>)
+<% end %>
+
 <h1>Editing chat</h1>
 
 <div class="card primary">

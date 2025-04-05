@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Character (<%= @character.name %>)
+<% end %>
+
 <%= render partial: 'characters/characters_sidebar' %>
 
 <%= render @character %>

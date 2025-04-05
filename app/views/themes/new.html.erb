@@ -1,4 +1,6 @@
-<% content_for :title, "New theme" %>
+<% content_for :page_title do %>
+    New Theme
+<% end %>
 <h1>New theme</h1>
 <div class="card secondary">
   <%= render "form", theme: @theme %>
