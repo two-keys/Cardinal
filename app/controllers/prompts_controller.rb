@@ -36,15 +36,6 @@ class PromptsController < ApplicationController
     # can chats from the prompt be moderated?
     query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
 
-    # is this your prompt?
-    if search_params.key?(:ismine)
-      query = if search_params[:ismine] == 'true'
-                query.where(user: current_user)
-              else
-                query.where.not(user: current_user)
-              end
-    end
-
     @pagy, @prompts = pagy(query.includes(:user, :pseudonym, :tags), items: 25)
   end
 
