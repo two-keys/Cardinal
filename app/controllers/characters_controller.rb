@@ -19,7 +19,7 @@ class CharactersController < ApplicationController
   include PseudableController
 
   def self.search_keys
-    %i[before tags nottags]
+    %i[before tags nottags ismine]
   end
 
   # GET /characters

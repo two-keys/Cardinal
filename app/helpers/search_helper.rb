@@ -113,6 +113,15 @@ module SearchHelper
 
     query = obj_class.accessible_by(current_ability)
 
+    # is this yours?
+    if search_params.key?(:ismine)
+      query = if search_params[:ismine] == 'true'
+                query.where(user: current_user)
+              else
+                query.where.not(user: current_user)
+              end
+    end
+
     # GET /prompts?before=2022-02-17
     if search_params.key?(:before)
       query = if obj_class.method_defined?(:bumpable?)
