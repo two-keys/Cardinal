@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Report (<%= @report.id %>)
+<% end %>
+
 <div class="card primary">
   <%= link_to "Back to my reports", reports_path, class: "button" %>
 </div>

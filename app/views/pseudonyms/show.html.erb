@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Pseudonym (<%= @pseudonym.name %>)
+<% end %>
+
 <%= render partial: 'pseudonyms/pseudonyms_sidebar' %>
 
 <%= render @pseudonym %>

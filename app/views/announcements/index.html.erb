@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    News
+<% end %>
+
 <h1>News</h1>
 
 <%= render partial: 'announcements/announcements', locals: {announcements: @announcements} %>

@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Prompt (<%= @prompt.id %>)
+<% end %>
+
 <%= render partial: 'prompts/prompts_sidebar' %>
 
 <%= render @prompt %>

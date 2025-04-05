@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Chat Search (<%= @chat_info.title ? @chat_info.title : @chat_info.chat.uuid %>)
+<% end %>
+
 <% content_for :info_top do %>
     <div class="chat-info-top card secondary" id="chat_info_top">
         <% if @chat_info %>

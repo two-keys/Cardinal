@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Filter (<%= @filter.group %>)
+<% end %>
+
 <%= render partial: 'filters/filter_sidebar' %>
 
 <%= render @filter %>

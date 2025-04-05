@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Edit Announcement (<%= @announcement.title ? @announcement.title : @announcement.id %>)
+<% end %>
+
 <h1>Editing announcement</h1>
 
 <div class="card primary">

@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Tag (<%= "#{@tag.polarity}:#{@tag.tag_type}:#{@tag.name}" %>)
+<% end %>
+
 <%= render @tag %>
 
 <div class="card primary">

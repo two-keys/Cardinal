@@ -16,6 +16,15 @@ module ApplicationHelper
   include Pagy::Frontend
   require 'digest'
 
+  def full_title(page_title = '')
+    base_title = 'Cardinal'
+    if page_title.empty?
+      base_title
+    else
+      "#{page_title} | #{base_title}"
+    end
+  end
+
   def icon_for(text)
     return text if text.nil?
 

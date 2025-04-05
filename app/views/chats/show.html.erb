@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+    Chat (<%= @chat_info.title ? @chat_info.title : @chat_info.chat.uuid %>)
+<% end %>
+
 <% content_for :info_top do %>
     <div class="chat-info-top card secondary thin" id="chat_info_top">
         <% if @chat_info %>
@@ -12,9 +16,9 @@
     </div>
 <% end %>
 
-<div class="flex-container" id="<%= dom_id @chat %>_container">
+<div class="flex-container" id="<%= dom_id @chat %>_container" data-controller="<%= @pagy.page == 1 ? "chat" : "" %>">
     <div class="card secondary">
-        <div class="flex-container messages-container" id="messages_container">
+        <div class="flex-container messages-container" id="messages_container" data-chat-target="messages">
             <% if @pagy.page == 1 %>
                 <%= turbo_stream_from(dom_id(current_user) + "_" + dom_id(@chat)) %>
             <% else %>
