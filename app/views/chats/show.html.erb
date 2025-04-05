@@ -1,5 +1,17 @@
 <% content_for :page_title do %>
-    Chat (<%= @chat_info.title.blank? ? @chat_info.chat.uuid : @chat_info.title %>)
+    <% if @chat_info %>
+        <% if @chat.mod_chat.present? %>
+            Mod Chat (<%= @chat_info.title.blank? ? @chat.uuid : @chat_info.title %>)
+        <% else %>
+            Chat (<%= @chat_info.title.blank? ? @chat.uuid : @chat_info.title %>)
+        <% end %>
+    <% else %>
+        <% if @chat.mod_chat.present? %>
+            Mod Chat (<%= @chat.uuid %>)
+        <% else %>
+            Chat (<%= @chat.uuid %>)
+        <% end %>
+    <% end %>
 <% end %>
 
 <% content_for :info_top do %>
