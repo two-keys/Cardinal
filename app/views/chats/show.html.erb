@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-    Chat (<%= @chat_info.title ? @chat_info.title : @chat_info.chat.uuid %>)
+    Chat (<%= @chat_info.title.blank? ? @chat_info.chat.uuid : @chat_info.title %>)
 <% end %>
 
 <% content_for :info_top do %>
