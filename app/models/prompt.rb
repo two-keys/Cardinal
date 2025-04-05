@@ -66,7 +66,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     @chat.chat_users << ChatUser.new(user: as_user)
 
     @chat.messages << Message.new(content: ooc) if ooc.present?
-    @chat.messages << Message.new(content: starter) if starter.present?
+    @chat.messages << Message.new(content: starter, color:) if starter.present?
 
     @chat
   end
