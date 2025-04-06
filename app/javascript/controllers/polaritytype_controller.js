@@ -35,7 +35,7 @@ export default class extends Controller {
     for (let nodeIndex = 0; nodeIndex < this.tagTypeTarget.options.length; nodeIndex++) {
       const node = this.tagTypeTarget.options[nodeIndex];
 
-      let nodePolarities = this.typesObj[node.value].polarities;
+      let nodePolarities = this.typesObj[node.value];
 
       if (nodePolarities.includes(polarity)) {
         node.removeAttribute('disabled');
