@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Tag < ApplicationRecord
+require 'csv'
+
+class Tag < ApplicationRecord # rubocop:disable Metrics/ClassLength
   MAX_SYNONYM_DEPTH = 1
   MAX_RECURSION_DEPTH = 25
 
@@ -63,6 +65,12 @@ class Tag < ApplicationRecord
 
     chain = Tag.chain_synonym(self, nil)
     self.synonym = chain
+  end
+
+  def to_csv
+    CSV.generate do |csv|
+      csv << attributes.values
+    end
   end
 
   # Recursively gets synonyms, up to MAX_RECURSION_DEPTH.

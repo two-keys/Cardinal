@@ -1,0 +1,25 @@
+<% content_for :page_title do %>
+    Admin - Bulk Tag Edit
+<% end %>
+
+<div class="card primary">
+    <h2>Bulk Tag Editor</h2>
+
+    <h3>Template</h3>
+    <div class="flex-container" id="admin_bulk_tags_container">
+        <div class="card secondary prose !max-w-none">
+            <pre>
+                <code><%= @csv %></code>
+            </pre>
+        </div>
+    </div>
+
+    <%= form_with url: admin_bulk_tags_path, method: :patch, :multipart => true do |form| %>
+        <%= form.label :upload, "Upload" %>
+        <%= form.file_field :upload %>
+        <div class="input-group">
+            <%= link_to "Download All Tags", admin_bulk_tags_download_path, class: "button", target:"_blank" %>
+            <%= form.submit "Update Tags" %>
+        </div>
+    <% end %>
+</div>

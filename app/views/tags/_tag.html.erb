@@ -31,6 +31,13 @@
     Parent
     <%= render partial: 'tags/mini', locals: {tag: tag.parent} %>
   <% end %>
+
+  <% if Current.user.admin? %>
+    <div class="card secondary prose !max-w-none">
+      <h4>CSV</h4>
+      <code><%= tag.to_csv %></code>
+    </div>
+  <% end %>
 <% end %>
 
 <%= render partial: 'directory/card', locals: { 
