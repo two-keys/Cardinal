@@ -52,6 +52,34 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should create advanced search' do
+    sign_in(@user)
+    tags = {
+      playing: {
+        fandom: ['No Fandom'],
+        character: ['Original Character'],
+        gender: ['Cis Female']
+      },
+      misc: {
+        detail: ['Test']
+      }
+    }
+
+    post prompts_search_path, params: { tags: }
+
+    expected_tags = tags.map do |polarity, p_hash|
+      p_hash.map do |tag_type, names|
+        names.map do |name|
+          "#{polarity}:#{tag_type}:#{name}"
+        end
+      end
+    end
+
+    tag_string = expected_tags.join(',')
+
+    assert_redirected_to "/prompts?tags=#{CGI.escape(tag_string)}"
+  end
+
   test 'should get new' do
     sign_in(@user)
     get new_prompt_url
