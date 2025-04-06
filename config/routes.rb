@@ -103,6 +103,9 @@ Rails.application.routes.draw do
     resources :ip_bans
     post 'ads/:id/approve' => 'ads#approve', as: 'approve_ad'
     delete 'ads/:id' => 'ads#destroy', as: 'ad'
+    resources :bulk_tags, only: %i[index]
+    patch 'bulk_tags' => 'bulk_tags#update'
+    get 'bulk_tags/download' => 'bulk_tags#download'
     root 'admin_panel#index'
   end
 

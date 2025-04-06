@@ -10,10 +10,10 @@
         <strong><%= link_to "Users", admin_users_path %></strong>
       </li>
       <li>
-        <strong><%= link_to "Ads", admin_ads_path(pending: true) %></strong>
+        <strong><%= link_to "Message Search", admin_messages_search_path %></strong>
       </li>
       <li>
-        <strong><%= link_to "Message Search", admin_messages_search_path %></strong>
+        <strong><%= link_to "Bulk Tag Editor", admin_bulk_tags_path %></strong>
       </li>
       <li>
         <strong><%= link_to "Entitlements", admin_entitlements_path %></strong>
@@ -32,6 +32,9 @@
       </li>
       <li>
         <strong><%= link_to "IP Bans", admin_ip_bans_path %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Ads", admin_ads_path(pending: true) %></strong>
       </li>
     </ul>
   </div>
