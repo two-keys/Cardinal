@@ -55,6 +55,20 @@ module TagSchema
     types.uniq
   end
 
+  def self.allowed_polarities
+    atp = {}
+    polarities.each do |polarity|
+      allowed_types_for(polarity).each do |key|
+        if atp.key?(key)
+          atp[key].push(polarity)
+        else
+          atp[key] = [polarity]
+        end
+      end
+    end
+    atp.symbolize_keys
+  end
+
   def self.allowed_type_params
     atp = {}
     polarities.each do |polarity|
