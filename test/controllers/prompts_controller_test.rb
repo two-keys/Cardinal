@@ -444,12 +444,12 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to prompt_url(@prompt)
   end
 
-  test 'should bump prompt after 24 hours' do
+  test "should bump prompt after #{Prompt::BUMP_WAIT_TIME.in_hours} hours" do
     sign_in(@user)
     patch prompt_bump_path(@prompt)
     assert_redirected_to prompt_url(@prompt)
 
-    future = DateTime.now + 1.day
+    future = DateTime.now + Prompt::BUMP_WAIT_TIME + 1.second
     travel_to(future)
 
     patch prompt_bump_path(@prompt)

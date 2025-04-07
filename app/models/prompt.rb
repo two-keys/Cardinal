@@ -10,6 +10,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Auditable
   MIN_CONTENT_LENGTH = 10
   MAX_CONTENT_LENGTH = 65_536
+  BUMP_WAIT_TIME = 2.days
 
   belongs_to :user
   belongs_to :pseudonym, optional: true
@@ -74,11 +75,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def bumpable?
     return false if bumped_at_was.nil?
 
-    diff_in_seconds = Time.zone.at(DateTime.now) - bumped_at_was
-    diff_in_seconds += 1.second # a surprise tool to help us later
-    seconds_in_a_day = 24 * 60 * 60
-
-    diff_in_seconds / seconds_in_a_day >= 1
+    (Time.zone.now - bumped_at_was) > BUMP_WAIT_TIME
   end
 
   def bump!
