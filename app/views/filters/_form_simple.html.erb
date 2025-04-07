@@ -17,7 +17,7 @@
             <% displayables = tag_display(
                 schema: TagSchema, tag_type:, names: defaults[polarity][tag_type]
             ) %>
-            <%= render partial: 'prompts/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: [], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
+            <%= render partial: 'prompts/form_tags/fill_ins', locals: { autocomplete: @autocomplete, entries: displayables[:fill_ins], polarity: polarity, tag_type: tag_type, p_form: polarity_form } %>
           <% end %>
 
         <% end %>
