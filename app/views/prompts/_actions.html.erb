@@ -1,6 +1,10 @@
 <% content_for "card_actions_right_#{prompt.id}", flush: true do %>
-    <% if can?(:edit, prompt) && prompt.bumpable? %>
-        <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
+    <% if can?(:edit, prompt) %>
+        <% if prompt.bumpable? %>
+            <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
+        <% else %>
+            <li><sub>Bumpable in <%= time_ago_in_words(prompt.bumped_at + Prompt::BUMP_WAIT_TIME) %></sub></li>
+        <% end %>
     <% end %>
     <% if can?(:answer, prompt) %>
         <% if prompt.default_slots > 2 %>

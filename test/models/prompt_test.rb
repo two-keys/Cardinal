@@ -94,11 +94,11 @@ class PromptTest < ActiveSupport::TestCase
     assert_not_empty @prompt.errors[:bump]
   end
 
-  test 'can bump the same prompt after 24 hours' do
+  test "can bump the same prompt after #{Prompt::BUMP_WAIT_TIME.in_hours} hours" do
     assert @prompt.bump!
     assert_empty @prompt.errors[:bump]
 
-    future = DateTime.now + 1.day
+    future = DateTime.now + Prompt::BUMP_WAIT_TIME + 1.second
     travel_to(future)
 
     assert @prompt.bump!
