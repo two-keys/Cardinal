@@ -29,10 +29,26 @@ class MessagesController < ApplicationController
   def edit; end
 
   # POST /messages or /messages.json
-  def create
+  def create # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     @message = Message.new(message_params)
     @message.user = current_user
     authorize! :create, @message
+    last_message = @message.chat&.messages&.last
+
+    # Hacky protection against duplicate sends until I can debug what is going wrong.
+    if last_message && last_message.content == @message.content && last_message.user_id == @message.user_id
+      respond_to do |format|
+        format.html do
+          render partial: 'messages/form',
+                 locals: { locals: { message: Message.new(color: @message.color),
+                                     chat_id: @message.chat.id } }
+        end
+        format.json { render json: { warning: 'Ignoring duplicate message' } }
+      end
+
+      return
+    end
+
     respond_to do |format|
       if @message.save
         ChatUser.find_by(chat: @message.chat, user: @message.user)&.update(color: @message.color)
