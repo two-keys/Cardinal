@@ -23,50 +23,56 @@
           </div>
         </div>
       </div>
+      <p>
+        Polarity: <%= tag.polarity %><br />
+        Type: <%= tag.tag_type %>
+      </p>
+    
+      <p>
+        Name: <%= tag.name %><br />
+        Lower: <%= tag.name.downcase %>
+      </p>
+
+      <p>
+        This Tag:
+        <div class="tags">
+          <div class="polarity">
+            <ul class="tag-list">
+              <%= render partial: 'tags/bubble', locals: {tag: tag} %>
+            </ul>
+          </div>
+        </div>
+      </p>
+
+      <p>
+        Child Tags:
+        <div class="tags">
+          <div class="polarity">
+            <ul class="tag-list">
+              <% tag.children.each do |child_tag| %>
+                <%= render partial: 'tags/bubble', locals: {tag: child_tag} %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </p>
+
+      <p>
+        Duplicate Tags:
+        <div class="tags">
+          <div class="polarity">
+            <ul class="tag-list">
+              <% tag.duplicates.each do |duplicate_tag| %>
+                <%= render partial: 'tags/bubble', locals: {tag: duplicate_tag} %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </p>
     <% end %>
-    <p>
-      Polarity: <%= tag.polarity %><br />
-      Type: <%= tag.tag_type %>
-    </p>
-  
-    <p>
-      Name: <%= tag.name %><br />
-      Lower: <%= tag.name.downcase %>
-    </p>
 
     <p>
       Tooltip: <%= tag.tooltip %>
-    </p>
-
-    <p>
-      This Tag:
-      <div class="tags polarity">
-        <ul class="tag-list">
-          <%= render partial: 'tags/bubble', locals: {tag: tag} %>
-        </ul>
-      </div>
-    </p>
-
-    <p>
-      Child Tags:
-      <div class="tags polarity">
-        <ul class="tag-list">
-          <% tag.children.each do |child_tag| %>
-            <%= render partial: 'tags/bubble', locals: {tag: child_tag} %>
-          <% end %>
-        </ul>
-      </div>
-    </p>
-
-    <p>
-      Duplicate Tags:
-      <div class="tags polarity">
-        <ul class="tag-list">
-          <% tag.duplicates.each do |duplicate_tag| %>
-            <%= render partial: 'tags/bubble', locals: {tag: duplicate_tag} %>
-          <% end %>
-        </ul>
-      </div>
     </p>
 
     <p>
