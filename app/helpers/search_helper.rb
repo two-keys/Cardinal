@@ -180,8 +180,11 @@ module SearchHelper
       )
     end
 
-    # GET /prompts
-    query = filter_query(query, current_user, obj_class, characterized) if Filter.exists?(user: current_user)
+    only_showing_mine = search_params.key?(:ismine) && search_params[:ismine] == 'true'
+    unless Filter.where(user: current_user).none? || only_showing_mine
+      # start filtering
+      query = filter_query(query, current_user, obj_class, characterized)
+    end
 
     query # return for further processing
   end
