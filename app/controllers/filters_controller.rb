@@ -108,6 +108,7 @@ class FiltersController < ApplicationController # rubocop:disable Metrics/ClassL
     @filter = Filter.find(params[:id])
   end
 
+  # set @default_simple tags
   def set_default_simple
     filter_type = params[:variant] == 'whitelist' ? 'Exception' : 'Rejection'
 
@@ -125,7 +126,7 @@ class FiltersController < ApplicationController # rubocop:disable Metrics/ClassL
       polarity = tag.polarity
       tag_type = tag.tag_type
 
-      @default_simple[polarity][tag_type].push(tag.name)
+      @default_simple[polarity][tag_type].push([tag.name, tag.tooltip, tag.details, tag.id])
     end
 
     @default_simple

@@ -52,6 +52,14 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get simple filter pages' do
+    sign_in(@user)
+    %w[blacklist whitelist].each do |variant|
+      get filters_simple_path, params: { variant: }
+      assert_response :success
+    end
+  end
+
   test 'should create advanced search' do
     sign_in(@user)
     tags = {

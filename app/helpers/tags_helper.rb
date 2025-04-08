@@ -10,7 +10,9 @@ module TagsHelper
     end
   end
 
-  def tag_display(schema: TagSchema, tag_type: nil, names: [])
+  # mostly used for filters/simple page
+  # see Taggable#entries_for & Taggable#fill_ins_for
+  def tag_display(schema: TagSchema, tag_type: nil, tags: [])
     entries = schema.entries_for(tag_type)
     fill_ins = []
 
@@ -18,11 +20,11 @@ module TagsHelper
     checkboxes = entries.map do |entry|
       {
         name: entry,
-        checked: names.include?(entry)
+        checked: tags.any? { |tag| tag.first == entry }
       }
     end
 
-    fill_ins = (names - entries) if TagSchema.fillable?(tag_type)
+    fill_ins = tags.select { |tag| entries.none? { |entry| tag.first == entry } } if TagSchema.fillable?(tag_type)
 
     { checkboxes:, fill_ins: }
   end
