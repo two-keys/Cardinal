@@ -23,7 +23,7 @@ export default class extends Controller {
                 $(text).addClass('hidden')
             })
             $(yes).on("click", (e) => {
-                window.location.href='/ads/' + adId + "/click";
+                window.open('/ads/' + adId + '/click', '_blank').focus();
                 return false;
             })
 

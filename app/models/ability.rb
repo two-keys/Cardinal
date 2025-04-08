@@ -169,6 +169,7 @@ class Ability
     can :apply, Theme, public: true
     can :apply, Theme, system: true
     can :unapply, Theme
+    can :click, Ad
 
     unless user.active_for_authentication?
       # Things which banned users cannot do
