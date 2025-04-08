@@ -17,7 +17,7 @@
                     { selected: params[:object_type] } %>
                     
         <%= f.select :flag, 
-                    [['All Flags', ''], 'emoji', 'modchat-emoji', 'permission', 'pseudonym', 'ad-tier'], 
+                    [['All Flags', ''], 'emoji', 'modchat-emoji', 'permission', 'pseudonym', 'ad-tier', 'subscription'], 
                     { selected: params[:flag] } %>
         <%= f.text_field :username, value: params[:username], placeholder: 'Username' %>
       </div>
