@@ -94,28 +94,28 @@ class SubscriptionRenewalsJob < ApplicationJob # rubocop:disable Metrics/ClassLe
         sub_emails[user.email][key] = sub_emails[user.email][key].sort_by { |v| v[:current_period_end] }.reverse
       end
 
-      if sub_emails[user.email][:one].count.positive?
+      if sub_emails[user.email][:one]&.count&.positive?
         user_entitlement = UserEntitlement.where(user: user,
                                                  entitlement: ad_tier_one)
                                           .first_or_initialize { |ue| ue.expires_on = Time.zone.now }
         user_entitlement.expires_on = Time.zone.at(sub_emails[user.email][:one].first[:current_period_end])
         user_entitlement.save!
       end
-      if sub_emails[user.email][:two].count.positive?
+      if sub_emails[user.email][:two]&.count&.positive?
         user_entitlement = UserEntitlement.where(user: user,
                                                  entitlement: ad_tier_two)
                                           .first_or_initialize { |ue| ue.expires_on = Time.zone.now }
         user_entitlement.expires_on = Time.zone.at(sub_emails[user.email][:two].first[:current_period_end])
         user_entitlement.save!
       end
-      if sub_emails[user.email][:three].count.positive?
+      if sub_emails[user.email][:three]&.count&.positive?
         user_entitlement = UserEntitlement.where(user: user,
                                                  entitlement: ad_tier_three)
                                           .first_or_initialize { |ue| ue.expires_on = Time.zone.now }
         user_entitlement.expires_on = Time.zone.at(sub_emails[user.email][:three].first[:current_period_end])
         user_entitlement.save!
       end
-      if sub_emails[user.email][:recurring].count.positive?
+      if sub_emails[user.email][:recurring]&.count&.positive?
         user_entitlement = UserEntitlement.where(user: user,
                                                  entitlement: subscription_entitlement)
                                           .first_or_initialize { |ue| ue.expires_on = Time.zone.now }

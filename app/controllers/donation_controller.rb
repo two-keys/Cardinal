@@ -15,6 +15,7 @@ class DonationController < ApplicationController
     @current_goal = CardinalSettings::Donation.goals.find { |goal| @total < goal['cost'] }
 
     @prices = CardinalSettings::Donation.prices
+    @ad_prices = CardinalSettings::Ads.prices
     @goals = CardinalSettings::Donation.goals
 
     @funding_goals = CardinalSettings::Donation.funding

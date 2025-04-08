@@ -76,6 +76,42 @@
         <% end %>
       </tr>
     </table>
+
+    <h1>AD SPACE</h1>
+    <table class="prices">
+      <tr>
+        <% @ad_prices.keys.each do |key| %>
+          <th align="center"><%= key.humanize %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <% @ad_prices.keys.each do |key| %>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['week']['id']}&mode=subscription", data: { turbo: false } do %>
+              Weekly - $<%= @ad_prices[key]['week']['cost'] %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <% @ad_prices.keys.each do |key| %>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['month']['id']}&mode=subscription", data: { turbo: false } do %>
+              Monthly - $<%= @ad_prices[key]['month']['cost'] %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <% @ad_prices.keys.each do |key| %>
+          <td>
+            <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['three_months']['id']}&mode=subscription", data: { turbo: false } do %>
+              Tri-Monthly - $<%= @ad_prices[key]['three_months']['cost'] %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    </table>
   </div>
   <div class="card primary">
     <h1>ALL GOALS</h1>
