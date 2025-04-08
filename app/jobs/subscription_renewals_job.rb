@@ -26,6 +26,8 @@ class SubscriptionRenewalsJob < ApplicationJob # rubocop:disable Metrics/ClassLe
       ad_tier_ids[:three] << skew.second['id']
     end
 
+    # Rails.logger.debug ad_tier_ids
+
     all_subs = Stripe::Subscription.search(query: 'status: "active"')[:data]
 
     subs = {}
@@ -71,12 +73,56 @@ class SubscriptionRenewalsJob < ApplicationJob # rubocop:disable Metrics/ClassLe
       end
     end
 
+    subs = ActiveSupport::HashWithIndifferentAccess.new(subs)
+
     customers = Stripe::Customer.list[:data]
 
     sub_emails = {}
 
-    customers.each do |customer|
-      sub_emails[customer.email] = subs[customer.id] if subs.key? customer.id
+    customers.each do |customer| # rubocop:disable Metrics/BlockLength
+      if sub_emails[customer.email].blank? && (subs.key? customer.id)
+        sub_emails[customer.email] = {}
+        sub_emails[customer.email]['one'] = []
+        sub_emails[customer.email]['two'] = []
+        sub_emails[customer.email]['three'] = []
+        sub_emails[customer.email]['recurring'] = []
+      end
+      if sub_emails[customer.email]['one'].blank? && (subs.key? customer.id)
+        sub_emails[customer.email]['one'] =
+          []
+      end
+      if sub_emails[customer.email]['two'].blank? && (subs.key? customer.id)
+        sub_emails[customer.email]['two'] =
+          []
+      end
+      if sub_emails[customer.email]['three'].blank? && (subs.key? customer.id)
+        sub_emails[customer.email]['three'] =
+          []
+      end
+      if sub_emails[customer.email]['recurring'].blank? && (subs.key? customer.id)
+        sub_emails[customer.email]['recurring'] =
+          []
+      end
+
+      if subs.key?(customer.id) && subs[customer.id].key?('one')
+        sub_emails[customer.email]['one'] << subs[customer.id]['one'].flatten
+      end
+      if subs.key?(customer.id) && subs[customer.id].key?('two')
+        sub_emails[customer.email]['two'] << subs[customer.id]['two'].flatten
+      end
+      if subs.key?(customer.id) && subs[customer.id].key?('three')
+        sub_emails[customer.email]['three'] << subs[customer.id]['three'].flatten
+      end
+      if subs.key?(customer.id) && subs[customer.id].key?('recurring')
+        sub_emails[customer.email]['recurring'] << subs[customer.id]['recurring'].flatten
+      end
+    end
+
+    sub_emails.keys do |email|
+      sub_emails[email]['one'] = sub_emails[email]['one'].flatten if sub_emails[email].key?('one')
+      sub_emails[email]['two'] = sub_emails[email]['two'].flatten if sub_emails[email].key?('two')
+      sub_emails[email]['three'] = sub_emails[email]['three'].flatten if sub_emails[email].key?('three')
+      sub_emails[email]['recurring'] = sub_emails[email]['recurring'].flatten if sub_emails[email].key?('recurring')
     end
 
     sub_emails = ActiveSupport::HashWithIndifferentAccess.new(sub_emails)
@@ -91,7 +137,7 @@ class SubscriptionRenewalsJob < ApplicationJob # rubocop:disable Metrics/ClassLe
 
     users.find_each(batch_size:) do |user| # rubocop:disable Metrics/BlockLength
       sub_emails[user.email].each_key do |key|
-        sub_emails[user.email][key] = sub_emails[user.email][key].sort_by { |v| v[:current_period_end] }.reverse
+        sub_emails[user.email][key] = sub_emails[user.email][key].flatten.sort_by { |v| v[:current_period_end] }.reverse
       end
 
       if sub_emails[user.email][:one]&.count&.positive?
