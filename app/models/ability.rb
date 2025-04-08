@@ -164,6 +164,7 @@ class Ability
     can :history, Character, user: user
     can :restore, Character, user: user
     can :hide, Tag
+    can :details, Tag
     can :apply, Theme, user: user
     can :apply, Theme, public: true
     can :apply, Theme, system: true

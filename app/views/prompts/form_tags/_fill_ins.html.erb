@@ -1,6 +1,6 @@
 <% if autocomplete %>
   <div class="fill-ins" data-controller="tagautocomplete" data-tagautocomplete-tagtype-value="<%=tag_type%>" data-tagautocomplete-polarity-value="<%=polarity%>">
-    <%= p_form.select "#{tag_type}", options_for_select(entries.map{|e| [e.first, {'data-tooltip': e.second}]}, selected: entries.map{|e| e.first}), {}, {class: "tags-autocomplete", multiple: "multiple"} %>
+    <%= p_form.select "#{tag_type}", options_for_select(entries.map{|e| [e.first, {'data-tooltip': e.second, 'data-details': e.third, 'data-canonical': e.fourth}]}, selected: entries.map{|e| e.first}), {}, {class: "tags-autocomplete w-full", multiple: "multiple", style: "width: 100%;"} %>
   </div>
 <% else %>
   <div class="fill-ins" >

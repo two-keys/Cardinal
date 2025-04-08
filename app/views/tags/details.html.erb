@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "tag_#{@tag.id}_details" do %>
+    <div class="text-wrap prose !max-w-none">
+        <%== marksmithed @tag.details %>
+    </div>
+<% end %>

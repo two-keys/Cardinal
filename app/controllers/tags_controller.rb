@@ -8,7 +8,7 @@ class TagsController < ApplicationController
   include HideableController
 
   before_action :authenticate_user!
-  before_action :set_tag, only: %i[show edit update destroy]
+  before_action :set_tag, only: %i[show edit update destroy details]
 
   before_action :set_parent, only: %i[create update] # MUST be before set_synonym
   before_action :set_synonym, only: %i[create update]
@@ -87,23 +87,23 @@ class TagsController < ApplicationController
   # POST /tags/autocomplete
   # POST /tags/autocomplete.json
   def autocomplete
-    if params[:tag] == 'prefetch'
+    if params[:tag_search].blank?
       @tags = Tag.where(tag_type: params[:tag_type],
                         polarity: params[:polarity])
                  .left_joins(:object_tags)
                  .group(:id).order('COUNT(object_tags.id) DESC')
-                 .limit(50)
-    elsif params[:tag_search].present?
+                 .limit(25)
+    else
       @tags_string = params[:tag_search].split(',')
       @search_string = @tags_string.last
       @tags = Tag.where('name ILIKE ?', "%#{@search_string}%")
                  .where(enabled: true,
+                        synonym_id: nil,
                         tag_type: params[:tag_type],
                         polarity: params[:polarity])
-    else
-      @tags_string = []
-      @search_string = ''
-      @tags = []
+                 .left_joins(:object_tags)
+                 .group(:id).order('COUNT(object_tags.id) DESC')
+                 .limit(25)
     end
 
     # Exclude things we make checkboxes for
@@ -118,7 +118,13 @@ class TagsController < ApplicationController
                               locals: { tags: @tags, search_string: @search_string })
         ]
       end
-      format.json { render json: @tags.as_json(only: %i[id name tag_type polarity tooltip]) }
+      format.json { render json: @tags.as_json(only: %i[id name tag_type polarity tooltip details]) }
+    end
+  end
+
+  def details
+    respond_to do |format|
+      format.html { render 'tags/details', tag: @tag }
     end
   end
 
@@ -126,6 +132,7 @@ class TagsController < ApplicationController
 
   # Saves us having to find tag by route params
   def set_tag
+    Rails.logger.debug { "TAG ID !!!!!!!!!!!!!!!!!! #{params[:id]}" }
     @tag = Tag.find(params[:id])
   end
 
