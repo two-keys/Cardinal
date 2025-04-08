@@ -42,18 +42,7 @@
       This Tag:
       <div class="tags polarity">
         <ul class="tag-list">
-          <% if tag.tooltip %>
-            <li id="tag_<%= tag.id %>" class="<%= tag.tag_type %> tag tooltip">
-              <div class="tooltip-content">
-                <div><%= tag.tooltip %></div>
-              </div>
-              <%= link_to "ⓘ #{tag.name}", tag_url(tag) %>
-            </li>
-          <% else %>
-            <li id="tag_<%= tag.id %>" class="<%= tag.tag_type %> tag">
-              <%= link_to tag.name, tag_url(tag) %>
-            </li>
-          <% end %>
+          <%= render partial: 'tags/bubble', locals: {tag: tag} %>
         </ul>
       </div>
     </p>
@@ -63,18 +52,7 @@
       <div class="tags polarity">
         <ul class="tag-list">
           <% tag.children.each do |child_tag| %>
-            <% if child_tag.tooltip %>
-              <li id="tag_<%= child_tag.id %>" class="<%= child_tag.tag_type %> tag tooltip">
-                <div class="tooltip-content">
-                  <div><%= child_tag.tooltip %></div>
-                </div>
-                <%= link_to child_tag.name, tag_url(child_tag) %>
-              </li>
-            <% else %>
-              <li id="tag_<%= child_tag.id %>" class="<%= child_tag.tag_type %> tag">
-                <%= link_to child_tag.name, tag_url(child_tag) %>
-              </li>
-            <% end %>
+            <%= render partial: 'tags/bubble', locals: {tag: child_tag} %>
           <% end %>
         </ul>
       </div>
@@ -85,18 +63,7 @@
       <div class="tags polarity">
         <ul class="tag-list">
           <% tag.duplicates.each do |duplicate_tag| %>
-            <% if duplicate_tag.tooltip %>
-              <li id="tag_<%= duplicate_tag.id %>" class="<%= duplicate_tag.tag_type %> tag tooltip">
-                <div class="tooltip-content">
-                  <div><%= duplicate_tag.tooltip %></div>
-                </div>
-                <%= link_to duplicate_tag.name, tag_url(duplicate_tag) %>
-              </li>
-            <% else %>
-              <li id="tag_<%= duplicate_tag.id %>" class="<%= duplicate_tag.tag_type %> tag">
-                <%= link_to duplicate_tag.name, tag_url(duplicate_tag) %>
-              </li>
-            <% end %>
+            <%= render partial: 'tags/bubble', locals: {tag: duplicate_tag} %>
           <% end %>
         </ul>
       </div>

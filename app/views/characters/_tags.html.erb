@@ -13,18 +13,7 @@
         <span class="tag-type"><%= "#{readable_tag_type tag_type}:" %></span>
         <ul id="<%= tag_type %>" class="type">
           <% tags.each do |tag| %>
-            <% if tag.tooltip %>
-              <li id="tag_<%= tag.id %>" class="<%= tag_type %> tag tooltip">
-                <div class="tooltip-content">
-                  <div><%= tag.tooltip %></div>
-                </div>
-                <%= link_to "ⓘ #{tag.name}", tag_url(tag) %>
-              </li>
-            <% else %>
-              <li id="tag_<%= tag.id %>" class="<%= tag_type %> tag">
-                <%= link_to tag.name, tag_url(tag) %>
-              </li>
-            <% end %>
+            <%= render partial: 'tags/bubble', locals: {tag: tag} %>
           <% end %>
         </ul>
       <% end %>
