@@ -1,0 +1,10 @@
+<% content_for "card_actions_right_#{tag.id}", flush: true do %>
+    <% if tag.enabled? %>
+        <% if TagSchema::PromptTagSchema.can_hold?(tag) %>
+            <%= link_to 'View Prompts', 
+                prompts_path(tags: "#{tag.polarity}:#{tag.tag_type}:#{tag.name}"),
+                class: "button"
+            %>
+        <% end %>
+    <% end %>
+<% end %>
