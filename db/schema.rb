@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_05_202426) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_07_204048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -374,6 +374,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_202426) do
     t.string "polarity", limit: 25
     t.boolean "enabled", default: true, null: false
     t.string "lower", limit: 254, null: false
+    t.string "tooltip"
+    t.text "details"
     t.index ["ancestry"], name: "index_tags_on_ancestry", opclass: :text_pattern_ops
     t.index ["lower", "tag_type", "polarity"], name: "index_tags_on_lower_and_tag_type_and_polarity", unique: true
     t.index ["name", "tag_type", "polarity"], name: "index_tags_on_name_and_tag_type_and_polarity", unique: true

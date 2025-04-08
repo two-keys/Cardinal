@@ -28,6 +28,8 @@ class CardinalMarkdownRenderer < Redcarpet::Render::HTML
 
   # A generic class method for site-wide, safe markdown.
   def self.generic_render(text)
+    return '' if text.blank?
+
     sanitized_text = ActionController::Base.helpers.sanitize(text, tags: %w[span br img],
                                                                    attributes: %w[style src draggable alt class])
     renderer = CardinalMarkdownRenderer.new(hard_wrap: true, link_attributes: { target: '_blank' })

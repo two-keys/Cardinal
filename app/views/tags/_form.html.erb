@@ -32,6 +32,16 @@
     <%= form.check_box :enabled %>
   </div>
 
+  <div>
+    <%= form.label :tooltip %><br />
+    <%= form.text_field :tooltip %>
+  </div>
+
+  <div>
+    <%= form.label :details %><br />
+    <%= form.marksmith :details, enable_file_uploads: false %>
+  </div>
+
   <br />
   <div>
     <%= form.label :synonym, style: "display: block" %>

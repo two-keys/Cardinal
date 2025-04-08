@@ -59,19 +59,16 @@ class TagsController < ApplicationController
   # PATCH/PUT /tags/1
   # PATCH/PUT /tags/1.json
   def update
-    @tag.name = tag_params[:name] || @tag.name
-    @tag.tag_type = tag_params[:tag_type] || @tag.tag_type
-    @tag.enabled = tag_params[:enabled] || @tag.enabled
-
     @tag.synonym = @synonym
     @tag.parent = @parent
+    @tag.save
 
     respond_to do |format|
-      if @tag.save
+      if @tag.update(tag_params)
         format.html { redirect_to @tag, notice: 'Tag was successfully updated.' }
         format.json { render :show, status: :ok, location: @tag }
       else
-        format.html { render :edit }
+        format.html { render :edit, alert: @tag.errors.full_messages }
         format.json { render json: @tag.errors, status: :unprocessable_entity }
       end
     end
@@ -121,7 +118,7 @@ class TagsController < ApplicationController
                               locals: { tags: @tags, search_string: @search_string })
         ]
       end
-      format.json { render json: @tags.as_json(only: %i[id name tag_type polarity]) }
+      format.json { render json: @tags.as_json(only: %i[id name tag_type polarity tooltip]) }
     end
   end
 
@@ -171,7 +168,7 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :tag_type, :polarity, :enabled)
+    params.require(:tag).permit(:name, :tag_type, :polarity, :enabled, :tooltip, :details).compact_blank
   end
 
   def parent_params

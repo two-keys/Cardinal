@@ -55,7 +55,7 @@ module Taggable
       name: TagSchema.entries_for(tag_type)
     ).where(
       polarity:, tag_type:
-    ).pluck(:name)
+    ).pluck(:name, :tooltip)
   end
 
   private

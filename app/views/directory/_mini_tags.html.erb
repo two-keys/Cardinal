@@ -5,9 +5,18 @@
     <ul>
       <% model.tags_for(polarity).each do |tag_type, tags| %>
         <% tags.each do |tag| %>
-          <li id="<%= tag.id %>" class="<%= tag_type %> tag">
-            <%= link_to tag.name, tag_url(tag) %>
-          </li>
+          <% if tag.tooltip %>
+            <li id="tag_<%= tag.id %>" class="<%= tag_type %> tag tooltip">
+              <div class="tooltip-content">
+                <div><%= tag.tooltip %></div>
+              </div>
+              <%= link_to "ⓘ #{tag.name}", tag_url(tag) %>
+            </li>
+          <% else %>
+            <li id="tag_<%= tag.id %>" class="<%= tag_type %> tag">
+              <%= link_to tag.name, tag_url(tag) %>
+            </li>
+          <% end %>
         <% end %>
       <% end %>
     </ul>

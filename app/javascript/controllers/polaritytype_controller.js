@@ -46,7 +46,12 @@ export default class extends Controller {
       }
     }
     // switch selected option
-    if (firstValidNode)
+    let mustChange = false
+
+    if ($(this.tagTypeTarget).find(':selected').prop('disabled'))
+      mustChange = true
+
+    if (firstValidNode && mustChange)
       this.tagTypeTarget.value = firstValidNode.value;
   }
 }

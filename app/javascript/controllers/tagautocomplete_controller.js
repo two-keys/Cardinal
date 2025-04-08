@@ -17,6 +17,16 @@ export default class extends Controller {
         valueField: 'name',
         labelField: 'name',
         searchField: 'name',
+        render: {
+          item: function(item, escape) {
+            console.log(item)
+            if (item.tooltip) {
+              return '<div class="item tooltip"><div class="tooltip-content">' + escape(item.tooltip) + '</div>ⓘ '+ escape(item.name) + '</div>';
+            } else {
+              return '<div class="item">'+ escape(item.name) + '</div>';
+            }
+          }
+        },
         load: function(query, callback) {
           let maxOptions = this.settings.maxOptions;
           let currentResults = this.currentResults;
