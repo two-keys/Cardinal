@@ -142,6 +142,11 @@ module TagSchema
       end
       atp.symbolize_keys
     end
+
+    # is this tag valid for polarity -> tag type given the model?
+    def self.can_hold?(tag)
+      polarities.include?(tag.polarity) && types_for(tag.polarity).include?(tag.tag_type)
+    end
   end
 
   # A collection of methods simplifying access to the prompt tag schema
