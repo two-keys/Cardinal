@@ -43,6 +43,7 @@ export default class extends Controller {
         success: function (data) {
             $(container).removeClass("error");
             alertBox.innerHTML = "";
+            $(alertBox).addClass("hidden");
             container.editor.setHTML("");
             container.editor.focus();
         },
@@ -54,6 +55,7 @@ export default class extends Controller {
                 $(container).removeClass("animate");
             }, "200");
             alertBox.innerHTML = jXHR.responseJSON.content;
+            $(alertBox).removeClass("hidden");
         }
     });
   }
