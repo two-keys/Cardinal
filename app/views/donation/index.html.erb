@@ -79,6 +79,13 @@
       </table>
     </div>
 
+    <div class="card primary">
+      <h1>ALL GOALS</h1>
+      <ul>
+        <%= render partial: 'donation/goal', collection: @goals, as: :goal %>
+      </ul>
+    </div>
+
     <div class="card secondary">
       <h1>AD SPACE</h1>
 
@@ -120,11 +127,5 @@
         </tr>
       </table>
     </div>
-  </div>
-  <div class="card primary">
-    <h1>ALL GOALS</h1>
-    <ul>
-      <%= render partial: 'donation/goal', collection: @goals, as: :goal %>
-    </ul>
   </div>
 </div>
