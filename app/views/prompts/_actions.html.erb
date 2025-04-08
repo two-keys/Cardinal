@@ -3,7 +3,19 @@
         <% if prompt.bumpable? %>
             <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
         <% else %>
-            <li><sub>Bumpable in <%= time_ago_in_words(prompt.bumped_at + Prompt::BUMP_WAIT_TIME) %></sub></li>
+            <li>
+                <% bumpable_in = prompt.bumped_at + Prompt::BUMP_WAIT_TIME %>
+                <% difference = hms_between(bumpable_in) %>
+                <button class="button" disabled>
+                    <span class="countdown font-mono text-xs" data-controller="countdown" data-countdown-diff-value="<%= difference %>">
+                        <span data-countdown-target="hours" style="--value:<%= difference.first %>;" aria-live="polite" aria-label="<%= difference.first %>"><%= difference.first %></span>
+                        h:
+                        <span data-countdown-target="minutes" style="--value:<%= difference.second %>;" aria-live="polite" aria-label="<%= difference.second %>"><%= difference.second %></span>
+                        m:
+                        <span data-countdown-target="seconds" style="--value:<%= difference.third %>;" aria-live="polite" aria-label="<%= difference.third %>"><%= difference.third %></span>s
+                    </span>
+                </button>
+            </li>
         <% end %>
     <% end %>
     <% if can?(:answer, prompt) %>

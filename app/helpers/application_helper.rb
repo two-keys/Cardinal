@@ -60,6 +60,23 @@ module ApplicationHelper
     time.in_time_zone(Time.zone)
   end
 
+  def hms_between(start_time, end_time: Time.zone.now)
+    seconds_diff = (start_time - end_time).to_i.abs
+
+    days = seconds_diff / 86_400
+    seconds_diff -= days * 86_400
+
+    hours = seconds_diff / 3600
+    seconds_diff -= hours * 3600
+
+    minutes = seconds_diff / 60
+    seconds_diff -= minutes * 60
+
+    seconds = seconds_diff
+
+    [(days * 24) + hours, minutes, seconds]
+  end
+
   def system_time_from_form(dt_param)
     dt = DateTime.iso8601(dt_param).strftime('%F %T')
     ActiveSupport::TimeZone[current_user.time_zone].parse(dt)
