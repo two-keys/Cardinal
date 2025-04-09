@@ -5757,23 +5757,23 @@
     }
 
     .ad {
-        @apply text-center place-self-center w-full h-full max-h-[200px] max-w-[600px];
+        @apply text-center place-self-center w-full h-full;
     }
 
     .ad.ad-footer {
-        @apply w-[600px] h-[100px] max-w-full;
+        @apply aspect-[6/1];
     }
 
     .ad.ad-sidebar {
-        @apply w-[300px] h-[200px];
+        @apply aspect-[3/2] max-w-[15vw];
     }
 
     .ad.ad-sticky {
-        @apply w-[300px] h-[100px];
+        @apply aspect-[3/1] max-w-[15vw];
     }
 
     .ad img {
-        @apply w-full h-full;
+        @apply object-fill w-full h-full;
     }
 
     .ad img.unfocused {

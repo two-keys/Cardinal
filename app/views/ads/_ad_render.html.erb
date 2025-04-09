@@ -5,13 +5,13 @@
 <% end %>
 
 <% if ad.sidebar? %>
-  <% content_for :left_sidebar do %>
+  <% content_for :right_sidebar do %>
     <%= render partial: 'ad_fragment', locals: {ad: ad} %>
   <% end %>
 <% end %>
 
 <% if ad.sticky? %>
-  <% content_for :right_sidebar do %>
+  <% content_for :left_sidebar do %>
     <%= render partial: 'ad_fragment', locals: {ad: ad} %>
   <% end %>
 <% end %>
