@@ -5734,7 +5734,7 @@
     }
     
     .card {
-        @apply rounded-primary flex flex-col gap-2 p-8;
+        @apply rounded-primary flex flex-col gap-2 p-8 wrap-anywhere text-wrap;
     }
 
     .card a:not(.button) {
