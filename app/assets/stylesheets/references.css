@@ -5761,15 +5761,15 @@
     }
 
     .ad.ad-footer {
-        @apply aspect-[6/1] max-w-[35vw];
+        @apply aspect-[6/1] max-w-[35vw] sm:max-w-[75vw];
     }
 
     .ad.ad-sidebar {
-        @apply aspect-[3/2] max-w-[15vw];
+        @apply aspect-[3/2] max-w-[15vw] sm:max-w-none sm:h-[200px] sm:w-[300px];
     }
 
     .ad.ad-sticky {
-        @apply aspect-[3/1] max-w-[15vw];
+        @apply aspect-[3/1] max-w-[15vw] sm:max-w-none sm:h-[100px] sm:w-[300px];
     }
 
     .ad img {
