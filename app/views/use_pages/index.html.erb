@@ -1,0 +1,28 @@
+<% content_for :page_title do %>
+    Site Use
+<% end %>
+
+<% content_for :left_sidebar do %>
+  <%= render partial: 'sidebar', locals: {use_pages: @use_pages} %>
+<% end %>
+
+<div class="card primary">
+  <div id="use_pages" class="min-w-full divide-y divide-gray-200 space-y-5">
+    <% if @use_pages.any? %>
+      <% @use_pages.each do |use_page| %>
+        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
+          <%= render use_page %>
+          <%= link_to "Show", use_page, class: "button" %>
+          <% if can? :edit, use_page %>
+            <%= link_to "Edit", edit_use_page_path(use_page), class: "button"%>
+          <% end %>
+          <% if can :destroy, use_page %>
+            <%= button_to "Destroy", use_page, method: :delete, class: "button", data: { turbo_confirm: "Are you sure?" } %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-center my-10">No site use pages found.</p>
+    <% end %>
+  </div>
+</div>

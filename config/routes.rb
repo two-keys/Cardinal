@@ -110,9 +110,7 @@ Rails.application.routes.draw do
     root 'admin_panel#index'
   end
 
-  scope 'use' do
-    get '(/:page)', to: 'use#show', defaults: { page: 'index' }, as: :use_page
-  end
+  resources :use_pages, path: :use
 
   scope 'schema' do
     get 'types', to: 'schema#types'

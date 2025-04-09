@@ -82,6 +82,7 @@ class Ability
     can :read, Theme, public: true
     can :read, Theme, system: true
     can :read, Ad, user: user
+    can :read, UsePage
 
     ## Updating
     can :update, Message do |message|
@@ -205,6 +206,7 @@ class Ability
 
       !chat.mod_chat.resolved?
     end
+    cannot :destroy, UsePage, title: 'index' # This one is special and needs to exist
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity

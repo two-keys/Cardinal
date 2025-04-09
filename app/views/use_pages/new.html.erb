@@ -1,0 +1,9 @@
+<% content_for :page_title do %>
+    New Site Use Page
+<% end %>
+
+<div class="card primary">
+  <%= render "form", use_page: @use_page %>
+
+  <%= link_to "Back to Pages", use_pages_path, class: "button" %>
+</div>

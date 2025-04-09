@@ -1,0 +1,17 @@
+<div class="card primary">
+  Site Use pages
+  <ul>
+    <% use_pages.each do |page| %>
+      <li>
+        <%= link_to page do %>
+          <strong><%= page.title.humanize %></strong>
+        <% end %>
+      </li>
+    <% end %>
+    <% if can? :create, UsePage %>
+        <li>
+        <strong><%= link_to "+ New", new_use_page_path %></strong>
+        </li>
+    <% end %>
+  </ul>
+</div>

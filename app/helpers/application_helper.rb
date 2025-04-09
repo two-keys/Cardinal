@@ -77,6 +77,10 @@ module ApplicationHelper
     [(days * 24) + hours, minutes, seconds]
   end
 
+  def readable_time(time)
+    time.strftime('%a %b %e %Y %r (%Z)')
+  end
+
   def system_time_from_form(dt_param)
     dt = DateTime.iso8601(dt_param).strftime('%F %T')
     ActiveSupport::TimeZone[current_user.time_zone].parse(dt)
