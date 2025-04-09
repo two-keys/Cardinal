@@ -1,6 +1,6 @@
 @layer base {
     html {
-        @apply w-screen h-screen;
+        @apply w-screen h-screen overflow-x-hidden;
     }
 
     h1, h2, h3, h4, h5, h6 {
