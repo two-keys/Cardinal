@@ -30,7 +30,7 @@
   
   <hr />
 
-  <div class="card-footer">
+  <div class="card-footer flex flex-wrap md:flex-nowrap">
     <% if defined? model.created_at %>
       <span class="<%= class_name %>-date-time timestamp">
         <!-- Display the date and time of the model  -->
@@ -61,7 +61,7 @@
         <% if can? :destroy, model %>
           <li><%= button_to "Destroy", model, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %></li>
         <% end %>
-
+        
         <%= yield "card_actions_right_#{model.id}" %>
       </ul>
     </div>
