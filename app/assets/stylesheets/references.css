@@ -48,7 +48,7 @@
     }
     
     body {
-        @apply w-full h-auto min-h-dvh overflow-x-hidden bg-primary text-primary-content;
+        @apply w-full h-auto min-h-dvh bg-primary text-primary-content;
     }
     
     turbo-cable-stream-source {
@@ -5477,7 +5477,12 @@
     } 
     
     .button {
-        @apply cursor-pointer hover:invert;
+        @apply text-nowrap cursor-pointer hover:invert;
+        appearance: button;
+    }
+
+    .prompt a.button {
+        @apply no-underline;
     }
 
     a.button {

@@ -1,5 +1,5 @@
 <% content_for "card_actions_right_#{prompt.id}", flush: true do %>
-    <ul class="flex gap-2">
+    <ul class="flex flex-col md:flex-row gap-2">
         <ul class="flex flex-col md:flex-row">
             <% if can?(:edit, prompt) %>
                 <% if prompt.bumpable? %>
@@ -24,7 +24,7 @@
         <ul class="flex flex-col md:flex-row gap-1">
             <% if can?(:answer, prompt) %>
                 <% if prompt.default_slots > 2 %>
-                    <li><%= link_to "Joinable Chats", prompt, class: "button text-nowrap" %><li>
+                    <li class="grow flex text-center"><%= link_to "Chats", prompt, class: "button grow" %><li>
                     <li><%= button_to "New Chat", prompt_answer_path(prompt), method: :post, class: "button text-nowrap", data: {turbo_confirm: 'Are you sure you want to make a new chat?'}  %></li>
                 <% else %>
                     <li><%= button_to "Answer", prompt_answer_path(prompt), method: :post, class: "button", data: {turbo_confirm: 'Are you sure you want to answer this prompt?'}  %></li>
