@@ -5458,7 +5458,7 @@
     }
 
     .main {
-        @apply flex flex-col lg:pt-14 gap-8;
+        @apply flex flex-col lg:pt-14 gap-8 overflow-x-hidden;
         grid-area: main_content;
     }
 
