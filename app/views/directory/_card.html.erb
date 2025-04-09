@@ -1,5 +1,5 @@
 <% class_name = model.class.name.downcase %>
-<div id="<%= dom_id model %>" class="card primary <%= class_name %> mini<%= yield :card_classes %>">
+<div id="<%= dom_id model %>" class="card secondary <%= class_name %> mini<%= yield :card_classes %>">
   <div class="<%= class_name %>-info">
     <%= render partial: 'directory/metainfo', locals: { model: } %>
     <% if defined? model.name %>
