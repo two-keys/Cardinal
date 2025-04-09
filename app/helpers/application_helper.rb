@@ -78,7 +78,7 @@ module ApplicationHelper
   end
 
   def readable_time(time)
-    time.strftime('%a %b %e %Y %r (%Z)')
+    time.strftime('%a %b %e %Y %r')
   end
 
   def system_time_from_form(dt_param)
