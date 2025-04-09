@@ -6458,20 +6458,36 @@
     }
     
     .funding-goal-container {
-        @apply relative h-0 w-0 top-[-75px] overflow-visible;
+        @apply relative h-0 w-0 top-[-75px] overflow-visible flex flex-col;
     }
     
     .funding-goal {
-        @apply absolute opacity-50 text-center top-0 left-[-2rem];
+        @apply max-sm:text-sm max-sm:w-20 w-40 mx-auto place-self-center absolute opacity-50 text-center min-sm:-top-6;
+    }
+
+    .prices-container {
+        @apply max-w-full overflow-x-scroll;
+    }
+
+    .prices.table {
+        @apply max-sm:table-xs max-sm:w-28;
     }
     
-    .funding-goal
-    h1,h2,h3,h4,h5,h6 {
+    .funding-goal h1,
+    .funding-goal h2,
+    .funding-goal h3,
+    .funding-goal h4,
+    .funding-goal h5,
+    .funding-goal h6 {
         @apply m-0;
     }
 
     .funding-goal h3 {
-        @apply text-xl;
+        @apply max-sm:text-sm text-xl;
+    }
+
+    .funding-goal h4 {
+      @apply max-sm:text-sm;
     }
     
     .funding-goal.funded {
@@ -6505,7 +6521,12 @@
     }
     
     .progress-current {
-        @apply h-full block relative -right-7 -bottom-[75px] z-30;
+        @apply w-3 ring-unanswered ring leading-none py-1 font-black block bg-message-odd text-tertiary-content rounded-b-primary relative -right-7 -bottom-[75px] z-30;
+    }
+
+    .progress-current::before {
+        content: " ";
+        @apply block absolute -top-[6px] left-[1px] border border-l-unanswered border-t-unanswered border-b-transparent border-r-transparent rotate-45 bg-message-odd w-[10px] h-[10px];
     }
     
     .progress-btn-container {

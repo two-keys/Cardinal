@@ -52,31 +52,33 @@
 
       <p>Every donation is appreciated, whether it's a one off or a monthly pledge. If you subscribe with a recurring donation, that gets counted towards the total for the goals for developing extra features, and will help unlock improvements to the site for everyone!</p>
       <p>If you run into issues, please contact cherpadmin@protonmail.com</p>
-      <table class="prices table gap-2">
-        <tr>
-          <% @prices.each do |price| %>
-            <th align="center">$<%= price['cost'] %></th>
-          <% end %>
-        </tr>
-        <tr>
-          <% @prices.each do |price| %>
-            <td>
-              <%= button_to "/create_stripe_session?price=#{price['once']}&mode=payment", class: 'button', data: { turbo: false } do %>
-                One-time
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-        <tr>
-          <% @prices.each do |price| %>
-            <td>
-              <%= button_to "/create_stripe_session?price=#{price['monthly']}&mode=subscription", class: 'button', data: { turbo: false } do %>
-                Monthly
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      </table>
+      <div class="prices-container">
+        <table class="prices table gap-2">
+          <tr>
+            <% @prices.each do |price| %>
+              <th align="center">$<%= price['cost'] %></th>
+            <% end %>
+          </tr>
+          <tr>
+            <% @prices.each do |price| %>
+              <td>
+                <%= button_to "/create_stripe_session?price=#{price['once']}&mode=payment", class: 'button', data: { turbo: false } do %>
+                  One-time
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+          <tr>
+            <% @prices.each do |price| %>
+              <td>
+                <%= button_to "/create_stripe_session?price=#{price['monthly']}&mode=subscription", class: 'button', data: { turbo: false } do %>
+                  Monthly
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div class="card primary">
@@ -95,40 +97,42 @@
       <p>For information about what each tier offers, visit the <a href="/use/adguide" target="_blank">Ad Guide</a>.</p>
       <p>Ensure your account on the site has a confirmed email that matches what you will provide to stripe. You can change your email <%= link_to "here", edit_user_registration_path %></p>
       <p>It may take up to 10 minutes for your Ad Tier subscription to be processed and become available on the site. After which you can create new ads <%= link_to "on this page", ads_path %>.</p>
-      <table class="prices table gap-2">
-        <tr>
-          <% @ad_prices.keys.each do |key| %>
-            <th align="center"><%= key.humanize %></th>
-          <% end %>
-        </tr>
-        <tr>
-          <% @ad_prices.keys.each do |key| %>
-            <td>
-              <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['week']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
-                Weekly - $<%= @ad_prices[key]['week']['cost'] %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-        <tr>
-          <% @ad_prices.keys.each do |key| %>
-            <td>
-              <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['month']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
-                Monthly - $<%= @ad_prices[key]['month']['cost'] %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-        <tr>
-          <% @ad_prices.keys.each do |key| %>
-            <td>
-              <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['three_months']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
-                Tri-Monthly - $<%= @ad_prices[key]['three_months']['cost'] %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      </table>
+      <div class="prices-container">
+        <table class="prices table gap-2">
+          <tr>
+            <% @ad_prices.keys.each do |key| %>
+              <th align="center"><%= key.humanize %></th>
+            <% end %>
+          </tr>
+          <tr>
+            <% @ad_prices.keys.each do |key| %>
+              <td>
+                <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['week']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
+                  Weekly - $<%= @ad_prices[key]['week']['cost'] %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+          <tr>
+            <% @ad_prices.keys.each do |key| %>
+              <td>
+                <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['month']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
+                  Monthly - $<%= @ad_prices[key]['month']['cost'] %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+          <tr>
+            <% @ad_prices.keys.each do |key| %>
+              <td>
+                <%= button_to "/create_stripe_session?price=#{@ad_prices[key]['three_months']['id']}&mode=subscription", class: 'button', data: { turbo: false } do %>
+                  Tri-Monthly - $<%= @ad_prices[key]['three_months']['cost'] %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
