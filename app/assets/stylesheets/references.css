@@ -6332,7 +6332,11 @@
     }
 
     .tags .tag {
-        @apply bg-generic text-generic-content rounded-secondary text-nowrap shadow shadow-tertiary-content hover:invert;
+        @apply bg-generic text-generic-content rounded-secondary text-nowrap shadow shadow-tertiary-content hover:invert max-md:text-xs;
+    }
+
+    .tag.tooltip a {
+      @apply max-md:-mb-px;
     }
 
     .tag.light_warning {
