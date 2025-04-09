@@ -37,7 +37,7 @@
         <% if content_for?("timestamp_#{model.id}") %>
           <%= yield "timestamp_#{model.id}" %>
         <% else %>
-          <%= link_to (model.created_at).strftime("%Y-%m-%d %k:%M:%S"), model %>
+          <%= link_to readable_time(model.created_at), model %>
         <% end %>
       </span>
     <% end %>

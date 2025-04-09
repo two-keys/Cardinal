@@ -34,7 +34,7 @@
   <% end %>
 <% end %>
 <% content_for "timestamp_#{prompt.id}" do %>
-  <%= link_to (prompt.bumped_at || prompt.created_at).strftime("%Y-%m-%d %k:%M:%S"), prompt %>
+  <%= link_to readable_time(prompt.bumped_at || prompt.created_at), prompt %>
 <% end %>
 
 <%= render partial: 'prompts/actions', locals: { prompt: } %>
