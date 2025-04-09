@@ -1,0 +1,32 @@
+<%= form_with(model: use_page, class: "contents") do |form| %>
+  <% if use_page.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(use_page.errors.count, "error") %> prohibited this use_page from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% use_page.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :order %>
+    <%= form.number_field :order %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :content %>
+    <%= form.marksmith :content, enable_file_uploads: false %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit %>
+  </div>
+<% end %>

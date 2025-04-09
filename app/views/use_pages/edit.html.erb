@@ -1,0 +1,12 @@
+<% content_for :page_title do %>
+    Editing Site Use (<%= @use_page.title.humanize %>)
+<% end %>
+
+<div class="card primary">
+  <%= render "form", use_page: @use_page %>
+
+  <div class="input-group">
+    <%= link_to "Show", @use_page, class: "button" %>
+    <%= link_to "Back to Pages", use_pages_path, class: "button" %>
+  </div>
+</div>

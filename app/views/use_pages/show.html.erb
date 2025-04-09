@@ -1,0 +1,23 @@
+<% content_for :page_title do %>
+    Site Use (<%= @use_page.title.humanize %>)
+<% end %>
+
+<% content_for :left_sidebar do %>
+  <%= render partial: 'sidebar', locals: {use_pages: @use_pages} %>
+<% end %>
+
+<div class="card primary">
+  <div class="card secondary">
+    <sub>Updated: <%= readable_time(@use_page.updated_at) %></sub>
+    <%= render @use_page %>
+  </div>
+
+  <div class="input-group">
+    <% if can? :edit, @use_page %>
+      <%= link_to "Edit", edit_use_page_path(@use_page), class: "button" %>
+    <% end %>
+    <% if can? :destroy, @use_page %>
+      <%= button_to "Destroy", @use_page, method: :delete, class: "button", data: { turbo_confirm: "Are you sure?" } %>
+    <% end %>
+  </div>
+</div>

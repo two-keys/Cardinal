@@ -15,7 +15,7 @@
     <%= link_to "", new_user_registration_path, class: "nav-item nav-register" %>
   <% end %>
   <%= link_to "", donation_url, class: "nav-item nav-donate" %>
-  <%= link_to "", use_page_path, class: "nav-item nav-use" %>
+  <%= link_to "", use_pages_path, class: "nav-item nav-use" %>
   <%= link_to "", contact_us_path, class: "nav-item nav-community" %>
   <% if user_signed_in? %>
     <%= button_to "", destroy_user_session_path, method: :delete, class: "nav-item nav-logout", data: {turbo_confirm: "Are you sure?"} %>

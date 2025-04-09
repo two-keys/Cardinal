@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'custom_markdown'
+
 module Marksmith
   class Renderer
     def initialize(body:)
