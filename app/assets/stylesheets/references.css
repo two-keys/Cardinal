@@ -5761,7 +5761,7 @@
     }
 
     .ad.ad-footer {
-        @apply aspect-[6/1];
+        @apply aspect-[6/1] max-w-[35vw];
     }
 
     .ad.ad-sidebar {
