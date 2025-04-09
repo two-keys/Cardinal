@@ -3,7 +3,7 @@
         <ul class="flex flex-col md:flex-row">
             <% if can?(:edit, prompt) %>
                 <% if prompt.bumpable? %>
-                    <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button" %></li>
+                    <li><%= button_to "Bump", prompt_bump_path(prompt), method: :put, class: "button", data: {turbo_confirm: 'Are you sure you want to bump this prompt?'} %></li>
                 <% else %>
                     <li>
                         <% bumpable_in = prompt.bumped_at + Prompt::BUMP_WAIT_TIME %>
