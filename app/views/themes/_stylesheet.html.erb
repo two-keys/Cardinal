@@ -2,9 +2,7 @@
 
 <% if user && user.applied_themes.count > 0 %>
   <%= turbo_stream_from dom_id(user)  + "_theme" %>
-  <style type="text/tailwindcss">
-    <%== File.read(Rails.root.join('public', 'stylesheets', 'references.css')) %>
-
+  <style>
     <% user.applied_themes.each do |theme| %>
       @layer <%= dom_id(theme) %>_<%= theme.title.downcase.gsub(/[^0-9a-z ]/i, '').gsub(" ", "_") %> {
         <%== sanitize_user_css(theme.css) %>
