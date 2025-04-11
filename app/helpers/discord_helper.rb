@@ -14,9 +14,9 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Report', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
 
         embed.add_field(name: 'Reporter',
-                        value: "[#{report.reporter.username}](#{edit_admin_user_url(report.reporter)})", inline: true)
+                        value: "[#{report.reporter.username}](#{edit_admin_user_url(report.reporter)})#{report.reporter.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         embed.add_field(name: 'Reportee',
-                        value: "[#{report.reportee.username}](#{edit_admin_user_url(report.reportee)})", inline: true)
+                        value: "[#{report.reportee.username}](#{edit_admin_user_url(report.reportee)})#{report.reportee.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         embed.add_field(name: 'Rules', value: report.rules.to_s, inline: true)
         embed.add_field(name: 'Context', value: report.context)
         embed.add_field(name: 'Reported Content', value: "[#{report.reportable_type}](#{url_for([:admin, report])})")
@@ -35,9 +35,9 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Report Resolved', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
 
         embed.add_field(name: 'Reporter',
-                        value: "[#{report.reporter.username}](#{edit_admin_user_url(report.reporter)})", inline: true)
+                        value: "[#{report.reporter.username}](#{edit_admin_user_url(report.reporter)})#{report.reporter.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         embed.add_field(name: 'Reportee',
-                        value: "[#{report.reportee.username}](#{edit_admin_user_url(report.reportee)})", inline: true)
+                        value: "[#{report.reportee.username}](#{edit_admin_user_url(report.reportee)})#{report.reportee.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         embed.add_field(name: 'Rules', value: report.rules.to_s, inline: true)
         embed.add_field(name: 'Reported Content', value: "[#{report.reportable_type}](#{url_for([:admin, report])})")
         # rubocop:disable Layout/LineLength
@@ -50,6 +50,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
 
   def send_discord_alert(alertable, alerts)
     return if Rails.env.test?
+    return if alertable.user.nil?
 
     Discord.webhook_client.execute do |builder|
       builder.add_embed do |embed|
@@ -61,7 +62,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.add_field(name: 'Alerts',
                         value: alerts.map { |alert| "`#{alert}`" }.join(', '), inline: false)
         embed.add_field(name: 'Offender',
-                        value: "[#{alertable.user.username}](#{edit_admin_user_url(alertable.user)})", inline: true)
+                        value: "[#{alertable.user.username}](#{edit_admin_user_url(alertable.user)})#{alertable.user.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
 
         # Special case for Messages
         if alertable.is_a?(Message)
@@ -91,7 +92,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
         embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Modchat', icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png')
 
         embed.add_field(name: 'User',
-                        value: "[#{modchat.user.username}](#{edit_admin_user_url(modchat.user)})", inline: true)
+                        value: "[#{modchat.user.username}](#{edit_admin_user_url(modchat.user)})#{modchat.user.shadowbanned ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         embed.add_field(name: 'New Chat',
                         value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",
                         inline: true)
@@ -115,7 +116,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{message.user.username}](#{edit_admin_user_url(message.user)}) (Staff)", inline: true) # rubocop:disable Layout/LineLength
         else
           embed.add_field(name: 'User',
-                          value: "[#{message.user.username}](#{edit_admin_user_url(message.user)})", inline: true)
+                          value: "[#{message.user.username}](#{edit_admin_user_url(message.user)})#{message.user.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         end
         embed.add_field(name: 'Chat',
                         value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",
@@ -142,7 +143,7 @@ module DiscordHelper # rubocop:disable Metrics/ModuleLength
                           value: "[#{user.username}](#{edit_admin_user_url(user)}) (Staff)", inline: true)
         else
           embed.add_field(name: 'User',
-                          value: "[#{user.username}](#{edit_admin_user_url(user)})", inline: true)
+                          value: "[#{user.username}](#{edit_admin_user_url(user)})#{user.shadowbanned? ? ' (S_BANNED)' : ''}", inline: true) # rubocop:disable Layout/LineLength
         end
         embed.add_field(name: 'Chat',
                         value: "[#{modchat.chat.uuid}](#{chat_url(modchat.chat.uuid)})",

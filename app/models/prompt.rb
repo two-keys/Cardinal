@@ -43,6 +43,9 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   default_scope { order(bumped_at: :desc) }
 
+  scope :shadowbanned, -> { joins(:user).where(user: { shadowbanned: true }) }
+  scope :not_shadowbanned, -> { joins(:user).where(user: { shadowbanned: false }) }
+
   has_snapshot_children do
     instance = self.class.includes(:object_tags, :object_characters).find(id)
     {

@@ -18,6 +18,9 @@ class Character < ApplicationRecord
   has_many :object_characters, dependent: :destroy
   has_many :objects, through: :object_characters
 
+  scope :shadowbanned, -> { joins(:user).where(user: { shadowbanned: true }) }
+  scope :not_shadowbanned, -> { joins(:user).where(user: { shadowbanned: false }) }
+
   enum :status, {
     draft: 0,
     locked: 1,

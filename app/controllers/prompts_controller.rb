@@ -37,6 +37,11 @@ class PromptsController < ApplicationController
     # can chats from the prompt be moderated?
     query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
 
+    # shadowban logic
+    unless current_user.shadowbanned? || current_user.admin?
+      query = query.joins(:user).where(user: { shadowbanned: false })
+    end
+
     @prompts, @cursor = paginate_with_cursor(query.includes(:user, :pseudonym, :tags), by: :bumped_at,
                                                                                        before: params[:before])
   end
@@ -112,7 +117,12 @@ class PromptsController < ApplicationController
   # POST /prompts/1/answer
   def answer
     respond_to do |format|
-      @chat = @prompt.answer(current_user)
+      @chat = nil
+      @chat = if current_user.shadowbanned?
+                @prompt.answer(User.find(0)) # System User
+              else
+                @prompt.answer(current_user)
+              end
       if @chat.save!
         @connect_code = ConnectCode.new(
           chat_id: @chat.id,

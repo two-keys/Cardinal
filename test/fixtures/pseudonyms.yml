@@ -9,6 +9,11 @@ admin:
   name: addy
   status: posted
 
+shadowbanned:
+  user: shadowbanned
+  name: troublemaker
+  status: posted
+
 user:
   user: user
   name: user

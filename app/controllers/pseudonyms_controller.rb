@@ -19,6 +19,11 @@ class PseudonymsController < ApplicationController
   def index
     query = Pseudonym.accessible_by(current_ability)
 
+    # shadowban logic
+    unless current_user.shadowbanned? || current_user.admin?
+      query = query.joins(:user).where(user: { shadowbanned: false })
+    end
+
     @pagy, @pseudonyms = pagy(query.includes(:user), items: 5)
   end
 

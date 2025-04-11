@@ -67,7 +67,15 @@ class Chat < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return if messages.count == 1
     return if message.silent?
 
-    users_to_unread = chat_users.where.not(user: active_chat_users).where(status: %i[ongoing unanswered])
+    active = active_chat_users
+    active = active.where(shadowbanned: true).or(active.where(admin: true)) if Current.user&.shadowbanned
+
+    users_to_unread = chat_users.where.not(user_id: active.map(&:id)).where(status: %i[ongoing unanswered])
+    if Current.user&.shadowbanned
+      users_to_unread = users_to_unread.joins(:user).where(user: [{ shadowbanned: true },
+                                                                  { admin: true }])
+    end
+
     if mod_chat.present?
       users_to_unread.each do |u|
         u.update(status: :unread)
@@ -105,7 +113,7 @@ class Chat < ApplicationRecord # rubocop:disable Metrics/ClassLength
       end
     end
 
-    users_to_unanswered = chat_users.where(user: active_chat_users - [message.user])
+    users_to_unanswered = chat_users.where(user: active - [message.user])
     users_to_unanswered.each { |u| u.update(status: :unanswered) }
 
     users_to_ongoing = chat_users.where(user: message.user)
@@ -134,18 +142,21 @@ class Chat < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # This means that they are online.
   def active_channels(channel_string)
     ## Tests do not support this.
-    return [] if Rails.env.test?
+    return User.none if Rails.env.test?
 
     online_users = []
 
     redis = ActionCable.server.pubsub.send(:redis_connection)
     redis.pubsub('channels', channel_string).each do |channel|
       int_user_id = channel.split('_').second.to_i if channel.present?
-      user = User.find_by(id: int_user_id) unless int_user_id.nil?
-      online_users << user unless user.nil?
+      online_users << int_user_id unless int_user_id.nil?
     end
 
-    online_users
+    users = User.where(id: online_users)
+
+    Rails.logger.debug users
+
+    users
   end
 
   def self.search(id, text)

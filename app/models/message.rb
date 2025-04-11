@@ -65,7 +65,12 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def broadcast_create # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return if Current.transfer
 
-    chat.active_chat_users.each do |active_user|
+    active_chat_users = chat.active_chat_users
+    if user&.shadowbanned
+      active_chat_users = active_chat_users.where(shadowbanned: true).or(active_chat_users.where(admin: true))
+    end
+
+    active_chat_users.each do |active_user|
       if chat.messages.count > 20
         if hidden?
           if active_user.admin? || active_user.id == user_id
