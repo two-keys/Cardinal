@@ -86,6 +86,20 @@ module ApplicationHelper
     ActiveSupport::TimeZone[current_user.time_zone].parse(dt)
   end
 
+  def pagy_calendar_period(collection)
+    starting = collection.minimum(:created_at)
+    ending   = collection.maximum(:created_at)
+    [starting.in_time_zone, ending.in_time_zone]
+  end
+
+  def pagy_calendar_counts(collection, unit, from, to)
+    collection.group_by_period(unit, :created_at, range: from...to).count.values
+  end
+
+  def pagy_calendar_filter(collection, from, to)
+    collection.where(created_at: from...to)
+  end
+
   def pluralize_without_count(count, noun, text = nil)
     return unless count != 0
 

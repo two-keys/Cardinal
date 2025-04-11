@@ -23,11 +23,11 @@ end
 # Delete all database rows
 log_to_console logger, 'Starting to purge all database table'
 
-ActiveRecord::Base.establish_connection
-ActiveRecord::Base.connection.tables.each do |table|
+ApplicationRecord.establish_connection
+ApplicationRecord.connection.tables.each do |table|
   next if table == 'schema_migrations'
 
-  ActiveRecord::Base.connection.execute("TRUNCATE #{table} RESTART IDENTITY CASCADE")
+  ApplicationRecord.connection.execute("TRUNCATE #{table} RESTART IDENTITY CASCADE")
 end
 
 # Users

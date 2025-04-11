@@ -1,23 +1,25 @@
 <div class="directory-actions">
-    <% if defined?(adv_search_path) && !adv_search_path.nil? %>
-        <%= link_to 'Advanced Search', adv_search_path, class: "button" %>
-    <% end %>
-    <% if search_keys.include?(:before) %>
-        <%= link_to 'Update Timestamp', params.permit(*search_keys).merge(before: 1.second.from_now), class: "button" %>
-    <% end %>
-    <% if search_keys.include?(:managed) %>
-        <%= link_to 'Toggle Managed', params.permit(*search_keys).merge(
-                managed: params[:managed] == 'false' ? 'true' : 'false'
-            ), class: "button"
-        %>
-    <% end %>
-    <% if search_keys.include?(:ismine) %>
-        <% ismine_text = (params[:ismine] == 'true') ? 'Hide Mine' : 'Show Mine' %> 
-        <%= link_to ismine_text, params.permit(*search_keys).merge(
-                ismine: params[:ismine] == 'true' ? 'false' : 'true'
-            ), class: "button"
-        %>
-    <% end %>
+    <div class="buttons">
+        <% if defined?(adv_search_path) && !adv_search_path.nil? %>
+            <%= link_to 'Advanced Search', adv_search_path, class: "button" %>
+        <% end %>
+        <% if search_keys.include?(:before) %>
+            <%= link_to 'Front Page', params.permit(*search_keys).merge(before: 1.second.from_now), class: "button" %>
+        <% end %>
+        <% if search_keys.include?(:managed) %>
+            <%= link_to 'Toggle Managed', params.permit(*search_keys).merge(
+                    managed: params[:managed] == 'false' ? 'true' : 'false'
+                ), class: "button"
+            %>
+        <% end %>
+        <% if search_keys.include?(:ismine) %>
+            <% ismine_text = (params[:ismine] == 'true') ? 'Hide Mine' : 'Show Mine' %> 
+            <%= link_to ismine_text, params.permit(*search_keys).merge(
+                    ismine: params[:ismine] == 'true' ? 'false' : 'true'
+                ), class: "button"
+            %>
+        <% end %>
+    </div>
     <%= yield :special_search_actions %>
     <% if search_keys.include?(:tags) || search_keys.include?(:nottags) %>
         <div class="tag-actions" data-controller="tagactions">

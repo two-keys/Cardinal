@@ -5416,7 +5416,7 @@
     }
 
     .left-sidebar {
-        @apply static lg:sticky top-0 lg:py-14 lg:self-start flex flex-col gap-8;
+        @apply static lg:sticky top-0 lg:py-14 lg:self-start flex flex-col-reverse md:flex-col gap-8;
         grid-area: sidebar_left;
     }
 
@@ -5444,11 +5444,32 @@
     .field_with_errors {
         @apply flex;
     }
-
-    .pagination {
-        @apply flex flex-row w-full place-content-center gap-1;
+    .pagy {
+      @apply flex space-x-1 font-semibold text-sm text-primary-content;
+      a:not(.gap) {
+        @apply block rounded-lg px-3 py-1 bg-primary text-primary-content;
+        &:hover {
+          @apply bg-secondary text-secondary-content;
+        }
+        &:not([href]) { /* disabled links */
+          @apply bg-primary text-primary-content cursor-default opacity-50;
+        }
+        &.current {
+          @apply bg-nav text-nav-content;
+        }
+      }
+      label {
+        @apply inline-block whitespace-nowrap bg-primary text-primary-content rounded-lg px-3 py-0.5;
+        input {
+          @apply bg-input text-input-content border-none rounded-md;
+        }
+      }
     }
 
+    .pagy .empty-page:not([aria-label="Next"], [aria-label="Previous"], .current) {
+      @apply hidden;
+    }
+    
     .input-group {
         @apply flex flex-row grow place-content-between flex-wrap gap-2;
     }
@@ -5575,7 +5596,7 @@
         @apply md:hidden block overflow-visible;
     }
     
-    .nav {
+    .site-navbar {
         @apply sticky w-dvw -top-1 z-40 p-2.5 border-b border-primary rounded-b-primary flex place-content-center justify-items-center gap-2 whitespace-nowrap overflow-x-auto overflow-y-visible;
     }
     
@@ -5614,7 +5635,7 @@
         background-position: 50%;
     }
     
-    .nav a {
+    .site-navbar a {
         @apply inline-block no-underline;
     }
     
@@ -6240,11 +6261,11 @@
     }
 
     .directory-links {
-        @apply grid grid-cols-2 gap-2;
+        @apply grid xl:grid-cols-2 gap-2;
     }
 
     .directory-links > * {
-        @apply w-full;
+        @apply w-full text-center;
     }
 
     .directory-links .button {
@@ -6253,6 +6274,10 @@
 
     .directory-actions {
         @apply grid grid-cols-2 grid-flow-dense gap-2;
+    }
+
+    .directory-actions .buttons {
+        @apply col-span-2 flex flex-col gap-2;
     }
 
     .directory-actions > * {

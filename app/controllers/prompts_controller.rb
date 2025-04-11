@@ -22,6 +22,7 @@ class PromptsController < ApplicationController
   include PseudableController
   include CharacterizedController
   include AuditableController
+  include CursorPaginatable
 
   def self.search_keys
     %i[before tags nottags managed ismine]
@@ -36,7 +37,8 @@ class PromptsController < ApplicationController
     # can chats from the prompt be moderated?
     query = query.where(managed: search_params[:managed]) if search_params.key?(:managed)
 
-    @pagy, @prompts = pagy(query.includes(:user, :pseudonym, :tags), items: 25)
+    @prompts, @cursor = paginate_with_cursor(query.includes(:user, :pseudonym, :tags), by: :bumped_at,
+                                                                                       before: params[:before])
   end
 
   # GET /prompts/1
