@@ -10,18 +10,15 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     @character_without_tags = characters(:no_tags)
     @posted = characters(:posted)
     @draft = characters(:draft)
-    @shadowbanned_character = characters(:shadowbanned)
 
     @user_pseud2 = pseudonyms(:user_second)
     @user2_pseud = pseudonyms(:user_two)
-    @shadowbanned_pseud = pseudonyms(:shadowbanned)
 
     @user = users(:user)
     @user2 = users(:user_two)
     @john = users(:john)
     @admin = users(:admin)
     @banned = users(:user_banned)
-    @shadowbanned = users(:shadowbanned)
   end
 
   test 'should get index' do
@@ -307,26 +304,5 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user2)
     get history_character_url(@character)
     assert_response :missing
-  end
-
-  test 'should not see shadowbanned user characters as normal user' do
-    sign_in(@user)
-    get characters_url
-
-    assert_select 'h2', { count: 0, text: @shadowbanned_character.name }
-  end
-
-  test 'should see shadowbanned user characters as admin' do
-    sign_in(@admin)
-    get characters_url
-
-    assert_select 'h2', @shadowbanned_character.name
-  end
-
-  test 'should see shadowbanned user characters as shadowbanned' do
-    sign_in(@shadowbanned)
-    get characters_url
-
-    assert_select 'h2', @shadowbanned_character.name
   end
 end

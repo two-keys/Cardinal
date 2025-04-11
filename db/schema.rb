@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_09_002052) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -117,19 +117,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
     t.boolean "push", default: false, null: false
   end
 
-  create_table "api_tokens", force: :cascade do |t|
-    t.string "title", null: false
-    t.boolean "enabled", default: true, null: false
-    t.text "token", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["enabled"], name: "index_api_tokens_on_enabled"
-    t.index ["title", "user_id"], name: "index_api_tokens_on_title_and_user_id", unique: true
-    t.index ["token"], name: "index_api_tokens_on_token"
-    t.index ["user_id"], name: "index_api_tokens_on_user_id"
-  end
-
   create_table "characters", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -217,14 +204,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
     t.index ["target_type", "target_id", "group", "user_id"], name: "idx_on_target_type_target_id_group_user_id_394635f237", unique: true
     t.index ["target_type", "target_id"], name: "index_filters_on_target"
     t.index ["user_id"], name: "index_filters_on_user_id"
-  end
-
-  create_table "global_entitlements", force: :cascade do |t|
-    t.string "title"
-    t.bigint "entitlement_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entitlement_id"], name: "index_global_entitlements_on_entitlement_id", unique: true
   end
 
   create_table "ip_bans", force: :cascade do |t|
@@ -485,11 +464,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
     t.boolean "themes_enabled", default: false, null: false
     t.boolean "legacy", default: false, null: false
     t.string "time_zone", default: "UTC", null: false
-    t.boolean "shadowbanned", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["shadowbanned"], name: "index_users_on_shadowbanned"
     t.index ["theme_id"], name: "index_users_on_theme_id"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -497,7 +474,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ads", "users"
-  add_foreign_key "api_tokens", "users"
   add_foreign_key "characters", "pseudonyms"
   add_foreign_key "characters", "users"
   add_foreign_key "chat_users", "pseudonyms"
@@ -505,7 +481,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
   add_foreign_key "connect_codes", "chats"
   add_foreign_key "connect_codes", "users"
   add_foreign_key "filters", "users"
-  add_foreign_key "global_entitlements", "entitlements"
   add_foreign_key "mod_chats", "chats"
   add_foreign_key "mod_chats", "users"
   add_foreign_key "object_characters", "characters"

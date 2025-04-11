@@ -38,15 +38,7 @@ class ChatsController < ApplicationController
       end
     else
       @chat_user = @chat.chat_users.find_by(user: current_user)
-
-      query = @chat.messages.display.includes(:user)
-
-      # shadowban logic
-      unless current_user.shadowbanned? || current_user.admin?
-        query = query.where(user: { shadowbanned: false }).or(query.where(user_id: nil)).reorder('messages.created_at DESC') # rubocop:disable Layout/LineLength
-      end
-
-      @pagy, @messages = pagy(query, items: 20)
+      @pagy, @messages = pagy(@chat.messages.display.includes(:user), items: 20)
       @chat.viewed!(current_user) if @pagy.page == 1
     end
   end
