@@ -64,7 +64,7 @@ gem 'cssbundling-rails'
 gem 'image_processing', '>= 1.2'
 
 # Pagination gem
-gem 'pagy', '~> 5.6'
+gem 'pagy'
 
 # User authentication
 gem 'devise'

@@ -1,15 +1,33 @@
+<% content_for :left_sidebar do %>
+  <div class="card primary">
+    <div class="pagination-container input-group">
+      <% if !params[:before].nil? %>
+        <%= link_to "First", prompts_path(tags: params[:tags]), class: "button" %>
+      <% else %>
+        <a class="button" disabled>First</a>
+      <% end %>
+      <% if @cursor %>
+        <%= link_to "Next", prompts_path(before: @cursor, tags: params[:tags]), class: "button" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <div class="flex-container" id="prompts_container">
   <div class="card primary">
     <%= link_to "New Prompt", new_prompt_path, class: "button" %>
-    <div class="pagination">
-      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
-    </div>
-    <span>Your search has <strong><%= @pagy.count %></strong> total prompts!</span>
   </div>
   <%= render partial: 'prompts/mini', collection: @prompts, as: :prompt %>
-  <div class="card primary">
-    <div class="pagination">
-      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  <div class="card primary thin md:hidden">
+    <div class="pagination-container input-group">
+      <% if !params[:before].nil? %>
+        <%= link_to "First", prompts_path(tags: params[:tags]), class: "button" %>
+      <% else %>
+        <a class="button" disabled>First</a>
+      <% end %>
+      <% if @cursor %>
+        <%= link_to "Next", prompts_path(before: @cursor, tags: params[:tags]), class: "button" %>
+      <% end %>
     </div>
   </div>
 </div>
