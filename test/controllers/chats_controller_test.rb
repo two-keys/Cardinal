@@ -7,22 +7,12 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @chat = chats(:chat_one)
-    @shadowbanned_chat = chats(:chat_shadowbanned)
-
     @user = users(:user)
     @user2 = users(:user_two)
-    @admin = users(:admin)
-    @shadowbanned = users(:shadowbanned)
 
     @user_pseud = pseudonyms(:user)
     @user_pseud2 = pseudonyms(:user_second)
     @user2_pseud = pseudonyms(:user_two)
-
-    @shadowbanned_chat.chat_users << ChatUser.new(user: @shadowbanned)
-    @shadowbanned_chat.chat_users << ChatUser.new(user: @user)
-
-    @unshadowbanned_message = messages(:user_message_with_shadowban)
-    @shadowbanned_message = messages(:user_shadowbanned_message)
 
     @chat_user = ChatUser.new(user: @user, role: ChatUser.roles[:chat_admin], pseudonym: @user_pseud) # owner
     @chat.chat_users << @chat_user
@@ -127,51 +117,5 @@ class ChatsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :missing
-  end
-
-  test 'shadowbanned should see all messages' do
-    sign_in(@shadowbanned)
-    get chat_url(@shadowbanned_chat.uuid)
-
-    assert_select 'p', @shadowbanned_message.content
-    assert_select 'p', @unshadowbanned_message.content
-  end
-
-  test 'admin should see all messages' do
-    sign_in(@admin)
-    get chat_url(@shadowbanned_chat.uuid)
-
-    assert_select 'p', @shadowbanned_message.content
-    assert_select 'p', @unshadowbanned_message.content
-  end
-
-  test 'normal user should not see shadowbanned messages' do
-    sign_in(@user)
-    get chat_url(@shadowbanned_chat.uuid)
-
-    assert_select 'p', { count: 0, text: @shadowbanned_message.content }
-    assert_select 'p', @unshadowbanned_message.content
-  end
-
-  test 'normal user should not see shadowbanned message in chats list' do
-    Message.create(user: @user, content: 'new normal message', chat: @shadowbanned_chat)
-    Message.create(user: @shadowbanned, content: 'new shadowbanned message', chat: @shadowbanned_chat)
-    sign_in(@user)
-
-    get chats_url
-
-    assert_select 'p', { count: 0, text: 'new shadowbanned message' }
-    assert_select 'p', 'new normal message'
-  end
-
-  test 'shadowbanned user should see shadowbanned message in chats list' do
-    Message.create(user: @user, content: 'new normal message', chat: @shadowbanned_chat)
-    Message.create(user: @shadowbanned, content: 'new shadowbanned message', chat: @shadowbanned_chat)
-    sign_in(@shadowbanned)
-
-    get chats_url
-
-    assert_select 'p', { count: 0, text: 'new normal message' }
-    assert_select 'p', 'new shadowbanned message'
   end
 end

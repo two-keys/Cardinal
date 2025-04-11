@@ -34,22 +34,11 @@
       <hr />
       <% if chat.messages.display.first %>
         <% if settings.hide_latest? %>
-          <% modded_message = nil %>
-          <% if current_user.shadowbanned? || current_user.admin? %>
-            <% modded_message = chat.messages.display.first %>
-          <% else %>
-            <% modded_message = chat.messages.display.joins(:user).where(user: {shadowbanned: false}).or(chat.messages.display.where(user_id: nil)).first %>
-          <% end %>
+          <% modded_message = chat.messages.display.first %>
           <% modded_message.content = "```\n[REDACTED]\n````" %>
           <%= render 'messages/message', locals: { message: modded_message, current_user_id: current_user.id } %>
         <% else %>
-          <% modded_message = nil %>
-          <% if current_user.shadowbanned? || current_user.admin? %>
-            <% modded_message = chat.messages.display.first %>
-          <% else %>
-            <% modded_message = chat.messages.display.joins(:user).where(user: {shadowbanned: false}).or(chat.messages.display.where(user_id: nil)).first %>
-          <% end %>
-          <%= render 'messages/message', locals: { message: modded_message, current_user_id: current_user.id, preview: true } %>
+          <%= render 'messages/message', locals: { message: chat.messages.display.first, current_user_id: current_user.id, preview: true } %>
         <% end %>
       <% else %>
         <i>No messages yet.</i>

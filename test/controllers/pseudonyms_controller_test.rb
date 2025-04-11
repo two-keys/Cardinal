@@ -9,13 +9,10 @@ class PseudonymsControllerTest < ActionDispatch::IntegrationTest
     @pseudonym = pseudonyms(:user)
     @posted = pseudonyms(:posted)
     @draft = pseudonyms(:draft)
-    @shadowbanned_pseud = pseudonyms(:shadowbanned)
 
     @user = users(:user)
     @user2 = users(:user_two)
     @john = users(:john)
-    @shadowbanned = users(:shadowbanned)
-    @admin = users(:admin)
   end
 
   test 'should get index' do
@@ -102,27 +99,5 @@ class PseudonymsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to pseudonyms_url
-  end
-
-  test 'normal user should not see shadowbanned pseud' do
-    sign_in(@user)
-    get pseudonyms_url
-
-    assert_select 'h2', { count: 0, text: @shadowbanned_pseud.name }
-  end
-
-  test 'shadowbanned user should see shadowbanned pseud and normal pseud' do
-    sign_in(@shadowbanned)
-    get pseudonyms_url
-
-    assert_select 'h2', @shadowbanned_pseud.name
-    assert_select 'h2', @pseudonym.name
-  end
-
-  test 'admin user should see shadowbanned pseud' do
-    sign_in(@admin)
-    get pseudonyms_url
-
-    assert_select 'h2', @shadowbanned_pseud.name
   end
 end

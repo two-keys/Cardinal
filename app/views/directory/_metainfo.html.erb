@@ -1,7 +1,7 @@
 <ul class="metainfo">
-    <% if can?(:view_users, model) && defined?(model.user) && !model.user.nil? %>
+    <% if can?(:view_users, model) && defined?(model.user) %>
         <li>
-            <%= link_to model.user.shadowbanned? ? "#{model.user.username} (S-BANNED)" : model.user.username, edit_admin_user_path(model.user) %>
+            <%= link_to model.user.username, edit_admin_user_path(model.user) %>
         </li>
     <% end %>
     <% if model.class.method_defined?(:pseudonym) %>

@@ -14,11 +14,7 @@
       </div>
       <div class="input-group">
         <%= f.label :banned %>
-        <%= f.check_box :banned, value: params[:banned] == 1, include_hidden: false %>
-      </div>
-      <div class="input-group">
-        <%= f.label :shadowbanned %>
-        <%= f.check_box :shadowbanned, value: params[:shadowbanned] == 1, include_hidden: false %>
+        <%= f.check_box :banned, value: params[:banned], include_hidden: false %>
       </div>
       <%= f.submit 'Filter' %>
     </div>

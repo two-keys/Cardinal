@@ -1,6 +1,6 @@
 <div id="<%= dom_id user %>" class="user card primary">
   <p>
-    <b>Username:</b> <strong><%= link_to user.username, edit_admin_user_path(user) %><%= user.shadowbanned? ? " (S_BANNED)" : "" %></strong><br/>
+    <b>Username:</b> <strong><%= link_to user.username, edit_admin_user_path(user) %></strong><br/>
     <b>Email:</b> <%= user.email %><br/>
     <b>Last IP:</b> <%= user.last_sign_in_ip %><br/>
     <b>Current IP:</b> <%= user.current_sign_in_ip %><br/>
