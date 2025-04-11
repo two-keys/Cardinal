@@ -47,7 +47,9 @@ class ChatUser < ApplicationRecord # rubocop:disable Metrics/ClassLength
       self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
     else
       self.status = 'ongoing' if chat.messages.last.user == user || chat.messages.last.user.nil?
-      self.status = 'unanswered' if chat.messages.last.user != user && !chat.messages.last.user.nil?
+      if (chat.messages.last.user != user && !chat.messages.last.user.nil?) && !chat.messages.last.user.shadowbanned?
+        self.status = 'unanswered'
+      end
     end
     save!
   end

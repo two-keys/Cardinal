@@ -10,6 +10,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @prompt_without_tags = prompts(:no_tags)
     @posted = prompts(:posted)
     @draft = prompts(:draft)
+    @prompt_shadowbanned = prompts(:shadowbanned)
 
     @character = characters(:one)
     @character2 = characters(:two)
@@ -20,8 +21,10 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
     @john = users(:john)
+    @system = users(:system)
     @admin = users(:admin)
     @banned = users(:user_banned)
+    @shadowbanned = users(:shadowbanned)
   end
 
   test 'should get index' do
@@ -533,5 +536,41 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user2)
     get history_prompt_url(@prompt)
     assert_response :missing
+  end
+
+  test 'shadowbanned should see own prompt and others in directory' do
+    sign_in(@shadowbanned)
+    get prompts_url
+    assert_select 'p', @prompt_shadowbanned.ooc
+    assert_select 'p', @posted.ooc
+  end
+
+  test 'admin should see shadowbanned prompt in directory' do
+    sign_in(@admin)
+    get prompts_url
+    assert_select 'p', @prompt_shadowbanned.ooc
+  end
+
+  test 'normal user should not see shadowbanned prompt in directory' do
+    sign_in(@user)
+    get prompts_url
+    assert_select 'p', { count: 0, text: @prompt_shadowbanned.ooc }
+  end
+
+  test 'shadowbanned user answering prompt connects to system user instead' do
+    sign_in(@shadowbanned)
+    post prompt_answer_path(@prompt)
+
+    assert_response :redirect
+
+    reg_exp_for_url = %r{http://www\.example\.com/chats/(.*)}
+    assert_match reg_exp_for_url, @response.redirect_url
+
+    matches = %r{http://www\.example\.com/chats/(?<uuid>.*)}.match(@response.redirect_url)
+    chat = Chat.find_by(uuid: matches['uuid'])
+
+    user = chat.users.where.not(id: @shadowbanned.id).first
+
+    assert user.id.zero?
   end
 end

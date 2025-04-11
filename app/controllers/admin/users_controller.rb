@@ -15,6 +15,7 @@ module Admin
       params = request.query_parameters
       params = params.compact_blank if params
       params[:banned] = nil if params[:banned].present? && params[:banned] != '1'
+      params[:shadowbanned] = nil if params[:shadowbanned].present? && params[:shadowbanned] != '1'
       if params
         query = query.where(username: params[:username]) if params[:username].present?
         if params[:ip].present?
@@ -25,6 +26,13 @@ module Admin
                     query.where.not(unban_at: nil)
                   else
                     query.where(unban_at: nil)
+                  end
+        end
+        if params[:shadowbanned].present?
+          query = if params[:shadowbanned] == '1'
+                    query.where(shadowbanned: true)
+                  else
+                    query.where(shadowbanned: false)
                   end
         end
       end
@@ -145,7 +153,7 @@ module Admin
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :verified, :unban_at,
-                                   :ban_reason, :delete_at)
+                                   :ban_reason, :delete_at, :shadowbanned)
     end
   end
 end

@@ -12,6 +12,9 @@ class Pseudonym < ApplicationRecord
   has_many :prompts, dependent: :nullify
   # has_many :object_tags, as: :object, dependent: :destroy
 
+  scope :shadowbanned, -> { joins(:user).where(user: { shadowbanned: true }) }
+  scope :not_shadowbanned, -> { joins(:user).where(user: { shadowbanned: false }) }
+
   validates :name, presence: true, uniqueness: true
 
   enum :status, {

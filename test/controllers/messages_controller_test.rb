@@ -11,7 +11,15 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     @user = users(:user)
     @user2 = users(:user_two)
     @user3 = users(:user_three)
+    @shadowbanned = users(:shadowbanned)
+
     @chat = chats(:chat_one)
+    @chat_shadowbanned = chats(:chat_shadowbanned)
+
+    @chat_shadowbanned.users << @shadowbanned
+    @chat_shadowbanned.users << @user
+    @chat_shadowbanned.chat_users.each(&:ongoing!)
+
     @chat.users << @user
     @chat.users << @user3
   end
@@ -94,5 +102,19 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     sign_in(@user2)
     get history_message_url(@message)
     assert_response :missing
+  end
+
+  test 'shadowbanned user should not update chat_user status of normal user' do
+    sign_in(@shadowbanned)
+    post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat_shadowbanned.id } }
+
+    assert @chat_shadowbanned.chat_users.find_by(user: @user).ongoing?
+  end
+
+  test 'normal user should update chat_user status of shadowbanned' do
+    sign_in(@user)
+    post messages_url, params: { message: { content: 'test', ooc: false, chat_id: @chat_shadowbanned.id } }
+
+    assert_not @chat_shadowbanned.chat_users.find_by(user: @shadowbanned).ongoing?
   end
 end
