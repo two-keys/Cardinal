@@ -137,11 +137,9 @@
         </div>
         <div class="info-bottom">
           <%= yield :info_bottom %>
-          <div class="max-md:pb-8">
-            <% ads_for(:footer, 1).each do |ad| %>
-              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
-            <% end %>
-          </div>
+          <% ads_for(:footer, 1).each do |ad| %>
+            <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+          <% end %>
         </div>
       </div>
       <%= render 'footer' %>
