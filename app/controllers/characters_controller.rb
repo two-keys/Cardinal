@@ -29,6 +29,11 @@ class CharactersController < ApplicationController
     # we could make this searchable like prompts
     # but that'll take some time to decouple prompt search logic
 
+    # shadowban logic
+    unless current_user.shadowbanned? || current_user.admin?
+      query = query.joins(:user).where(user: { shadowbanned: false })
+    end
+
     @pagy, @characters = pagy(query.includes(:user, :pseudonym), items: 5)
   end
 

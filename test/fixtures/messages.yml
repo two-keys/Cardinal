@@ -22,6 +22,18 @@ user_three:
   chat: chat_two
   icon: 🕕
 
+user_shadowbanned_message:
+  content: 'I have no respect for site rules.'
+  user: shadowbanned
+  chat: chat_shadowbanned
+  icon: 🤪
+
+user_message_with_shadowban:
+  content: 'I think the rules are nice actually.'
+  user: user
+  chat: chat_shadowbanned
+  icon: 😔
+
 reported_message:
   content: 'Lorem Ipsum ...... '
   user: user_two
@@ -33,7 +45,6 @@ reported_message_two:
   user: user_two
   chat: chat_one
   icon: ❤️
-  
 
 system:
   content: 'Lorem Ipsum 2 Electric Boogaloo.'

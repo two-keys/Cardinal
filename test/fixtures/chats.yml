@@ -9,3 +9,6 @@ chat_one:
 
 chat_two:
   uuid: <%= SecureRandom.uuid %>
+
+chat_shadowbanned:
+  uuid: <%= SecureRandom.uuid %>
