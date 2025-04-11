@@ -42,8 +42,8 @@ class PromptsController < ApplicationController
       query = query.joins(:user).where(user: { shadowbanned: false })
     end
 
-    @prompts, @cursor = paginate_with_cursor(query.includes(:user, :pseudonym, :tags), by: :bumped_at,
-                                                                                       before: params[:before])
+    @prompts, @cursor = paginate_with_cursor(query.includes(:user, :pseudonym, :tags, :object_tags), by: :bumped_at,
+                                                                                                     before: params[:before]) # rubocop:disable Layout/LineLength
   end
 
   # GET /prompts/1

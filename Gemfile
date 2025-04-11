@@ -180,6 +180,9 @@ group :development do
   # gem "spring"
   gem 'bullet'
   gem 'hotwire-livereload', '~> 2.0'
+
+  # Performance debugging
+  gem 'active_record_query_trace'
 end
 
 group :test do

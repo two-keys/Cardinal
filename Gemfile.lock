@@ -48,6 +48,8 @@ GEM
     active_record_extended (3.3.0)
       activerecord (>= 5.2, < 8.0.0)
       pg (< 3.0)
+    active_record_query_trace (1.8.3)
+      activerecord (>= 6.0.0)
     active_snapshot (1.0.0)
       activerecord (>= 6.1)
       railties
@@ -419,6 +421,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack (>= 7.0.8.7)
   active_record_extended
+  active_record_query_trace
   active_snapshot
   ahoy_matey
   ancestry
