@@ -27,8 +27,7 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
       return query.order('messages.created_at DESC') if viewing_user.shadowbanned?
 
       return query.includes(:user)
-                  .where(user: { shadowbanned: false })
-                  .or(query.where(user_id: nil))
+                  .where.not(user: { shadowbanned: true })
                   .order('messages.created_at DESC')
 
     end

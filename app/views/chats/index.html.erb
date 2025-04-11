@@ -34,7 +34,7 @@
       <hr />
       <% if chat.messages.display(current_user).first %>
         <% if settings.hide_latest? %>
-          <% modded_message = nil %>
+          <% modded_message = chat.messages.display(current_user).first %>
           <% modded_message.content = "```\n[REDACTED]\n````" %>
           <%= render 'messages/message', locals: { message: modded_message, current_user_id: current_user.id } %>
         <% else %>
