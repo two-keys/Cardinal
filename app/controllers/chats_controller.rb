@@ -39,7 +39,7 @@ class ChatsController < ApplicationController
     else
       @chat_user = @chat.chat_users.find_by(user: current_user)
 
-      query = @chat.messages.display.includes(:user)
+      query = @chat.messages.display(current_user).includes(:user)
 
       # shadowban logic
       unless current_user.shadowbanned? || current_user.admin?
@@ -180,7 +180,7 @@ class ChatsController < ApplicationController
   # GET /chats/1/search?q=text
   def search
     @query = params[:q]
-    results = params[:q].blank? ? @chat.messages.display.includes(:user) : @chat.search(@query)
+    results = params[:q].blank? ? @chat.messages.display(current_user).includes(:user) : @chat.search(@query)
     @pagy, @messages = pagy(results, items: 20)
   end
 

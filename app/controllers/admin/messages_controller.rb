@@ -31,7 +31,7 @@ module Admin
 
     def search
       @query = params[:q]
-      results = @query.blank? ? Message.display.includes(:user, :chat) : Message.search(@query)
+      results = @query.blank? ? Message.display(current_user).includes(:user, :chat) : Message.search(@query)
       @pagy, @messages = pagy(results, items: 20)
     end
 

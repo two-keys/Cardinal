@@ -1,7 +1,7 @@
 <h1>Messages</h1>
 
 <div id="messages">
-  <% @messages.display.each do |message| %>
+  <% @messages.display(current_user).each do |message| %>
     <%= render message %>
     <p>
       <%= link_to "Show", message, class: "button" %>

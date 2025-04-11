@@ -19,11 +19,18 @@ class Message < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validate :visibility_change, on: :update
   before_validation :set_icon, on: :create
 
-  scope :display, lambda {
-    return order('created_at DESC') if Current.user && Current.user.admin?
+  scope :display, lambda { |viewing_user|
+    return order('created_at DESC') if viewing_user&.admin?
 
-    if Current.user
-      return where('visibility != ? OR user_id = ?', Message.visibilities[:hidden], Current.user.id).order('created_at DESC') # rubocop:disable Layout/LineLength
+    if viewing_user
+      query = where('visibility != ? OR user_id = ?', Message.visibilities[:hidden], Current.user.id)
+      return query.order('messages.created_at DESC') if viewing_user.shadowbanned?
+
+      return query.includes(:user)
+                  .where(user: { shadowbanned: false })
+                  .or(query.where(user_id: nil))
+                  .order('messages.created_at DESC')
+
     end
 
     where.not(visibility: 'hidden').order('created_at DESC')
