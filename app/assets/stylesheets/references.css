@@ -5783,7 +5783,7 @@
     }
 
     .ad-container {
-        @apply flex flex-row lg:flex-col gap-4;
+        @apply flex flex-row lg:flex-col gap-4 order-first lg:order-last px-4 lg:px-0;
     }
 
     .ad {
