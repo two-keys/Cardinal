@@ -5782,6 +5782,10 @@
         @apply inline-block;
     }
 
+    .ad-container {
+        @apply flex flex-row lg:flex-col gap-4;
+    }
+
     .ad {
         @apply text-center place-self-center w-full h-full;
     }
@@ -6261,7 +6265,7 @@
     }
 
     .directory-links {
-        @apply grid xl:grid-cols-2 gap-2;
+        @apply grid gap-2;
     }
 
     .directory-links > * {
