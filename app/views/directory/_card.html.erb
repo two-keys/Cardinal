@@ -59,7 +59,7 @@
         <% end %>
 
         <% if can? :destroy, model %>
-          <li><%= button_to "🗑️ Delete", model, method: :delete, class: "mt-[2px] btn btn-xs btn-secondary hover:btn-primary", data: {turbo_confirm: "Are you sure you want to delete this Prompt?"} %></li>
+          <li><%= button_to "🗑️ Delete", model, method: :delete, class: "mt-[2px] btn btn-xs btn-secondary hover:btn-primary", data: {turbo_confirm: "Are you sure you want to delete this #{class_name.capitalize}?"} %></li>
         <% end %>
 
         <%= yield "card_actions_left_#{model.id}" %>
