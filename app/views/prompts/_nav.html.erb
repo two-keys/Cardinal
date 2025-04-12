@@ -4,7 +4,10 @@
   <% else %>
     <a class="prev" disabled>1</a>
   <% end %>
-  <div class="pagy-pages items-center justify-center text-center">
+  <div class="pagy-pages items-center justify-center text-center old-timestamp hidden">
+    <%= params[:before].present? ? legacy_time(DateTime.parse(params[:before])) : legacy_time(Time.zone.now) %>
+  </div>
+  <div class="pagy-pages items-center justify-center text-center new-timestamp">
     <%= params[:before].present? ? readable_time(DateTime.parse(params[:before]), mini: true) : readable_time(Time.zone.now, mini: true) %>
   </div>
   <% if @cursor %>

@@ -37,7 +37,8 @@
         <% if content_for?("timestamp_#{model.id}") %>
           <%= yield "timestamp_#{model.id}" %>
         <% else %>
-          <%= link_to readable_time(model.created_at, mini: true), model %>
+          <%= link_to legacy_time(model.created_at), model, class: "old-timestamp hidden" %>
+          <%= link_to readable_time(model.created_at, mini: true), model, class: "new-timestamp" %>
         <% end %>
       </span>
     <% end %>

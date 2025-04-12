@@ -2,7 +2,10 @@
     <div class="message">
       <p>. . .</p>
       <hr class="message-break"/>
-      <span class="message-created-at">
+      <span class="message-created-at old-timestamp hidden">
+        Sent <%= legacy_time(Time.zone.now) %>
+      </span>
+      <span class="message-created-at new-timestamp">
         Sent <%= readable_time(Time.zone.now, mini: true) %>
       </span>
   </div>

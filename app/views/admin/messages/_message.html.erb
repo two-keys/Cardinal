@@ -38,7 +38,15 @@
                         <%= message.markdown %>
                       </div>
                       <hr class="message-break"/>
-                      <span class="message-created-at">
+                      <span class="message-created-at old-timestamp hidden">
+                        <!-- Display the date and time of the message -->
+                        <% if message.user %>
+                          Sent by <%= link_to message.user.username, edit_admin_user_path(message.user) %> at <%= legacy_time(message.created_at) %>
+                        <% else %>
+                          Sent <%= legacy_time(message.created_at) %>
+                        <% end %>
+                      </span>
+                      <span class="message-created-at new-timestamp">
                         <!-- Display the date and time of the message -->
                         <% if message.user %>
                           Sent by <%= link_to message.user.username, edit_admin_user_path(message.user) %> at <%= readable_time(message.created_at, mini: true) %>

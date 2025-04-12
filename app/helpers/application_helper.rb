@@ -90,6 +90,10 @@ module ApplicationHelper # rubocop:disable Metrics/ModuleLength
     time.strftime('%a %b %e %Y %r')
   end
 
+  def legacy_time(time)
+    time.strftime('%Y-%m-%d %k:%M:%S')
+  end
+
   def system_time_from_form(dt_param)
     dt = DateTime.iso8601(dt_param).strftime('%F %T')
     ActiveSupport::TimeZone[current_user.time_zone].parse(dt)

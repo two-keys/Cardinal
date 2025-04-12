@@ -8,7 +8,8 @@
 
 <div class="card primary">
   <div class="card secondary">
-    <sub>Updated: <%= readable_time(@use_page.updated_at) %></sub>
+    <sub class="old-timestamp hidden">Updated: <%= legacy_time(@use_page.updated_at) %></sub>
+    <sub class="new-timestamp">Updated: <%= readable_time(@use_page.updated_at, mini: true) %></sub>
     <%= render @use_page %>
   </div>
 

@@ -24,7 +24,17 @@
       <div class="message-footer">
         <span class="message-created-at">
           <!-- Display the date and time of the message -->
-          <span class="message-edited-at">
+          <span class="message-edited-at old-timestamp hidden">
+            <%= "#{message.updated_at > message.created_at ? 'Edited' : 'Sent'} @ #{legacy_time(message.created_at)}" %>
+            <% if message.updated_at > message.created_at %>
+              <% if (can? :edit, message) %>
+                <%= link_to history_message_path(message), data: {turbo: false}, class: "message-history-link" do %>
+                  <span class="history">(history)</span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </span>
+          <span class="message-edited-at new-timestamp">
             <%= "#{message.updated_at > message.created_at ? 'Edited' : 'Sent'} @ #{readable_time(message.created_at, mini: true)}" %>
             <% if message.updated_at > message.created_at %>
               <% if (can? :edit, message) %>
