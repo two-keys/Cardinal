@@ -121,9 +121,9 @@
             <button disabled class="btn btn-sm btn-secondary hover:btn-primary" data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
             <button disabled class="btn btn-sm btn-secondary hover:btn-primary" data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
           </div>
-          <div class="push_subscriptions">
+          <div class="push_subscriptions flex flex-row flex-wrap gap-2">
             <% current_user.push_subscriptions.each do |subscription| %>
-              <div id="<%= dom_id subscription %>" class="card secondary">
+              <div id="<%= dom_id subscription %>" class="card secondary w-56">
                 Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
                 <%= button_to "Delete", subscription, method: :delete, class: "btn btn-sm btn-secondary hover:btn-primary", data: {turbo: true, turbo_confirm: "Are you sure you want to remove this Push Subscription?"}%>
               </div>
