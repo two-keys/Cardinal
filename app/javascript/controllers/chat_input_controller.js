@@ -45,7 +45,6 @@ export default class extends Controller {
             alertBox.innerHTML = "";
             $(alertBox).addClass("hidden");
             container.editor.setHTML("");
-            container.editor.focus();
         },
         error: function (jXHR, textStatus, errorThrown) {
             $(container).removeClass("animate");

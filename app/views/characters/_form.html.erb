@@ -4,8 +4,16 @@
     <%= render partial: 'characters/form_tags/tag_fields', locals: { character: character} %>
   <% end %>
 
-  <div>
-    <%= form.submit 'Submit' %>
-  </div>
+  <% if character.id.nil? %>
+    <div>
+      <%= form.button type: :submit, class: "btn btn-primary hover:btn-secondary" do %>
+        Submit<span class="inline-block w-4 h-4 pt-px items-center"><%= render partial: 'shared/ticket' %></span>
+      <% end %>
+    </div>
+  <% else %>
+    <div>
+      <%= form.submit 'Submit' %>
+    </div>
+  <% end %>
 <% end %>
 

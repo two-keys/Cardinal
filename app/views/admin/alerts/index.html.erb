@@ -4,7 +4,7 @@
 
 <div class="card primary">
   <h1>Alerts</h1>
-  <%== pagy_nav @pagy %>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   <p>
     <%= link_to "New Alert", new_admin_alert_path, class: "button" %>
   </p>
@@ -22,5 +22,5 @@
 </div>
 
 <div class="card primary">
-  <%== pagy_nav @pagy %>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
 </div>

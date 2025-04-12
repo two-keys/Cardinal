@@ -23,7 +23,7 @@
   <%= yield "card_content_#{model.id}" %>
  
   <% if defined? model.description %>
-    <div class="description markdown prose max-w-none">
+    <div style="<%= defined?(model.color) ? "color: #{model.color};" : ""%>" class="description markdown prose max-w-none">
       <%== marksmithed model.description %>
     </div>
   <% end %>
@@ -37,26 +37,28 @@
         <% if content_for?("timestamp_#{model.id}") %>
           <%= yield "timestamp_#{model.id}" %>
         <% else %>
-          <%= link_to readable_time(model.created_at), model %>
+          <%= link_to readable_time(model.created_at, mini: true), model %>
         <% end %>
       </span>
     <% end %>
     <div class="actions">
       <ul class="actions-left">
         <% if can?(:hide, model) %>
-          <li><%= button_to "Block", hide_tag_path(model), method: :post, class: "button", data: {turbo_confirm: "Are you sure you want to add this #{class_name.capitalize} to your filters?"} %></li>
+          <li><%= button_to "🚫 Block", hide_tag_path(model), method: :post, class: "btn btn-xs btn-secondary hover:btn-primary", data: {turbo_confirm: "Are you sure you want to add this #{class_name.capitalize} to your filters?"} %></li>
         <% end %>
 
         <% if defined?(model.user) && model.user != current_user %>
-          <li><%= link_to "🚩", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report-link" %></li>
+          <li>
+            <%= link_to "🚩 Report", new_report_path(reportable_id: model.id, reportable_type: model.class.name), class: "report-link no-underline btn btn-xs btn-secondary hover:btn-primary" %>
+          </li>
         <% end %>
 
         <% if can? :edit, model %>
-          <li><%= link_to "✏️", "#{url_for(model)}/edit", class: "#{class_name}-edit-link" %></li>
+          <li><%= link_to "✏️ Edit", "#{url_for(model)}/edit", class: "#{class_name}-edit-link no-underline btn btn-xs btn-secondary hover:btn-primary" %></li>
         <% end %>
 
         <% if can? :destroy, model %>
-          <li><%= button_to "🗑️", model, method: :delete, class: "pt-1", data: {turbo_confirm: "Are you sure you want to delete this prompt?"} %></li>
+          <li><%= button_to "🗑️ Delete", model, method: :delete, class: "mt-[2px] btn btn-xs btn-secondary hover:btn-primary", data: {turbo_confirm: "Are you sure you want to delete this Prompt?"} %></li>
         <% end %>
 
         <%= yield "card_actions_left_#{model.id}" %>

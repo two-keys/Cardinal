@@ -61,6 +61,8 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+
+  resource :user, only: %i[update], as: 'current_user'
   post 'resend_confirmation' => 'resend_confirmations#resend', as: 'resend_confirmation'
 
   post 'connect_code' => 'connect_code#create'

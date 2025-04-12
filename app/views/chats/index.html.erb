@@ -13,7 +13,9 @@
       <% end %>
       <%= button_to "New", chats_path, method: :post, class: "button" %>
     <% end %>
-    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    <div class="max-lg:hidden">
+      <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+    </div>
     <span><strong><%= @pagy.count %></strong> <%= @pagy.count > 0 ? pluralize_without_count(@pagy.count, 'chat') : 'chats' %></span>
   </div>
   <% @chats.each do |chat| %>
@@ -45,7 +47,7 @@
       <% end %>
     </div>
   <% end %>
-  <div class="card primary">
+  <div class="card primary max-lg:hidden">
     <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>
 </div>
@@ -72,6 +74,12 @@
         <strong><%= link_to "Mod Chat", chats_path(filter: 'mod') %></strong>
       </li>
     </ul>
+  </div>
+<% end %>
+
+<% content_for :secondary_navbar do %>
+  <div class="px-4 pb-2 lg:hidden sticky bottom-0">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>
 <% end %>
 

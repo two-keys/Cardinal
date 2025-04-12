@@ -3,7 +3,7 @@
       <p>. . .</p>
       <hr class="message-break"/>
       <span class="message-created-at">
-        Sent <%= DateTime.now.strftime("%Y-%m-%d %k:%M:%S") %>
+        Sent <%= readable_time(Time.zone.now, mini: true) %>
       </span>
   </div>
 <% end %>

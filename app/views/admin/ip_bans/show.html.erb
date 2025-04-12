@@ -6,6 +6,6 @@
   <div class="input-group">
     <%= link_to "Edit", edit_admin_ip_ban_path(@ip_ban), class: "button" %>
     <%= link_to "Back", admin_ip_bans_path, class: "button" %>
-    <%= button_to "Destroy ", [:admin, @ip_ban], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Delete ", [:admin, @ip_ban], method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to undo this IP Ban?"} %>
   </div>
 </div>

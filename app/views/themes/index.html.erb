@@ -8,13 +8,22 @@
   <% if can? :create, Theme %>
     <%= link_to "New theme", new_theme_path, class: "button" %><br/>
   <% end %>
-  <%== pagy_nav @pagy %>
+  <div class="max-lg:hidden">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
   <div id="themes">
     <% @themes.each do |theme| %>
       <%= render theme %>
     <% end %>
   </div>
-  <%== pagy_nav @pagy %>
+  <div class="max-lg:hidden">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
 </div>
 
+<% content_for :secondary_navbar do %>
+  <div class="px-4 pb-2 lg:hidden sticky bottom-0">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+<% end %>
 

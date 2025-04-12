@@ -1,24 +1,135 @@
 <% content_for :left_sidebar do %>
     <div class="directory-left-sidebar">
         <div class="card primary">
-            <p>You have <%= Ticket.remaining(Current.user) %> tickets remaining</p>
-            <ul class='directory-links'>
-                <li><%= link_to 'Prompts', prompts_path, class: "button" %></li>
-                <li><%= link_to 'Characters', characters_path, class: "button" %></li>
-                <li><%= link_to 'Filters', filters_path, class: "button" %></li>
-                <li><%= link_to 'Pseudonyms', pseudonyms_path, class: "button" %></li>
-                <li><%= link_to lucky_dip_prompts_path, class: "button primary" do %>
-                        <i class="icon-shuffle"></i> Lucky Dip
-                    <% end %>
-                </li>
-            </ul>
+            <div class="flex flex-row">
+                <p class="text-center grow">
+                    You have <%= Ticket.remaining(Current.user) %> tickets <span class="inline-block w-4 h-4 pt-1 items-center"><%= render partial: 'shared/ticket' %></span> remaining
+                </p>
+                <div class="flex items-center justify-center">
+                    <div class="tooltip tooltip-left">
+                        <div class="tooltip-content z-50">
+                            <p>Action Currency</p>
+                            <span class="inline-block w-8 h-8 self-center justify-self-center"><%= render partial: 'shared/ticket' %></span>
+                            <p>
+                               Used to bump prompts,<br/>
+                               make characters<br/>
+                               and pseudonyms
+                            </p>
+                            <p>
+                               Buttons marked with<br/>
+                               the ticket icon will<br/>
+                               spend a ticket
+                            </p>
+                            <p>
+                                Your ticket count resets<br/>
+                                every 24 hours
+                            </p>
+                        </div>
+                        <span class="tooltip-icon">ⓘ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse bg-tertiary text-tertiary-content border-ongoing border overflow-clip">
+                <input type="checkbox"/>
+                <div class="collapse-title font-semibold text-center px-4">Links</div>
+                <div class="collapse-content text-sm">
+                    <ul class='directory-links flex flex-col'>
+                        <li><%= link_to 'Prompts', prompts_path, class: "grow justify-start no-underline btn btn-xs btn-secondary w-full" %></li>
+                        <li><%= link_to 'Characters', characters_path, class: "no-underline justify-start btn btn-xs btn-secondary w-full" %></li>
+                        <li class="join w-full flex flex-row">
+                            <%= link_to 'Filters', filters_path, class: "grow join-item justify-start no-underline btn btn-xs btn-secondary" %>
+                            <div class="join-item tooltip tooltip-left">
+                                <div class="tooltip-content absolute z-20">
+                                    <p>Curate your directory</p>
+                                    <p>
+                                        Allows you to blacklist<br/>
+                                        and whitelist tags to<br/>
+                                        your preference
+                                    </p>
+                                    <p>
+                                        Each filter group is<br/>
+                                        applied in isolation to<br/>
+                                        eachother, and within<br/>
+                                        each group, rejections<br/>
+                                        and exceptions are<br/>
+                                        applied from lowest<br/>
+                                        to highest priority
+                                    </p>
+                                    <p>
+                                        EG:<br/>
+                                        <pre class="w-56 whitespace-normal">
+                                            <code class="w-48 text-tertiary text-left text-xs whitespace-pre-line">
+                                                R(0) 'misc:theme:angst'
+                                                E(1) 'misc:theme:fluff'
+                                            </code>
+                                        </pre>
+                                    </p>
+                                    <p>
+                                        The result being that<br/>
+                                        you will not<br/>
+                                        see prompts with<br/>
+                                        'misc:theme:angst'<br/>
+                                        unless they are<br/>
+                                        also tagged with<br/>
+                                        'misc:theme:fluff'
+                                    </p>
+                                </div>
+                                <button class="btn btn-xs btn-primary">ⓘ</button>
+                            </div>
+                        </li>
+                        <li class="join w-full flex flex-row">
+                            <%= link_to 'Pseudonyms', pseudonyms_path, class: "grow join-item justify-start no-underline btn btn-xs btn-secondary" %>
+                            <div class="join-item tooltip tooltip-left">
+                                <div class="tooltip-content">
+                                    <p>Anonymous Identities</p>
+                                    <p>
+                                        Akin to Pen-Names.<br/>
+                                        You can attach them to<br/>
+                                        your prompts and characters<br/>
+                                    </p>
+                                    <p>
+                                        In the future they will<br/>
+                                        allow people to search<br/>
+                                        for content that you've<br/>
+                                        attached to that identity
+                                    </p>
+                                </div>
+                                <button class="btn btn-xs btn-primary">ⓘ</button>
+                            </div>
+                        </li>
+                        <li class="join w-full flex flex-row">
+                            <%= link_to 'Lucky Dip', lucky_dip_prompts_path, class: "grow join-item justify-start no-underline btn btn-xs btn-secondary" %>
+                            <div class="join-item tooltip tooltip-left">
+                                <div class="tooltip-content">
+                                    <p>
+                                        Feeling Lucky?
+                                    </p>
+                                    <p>
+                                        This button takes you<br/>
+                                        to a random prompt in<br/>
+                                        the directory that matches<br/>
+                                        your current filter-set
+                                    </p>
+                                </div>
+                                <button class="btn btn-xs btn-primary">ⓘ</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <hr />
             <%= yield %>
             <% if defined?(with_search) && with_search %>
-                <%= render partial: 'directory/search_actions', locals: {
-                    adv_search_path: defined?(adv_search_path) ? adv_search_path : nil,
-                    search_keys:
-                } %>
+                <div class="collapse bg-tertiary text-tertiary-content border-ongoing border py-2">
+                    <input type="checkbox" />
+                    <div class="collapse-title font-semibold w-full text-center px-4">Search</div>
+                    <div class="collapse-content text-sm">
+                        <%= render partial: 'directory/search_actions', locals: {
+                            adv_search_path: defined?(adv_search_path) ? adv_search_path : nil,
+                            search_keys:
+                        } %>
+                    </div>
+                </div>
             <% end %>
         </div>
     </div>

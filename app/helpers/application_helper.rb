@@ -12,7 +12,7 @@ class Integer
   end
 end
 
-module ApplicationHelper
+module ApplicationHelper # rubocop:disable Metrics/ModuleLength
   include Pagy::Frontend
   require 'digest'
 
@@ -77,7 +77,16 @@ module ApplicationHelper
     [(days * 24) + hours, minutes, seconds]
   end
 
-  def readable_time(time)
+  def readable_time(time, mini: false)
+    if mini
+      string = '%-l:%M %p'
+      string = "%Y #{string}" if time < 1.year.ago
+      string = "#{time.day.ordinalize} #{string}" if time < 24.hours.ago
+      string = "%b #{string}" if time < 1.month.ago
+
+      return time.strftime(string)
+    end
+
     time.strftime('%a %b %e %Y %r')
   end
 

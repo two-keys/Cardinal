@@ -6,6 +6,6 @@
   <%= link_to "Back to tickets", tickets_path, class: "button" %>
 
   <% if can? :destroy, @ticket %>
-    <%= button_to "Destroy", @ticket, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Delete", @ticket, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Ticket?"} %>
   <% end %>
 </div>

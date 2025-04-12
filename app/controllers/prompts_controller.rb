@@ -158,7 +158,7 @@ class PromptsController < ApplicationController
   def lucky_dip
     prompt_max = Prompt.last.id
     # First apply all filters (including blacklists) to create a base query
-    base_query = add_search(Prompt.where(status: 'posted'))
+    base_query = add_search(Prompt.not_shadowbanned.where(status: 'posted'))
 
     random_prompt = if prompt_max >= 1000
                       # More efficient random selection using PostgreSQL's TABLESAMPLE

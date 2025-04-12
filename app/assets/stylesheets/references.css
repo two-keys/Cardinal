@@ -1,6 +1,6 @@
 @layer base {
     html {
-        @apply w-screen h-screen overflow-x-hidden;
+        @apply h-dvh max-h-dvh w-dvw max-w-dvw overflow-x-hidden;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -60,7 +60,7 @@
     }
 
     #site {
-        @apply w-full h-auto min-h-dvh transition-colors duration-300 ease-in-out;
+        @apply w-full h-auto min-h-dvh max-w-dvw transition-colors duration-300 ease-in-out;
     }
     
     footer {
@@ -5416,7 +5416,7 @@
     }
 
     .left-sidebar {
-        @apply static lg:sticky top-0 lg:py-14 lg:self-start flex flex-col-reverse md:flex-col gap-8;
+        @apply static lg:sticky top-0 lg:py-14 lg:self-start flex flex-col gap-8;
         grid-area: sidebar_left;
     }
 
@@ -5464,6 +5464,10 @@
           @apply bg-input text-input-content border-none rounded-md;
         }
       }
+
+      .pagy-pages {
+        @apply bg-primary text-primary-content rounded-primary grow flex justify-center-safe;
+      }
     }
 
     .pagy .empty-page:not([aria-label="Next"], [aria-label="Previous"], .current) {
@@ -5489,7 +5493,7 @@
     }
 
     .info-bottom {
-        @apply flex flex-col gap-4;
+        @apply flex flex-col gap-4 justify-items-center;
         grid-area: info_bottom;
     }
     
@@ -5498,7 +5502,7 @@
     } 
     
     .button {
-        @apply text-nowrap cursor-pointer hover:invert;
+        @apply text-nowrap cursor-pointer;
         appearance: button;
     }
 
@@ -5511,15 +5515,11 @@
     }
 
     input[type='submit'] {
-        @apply cursor-pointer hover:invert;
+        @apply cursor-pointer;
     }
 
     button[type='submit'] {
-        @apply cursor-pointer hover:invert;
-    }
-
-    button[type='submit']:hover .emoji {
-        @apply hover:invert;
+        @apply cursor-pointer;
     }
 
     button:disabled,
@@ -5755,7 +5755,7 @@
     }
     
     .card {
-        @apply rounded-primary flex flex-col gap-2 p-8 wrap-anywhere text-wrap;
+        @apply rounded-primary flex flex-col gap-2 p-8 wrap-anywhere text-wrap z-0;
     }
 
     .card a:not(.button) {
@@ -6567,6 +6567,24 @@
             width: 100%;
         }
     }
+}
+
+@layer utilities {
+  .divider {
+    --divider-color: currentcolor;
+  }
+
+  .collapse:is([open],:focus:not(.collapse-close))>:where(.collapse-content), .collapse:not(.collapse-close)>:where(input:is([type=checkbox],[type=radio]):checked~.collapse-content) {
+    @apply overflow-visible;
+  }
+
+  .collapse {
+    @apply overflow-visible;
+  }
+
+  .collapse-content {
+    @apply overflow-clip;
+  }
 }
 
 

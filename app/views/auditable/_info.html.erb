@@ -17,6 +17,6 @@
         <% end%>
     <% end %>
     <% if can?(:restore, version.item) %>
-        <%= button_to "Restore", send("restore_#{admin_scope? ? "admin_": ""}#{version.item_type.underscore}_path", version.item_id, version.id), method: :post, form: {data: {turbo_confirm: 'Are you sure?'}}, class: "button small" %><br/>
+        <%= button_to "Restore", send("restore_#{admin_scope? ? "admin_": ""}#{version.item_type.underscore}_path", version.item_id, version.id), method: :post, form: {data: {turbo_confirm: 'Are you sure you want to restore this version?'}}, class: "button small" %><br/>
     <% end %>
 </div>

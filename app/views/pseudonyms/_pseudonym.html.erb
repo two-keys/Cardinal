@@ -1,5 +1,5 @@
 <% content_for "timestamp_#{pseudonym.id}" do %>
-  <%= link_to readable_time(pseudonym.updated_at || pseudonym.created_at), pseudonym %>
+  <%= link_to readable_time(pseudonym.updated_at || pseudonym.created_at, mini: true), pseudonym %>
 <% end %>
 
 <%= render partial: 'directory/card', locals: {

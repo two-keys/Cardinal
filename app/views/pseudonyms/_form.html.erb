@@ -1,8 +1,16 @@
 <%= form_with(model: pseudonym, id: 'pseudonym_form') do |form| %>
   <%= render partial: 'pseudonyms/pseudonym_fields', locals: { pseudonym: pseudonym, form: form } %>
 
-  <div>
-    <%= form.submit 'Submit' %>
-  </div>
+  <% if pseudonym.id.nil? %>
+    <div>
+      <%= form.button type: :submit, class: "btn btn-primary hover:btn-secondary" do %>
+        Submit<span class="inline-block w-4 h-4 pt-px items-center"><%= render partial: 'shared/ticket' %></span>
+      <% end %>
+    </div>
+  <% else %>
+    <div>
+      <%= form.submit 'Submit' %>
+    </div>
+  <% end %>
 <% end %>
 

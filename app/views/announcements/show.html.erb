@@ -13,7 +13,7 @@
       <%= link_to "History", history_announcement_path(@announcement), class: "button" %>
     <% end %>
     <% if can? :destroy, @announcement %>
-      <%= button_to "Destroy", @announcement, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <%= button_to "Delete", @announcement, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Announcement?"} %>
     <% end %>
     <%= link_to "Back", announcements_path, class: "button" %>
   </div>

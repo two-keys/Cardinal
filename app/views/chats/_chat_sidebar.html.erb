@@ -3,7 +3,6 @@
         <div class="card primary chat-sidebar">
             <div class="chat-actions">
                 <%= link_to "Edit", edit_chat_path(locals[:chat_uuid]), data: {turbo_frame: '_top' }, class: "button" %>
-                <%= button_to "Delete", chat_path(locals[:chat_uuid]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?"}  %>
             </div>
             <ul class="sidebar-users" id="sidebar_users">
                 <% for user_data in locals[:users_data] %>
@@ -22,7 +21,7 @@
                         </span>
                         <div class="chat-admin-actions">
                             <% if !is_loc_user && can?(:chat_kick, @chat) %>
-                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure?" }  %>
+                                <%= button_to "Kick", chat_kick_path(locals[:chat_uuid], user_data[:icon]), method: :delete, class: "button", data: {turbo_frame: '_top', turbo_confirm: "Are you sure you want to kick this participant?" }  %>
                             <% end %>
                         </div>
                     </li>

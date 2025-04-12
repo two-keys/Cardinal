@@ -3,117 +3,164 @@
 <% end %>
 
 <div class="card primary">
-  <h1>Edit <%= resource_name.to_s.humanize %></h2>
-
-  <% if admin? %>
-    <%= link_to "Admin Edit", edit_admin_user_path(resource), class: "button" %>
-  <% end %>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
-    <h3>Profile</h3>
-    <%= render "users/shared/error_messages", resource: resource %>
-
-    <div class="field card secondary">
-      <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-      <%= f.password_field :current_password, autocomplete: "current-password" %>
-    </div>
-    
-    <div class="card secondary">
-      <% if resource.valid_subscription? %>
-        <div class="subscriber-notice">
-          You have an active subscription!
-        </div>
+  <div class="tabs tabs-lift [--color-base-content:var(--color-primary-content)]">
+    <label class="tab text-tertiary-content hover:text-header [--tab-bg:var(--color-tertiary)]  [--tab-border-color:var(--color-primary)]">
+      <input type="radio" name="profile_tabs" checked="checked" />
+      <%= render partial: 'shared/profile' %>
+      Profile
+    </label>
+    <div class="tab-content bg-tertiary text-tertiary-content border-primary p-6">
+      <% if admin? %>
+        <%= link_to "Admin Edit", edit_admin_user_path(resource), class: "no-underline btn btn-secondary hover:btn-primary" %>
       <% end %>
-      <div class="field">
-        <%= f.label :email %> <br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-        <% if resource.confirmed? %>
-          <span>Confirmed at <%= resource.confirmed_at %></span>
+      <fieldset class="fieldset w-full p-4 bg-tertiary border border-primary rounded-box">
+        <legend class="fieldset-legend text-tertiary-content"><%= resource.username %></legend>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
+          <fieldset class="fieldset w-full p-4 bg-tertiary border border-primary rounded-box">
+            <legend class="fieldset-legend text-tertiary-content">Details</legend>
+            <%= render "users/shared/error_messages", resource: resource %>
+            <% if resource.valid_subscription? %>
+              <div class="card secondary">
+                <div class="subscriber-notice">
+                  You have an active subscription!
+                </div>
+              </div>
+            <% end %>
+            <label class="fieldset-label text-tertiary-content">
+              Current Password
+            </label>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "input bg-input text-input-content w-full", required: true %>
+            <p class="fieldset-label text-tertiary-content">This is required for any changes on this tab to take effect</p>
+            <label class="fieldset-label text-tertiary-content">Email</label>
+            <div class="join w-full">
+              <%= f.email_field :email, autocomplete: "email", class: "input join-item bg-input text-input-content w-full" %>
+              <% if devise_mapping.confirmable? && (!resource.confirmed? || resource.pending_reconfirmation?) %>
+                <%= link_to "Resend", resend_confirmation_path, class: 'btn btn-secondary hover:btn-primary no-underline rounded-r-primary', data: { turbo: true, 'turbo-method' => :post }, role: "button" %>
+              <% end %>
+            </div>
+            <p class="fieldset-label text-tertiary-content">            
+              <% if devise_mapping.confirmable? && resource.confirmed? %>
+                Confirmed at <%= resource.confirmed_at %><br/>
+              <% end %>
+              <% if devise_mapping.confirmable? && (!resource.confirmed? || resource.pending_reconfirmation?) %>
+                  <%= resource.unconfirmed_email ? resource.unconfirmed_email : resource.email %> needs confirmation
+              <% end %>
+            </p>
+            <label class="fieldset-label text-tertiary-content">Password</label>
+            <div class="join w-full">
+              <div class="join-item w-full">
+                <label class="fieldset-label text-tertiary-content">
+                  New
+                </label>
+                <%= f.password_field :new_password, class: "input bg-input text-input-content w-full" %>
+              </div>
+              <div class="join-item w-full">
+                <label class="fieldset-label text-tertiary-content">
+                  Confirm
+                </label>
+                <%= f.password_field :password_confirmation, class: "input bg-input text-input-content w-full border-l border-l-ongoing" %>
+              </div>
+            </div>
+            <p class="fieldset-label text-tertiary-content">Leave these blank if you aren't changing your password</p>
+            <% if can? :edit, resource %>
+              <div class="actions input-group">
+                <%= f.submit "Update", class: "btn btn-secondary hover:btn-primary" %>
+                <%= link_to "Log Out", destroy_user_session_path, class: "btn btn-secondary hover:btn-primary no-underline", data: {turbo: true, "turbo-method": :delete, "turbo-confirm": 'Are you sure you want to log out?' } %>
+              </div>
+            <% end %>
+          </fieldset>
         <% end %>
-      </div>
 
-      <% if devise_mapping.confirmable? && (!resource.confirmed? || resource.pending_reconfirmation?) %>
-        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email ? resource.unconfirmed_email : resource.email %></div>
-        <%= link_to "Resend", resend_confirmation_path, class: 'button', data: { turbo: true, 'turbo-method' => :post } %>
-      <% end %>
+        <fieldset class="fieldset w-full p-4 bg-tertiary border border-primary rounded-box">
+          <legend class="fieldset-legend text-tertiary-content">Ads</legend>
+          <%= link_to "Your Ads", ads_path, class: "no-underline btn btn-sm btn-secondary hover:btn-primary" %>
+        </fieldset>
 
-      <div class="field">
-        <%= f.label :new_password %> <i>(leave blank if you don't want to change it)</i><br />
-        <%= f.password_field :password, autocomplete: "new-password" %>
-        <% if @minimum_password_length %>
-          <em><%= @minimum_password_length %> characters minimum</em>
+        <fieldset class="fieldset w-full p-4 bg-tertiary border border-primary rounded-box">
+          <legend class="fieldset-legend text-tertiary-content">Reports</legend>
+          <%= link_to "Your Reports", reports_path, class: "no-underline btn btn-sm btn-secondary hover:btn-primary" %>
+        </fieldset>
+      </fieldset>
+    </div>
+
+    <label class="tab text-tertiary-content hover:text-header [--tab-bg:var(--color-tertiary)] [--tab-border-color:var(--color-primary)]">
+      <input type="radio" name="profile_tabs" />
+      <%= render partial: 'shared/gear' %>
+      Settings
+    </label>
+    <div class="tab-content bg-tertiary text-tertiary-content border-primary p-6">
+      <fieldset class="fieldset max-md:w-full p-4 bg-tertiary border border-primary rounded-box w-full">
+        <legend class="fieldset-legend text-tertiary-content">Basic</legend>
+        <%= form_for(resource, as: resource_name, url: current_user_path, html: { method: :put }, data: { turbo: false }) do |f| %>
+          <div class="flex md:flex-row">
+            <fieldset class="fieldset max-md:w-full p-4 bg-tertiary border border-primary rounded-box">
+              <legend class="fieldset-legend text-tertiary-content">Web Push</legend>
+              <label class="fieldset-label text-tertiary-content">
+                <%= f.check_box :push_announcements, class: "checkbox checkbox-secondary", type: "checkbox" %>
+                Announcements
+              </label>
+              <label class="fieldset-label text-tertiary-content">Subscriptions</label>
+              <div class="input-group">
+                <div data-controller="web-push-subscription" class="web-push-subscription">
+                  <button disabled class="btn btn-sm btn-secondary hover:btn-primary" data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
+                  <button disabled class="btn btn-sm btn-secondary hover:btn-primary" data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
+                </div>
+                <div class="push_subscriptions">
+                  <% current_user.push_subscriptions.each do |subscription| %>
+                    <div id="<%= dom_id subscription %>" class="card secondary">
+                      Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
+                      <%= button_to "Delete", subscription, method: :delete, class: "btn btn-sm btn-secondary hover:btn-primary", data: {turbo: true, turbo_confirm: "Are you sure you want to remove this Push Subscription?"}%>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="fieldset md:grow max-md:w-full p-4 bg-tertiary border border-primary rounded-box w-64">
+              <legend class="fieldset-legend text-tertiary-content">Time Zone</legend>
+              <%= f.time_zone_select(:time_zone, ActiveSupport::TimeZone.all.sort, {model: ActiveSupport::TimeZone}, class: "select") %>
+            </fieldset>
+          </div>
+          <% if can? :edit, resource %>
+            <div class="w-full actions input-group">
+              <%= f.submit "Update", class: "input-main btn btn-secondary hover:btn-primary" %>
+            </div>
+          <% end %>
         <% end %>
-      </div>
+      </fieldset>
+      <fieldset class="fieldset max-md:w-full p-4 bg-tertiary border border-primary rounded-box w-full">
+        <legend class="fieldset-legend text-tertiary-content">Themes</legend>
+        <% if can? :create, Theme %>
+          <%= link_to "New Theme", new_theme_path, class: "no-underline btn btn-sm btn-secondary hover:btn-primary" %>
+        <% end %>
+        <%= link_to "Theme Directory", themes_path, class: "no-underline btn btn-sm btn-secondary hover:btn-primary" %>
+        <fieldset class="fieldset max-md:w-full p-4 bg-tertiary border border-primary rounded-box w-full">
+          <legend class="fieldset-legend text-tertiary-content">Applied</legend>
+          <% if current_user.applied_themes.count == 0 %>
+            <p class="fieldset-label text-tertiary-content">You have no applied themes.</b>
+          <% end %>
+          <% current_user.applied_themes.each do |theme| %>
+            <%= render partial: "/themes/theme", locals: {theme: theme} %>
+          <% end %>
+        </fieldset>
+      </fieldset>
+    </div>
 
-      <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :time_zone %><br />
-        <%= f.time_zone_select(:time_zone, ActiveSupport::TimeZone.all.sort, model: ActiveSupport::TimeZone) %>
-      </div>
-
-      <div class="field">
-        <%= f.label "Announcements trigger Web Push?" %><br />
-        <%= f.check_box :push_announcements %>
-      </div>
-      <% if can? :edit, resource %>
-        <div class="actions">
-          <%= f.submit "Update" %>
-        </div>
-      <% end %>
+    <label class="tab text-tertiary-content hover:text-header [--tab-bg:var(--color-tertiary)] [--tab-border-color:var(--color-primary)]">
+      <input type="radio" name="profile_tabs" />
+      <%= render partial: 'shared/skull' %>
+      Danger
+    </label>
+    <div class="tab-content bg-tertiary text-tertiary-content border-primary p-6">
+      <fieldset class="fieldset w-full p-4 bg-tertiary border border-primary rounded-box">
+        <legend class="fieldset-legend text-tertiary-content">Deletion</legend>
+        <% if can? :destroy, resource %>
+          <%= link_to "Delete Account", registration_path(resource_name), class: "btn btn-secondary hover:btn-primary no-underline", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure you want to delete your account?' } %>
+        <% else %>
+          <button disabled class="btn btn-secondary hover:btn-primary">Delete Account</button>
+        <% end %>
+      </fieldset>
     </div>
-  <% end %>
-  <h3>Danger Zone</h3>
-  <div class="card secondary">
-    <div class="input-group">
-      <%= link_to "Log Out", destroy_user_session_path, class: "button", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure?' } %>
-      <% if can? :destroy, resource %>
-        <%= link_to "Delete Account", registration_path(resource_name), class: "button danger", data: { "turbo-method": :delete, "turbo-confirm": 'Are you sure you want to delete your account?' } %>
-      <% end %>
-    </div>
-  </div>
-  <h3>Themes</h3>
-  <div class="card secondary">
-    <div class="input-group">
-      <% if can? :create, Theme %>
-        <%= link_to "New", new_theme_path, class: "button" %>
-      <% end %>
-      <%= link_to "Themes", themes_path, class: "button" %>
-    </div>
-    
-    <h4>Applied</h4>
-    <% if current_user.applied_themes.count == 0 %>
-      <p>You have no applied themes.</b>
-    <% end %>
-    <% current_user.applied_themes.each do |theme| %>
-      <%= render partial: "/themes/theme", locals: {theme: theme} %>
-    <% end %>
-  </div>
-  <h3>Notifications</h3>
-  <div class="card secondary">
-    <div data-controller="web-push-subscription" class="web-push-subscription">
-      <button disabled class="button" data-web-push-subscription-target="subscribeButton" data-action="web-push-subscription#trySubscribe">Subscribe</button>
-      <button disabled class="button" data-web-push-subscription-target="unsubscribeButton" data-action="web-push-subscription#unsubscribe">Unsubscribe</button>
-    </div>
-    <div class="push_subscriptions">
-      <% current_user.push_subscriptions.each do |subscription| %>
-        <div id="<%= dom_id subscription %>" class="card secondary">
-          Device: <%= sha256(subscription.user_agent).truncate(20, omission: '') %>
-          <%= button_to "Destroy", subscription, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"}%>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <h3>Ads</h3>
-  <div class="card secondary">
-    <%= link_to "Your Ads", ads_path, class: "button" %>
-  </div>
-  <h3>My Reports</h3>
-  <div class="card secondary">
-    <%= link_to "My Reports", reports_path, class: "button" %>
   </div>
 
-  <%= link_to "Back", :back, class: "button" %>
+  <%= link_to "Back", :back, class: "no-underline btn btn-primary hover:btn-secondary" %>
 </div>

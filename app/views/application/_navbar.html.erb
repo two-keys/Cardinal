@@ -1,5 +1,10 @@
 <% if current_user %>
     <%= turbo_stream_from dom_id(current_user)  + "_notifications" %>
 <% end %>
-<%= render "navbar_desktop" %>
-<%= render "navbar_mobile" %>
+<nav class="w-full sticky top-0 z-50 flex flex-col gap-2 bg-nav text-nav-content rounded-b-xl">
+    <nav class="w-dvw">
+        <%= render "navbar_desktop" %>
+        <%= render "navbar_mobile" %>
+    </nav>
+    <%= yield :secondary_navbar %>
+</nav>

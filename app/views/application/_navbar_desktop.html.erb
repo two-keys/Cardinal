@@ -15,7 +15,7 @@
   <%= link_to 'Site Use', use_pages_path, class: "nav-item nav-use" %>
   <%= link_to 'Community', contact_us_path, class: "nav-item nav-community" %>
   <% if user_signed_in? %>
-    <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-item nav-logout", data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "nav-item nav-logout", data: {turbo_confirm: "Are you sure you want to log out?"} %>
   <% end %>
   <% if !Rails.env.test? %>
     <%= link_to "#", class: "nav-item nav-online" do %>

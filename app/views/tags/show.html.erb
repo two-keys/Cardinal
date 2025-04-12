@@ -12,7 +12,7 @@
     <%= link_to "Back", tags_path, class: "button" %>
 
     <% if can? :destroy, @tag %>
-      <%= button_to "Destroy", @tag, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <%= button_to "Delete", @tag, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Tag?"} %>
     <% end %>
   </div>
 </div>

@@ -28,10 +28,7 @@ export default class extends Controller {
     }
     var myObserver = new MutationObserver(mutationHandler);
     var obsConfig = {
-        childList: true,
-        characterData: true,
-        attributes: true,
-        subtree: true
+        childList: true
     };
 
     myObserver.observe(messages, obsConfig);
@@ -44,5 +41,10 @@ export default class extends Controller {
             }
         }
     });
+
+    let lastMessage = $(messages).children().last()[0]
+    console.log(lastMessage);
+
+    lastMessage.scrollIntoView({behavior: "smooth", block: "center"});
   }
 }

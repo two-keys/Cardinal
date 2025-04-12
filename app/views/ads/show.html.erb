@@ -22,7 +22,7 @@
   <div class="input-group">
     <%= link_to "Edit", edit_ad_path(@ad), class: "button" %>
     <%= link_to "Back", ads_path, class: "button" %>
-    <%= button_to "Destroy", @ad, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Delete", @ad, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this ad?"} %>
   </div>
 </div>
 

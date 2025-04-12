@@ -1,5 +1,5 @@
 <div class="card secondary">
-    <span>User: <%= link_to chat_user.user.username, [:admin, chat_user.user] %></span>
+    <span>User: <%= link_to chat_user.user.username, edit_admin_user_path(chat_user.user) %></span>
     <span>Icon: </span>
     <div class="sidebar-user-icon">
         <span><%= icon_for chat_user.icon %></span>

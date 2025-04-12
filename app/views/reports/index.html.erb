@@ -10,18 +10,28 @@
     </div>
 
     <div id="reports">
-    <%== pagy_nav @pagy %>
-    <% @reports.each do |report| %>
-        <div>
-            <span>Type: <%= report.reportable_type %></span>
-            <br />
-            <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
+        <div class="max-lg:hidden">
+            <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
         </div>
-        <p>
-            <%= link_to "Show", report, class: "button" %>
-        </p>
-    <% end %>
-    <%== pagy_nav @pagy %>
+        <% @reports.each do |report| %>
+            <div>
+                <span>Type: <%= report.reportable_type %></span>
+                <br />
+                <span>Reported at: <%= report.created_at.strftime("%l:%M %p %b %d %Y") %></span>
+            </div>
+            <p>
+                <%= link_to "Show", report, class: "button" %>
+            </p>
+        <% end %>
+        <div class="max-lg:hidden">
+            <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+        </div>
     </div>
 
 </div>
+
+<% content_for :secondary_navbar do %>
+  <div class="px-4 pb-2 lg:hidden sticky bottom-0">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+<% end %>

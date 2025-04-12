@@ -10,17 +10,17 @@
   </div>
 <% end %>
 
-<div class="card secondary">
+<div>
   <%= form.label :ooc, style: "display: block" %>
-  <%= form.text_area :ooc, id: "prompt_#{prompt.id ? prompt.id : "new"}_ooc" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
+  <%= form.marksmith :ooc, enable_file_uploads: false  %>
 </div>
 
-<div class="card secondary">
+<div>
   <div class="input-group">
     <%= form.label :starter, style: "display: block" %>
     <%= form.text_field :color, {'data-controller': 'color-picker'} %>
   </div>
-  <%= form.text_area :starter, id: "prompt_#{prompt.id ? prompt.id : "new"}_starter" , data: {controller: "easy-mde", 'easy-mde-save-value': true}  %>
+  <%= form.marksmith :starter, enable_file_uploads: false  %>
 </div>
 
 <div>
@@ -33,7 +33,7 @@
   <div>
     <%= form.radio_button :status, 'draft' %><%= label_tag(:prompt_status_draft, 'draft') %>
     <%= form.radio_button :status, 'posted' %><%= label_tag(:prompt_status_posted, 'posted') %>
-  <div>
+  </div>
 </div>
 
 <div>

@@ -8,7 +8,7 @@
 
 <div class="card primary">
   <span>This prompt has <strong><%= @pagy.count %></strong> joinable <%= @pagy.count > 1 ? pluralize_without_count(@pagy.count, "chat") : "chats" %>.</span>
-  <%== pagy_nav @pagy %>
+  <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   <% @chats.each do |chat| %>
     <% connect_code = chat.connect_code %>
     <div class="card secondary">
@@ -39,7 +39,7 @@
     <%= link_to "Back", prompts_path, class: "button" %>
 
     <% if can? :destroy, @prompt %>
-      <%= button_to "Destroy", @prompt, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <%= button_to "Delete", @prompt, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Prompt?"} %>
     <% end %>
   </div>
 </div>

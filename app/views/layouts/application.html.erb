@@ -94,19 +94,37 @@
       </header>
       <%= render 'navbar' %>
       <div class="site-container">
+        <% right_ads = ads_for(:sidebar, 2) %>
+        <% left_ads = ads_for(:sticky, 2) %>
+        <div class="flex flex-col gap-2 pt-2 lg:hidden">
+          <div class="ad-container">
+            <% left_ads.each do |ad| %>
+              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+            <% end %>
+          </div>
+          <div class="ad-container">
+            <% right_ads.each do |ad| %>
+              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+            <% end %>
+          </div>
+        </div>
         <div class="top-right-filler"></div>
         <div class="right-sidebar">
           <%= yield :right_sidebar %>
-          <% ads_for(:sidebar, 2).each do |ad| %>
-            <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
-          <% end %>
+          <div class="ad-container max-lg:hidden">
+            <% right_ads.each do |ad| %>
+              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+            <% end %>
+          </div>
         </div>
         <div class="top-left-filler"></div>
         <div class="left-sidebar">
           <%= yield :left_sidebar %>
-          <% ads_for(:sticky, 2).each do |ad| %>
-            <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
-          <% end %>
+          <div class="ad-container max-lg:hidden">
+            <% left_ads.each do |ad| %>
+              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+            <% end %>
+          </div>
         </div>
         <div class="info-top">
           <%= turbo_frame_tag :flashes, class: "flashes" do %>
@@ -119,9 +137,11 @@
         </div>
         <div class="info-bottom">
           <%= yield :info_bottom %>
-          <% ads_for(:footer, 1).each do |ad| %>
-            <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
-          <% end %>
+          <div class="max-md:pb-8">
+            <% ads_for(:footer, 1).each do |ad| %>
+              <%= render partial: '/ads/ad_fragment', locals: {ad: ad} %>
+            <% end %>
+          </div>
         </div>
       </div>
       <%= render 'footer' %>

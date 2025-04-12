@@ -1,15 +1,21 @@
 <div class="flex-container" id="characters_container">
   <div class="card primary">
     <%= link_to "New Character", new_character_path, class: "button" %>
-    <div class="pagination">
+    <div class="pagination max-lg:hidden">
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
     </div>
     <span>Your search has <strong><%= @pagy.count %></strong> total characters!</span>
   </div>
   <%= render partial: 'characters/mini', collection: @characters, as: :character %>
-  <div class="card primary">
+  <div class="card primary max-lg:hidden">
     <div class="pagination">
       <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
     </div>
   </div>
 </div>
+
+<% content_for :secondary_navbar do %>
+  <div class="px-4 pb-2 lg:hidden sticky bottom-0">
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
+  </div>
+<% end %>

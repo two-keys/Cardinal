@@ -30,10 +30,12 @@ export default class extends Controller {
         this.value = input;
         if (saveValue) {
             textArea.save(saveIdValue);
+            /*
             window.setTimeout(function() {
                 textArea.scrollIntoView({behavior: "smooth", block: "center"});
                 textArea.focus();
             }, 300)
+            */
         }
     };
 
@@ -42,7 +44,7 @@ export default class extends Controller {
     }
 
     this.element.editor = textArea;
-    this.element.editor.focus();
+    //this.element.editor.focus();
     
     if (this.saveValue) {
       textArea.value = localStorage.getItem(this.saveIdValue);

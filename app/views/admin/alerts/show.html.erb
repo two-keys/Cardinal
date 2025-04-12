@@ -6,6 +6,6 @@
   <div class="input-group">
     <%= link_to "Edit", edit_admin_alert_path(@alert), class: "button" %>
     <%= link_to "Back", admin_alerts_path, class: "button" %>
-    <%= button_to "Destroy ", [:admin, @alert], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+    <%= button_to "Delete ", [:admin, @alert], method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Alert?"} %>
   </div>
 </div>

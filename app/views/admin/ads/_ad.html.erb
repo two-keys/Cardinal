@@ -6,6 +6,6 @@
       <% if ad.pending_approval %>
         <%= button_to "Approve", admin_approve_ad_path(ad), method: :post, class: "button" %>
       <% end %>
-      <%= button_to "Destroy", [:admin, ad], method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <%= button_to "Destroy", [:admin, ad], method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to destroy this Ad?"} %>
   </div>
 </div>

@@ -16,6 +16,7 @@
 
 <% content_for :info_top do %>
     <div class="chat-info-top card secondary thin" id="chat_info_top">
+        <h4>Chat</h4>
         <% if @chat_info %>
             <% if @chat_info.title %>
                 <strong><p class="chat-title"><%= @chat_info.title %></p></strong>
@@ -24,7 +25,9 @@
                 <p class="chat-description"><%= @chat_info.description %></p>
             <% end %>
         <% end %>
-        <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
+        <div class="max-lg:hidden">
+            <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
+        </div>
     </div>
 <% end %>
 
@@ -58,12 +61,14 @@
 <% end %>
 
 <% content_for :right_sidebar do %>
-    <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
-    <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
+    <div>
+        <%= turbo_stream_from(dom_id(@chat) + "_" + dom_id(current_user) + "_userlist") %>
+        <%== render partial: 'chats/chat_sidebar', locals: {locals: { chat_id: @chat.id, users_data: @chat.all_users_display_data, chat_uuid: @chat.uuid, user: current_user }} %>
+    </div>
 <% end %>
 
 <% content_for :info_bottom do %>
-    <div class="card secondary thin">
+    <div class="card secondary thin max-lg:hidden">
         <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
     </div>
     <% if @pagy.page == 1 && can?(:create, Message.new(chat: @chat, user: current_user)) %>
@@ -73,4 +78,10 @@
             <% end %>
         </div>
     <% end %>
+<% end %>
+
+<% content_for :secondary_navbar do %>
+  <div class="px-4 pb-2 lg:hidden sticky bottom-0">
+    <%== render partial: 'pagy/chat_nav', locals: {pagy: @pagy} %>
+  </div>
 <% end %>

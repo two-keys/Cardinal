@@ -6,24 +6,26 @@
 <nav class="pagy nav w-full justify-center" aria-label="Pages">
   <%# Previous page link %>
   <% if pagy.prev %>
-    <%== a.(pagy.prev, '&lt;', aria_label: 'Previous') %>
+    <%== a.(pagy.prev, '&lt;', aria_label: 'Previous', classes: "prev") %>
   <% else %>
-    <a role="link" aria-disabled="true" aria-label="Previous">&lt;</a>
+    <a role="link" aria-disabled="true" aria-label="Previous" class="prev">&lt;</a>
   <% end %>
   <%# Page links (series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36]) %>
-  <% pagy.series.each do |item| %>
-    <% if item.is_a?(Integer) %>
-      <%== item == 1 ? a.(item, 'Live') : a.(item) %>
-    <% elsif item.is_a?(String) %>
-      <a role="link" aria-disabled="true" aria-current="page" class="current"><%= item == '1' ? 'Live' : item %></a>
-    <% elsif item == :gap %>
-      <a role="link" aria-disabled="true" class="gap">&hellip;</a>
+  <div class="pagy-pages">
+    <% pagy.series.each do |item| %>
+      <% if item.is_a?(Integer) %>
+        <%== item == 1 ? a.(item, 'Live') : a.(item) %>
+      <% elsif item.is_a?(String) %>
+        <a role="link" aria-disabled="true" aria-current="page" class="current"><%= item == '1' ? 'Live' : item %></a>
+      <% elsif item == :gap %>
+        <a role="link" aria-disabled="true" class="gap">&hellip;</a>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
   <%# Next page link %>
   <% if pagy.next %>
-    <%== a.(pagy.next, '&gt;', aria_label: 'Next') %>
+    <%== a.(pagy.next, '&gt;', aria_label: 'Next', classes: "next") %>
   <% else %>
-    <a role="link" aria-disabled="true" aria-label="Next">&lt;</a>
+    <a role="link" aria-disabled="true" aria-label="Next" class="next">&gt;</a>
   <% end %>
 </nav>

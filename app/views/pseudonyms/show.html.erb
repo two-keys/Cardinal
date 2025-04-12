@@ -14,7 +14,7 @@
     <%= link_to "Back", pseudonyms_path, class: "button" %>
 
     <% if can? :destroy, @pseudonym %>
-      <%= button_to "Destroy", @pseudonym, method: :delete, class: "button", data: {turbo_confirm: "Are you sure?"} %>
+      <%= button_to "Delete", @pseudonym, method: :delete, class: "button", data: {turbo_confirm: "Are you sure you want to delete this Pseudonym?"} %>
     <% end %>
   </div>
 </div>

@@ -8,7 +8,7 @@
     <div class="input-group">
         <span><b>Status:</b> <%= locals[:chat].mod_chat.status %></span>
         <% if can? :resolve_mod_chat, locals[:chat] %>
-            <%= button_to "Resolve", chats_path + "/" + locals[:chat].uuid + "/resolve", method: :post, class: "button", data: {turbo_confirm: 'Are you sure you want to resolve this mod chat?'}  %>
+            <%= button_to "Resolve", chats_path + "/" + locals[:chat].uuid + "/resolve", method: :post, class: "button", data: {turbo_confirm: 'Are you sure you want to resolve this Mod Chat?'}  %>
         <% end %>
     </div>
 </div>

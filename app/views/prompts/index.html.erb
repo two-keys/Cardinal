@@ -3,9 +3,5 @@
     Directory
 <% end %>
 
-<% content_for :info_top do %>
-    <h1>Prompts</h1>
-<% end %>
-
 <%= render partial: 'prompts/prompts_sidebar' %>
 <%= render partial: 'prompts/prompts', locals: {prompts: @prompts} %>

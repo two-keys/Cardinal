@@ -10,7 +10,7 @@
   </div>
 
   <div id="reports">
-    <%== pagy_nav @pagy %>
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
     <% @reports.each do |report| %>
       <div class="card secondary">
         <span>From: <%= link_to report.reporter.username, edit_admin_user_path(report.reporter) %></span>
@@ -38,6 +38,6 @@
         </div>
       </div>
     <% end %>
-    <%== pagy_nav @pagy %>
+    <%== render partial: 'pagy/nav', locals: {pagy: @pagy} %>
   </div>
 </div>
