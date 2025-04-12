@@ -17,7 +17,7 @@
 
 # Other Variables
 # See https://ddnexus.github.io/pagy/api/pagy#other-variables
-# Pagy::DEFAULT[:size]       = [1,4,4,1]                       # default
+Pagy::DEFAULT[:size] = [1, 4, 4, 1]
 # Pagy::DEFAULT[:page_param] = :page                           # default
 # The :params can be also set as a lambda e.g ->(params){ params.exclude('useless').merge!('custom' => 'useful') }
 # Pagy::DEFAULT[:params]     = {}                              # default
@@ -226,6 +226,7 @@ Pagy::DEFAULT[:overflow] = :last_page
 # Pagy::DEFAULT[:i18n_key] = 'pagy.item_name'   # default
 
 require 'pagy/extras/trim'
+require 'pagy/extras/size'
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
 Pagy::DEFAULT.freeze

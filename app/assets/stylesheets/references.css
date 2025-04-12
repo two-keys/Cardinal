@@ -5447,12 +5447,12 @@
     .pagy {
       @apply flex space-x-1 font-semibold text-sm text-primary-content;
       a:not(.gap) {
-        @apply block rounded-lg px-3 py-1 bg-primary text-primary-content;
+        @apply block px-3 py-1;
         &:hover {
           @apply bg-secondary text-secondary-content;
         }
         &:not([href]) { /* disabled links */
-          @apply bg-primary text-primary-content cursor-default opacity-50;
+          @apply cursor-default opacity-50;
         }
         &.current {
           @apply bg-nav text-nav-content;
@@ -5465,8 +5465,16 @@
         }
       }
 
+      .next, .prev {
+        @apply rounded-primary bg-primary text-primary-content;
+      }
+
       .pagy-pages {
-        @apply bg-primary text-primary-content rounded-primary grow flex justify-center-safe;
+        @apply justify-center-safe flex flex-row grow overflow-x-scroll rounded-primary bg-primary text-primary-content;
+      }
+
+      .pagy-pages > * {
+        @apply text-nowrap;
       }
     }
 
