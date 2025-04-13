@@ -118,11 +118,7 @@ class PromptsController < ApplicationController
   def answer
     respond_to do |format|
       @chat = nil
-      @chat = if current_user.shadowbanned?
-                @prompt.answer(User.find(0)) # System User
-              else
-                @prompt.answer(current_user)
-              end
+      @chat = @prompt.answer(current_user)
       if @chat.save!
         @connect_code = ConnectCode.new(
           chat_id: @chat.id,
