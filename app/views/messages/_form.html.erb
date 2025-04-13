@@ -42,17 +42,9 @@
           </div>
         </div>
     <% end %>
-    <% if UNLEASH.is_enabled?('marksmith_input', @unleash_context) %>
-      <div id="<%= "input_chat_#{locals[:chat_id]}_new" %>" data-chat-input-target="container" data-controller="marksmith-editor" data-marksmith-editor-save-value="<%= locals[:message].id ? "false" : "true" %>">
-        <%= form.marksmith :content, enable_file_uploads: false, autofocus: false %>
-      </div>
-    <% else %>
-      <div id="form_message_content" data-controller="toasty-editor" class="message-input">
-        <div data-chat-input-target="container" class="editor-container" data-toasty-editor-target="editor"></div>
-        <%= form.hidden_field :content, {'data-chat-input-target': 'textarea', 'data-toasty-editor-target': 'textarea'} %>
-      </div>
-    <% end %>
-
+    <div id="<%= "input_chat_#{locals[:chat_id]}_new" %>" data-chat-input-target="container" data-controller="marksmith-editor" data-marksmith-editor-save-value="<%= locals[:message].id ? "false" : "true" %>">
+      <%= form.marksmith :content, enable_file_uploads: false, autofocus: false %>
+    </div>
     <div class="input-group">
       <div>
         <%= form.text_field :color, {'data-controller': 'color-picker', 'data-chat-input-target': 'colorpick'} %>
