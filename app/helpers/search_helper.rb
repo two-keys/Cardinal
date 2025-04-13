@@ -122,15 +122,6 @@ module SearchHelper
               end
     end
 
-    # GET /prompts?before=2022-02-17
-    if search_params.key?(:before)
-      query = if obj_class.method_defined?(:bumpable?)
-                query.where(bumped_at: ..search_params[:before])
-              else
-                query.where(updated_at: ..search_params[:before])
-              end
-    end
-
     # GET /prompts?nottags=meta:type:Violent,polarity:tag_type:name,...
     # NOT search, should run before general AND
     # this ensures you won't see prompts with ANY of the tags in nottags

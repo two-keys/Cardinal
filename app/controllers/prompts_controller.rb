@@ -39,7 +39,7 @@ class PromptsController < ApplicationController
 
     # shadowban logic
     unless current_user.shadowbanned? || current_user.admin?
-      query = query.joins(:user).where(user: { shadowbanned: false })
+      query = query.where.not(user_id: User.where(shadowbanned: true).select(:id))
     end
 
     @prompts, @cursor = paginate_with_cursor(query.includes(:user, :pseudonym, :tags, :object_tags), by: :bumped_at,
