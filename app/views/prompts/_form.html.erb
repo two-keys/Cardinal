@@ -4,7 +4,7 @@
     <%= render partial: 'prompts/form_tags/characters', locals: { prompt:, character_options: character_options } %>
     <%= render partial: 'prompts/form_tags/tag_fields', locals: { prompt: prompt} %>
   <% end %>
-  <%= render partial: 'prompts/prompt_fields', locals: { prompt: prompt, form: form, pseudonym_options: } %>
+  <%= render partial: 'prompts/prompt_fields', locals: { prompt: prompt, form: form, pseudonym_options: @pseudonym_options } %>
   
   <% if prompt.id.nil? %>
     <div>

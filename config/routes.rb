@@ -110,8 +110,14 @@ Rails.application.routes.draw do
     patch 'bulk_tags' => 'bulk_tags#update'
     get 'bulk_tags/download' => 'bulk_tags#download'
 
-    mount RailsPerformance::Engine, at: 'performance' unless Rails.env.test?
     root 'admin_panel#index'
+  end
+
+  namespace :debug do
+    root 'debug_panel#index'
+    get 'console' => 'console#index', as: 'console'
+    get 'crash' => 'crash#index', as: 'crash'
+    mount RailsPerformance::Engine, at: 'performance' unless Rails.env.test?
   end
 
   resources :use_pages, path: :use

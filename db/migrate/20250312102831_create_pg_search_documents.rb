@@ -11,7 +11,7 @@ class CreatePgSearchDocuments < ActiveRecord::Migration[7.2]
         t.timestamps null: false
       end
     end
-    Message.rebuild_pg_search_documents
+    #Message.rebuild_pg_search_documents
   end
 
   def down

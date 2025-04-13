@@ -128,8 +128,8 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def entitlement_params
-      params.require(:entitlement).permit(:object_type, :object_id, :flag, :data, :title, :username,
-                                          :expires_on).compact_blank!
+      params.expect(entitlement: %i[object_type object_id flag data title username
+                                    expires_on]).compact_blank!
     end
   end
 end

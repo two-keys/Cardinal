@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
   include Pagy::Backend
   include ApplicationHelper
 
-  before_action :set_chat, only: %i[show edit update destroy resolve_mod_chat chat_kick read forceongoing search]
+  before_action :set_chat, only: %i[show edit update destroy resolve_mod_chat chat_kick forceongoing search]
   before_action :edit_chat_params, only: %i[update]
   before_action :authenticate_user!
   authorize_resource
@@ -205,11 +205,11 @@ class ChatsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def create_chat_params
-    params.require(:chat).permit(nil)
+    params.expect(chat: [nil])
   end
 
   def edit_chat_params
-    params.require(:chat).permit(:title, :description, :pseudonym_id, :icon, :color, :hide_latest)
+    params.expect(chat: %i[title description pseudonym_id icon color hide_latest])
   end
 
   def auth_redirect

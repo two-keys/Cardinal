@@ -12,6 +12,6 @@ module TaggableController
   def tag_params
     # logger.debug "#{controller_name} my schema name is '#{tag_schema.name}'"
 
-    params.require(:tags).permit(**tag_schema.allowed_type_params)
+    params.expect(tags: [**tag_schema.allowed_type_params])
   end
 end

@@ -8,6 +8,7 @@ class PromptsController < ApplicationController
   include ApplicationHelper
 
   before_action :set_prompt, only: %i[show edit bump update answer destroy]
+  before_action :set_bump_pseudonym_options, only: %i[bump]
   before_action :authenticate_user!
 
   after_action :track_create, only: :create
@@ -189,6 +190,10 @@ class PromptsController < ApplicationController
     'prompt'
   end
 
+  def set_bump_pseudonym_options
+    set_pseudonym_options
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_prompt
     @prompt = Prompt.find(params[:id] || params[:prompt_id])
@@ -196,7 +201,7 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:starter, :ooc, :color, :status, :default_slots, :managed, :pseudonym_id)
+    params.expect(prompt: %i[starter ooc color status default_slots managed pseudonym_id])
   end
 
   def track_create

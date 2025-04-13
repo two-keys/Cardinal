@@ -50,7 +50,7 @@ class TagTest < ActiveSupport::TestCase
 
   test 'can\'t create tags with ridiculously long fields' do
     really_long_string = ''
-    really_long_string += ('a'.to_s * 300)
+    really_long_string += ('a' * 300)
 
     test_tag = Tag.new(
       name: really_long_string,

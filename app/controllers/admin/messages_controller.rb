@@ -37,7 +37,7 @@ module Admin
 
     # Only allow a list of trusted parameters through
     def message_params
-      params.require(:message).permit(:content, :chat_id)
+      params.expect(message: %i[content chat_id])
     end
   end
 end

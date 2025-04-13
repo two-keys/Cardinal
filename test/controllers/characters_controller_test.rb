@@ -158,7 +158,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
   test 'should not create character with really long tag' do
     sign_in(@user)
     post characters_url, params: {
-      character: { starter: 'Some unique starter text' },
+      character: { name: 'spamy spammer', description: 'Some unique starter text' },
       tags: {
         playing: {
           fandom: ["This tag is really#{' really' * 500} long"]
@@ -208,7 +208,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
   test 'should update character' do
     sign_in(@user)
     patch character_url(@character), params: {
-      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+      character: { description: 'Some unique ooc text' }
     }
     assert_redirected_to character_url(@character)
   end
@@ -257,7 +257,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
   test 'should update arbitrary character as admin' do
     sign_in(@admin)
     patch character_url(@character), params: {
-      character: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' }
+      character: { description: 'Some unique ooc text' }
     }
     assert_redirected_to character_url(@character)
   end

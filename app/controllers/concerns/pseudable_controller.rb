@@ -5,7 +5,7 @@ module PseudableController
 
   # there's probably a better way to do this but my brain is fried
   included do
-    before_action :set_pseudonym_options, only: %I[new create edit bump answer update]
+    before_action :set_pseudonym_options, only: %I[new create edit update]
   end
 
   # Used in other controller concerns

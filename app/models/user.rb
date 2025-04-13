@@ -108,6 +108,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     true unless legacy? && email.blank?
   end
 
+  def debug?
+    entitlements.active.where(flag: 'debug').any?
+  end
+
   def unbannable?
     (unban_at.to_i < DateTime.now.to_i)
   end

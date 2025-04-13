@@ -9,6 +9,9 @@
     <% if current_user.admin? %>
       <%= link_to "", "/admin", class: "nav-item nav-admin" %>
     <% end %>
+    <% if current_user.debug? %>
+      <%= link_to "", debug_root_path, class: "nav-item nav-debug" %>
+    <% end %>
     <%= link_to "", edit_user_registration_path, class: "nav-item nav-user" %>
   <% else %>
     <%= link_to "", new_user_session_path, class: "nav-item nav-login" %>

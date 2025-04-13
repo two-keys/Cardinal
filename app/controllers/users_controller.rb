@@ -19,6 +19,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:push_announcements, :time_zone)
+    params.expect(user: %i[push_announcements time_zone])
   end
 end

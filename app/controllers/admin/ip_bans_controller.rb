@@ -73,7 +73,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def ip_ban_params
-      params.require(:ip_ban).permit(:addr, :title, :context, :expires_on)
+      params.expect(ip_ban: %i[addr title context expires_on])
     end
   end
 end

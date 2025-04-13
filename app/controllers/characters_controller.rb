@@ -7,7 +7,8 @@ class CharactersController < ApplicationController
   include ApplicationHelper
   include AuditableController
 
-  before_action :set_character, only: %i[show edit bump update answer destroy]
+  before_action :set_character, only: %i[show edit update destroy]
+  before_action :set_update_tags_pseudonym_options, only: %i[update_tags]
   before_action :authenticate_user!
 
   after_action :track_create, only: :create
@@ -91,6 +92,10 @@ class CharactersController < ApplicationController
 
   private
 
+  def set_update_tags_pseudonym_options
+    set_pseudonym_options
+  end
+
   def model_class
     'character'
   end
@@ -102,7 +107,7 @@ class CharactersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def character_params
-    params.require(:character).permit(:name, :description, :color, :status, :default_slots, :pseudonym_id)
+    params.expect(character: %i[name description color status default_slots pseudonym_id])
   end
 
   def track_create

@@ -152,8 +152,8 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation, :verified, :unban_at,
-                                   :ban_reason, :delete_at, :shadowbanned)
+      params.expect(user: %i[username email password password_confirmation verified unban_at
+                             ban_reason delete_at shadowbanned])
     end
   end
 end

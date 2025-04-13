@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'custom_markdown'
+require 'cardinal_markdown_renderer'
 
 module Marksmith
   class Renderer

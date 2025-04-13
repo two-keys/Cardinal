@@ -271,6 +271,6 @@ class ThemesController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   # Only allow a list of trusted parameters through.
   def theme_params
-    params.require(:theme).permit(:title, :public, :system, :css)
+    params.expect(theme: %i[title public system css])
   end
 end

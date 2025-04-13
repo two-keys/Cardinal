@@ -4,7 +4,7 @@ require 'ruby-progressbar'
 
 class Numeric
   def percent_of(n) # rubocop:disable Naming/MethodParameterName
-    (to_f / n.to_f * 100.0).round(2) # rubocop:disable Style/FloatDivision
+    (to_f / n.to_f * 100.0).round(2)
   end
 end
 

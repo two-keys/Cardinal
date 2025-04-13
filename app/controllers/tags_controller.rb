@@ -175,19 +175,19 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :tag_type, :polarity, :enabled, :tooltip, :details).compact_blank
+    params.expect(tag: %i[name tag_type polarity enabled tooltip details]).compact_blank
   end
 
   def parent_params
-    params.require(:parent).permit(:name, :tag_type, :polarity) if params.key?(:parent)
+    params.expect(parent: %i[name tag_type polarity]) if params.key?(:parent)
   end
 
   def synonym_params
-    params.require(:synonym).permit(:name, :tag_type, :polarity) if params.key?(:synonym)
+    params.expect(synonym: %i[name tag_type polarity]) if params.key?(:synonym)
   end
 
   def autocomplete_params
-    params.require(:tag).permit(:tag_search, :tag_type, :polarity)
+    params.expect(tag: %i[tag_search tag_type polarity])
   end
 
   def track_create

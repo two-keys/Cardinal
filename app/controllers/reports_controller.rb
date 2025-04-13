@@ -68,7 +68,7 @@ class ReportsController < ApplicationController
   # Only allow a list of trusted parameters through.
   # Reports are polymorphic covering Prompts, Messages, and Characters
   def report_params
-    params.require(:report).permit(:reportable_id, :reportable_type, :context, rules: [])
+    params.expect(report: [:reportable_id, :reportable_type, :context, { rules: [] }])
   end
 
   def sanitize_input_params

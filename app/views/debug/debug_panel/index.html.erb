@@ -1,0 +1,23 @@
+<% content_for :page_title do %>
+    Debug
+<% end %>
+
+<% content_for :left_sidebar do %>
+  <div class="card primary">
+    Debug Pages
+    <ul>
+      <li>
+        <strong><%= link_to "Performance", debug_rails_performance_path %></strong>
+      </li>
+      <li>
+        <strong><%= link_to "Console", debug_console_path %></strong>
+      </li>
+    </ul>
+  </div>
+<% end %>
+
+<div class="flex-container" id="debug_panel_container">
+  <div class="card primary">
+    This panel left blank for now.
+  </div>
+</div>

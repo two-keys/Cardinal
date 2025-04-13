@@ -86,6 +86,6 @@ class PseudonymsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def pseudonym_params
-    params.require(:pseudonym).permit(:name, :status)
+    params.expect(pseudonym: %i[name status])
   end
 end

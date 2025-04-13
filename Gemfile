@@ -11,7 +11,7 @@ ruby '3.2.2'
 
 gem 'bundler', '~>2.4'
 
-gem 'rails', '~> 7.2.2'
+gem 'rails', '~> 8'
 
 # if next?
 #  gem 'rails', '~> 7.2.2'
@@ -23,10 +23,10 @@ gem 'rails', '~> 7.2.2'
 gem 'sprockets-rails'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
+gem 'pg', '~> 1.0'
 
-# Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 5.0'
+# Use the Puma web server
+gem 'puma'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
@@ -136,7 +136,7 @@ gem 'jsbundling-rails'
 gem 'invisible_captcha'
 
 # Fancy activerecord postgres features
-gem 'active_record_extended'
+gem 'active_record_extended', github: 'GeorgeKaraszi/ActiveRecordExtended'
 
 # IP Banning
 gem 'rack-attack'
@@ -147,11 +147,11 @@ gem 'next_rails'
 # Markdown Editor
 gem 'marksmith'
 
-gem 'net-imap', '>= 0.5.6'
-gem 'nokogiri', '>= 1.18.4'
-gem 'rack', '~> 2.2.13'
+gem 'net-imap'
+gem 'nokogiri'
+gem 'rack'
 
-gem 'rack-cors', '~> 2.0'
+gem 'rack-cors'
 
 # Mailing
 gem 'postmark-rails'
@@ -174,12 +174,10 @@ group :development, :production do
   gem 'rails_performance'
   gem 'sys-cpu'
   gem 'sys-filesystem'
+  gem 'web-console'
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem 'web-console'
-
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 

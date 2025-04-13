@@ -61,7 +61,7 @@ class FiltersController < ApplicationController # rubocop:disable Metrics/ClassL
 
   # POST /filters/simple
   def create_simple
-    tag_params = params.require(:tags).permit(**TagSchema.allowed_type_params)
+    tag_params = params.expect(tags: [**TagSchema.allowed_type_params])
 
     success = Filter.from_tag_params(tag_params, Current.user, params[:variant])
 
@@ -133,11 +133,11 @@ class FiltersController < ApplicationController # rubocop:disable Metrics/ClassL
   end
 
   def filter_params
-    params.require(:filter).permit(:group, :filter_type, :priority)
+    params.expect(filter: %i[group filter_type priority])
   end
 
   def tag_params
-    params.require(:tag).permit(:polarity, :tag_type, :name)
+    params.expect(tag: %i[polarity tag_type name])
   end
 
   def auth_redirect

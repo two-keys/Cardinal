@@ -71,7 +71,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def alert_params
-      params.require(:alert).permit(:title, :find, :regex, :replacement)
+      params.expect(alert: %i[title find regex replacement])
     end
   end
 end

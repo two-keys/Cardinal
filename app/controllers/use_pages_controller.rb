@@ -80,6 +80,6 @@ class UsePagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def use_page_params
-    params.require(:use_page).permit(:title, :content, :order)
+    params.expect(use_page: %i[title content order])
   end
 end

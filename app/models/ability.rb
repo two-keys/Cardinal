@@ -28,7 +28,7 @@ class Ability
     ## Creating
     cannot :create, User # Logged in users can't make new users
     can :create, Message do |message|
-      return false unless user == message.user
+      return false unless user == message.user # rubocop:disable Lint/ReturnInVoidContext
 
       chat_user = user.chat_users.find_by(chat: message.chat)
 
@@ -138,7 +138,7 @@ class Ability
       chat.users.include?(user)
     end
     can :resolve_mod_chat, Chat do |chat|
-      return false if chat.mod_chat.blank?
+      return false if chat.mod_chat.blank? # rubocop:disable Lint/ReturnInVoidContext
 
       !chat.mod_chat.resolved? && chat.users.include?(user) && chat.mod_chat.user = user
     end
@@ -202,7 +202,7 @@ class Ability
     can :hide, Tag
     cannot :resolve_mod_chat, Chat
     can :resolve_mod_chat, Chat do |chat|
-      return false if chat.mod_chat.blank?
+      return false if chat.mod_chat.blank? # rubocop:disable Lint/ReturnInVoidContext
 
       !chat.mod_chat.resolved?
     end

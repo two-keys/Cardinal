@@ -44,7 +44,7 @@ class Chat < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def reenable_chat
     chat_users.each do |chat_user|
-      if chat_user.status == 'ended' || chat_user.status == 'ended_viewed'
+      if %w[ended ended_viewed].include?(chat_user.status)
         chat_user.status = 'unread'
         chat_user.save
       end

@@ -128,6 +128,24 @@ module ApplicationHelper # rubocop:disable Metrics/ModuleLength
     end
   end
 
+  def require_debug
+    return if debug?
+
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: 'You are not authorized to perform this action.' }
+      format.json { render json: {}, status: :unauthorized }
+    end
+  end
+
+  def require_admin_or_debug
+    return if admin? || debug?
+
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: 'You are not authorized to perform this action.' }
+      format.json { render json: {}, status: :unauthorized }
+    end
+  end
+
   def require_active_user
     return if !banned? && !deleted?
 
@@ -147,6 +165,10 @@ module ApplicationHelper # rubocop:disable Metrics/ModuleLength
 
   def admin?
     user_signed_in? && current_user.admin?
+  end
+
+  def debug?
+    user_signed_in? && current_user.debug?
   end
 
   def banned?

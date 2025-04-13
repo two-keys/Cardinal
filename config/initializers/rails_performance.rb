@@ -21,7 +21,7 @@ if defined?(RailsPerformance)
     config.enabled = true
 
     # default path where to mount gem
-    config.mount_at = '/admin/performance'
+    config.mount_at = '/debug/performance'
 
     # protect your Performance Dashboard with HTTP BASIC password
     config.http_basic_authentication_enabled = false
@@ -31,14 +31,16 @@ if defined?(RailsPerformance)
     # if you need an additional rules to check user permissions
     config.verify_access_proc = proc { |_controller| true }
     # for example when you have `current_user`
-    config.verify_access_proc = proc { |controller| controller.current_user && controller.current_user.admin? }
+    config.verify_access_proc = proc { |controller|
+      controller.current_user && (controller.current_user.admin? || controller.current_user.debug?)
+    }
 
     # You can ignore endpoints with Rails standard notation controller#action
     # config.ignored_endpoints = ['HomeController#contact']
 
     # You can ignore request paths by specifying the beginning of the path.
     # For example, all routes starting with '/admin' can be ignored:
-    config.ignored_paths = ['/rails/performance']
+    config.ignored_paths = ['/debug/performance']
 
     # store custom data for the request
     config.custom_data_proc = proc do |env|
@@ -50,7 +52,7 @@ if defined?(RailsPerformance)
     end
 
     # config home button link
-    config.home_link = '/admin'
+    config.home_link = '/debug'
     config.skipable_rake_tasks = ['webpacker:compile']
     config.include_rake_tasks = false
     config.include_custom_events = true
