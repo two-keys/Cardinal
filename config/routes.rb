@@ -109,6 +109,7 @@ Rails.application.routes.draw do
     resources :bulk_tags, only: %i[index]
     patch 'bulk_tags' => 'bulk_tags#update'
     get 'bulk_tags/download' => 'bulk_tags#download'
+    mount RailsPerformance::Engine, at: 'performance'
     root 'admin_panel#index'
   end
 

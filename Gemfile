@@ -169,6 +169,13 @@ group :development, :test do
   gem 'rubocop-rails', require: false
 end
 
+group :development, :production do
+  gem 'get_process_mem'
+  gem 'rails_performance'
+  gem 'sys-cpu'
+  gem 'sys-filesystem'
+end
+
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'

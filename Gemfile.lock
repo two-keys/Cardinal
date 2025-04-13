@@ -98,6 +98,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (6.2.2)
       racc
+    browser (6.2.0)
     builder (3.3.0)
     bullet (8.0.1)
       activesupport (>= 3.0.0)
@@ -148,6 +149,9 @@ GEM
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     gemoji (4.1.0)
+    get_process_mem (1.0.0)
+      bigdecimal (>= 2.0)
+      ffi (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.5.1)
@@ -282,6 +286,10 @@ GEM
     rails-html-sanitizer (1.6.1)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails_performance (1.4.1)
+      browser
+      railties
+      redis
     railties (7.2.2.1)
       actionpack (= 7.2.2.1)
       activesupport (= 7.2.2.1)
@@ -368,6 +376,10 @@ GEM
       railties (>= 6.0.0)
     stringio (3.1.2)
     stripe (13.2.0)
+    sys-cpu (1.1.0)
+      ffi (~> 1.1)
+    sys-filesystem (1.5.3)
+      ffi (~> 1.1)
     tailwindcss-rails (4.2.1)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
@@ -440,6 +452,7 @@ DEPENDENCIES
   discordrb-webhooks
   faker
   gemoji
+  get_process_mem
   hiredis
   hotwire-livereload (~> 2.0)
   image_processing (>= 1.2)
@@ -461,6 +474,7 @@ DEPENDENCIES
   rack-cors (~> 2.0)
   rails (~> 7.2.2)
   rails-html-sanitizer (>= 1.6.1)
+  rails_performance
   redcarpet
   redis (~> 4.0)
   roadie-rails
@@ -475,6 +489,8 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   stripe
+  sys-cpu
+  sys-filesystem
   tailwindcss-rails (~> 4.0)
   turbo-rails
   tzinfo-data
