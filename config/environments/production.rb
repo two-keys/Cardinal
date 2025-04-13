@@ -74,6 +74,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: ENV.fetch('BASE_URL', nil) }
   Rails.application.routes.default_url_options = { host: ENV.fetch('BASE_URL', nil) }
+  config.action_cable.allowed_request_origins = ["https://#{ENV.fetch('BASE_URL', 'example.com')}"]
 
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.perform_deliveries = ENV.fetch('MAIL_ENABLED', 0).to_i == 1
