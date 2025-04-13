@@ -28,7 +28,7 @@ Rails.application.configure do
   config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = false
+  config.force_ssl = true
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -71,7 +71,6 @@ Rails.application.configure do
 
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
-  config.action_cable.allowed_request_origins = ["https://#{ENV.fetch('BASE_URL', 'example.com')}"]
 
   config.action_mailer.default_url_options = { host: ENV.fetch('BASE_URL', nil) }
   Rails.application.routes.default_url_options = { host: ENV.fetch('BASE_URL', nil) }

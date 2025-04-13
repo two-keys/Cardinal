@@ -32,6 +32,12 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+  config.assume_ssl = false
+
+  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  config.force_ssl = false
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
@@ -70,6 +76,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   Rails.application.routes.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_cable.allowed_request_origins = ["http://#{ENV.fetch('BASE_URL', 'localhost')}"]
 
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.perform_deliveries = ENV.fetch('MAIL_ENABLED', 0).to_i == 1
