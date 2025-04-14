@@ -19,6 +19,7 @@ class Ability
     # Things which require no login
 
     can :read, Announcement
+    can :read, UsePage
     can :create, User
 
     return if user.blank?
