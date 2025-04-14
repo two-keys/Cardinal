@@ -164,6 +164,9 @@ gem 'ruby-progressbar', '~> 1.13'
 # EX: Prompt.where_exists(:tags, polarity: ['first','second','third'])
 gem 'where_exists'
 
+# better logging
+gem 'lograge'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
 
@@ -171,7 +174,6 @@ group :development, :test do
   gem 'bundler-audit', require: false
   gem 'colorize', '~> 1.1' # Log string colorizer
   gem 'faker'
-  gem 'lograge'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
 end
