@@ -1,7 +1,24 @@
 # frozen_string_literal: true
 
-module Taggable
+module Taggable # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
+
+  included do
+    after_update_commit :set_managed
+  end
+
+  def self.included(base)
+    base.class_eval do
+      def self.apply_missing_system_tags
+        count = where_not_exists(:tags, polarity: 'system').where_exists(:user).count
+
+        return count if count.zero?
+
+        where_not_exists(:tags, polarity: 'system').where_exists(:user).find_each(&:recalculate_managed)
+        count
+      end
+    end
+  end
 
   def tags_for(polarity)
     polarity_tags = {}
@@ -58,7 +75,59 @@ module Taggable
     ).pluck(:name, :tooltip, :details, :id)
   end
 
+  def recalculate_managed
+    set_managed
+  end
+
   private
+
+  # Setting and unsetting of managed tags
+  def set_managed # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    tag_schema = TagSchema.get_schema(model_name.plural)
+
+    managed_polarities = tag_schema.managed_polarities
+
+    required_tag_ids = []
+    existing_tag_ids = []
+
+    managed_polarities.each do |polarity|
+      managed_types = tag_schema.types_for(polarity)
+      managed_types.each do |tag_type|
+        name_entries = TagSchema.entries_for(tag_type)
+        valid_names = name_entries
+
+        valid_names.each do |name|
+          existing_tag_ids << tags.where(polarity: polarity, tag_type: tag_type, name: name).pluck(:id).flatten
+        end
+
+        valid_names = name_entries.filter { |entry| entry == model_name } if tag_type == 'type'
+        if tag_type == 'verification'
+          valid_names = name_entries.filter do |entry|
+            (entry == 'Verified' && user.verified?) || (entry == 'Unverified' && !user.verified?)
+          end
+        end
+
+        valid_names.each do |name|
+          managed_tag = Tag.find_or_create_with_downcase(
+            polarity: polarity,
+            tag_type: tag_type,
+            name: name
+          )
+
+          required_tag_ids << managed_tag.id
+        end
+      end
+    end
+
+    existing_tag_ids = existing_tag_ids.flatten
+
+    required_tags = Tag.where(id: required_tag_ids)
+    remove_tags = tags.where(id: existing_tag_ids).where.not(id: required_tags.map(&:id))
+    new_tags = required_tags.where.not(id: existing_tag_ids)
+
+    tags.delete(remove_tags)
+    tags << new_tags
+  end
 
   # Collapses our tags
   def collapse_list

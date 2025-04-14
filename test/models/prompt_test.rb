@@ -78,9 +78,12 @@ class PromptTest < ActiveSupport::TestCase
   end
 
   test 'if a disabled tag is added to a prompt, it should be removed' do
+    @no_tags.process_tags # Prepopulate system-managed tags
+    @no_tags.save!
+
     @no_tags.tags << @disabled
 
-    assert_changes('@no_tags.tags.count', 'Disabled tag was not removed', from: 1, to: 0) do
+    assert_changes('@no_tags.tags.count', 'Disabled tag was not removed', from: 3, to: 2) do
       @no_tags.process_tags
       @no_tags.save!
     end

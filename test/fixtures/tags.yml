@@ -85,3 +85,27 @@ camel_case:
   lower: camelcase
   tag_type: detail
   polarity: misc
+
+verified:
+  name: Verified
+  lower: verified
+  tag_type: verification
+  polarity: system
+
+unverified:
+  name: Unverified
+  lower: unverified
+  tag_type: verification
+  polarity: system
+
+prompt:
+  name: Prompt
+  lower: prompt
+  tag_type: type
+  polarity: system
+
+character:
+  name: Character
+  lower: character
+  tag_type: type
+  polarity: system

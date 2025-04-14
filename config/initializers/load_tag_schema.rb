@@ -105,6 +105,11 @@ module TagSchema
     type_hash['fill_in']
   end
 
+  def self.managed?(tag_type)
+    type_hash = TagSchema::TAG_SCHEMA_HASH['tag_types'][tag_type]
+    type_hash['managed']
+  end
+
   class BaseTagSchema
     @class_obj = nil
 
@@ -120,6 +125,21 @@ module TagSchema
       all_types
     end
 
+    def self.managed_polarities
+      filtered_polarities = polarities.map do |polarity|
+        polarity if polarity_managed?(polarity)
+      end
+      filtered_polarities.compact_blank
+    end
+
+    def self.managed_types
+      all_types = []
+      managed_polarities.each do |polarity|
+        all_types.concat(types_for(polarity))
+      end
+      all_types
+    end
+
     def self.polarities
       model_hash['polarities'].keys
     end
@@ -128,12 +148,18 @@ module TagSchema
       model_hash['polarities'][polarity]['tag_types']
     end
 
+    def self.polarity_managed?(polarity)
+      model_hash['polarities'][polarity].key?('managed') && model_hash['polarities'][polarity]['managed']
+    end
+
     # Using the double splat operator through params, this allows us to limit tag input to
     # 1. tag_schema types for model and 2. one of PERMITTED_SCALAR_TYPES see https://api.rubyonrails.org/classes/ActionController/Parameters.html
     # Anything else fails.
     def self.allowed_type_params
       atp = {}
       polarities.each do |polarity|
+        next if polarity_managed?(polarity)
+
         allowed_types = {}
         types_for(polarity).each do |key|
           allowed_types[key.to_sym] = []

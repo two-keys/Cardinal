@@ -2,6 +2,7 @@
 <%= fields_for :tags do |tag_form| %>
   <% @autocomplete = !Rails.env.test? %>
   <% tag_schema.polarities.each do |polarity| %>
+    <% next if tag_schema.polarity_managed?(polarity) %>
     <div class="polarity">
       <h3><%= tag_form.label polarity, "#{polarity.upcase} TAGS:" %></h3>
       <% tag_schema.types_for(polarity).each do |tag_type| %>

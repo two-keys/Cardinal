@@ -80,6 +80,8 @@ class Character < ApplicationRecord
 
     add_meta_tags
 
+    set_managed
+
     remove_disabled_tags_from_prompts
   end
 

@@ -159,12 +159,19 @@ gem 'postmark-rails'
 # For Data transfer time estimate
 gem 'ruby-progressbar', '~> 1.13'
 
+# Cleaner interface for querying over associations
+# https://github.com/EugZol/where_exists
+# EX: Prompt.where_exists(:tags, polarity: ['first','second','third'])
+gem 'where_exists'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
 
   gem 'brakeman', require: false
   gem 'bundler-audit', require: false
+  gem 'colorize', '~> 1.1' # Log string colorizer
   gem 'faker'
+  gem 'lograge'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
 end

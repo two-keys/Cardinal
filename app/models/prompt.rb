@@ -63,7 +63,7 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     @chat = Chat.new
     @chat.prompt = self
     @chat.chat_users << if managed?
-                          ChatUser.new(user: as_user.shadowbanned? ? User.find(0) : user, role: ChatUser.roles[:chat_admin], color:) # prompt owner
+                          ChatUser.new(user: as_user.shadowbanned? ? User.find(0) : user, role: ChatUser.roles[:chat_admin], color:) # prompt owner # rubocop:disable Layout/LineLength
                         else
                           ChatUser.new(user: as_user.shadowbanned? ? User.find(0) : user, color:)
                         end
@@ -120,6 +120,8 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     collapse_list
 
     add_meta_tags
+
+    set_managed
 
     remove_disabled_tags_from_prompts
   end

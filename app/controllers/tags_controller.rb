@@ -132,7 +132,6 @@ class TagsController < ApplicationController
 
   # Saves us having to find tag by route params
   def set_tag
-    Rails.logger.debug { "TAG ID !!!!!!!!!!!!!!!!!! #{params[:id]}" }
     @tag = Tag.find(params[:id])
   end
 

@@ -22,6 +22,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     @admin = users(:admin)
     @banned = users(:user_banned)
     @shadowbanned = users(:shadowbanned)
+    @unverified = users(:unverified)
   end
 
   test 'should get index' do
@@ -139,6 +140,170 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to character_url(Character.find_by(description: 'Some unique description text'))
   end
 
+  test 'should create character with system:verification:Unverified and system:type:Character' do
+    sign_in(@unverified)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = Character.find_by(description: 'Some unique description text')
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+    assert character.tags.where(polarity: 'system', tag_type: 'type', name: 'Character').any?
+  end
+
+  test 'should create character with system:verification:Verified and system:type:Character' do
+    sign_in(@user)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = Character.find_by(description: 'Some unique description text')
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+    assert character.tags.where(polarity: 'system', tag_type: 'type', name: 'Character').any?
+  end
+
+  test 'should swap system:verification:Verified with system:verification:Unverified when tags updated' do # rubocop:disable Metrics/BlockLength
+    sign_in(@user)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = @user.characters.first
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+
+    @user.verified = false
+    @user.save!
+
+    patch character_tags_url(character), params: {
+      tags: {
+        playing: {
+          fandom: ['Some Fandom?'], # 1
+          character: ['A Guy'], # 2
+          characteristic: ['Short'] # 3
+        }
+      }
+    }
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?,
+           'required verification tag was not applied'
+    assert character.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Verified with system:verification:Unverified when character updated' do
+    sign_in(@user)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = @user.characters.first
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+
+    @user.verified = false
+    @user.save!
+
+    patch character_url(character), params: {
+      character: { description: 'Some new unique description text' }
+    }
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?,
+           'required verification tag was not applied'
+    assert character.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Unverified with system:verification:Verified when tags updated' do # rubocop:disable Metrics/BlockLength
+    sign_in(@unverified)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = @unverified.characters.first
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+
+    @unverified.verified = true
+    @unverified.save!
+
+    patch character_tags_url(character), params: {
+      tags: {
+        playing: {
+          fandom: ['Some Fandom?'], # 1
+          character: ['A Guy'], # 2
+          characteristic: ['Short'] # 3
+        }
+      }
+    }
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?,
+           'required verification tag was not applied'
+    assert character.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Unverified with system:verification:Verified when character updated' do
+    sign_in(@unverified)
+
+    post characters_url, params: {
+      character: { description: 'Some unique description text' },
+      tags: {
+        meta: {
+          genre: ['Romance']
+        }
+      }
+    }
+
+    character = @unverified.characters.first
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+
+    @unverified.verified = true
+    @unverified.save!
+
+    patch character_url(character), params: {
+      character: { description: 'Some new unique description text' }
+    }
+
+    assert character.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?,
+           'required verification tag was not applied'
+    assert character.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
   test 'should create character with just description' do
     sign_in(@user)
     assert_difference('Character.count') do
@@ -216,7 +381,8 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
   test 'should update character to have tags' do
     sign_in(@user)
 
-    assert_difference('ObjectTag.count', 3) do
+    # 5 instead of 3 to account for System-Managed tags
+    assert_difference('ObjectTag.count', 5) do
       patch character_tags_url(@character_without_tags), params: {
         tags: {
           playing: {
@@ -240,7 +406,7 @@ class CharactersControllerTest < ActionDispatch::IntegrationTest
     assert_changes(
       'ObjectTag.where(object_type: \'Character\', object_id: @character.id).count',
       from: old_amount,
-      to: 1
+      to: 3
     ) do
       patch character_tags_url(@character), params: {
         tags: {

@@ -20,6 +20,14 @@ one_suite5:
   object: one (Prompt)
   tag: originalcharacter
 
+one_suite6:
+  object: one (Prompt)
+  tag: verified
+
+one_suite7:
+  object: one (Prompt)
+  tag: prompt
+
 char_one_suite1:
   object: one (Character)
   tag: generic
@@ -39,3 +47,11 @@ char_one_suite4:
 char_one_suite5:
   object: one (Character)
   tag: originalcharacter
+
+char_one_suite6:
+  object: one (Character)
+  tag: verified
+
+char_one_suite7:
+  object: one (Character)
+  tag: prompt

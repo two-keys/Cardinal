@@ -25,6 +25,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     @admin = users(:admin)
     @banned = users(:user_banned)
     @shadowbanned = users(:shadowbanned)
+    @unverified = users(:unverified)
   end
 
   test 'should get index' do
@@ -175,6 +176,196 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to prompt_url(Prompt.find_by(ooc: 'Some unique ooc text'))
+  end
+
+  test 'should create prompt with system:verification:Unverified and system:type:Prompt' do
+    sign_in(@unverified)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = Prompt.find_by(ooc: 'Some unique ooc text')
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1
+    assert prompt.tags.where(polarity: 'system', tag_type: 'type', name: 'Prompt').any?
+    assert prompt.tags.where(polarity: 'system', tag_type: 'type').count == 1
+  end
+
+  test 'should create prompt with system:verification:Verified and system:type:Prompt' do
+    sign_in(@user)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = Prompt.find_by(ooc: 'Some unique ooc text')
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1
+    assert prompt.tags.where(polarity: 'system', tag_type: 'type', name: 'Prompt').any?
+    assert prompt.tags.where(polarity: 'system', tag_type: 'type').count == 1
+  end
+
+  test 'should swap system:verification:Verified with system:verification:Unverified when tags updated' do # rubocop:disable Metrics/BlockLength
+    sign_in(@user)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = Prompt.find_by(ooc: 'Some unique ooc text')
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+
+    @user.verified = false
+    @user.save!
+
+    patch prompt_tags_url(prompt), params: {
+      characters: ['-1'],
+      tags: {
+        playing: {
+          fandom: ['Some Fandom?'], # 1
+          character: ['A Guy'], # 2
+          characteristic: ['Short'] # 3
+        },
+        seeking: {
+          fandom: ['Some Other Fandom?'], # 4
+          character: ['Another guy'], # 5
+          characteristic: ['Tall'] # 6
+        },
+        misc: {
+          detail: ['This is a misc tag'] # 7
+        }
+      }
+    }
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?,
+           'required verification tag was not applied'
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Verified with system:verification:Unverified when prompt updated' do
+    sign_in(@user)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = @user.prompts.first
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?
+
+    @user.verified = false
+    @user.save!
+
+    patch prompt_url(prompt),
+          params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?,
+           'required verification tag was not applied'
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Unverified with system:verification:Verified when tags updated' do # rubocop:disable Metrics/BlockLength
+    sign_in(@unverified)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some additional unique ooc text', starter: 'Some additional unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = @unverified.prompts.first
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+
+    @unverified.verified = true
+    @unverified.save!
+
+    patch prompt_tags_url(prompt), params: {
+      characters: ['-1'],
+      tags: {
+        playing: {
+          fandom: ['Some Fandom?'], # 1
+          character: ['A Guy'], # 2
+          characteristic: ['Short'] # 3
+        },
+        seeking: {
+          fandom: ['Some Other Fandom?'], # 4
+          character: ['Another guy'], # 5
+          characteristic: ['Tall'] # 6
+        },
+        misc: {
+          detail: ['This is a misc tag'] # 7
+        }
+      }
+    }
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Verified').any?,
+           'required verification tag was not applied'
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
+  end
+
+  test 'should swap system:verification:Unverified with system:verification:Verified when prompt updated' do
+    sign_in(@unverified)
+
+    post prompts_url, params: {
+      characters: ['-1'],
+      prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' },
+      tags: {
+        misc: {
+          misc: ['This is a misc tag']
+        }
+      }
+    }
+
+    prompt = @unverified.prompts.first
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?
+
+    @unverified.verified = false
+    @unverified.save!
+
+    patch prompt_url(prompt),
+          params: { prompt: { ooc: 'Some unique ooc text', starter: 'Some unique starter text' } }
+
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification', name: 'Unverified').any?,
+           'required verification tag was not applied'
+    assert prompt.tags.where(polarity: 'system', tag_type: 'verification').count == 1,
+           'more verification tags than expected'
   end
 
   test 'should create prompt with just ooc' do
@@ -347,7 +538,8 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
   test 'should update prompt to have tags' do
     sign_in(@user)
 
-    assert_difference('ObjectTag.count', 7) do
+    # 9 instead of 7 to account for System-Managed Tags
+    assert_difference('ObjectTag.count', 9) do
       patch prompt_tags_url(@prompt_without_tags), params: {
         characters: ['-1'],
         tags: {
@@ -429,7 +621,7 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     old_amount = @prompt.tags.count
     assert old_amount > 1
 
-    assert_changes('ObjectTag.where(object_type: \'Prompt\', object_id: @prompt.id).count', from: old_amount, to: 1) do
+    assert_changes('ObjectTag.where(object_type: \'Prompt\', object_id: @prompt.id).count', from: old_amount, to: 3) do
       patch prompt_tags_url(@prompt), params: {
         characters: ['-1'],
         tags: {

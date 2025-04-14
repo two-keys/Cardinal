@@ -1,6 +1,6 @@
 ---
 type: default
-version: 1.0.0
+version: 1.1.0
 tag_types:
   light_warning: 
     fill_in: true
@@ -97,6 +97,18 @@ tag_types:
       - Plot-Driven
       - Episodic Story
       - Continuous Story
+  type:
+    managed: true # users cannot add or remove these and thus they are not displayed in forms
+    fill_in: false
+    entries:
+      - Prompt
+      - Character
+  verification:
+    managed: true
+    fill_in: false
+    entries:
+      - Verified
+      - Unverified
 tag_models:
   prompt:
     polarities: # order here = display order
@@ -126,6 +138,11 @@ tag_models:
           - rp_length
           - character_pref
           - plotness
+      system:
+        managed: true
+        tag_types:
+          - type
+          - verification
   character:
     polarities:
       meta:
@@ -139,3 +156,8 @@ tag_models:
           - character
           - gender
           - characteristic
+      system:
+        managed: true
+        tag_types:
+          - type
+          - verification

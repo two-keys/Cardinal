@@ -72,6 +72,9 @@ class CharacterTest < ActiveSupport::TestCase
   end
 
   test 'if a disabled tag is added to a character, it should be removed' do
+    @no_tags.process_tags # account for system-managed tags
+    @no_tags.save!
+
     assert_no_changes('@no_tags.tags.count', 'Disabled tag was not removed') do
       @no_tags.tags << @disabled
       @no_tags.process_tags

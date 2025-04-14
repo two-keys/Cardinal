@@ -56,6 +56,8 @@ Rails.application.configure do
   # 
   config.action_dispatch.show_exceptions = :rescuable
 
+  config.lograge.enabled = true
+
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   Rails.application.routes.default_url_options = { host: 'localhost', port: 3000 }
 
