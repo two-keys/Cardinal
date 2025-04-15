@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_13_214457) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
-  enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -126,7 +126,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
     t.bigint "user_id"
     t.bigint "pseudonym_id"
     t.text "color", default: "#000000", null: false
+    t.integer "tag_status", default: 1, null: false
     t.index ["pseudonym_id"], name: "index_characters_on_pseudonym_id"
+    t.index ["tag_status"], name: "index_characters_on_tag_status"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
@@ -285,11 +287,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_10_192817) do
     t.boolean "managed", default: false, null: false
     t.bigint "pseudonym_id"
     t.text "color", default: "#000000", null: false
+    t.integer "tag_status", default: 1, null: false
     t.index ["bumped_at", "status", "user_id", "managed"], name: "index_prompts_on_bumped_at_and_status_and_user_id_and_managed"
     t.index ["bumped_at"], name: "index_prompts_on_bumped_at"
     t.index ["default_slots"], name: "index_prompts_on_default_slots"
     t.index ["managed"], name: "index_prompts_on_managed"
     t.index ["pseudonym_id"], name: "index_prompts_on_pseudonym_id"
+    t.index ["tag_status"], name: "index_prompts_on_tag_status"
     t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 

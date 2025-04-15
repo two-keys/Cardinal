@@ -8,4 +8,5 @@ require './config/environment'
 module Clockwork
   every(5.minutes, 'analytics.refresh') { AnalyticsJob.perform_later }
   every(10.minutes, 'subscribers.refresh') { SubscriptionRenewalsJob.perform_now }
+  every(15.minutes, 'taggables.process_tags') { ProcessTaggablesJob.perform_now }
 end

@@ -109,3 +109,9 @@ character:
   lower: character
   tag_type: type
   polarity: system
+
+unused:
+  name: Unused
+  lower: unused
+  tag_type: light_warning
+  polarity: meta

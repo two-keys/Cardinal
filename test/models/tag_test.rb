@@ -10,6 +10,11 @@ class TagTest < ActiveSupport::TestCase
 
     @capital = tags(:capital)
     @camel_case = tags(:camel_case)
+    @unused = tags(:unused)
+
+    @generic = tags(:generic)
+    @prompt = prompts(:one) # tagged with generic
+    @character = characters(:one) # tagged with generic
   end
 
   test 'lower can be accessed' do
@@ -113,5 +118,44 @@ class TagTest < ActiveSupport::TestCase
     end
 
     assert_equal @camel_case.id, found_tag.id
+  end
+
+  test 'Updating a tag synoynm should set all taggables with that tag to :dirty' do
+    [@prompt, @character].each do |mod|
+      assert_equal 'clean', mod.tag_status, "#{mod.class.name} wasn't clean"
+    end
+
+    @generic.synonym = @unused
+    @generic.save
+
+    [@prompt, @character].each do |mod|
+      assert_equal 'dirty', mod.reload.tag_status, "#{mod.class.name} wasn't dirty"
+    end
+  end
+
+  test 'Updating a tag parent should set all taggables with that tag to :dirty' do
+    [@prompt, @character].each do |mod|
+      assert_equal 'clean', mod.tag_status, "#{mod.class.name} wasn't clean"
+    end
+
+    @generic.parent = @unused
+    @generic.save
+
+    [@prompt, @character].each do |mod|
+      assert_equal 'dirty', mod.reload.tag_status, "#{mod.class.name} wasn't dirty"
+    end
+  end
+
+  test 'Disabling a tag should set all taggables with that tag to :dirty' do
+    [@prompt, @character].each do |mod|
+      assert_equal 'clean', mod.tag_status, "#{mod.class.name} wasn't clean"
+    end
+
+    @generic.enabled = false
+    @generic.save
+
+    [@prompt, @character].each do |mod|
+      assert_equal 'dirty', mod.reload.tag_status, "#{mod.class.name} wasn't dirty"
+    end
   end
 end

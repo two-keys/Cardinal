@@ -25,10 +25,14 @@ class Character < ApplicationRecord
     draft: 0,
     locked: 1,
     posted: 2
-  }
+  }, validate: true
+
+  enum :tag_status, {
+    dirty: 0,
+    clean: 1
+  }, validate: true
 
   validates_with CharacterContentValidator
-  validates :status, inclusion: { in: Character.statuses }
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :can_spend, on: %i[create update], unless: -> { Current.user&.admin? && Current.user != user }
   validate :authorization, on: %i[create update]
@@ -83,6 +87,9 @@ class Character < ApplicationRecord
     set_managed
 
     remove_disabled_tags_from_prompts
+
+    self.tag_status = :clean
+    save
   end
 
   private

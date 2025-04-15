@@ -26,12 +26,16 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     draft: 0,
     locked: 1,
     posted: 2
-  }
+  }, validate: true
+
+  enum :tag_status, {
+    dirty: 0,
+    clean: 1
+  }, validate: true
 
   before_validation :set_initial_bumped, on: :create
 
   validates_with PromptContentValidator
-  validates :status, inclusion: { in: Prompt.statuses }
   validates :default_slots, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   validates :color, format: { with: /\A#(?:[A-F0-9]{3}){1,2}\z/i }
   validate :can_bump, on: :update
@@ -124,6 +128,9 @@ class Prompt < ApplicationRecord # rubocop:disable Metrics/ClassLength
     set_managed
 
     remove_disabled_tags_from_prompts
+
+    self.tag_status = :clean
+    save
   end
 
   def set_initial_bumped

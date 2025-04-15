@@ -12,6 +12,7 @@ class Tag < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :synonym, class_name: 'Tag', optional: true
   before_validation :set_lower
   before_save :fix_synonym
+  before_update :dirty_taggables
 
   has_many :object_tags, dependent: :destroy
   has_many :objects, through: :object_tags
@@ -156,6 +157,19 @@ class Tag < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return if TagSchema.allowed_types_for(polarity).include?(tag_type)
 
     errors.add(:polarity, 'Must be a valid polarity for the given tag type')
+  end
+
+  def dirty_taggables
+    # only cascade if something important changed
+    return unless synonym_changed? || ancestry_changed? || enabled_changed?
+
+    Prompt.where(id: ObjectTag.where(tag: self)
+          .select(:object_id))
+          .update_all(tag_status: :dirty) # rubocop:disable Rails/SkipsModelValidations
+
+    Character.where(id: ObjectTag.where(tag: self)
+             .select(:object_id))
+             .update_all(tag_status: :dirty) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def set_lower

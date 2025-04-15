@@ -21,4 +21,9 @@
         <%= model.status.upcase %>
     </li>
     <% end %>
+    <% if model.class.method_defined?(:tag_status) && (Current.user.admin? || Current.user.debug?) %>
+        <li>
+            (<%= model.tag_status.upcase %> TAGS)
+        </li>
+    <% end %>
 </ul>
