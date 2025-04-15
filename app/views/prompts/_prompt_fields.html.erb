@@ -12,7 +12,9 @@
 
 <div>
   <%= form.label :ooc, style: "display: block" %>
-  <%= form.marksmith :ooc, enable_file_uploads: false  %>
+  <div data-controller="marksmith-editor">
+    <%= form.marksmith :ooc, enable_file_uploads: false  %>
+  </div>
 </div>
 
 <div>
@@ -20,7 +22,9 @@
     <%= form.label :starter, style: "display: block" %>
     <%= form.text_field :color, {'data-controller': 'color-picker'} %>
   </div>
-  <%= form.marksmith :starter, enable_file_uploads: false  %>
+  <div data-controller="marksmith-editor">
+    <%= form.marksmith :starter, enable_file_uploads: false  %>
+  </div>
 </div>
 
 <div>

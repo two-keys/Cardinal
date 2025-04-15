@@ -20,7 +20,9 @@
     <%= form.label :description, style: "display: block" %>
     <%= form.text_field :color, {'data-controller': 'color-picker'} %>
   </div>
-  <%= form.marksmith :description, enable_file_uploads: false  %>
+  <div data-controller="marksmith-editor">
+    <%= form.marksmith :description, enable_file_uploads: false  %>
+  </div>
 </div>
 
 <div>

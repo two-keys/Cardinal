@@ -23,7 +23,9 @@
 
   <div class="my-5">
     <%= form.label :content %>
-    <%= form.marksmith :content, enable_file_uploads: false %>
+    <div data-controller="marksmith-editor">
+      <%= form.marksmith :content, enable_file_uploads: false %>
+    </div>
   </div>
 
   <div class="inline">

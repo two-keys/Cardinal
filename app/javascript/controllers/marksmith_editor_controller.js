@@ -23,7 +23,13 @@ export default class extends Controller {
     let saveIdValue = this.saveIdValue
 
     if (!naturallyStretchy) {
-      textArea.style.overflowY = "scroll";
+      textArea.style.overflowY = "initial";
+      textArea.oninput = function() {
+        textArea.style.minHeight = ""; /* Reset the height*/
+        textArea.style.minHeight = textArea.scrollHeight+ "px";
+      };
+
+      textArea.style.minHeight = textArea.scrollHeight+ "px";
     }
 
     textArea.setHTML = function(input) {

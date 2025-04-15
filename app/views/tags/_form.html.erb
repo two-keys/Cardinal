@@ -39,7 +39,9 @@
 
   <div>
     <%= form.label :details %><br />
-    <%= form.marksmith :details, enable_file_uploads: false %>
+    <div data-controller="marksmith-editor">
+      <%= form.marksmith :details, enable_file_uploads: false %>
+    </div>
   </div>
 
   <br />
